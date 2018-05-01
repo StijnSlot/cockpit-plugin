@@ -4,6 +4,8 @@ public class ProcessInstanceCountDto {
 
   private String key;
 
+  private String name;
+
   private int instanceCount;
 
   public String getKey() {
@@ -20,5 +22,13 @@ public class ProcessInstanceCountDto {
 
   public void setInstanceCount(int instanceCount) {
     this.instanceCount = instanceCount;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }

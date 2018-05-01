@@ -2,11 +2,11 @@ package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import org.camunda.bpm.cockpit.plugin.resource.AbstractPluginRootResource;
+import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.sample.SamplePlugin;
 
 @Path("plugin/" + SamplePlugin.ID)
-public class SamplePluginRootResource extends AbstractPluginRootResource {
+public class SamplePluginRootResource extends AbstractCockpitPluginRootResource {
 
   public SamplePluginRootResource() {
     super(SamplePlugin.ID);
