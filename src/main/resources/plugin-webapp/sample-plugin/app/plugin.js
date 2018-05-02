@@ -4,6 +4,6 @@
 'use strict';
 
 var angular = require('angular'),
-    diagramModule = require('./diagram/main');
+    diagramModule = require('./diagram/color');
 
 module.exports = angular.module('cockpit.plugin.sample-plugin', [diagramModule.name]);
