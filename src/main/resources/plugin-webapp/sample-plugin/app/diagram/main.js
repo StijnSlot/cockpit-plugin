@@ -1,15 +1,5 @@
 'use strict'
-console.log("hello3");
-define(['angular',
-    'jquery'], function(angular) {
-
-    var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
-
-        $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
-            .success(function(data) {
-                $scope.processInstanceCounts = data;
-            });
-    }];
+define(['angular'], function(angular) {
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
@@ -19,10 +9,11 @@ define(['angular',
             overlay: [
                 'control', 'processData', 'pageData', 'processDiagram',
                 function(control, processData, pageData, processDiagram) {
+                    console.log("hello");
                 }]
         });
     }];
-    console.log("hello");
+
     var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram', []);
 
     ngModule.config(Configuration);
