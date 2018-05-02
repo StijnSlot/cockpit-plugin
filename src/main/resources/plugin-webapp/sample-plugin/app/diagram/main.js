@@ -1,3 +1,5 @@
+'use strict'
+console.log("hello3");
 define(['angular',
     'jquery'], function(angular) {
 
@@ -20,7 +22,7 @@ define(['angular',
                 }]
         });
     }];
-
+    console.log("hello");
     var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram', []);
 
     ngModule.config(Configuration);
