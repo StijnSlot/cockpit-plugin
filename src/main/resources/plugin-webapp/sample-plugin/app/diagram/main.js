@@ -1,34 +1,18 @@
 'use strict'
+
+// var instanceCount = require('src\main\resources\plugin-webapp\sample-plugin\app\demoText\brain.js');
+
 define(['angular'], function(angular) {
-    var instanceCount = require('../../common/diagramPlugins/instanceCount');
+
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
-        ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.overlay', {
+        ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
             id: 'runtime',
             priority: 20,
             label: 'Runtime',
             overlay: [
-                '$scope', 'control', 'processData', 'processDiagram', 'Loaders', '$filter', '$rootScope', '$translate', 'callbacks',
-                function($scope, control, processData, processDiagram, Loaders, $filter, $rootScope, $translate, callbacks) {
-                    // variables
-                    var viewer = control.getViewer();
-                    var overlays = viewer.get('overlays');
-                    var elementRegistry = viewer.get('elementRegistry');
-                    var stopLoading = Loaders.startLoading();
-                    var overlaysNodes = {};
-
-                    callbacks.observe(function(sources) {
-                        // stop loading the plugin stuff
-                        stopLoading();
-
-                        // go through all the elements in the diagram
-                        elementRegistry.forEach(function(shape) {
-                            var element = processDiagram.bpmnElements[shape.businessObject.id];
-                            var data = callbacks.getData.apply(null, [element].concat(sources));
-                            var nodes;
-
-                            console.log(element);
-                        });
-                    });
+                'control', 'processData', 'pageData', 'processDiagram',
+                function(control, processData, pageData, processDiagram) {
+                    console.log("test demoText");
                 }]
         });
     }];
