@@ -7,9 +7,10 @@ define(['angular'], function(angular) {
             priority: 20,
             label: 'Runtime',
             overlay: [
-                'control', 'processData', 'pageData', 'processDiagram',
-                function(control, processData, pageData, processDiagram) {
-                    console.log("hello");
+                '$scope', 'control', 'processData', 'processDiagram', 'Loaders', '$filter', '$rootScope', '$translate',
+                function($scope, control, processData, processDiagram, Loaders, $filter, $rootScope, $translate) {
+                    var viewer = control.getViewer();
+
                 }]
         });
     }];
