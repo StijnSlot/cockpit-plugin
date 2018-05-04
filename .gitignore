@@ -13,3 +13,8 @@ buildNumber.properties
 
 # Ignore intellij stuff
 .idea/
+
+# Ignore eclipse stuff
+.classpath
+.project
+.settings/
