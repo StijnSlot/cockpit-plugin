@@ -9,10 +9,22 @@
     <result property="instanceCount" column="INSTANCES_" jdbcType="INTEGER" />
   </resultMap>
 
+  <resultMap id="processInstanceAverageDuration" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceActivityDto">
+    <result property="name" column="ACT_NAME_" jdbcType="VARCHAR" />
+    <result property="processActivityDurationAvg" column="INSTANCES_" jdbcType="INTEGER" />
+  </resultMap>
+
   <select id="selectProcessInstanceCountsByProcessDefinition" resultMap="processInstanceCountMap">
-    select d.KEY_, d.NAME_, count(d.KEY_) INSTANCES_
-      from ACT_RU_EXECUTION e JOIN ACT_RE_PROCDEF d ON e.PROC_DEF_ID_ = d.ID_
-      group by d.KEY_
+    SELECT d.KEY_, d.NAME_, COUNT(d.KEY_) INSTANCES_
+      FROM ACT_RU_EXECUTION e JOIN ACT_RE_PROCDEF d ON e.PROC_DEF_ID_ = d.ID_
+      GROUP BY d.KEY_
+  </select>
+
+  <select id="selectProcessInstanceAverageDurationPerActivity" resultMap="processInstanceAverageDuration" parameterType="String">
+    SELECT ACT_NAME_, AVG(DURATION_) INSTANCES_
+    FROM ACT_HI_ACTINST
+    WHERE PROC_DEF_ID_ = #{parameter}
+    GROUP BY ACT_NAME_
   </select>
 
 </mapper>
