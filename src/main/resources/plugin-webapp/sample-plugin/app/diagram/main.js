@@ -12,60 +12,34 @@ define(['angular'], function(angular) {
             overlay: [
                 '$scope' ,'control', 'processData', 'pageData', 'processDiagram',
                 function($scope, control, processData, pageData, processDiagram) {
-                    var bpmnElements;
-
-                    $scope.$watch('processDiagram', function(newValue) {
-                        if (newValue && newValue.$loaded !== false) {
-                          bpmnElements = newValue.bpmnElements;
-                          $scope.diagramData = newValue.bpmnDefinition;
-                        }
-                      });
-                  
+                    var viewer = control.getViewer();
+                    var overlays = viewer.get('overlays');
+                    var elementRegistry = viewer.get('elementRegistry');
+                    var overlaysNodes = {};
 
                     console.log("Display bpmnElements:");
-                    console.log($scope.processDiagram.bpmnElements);
+                    console.log(viewer,overlays,elementRegistry);
 
-                    // decorateDiagram($scope.processDiagram.bpmnElements);
+                    elementRegistry.forEach(function(shape) { 
+                        var element = processDiagram.bpmnElements[shape.businessObject.id];
+                        console.log(element.id);
+                        var $overlayHtml =
+                            $('<div class="highlight-overlay">')
+                            .css({
+                                width: shape.width,
+                                height: shape.height
+                            });
 
+                        overlays.add(element.id, {
+                            position: {
+                            top: -5,
+                            left: -5
+                            },
+                            html: $overlayHtml
+                        });
+                    });
+                    
 
-                    // function decorateDiagram(bpmnElements) {
-                    //     angular.forEach(bpmnElements, decorateBpmnElement);
-                    // }
-                  
-                    // function decorateBpmnElement(bpmnElement) {
-                  
-                    //     // var elem = $scope.control.getElement(bpmnElement.id);
-
-                    //     console.log("BPMN element");
-                    //     console.log(bpmnElement);
-                  
-                    //     // if(elem && $scope.overlayProviders && $scope.overlayProviders.length) {
-                    //     //   var childScope = $scope.$new();
-                  
-                    //     //   childScope.bpmnElement = bpmnElement;
-                  
-                    //     //   var newOverlay = angular.element(overlay);
-                  
-                    //     //   newOverlay.css({
-                    //     //     width: elem.width,
-                    //     //     height: elem.height
-                    //     //   });
-                  
-                    //     //   $compile(newOverlay)(childScope);
-                  
-                    //     //   try {
-                    //     //     $scope.control.createBadge(bpmnElement.id, {
-                    //     //       html: newOverlay,
-                    //     //       position: {
-                    //     //         top: 0,
-                    //     //         left: 0
-                    //     //       }
-                    //     //     });
-                    //     //   } catch (exception) {
-                    //     //     // do nothing
-                    //     //   }
-                    //     // }
-                    // }
 
                     console.log("End of decorate element");
 
@@ -73,7 +47,7 @@ define(['angular'], function(angular) {
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram', []);
+    var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram.color', []);
 
     ngModule.config(Configuration);
 

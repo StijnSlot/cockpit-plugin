@@ -17,7 +17,7 @@ define(['angular'], function(angular) {
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram', []);
+    var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram.text', []);
 
     ngModule.config(Configuration);
 
