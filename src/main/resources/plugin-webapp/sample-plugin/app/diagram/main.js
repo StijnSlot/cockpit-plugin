@@ -37,6 +37,10 @@ define(['angular'], function(angular) {
                                 top: 0,
                                 left: 0
                                 },
+                                show: {
+                                  minZoom: -Infinity,
+                                  maxZoom: +Infinity
+                                },
                                 html: $overlayHtml
                             });
                         }
