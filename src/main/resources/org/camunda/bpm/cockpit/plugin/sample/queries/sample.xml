@@ -9,9 +9,12 @@
     <result property="instanceCount" column="INSTANCES_" jdbcType="INTEGER" />
   </resultMap>
 
-  <resultMap id="processAverageStatistics" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessActivityDto">
+  <resultMap id="processActivityStatistics" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessActivityDto">
     <result property="name" column="ACT_NAME_" jdbcType="VARCHAR" />
-    <result property="avgDuration" column="INSTANCES_" jdbcType="INTEGER" />
+    <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="INTEGER" />
+    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="INTEGER" />
+    <result property="minDuration" column="MIN(DURATION_)" jdbcType="INTEGER" />
+    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="INTEGER" />
   </resultMap>
 
   <select id="selectProcessInstanceCountsByProcessDefinition" resultMap="processInstanceCountMap">
@@ -20,8 +23,8 @@
       GROUP BY d.KEY_
   </select>
 
-  <select id="selectProcessActivityStatistics" resultMap="processAverageStatistics" parameterType="String">
-    SELECT ACT_NAME_, AVG(DURATION_) INSTANCES_
+  <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
+    SELECT ACT_NAME_, COUNT(ACT_NAME_), AVG(DURATION_), MIN(DURATION_), MAX(DURATION_)
     FROM ACT_HI_ACTINST
     WHERE PROC_DEF_ID_ = #{parameter}
     GROUP BY ACT_NAME_

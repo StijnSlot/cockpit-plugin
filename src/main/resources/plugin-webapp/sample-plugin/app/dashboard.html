@@ -23,13 +23,19 @@
     <thead>
     <tr>
       <th>Name</th>
+      <th>Absolute frequency</th>
       <th>Average duration</th>
+      <th>Minimum duration</th>
+      <th>Maximum duration</th>
     </tr>
     </thead>
     <tbody>
     <tr data-ng-repeat="count in processActivityStatistics">
       <td>{{ count.name }}</td>
+      <td>{{ count.absFrequency }}</td>
       <td>{{ count.avgDuration }}</td>
+      <td>{{ count.minDuration }}</td>
+      <td>{{ count.maxDuration }}</td>
     </tr>
     </tbody>
   </table>
