@@ -23,20 +23,24 @@ define(['angular'], function(angular) {
                     elementRegistry.forEach(function(shape) { 
                         var element = processDiagram.bpmnElements[shape.businessObject.id];
                         console.log(element.id);
-                        var $overlayHtml =
-                            $('<div class="highlight-overlay">')
-                            .css({
-                                width: shape.width,
-                                height: shape.height
-                            });
 
-                        overlays.add(element.id, {
-                            position: {
-                            top: -5,
-                            left: -5
-                            },
-                            html: $overlayHtml
-                        });
+                        if (element.id == 'ServiceTask_1') {
+                            var $overlayHtml =
+                                $('<div class="highlight-overlay">')
+                                .css({
+                                    width: shape.width,
+                                    height: shape.height
+                                });
+
+                            overlays.add(element.id, {
+                                position: {
+                                top: 0,
+                                left: 0
+                                },
+                                html: $overlayHtml
+                            });
+                        }
+
                     });
                     
 
