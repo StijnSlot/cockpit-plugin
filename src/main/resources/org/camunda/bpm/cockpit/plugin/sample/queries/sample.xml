@@ -3,16 +3,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cockpit.sample">
-
   <resultMap id="processInstanceCountMap" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceCountDto">
     <result property="key" column="KEY_" jdbcType="VARCHAR" />
+    <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="instanceCount" column="INSTANCES_" jdbcType="INTEGER" />
   </resultMap>
 
+  <resultMap id="processActivityStatistics" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessActivityDto">
+    <result property="name" column="ACT_NAME_" jdbcType="VARCHAR" />
+    <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="INTEGER" />
+    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="INTEGER" />
+    <result property="minDuration" column="MIN(DURATION_)" jdbcType="INTEGER" />
+    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="INTEGER" />
+  </resultMap>
+
   <select id="selectProcessInstanceCountsByProcessDefinition" resultMap="processInstanceCountMap">
-    select d.KEY_, count(d.KEY_) INSTANCES_
-      from ACT_RU_EXECUTION e JOIN ACT_RE_PROCDEF d ON e.PROC_DEF_ID_ = d.ID_
-      group by d.KEY_
+    SELECT d.KEY_, d.NAME_, COUNT(d.KEY_) INSTANCES_
+      FROM ACT_RU_EXECUTION e JOIN ACT_RE_PROCDEF d ON e.PROC_DEF_ID_ = d.ID_
+      GROUP BY d.KEY_
+  </select>
+
+  <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
+    SELECT ACT_NAME_, COUNT(ACT_NAME_), AVG(DURATION_), MIN(DURATION_), MAX(DURATION_)
+    FROM ACT_HI_ACTINST
+    WHERE PROC_DEF_ID_ = #{parameter}
+    GROUP BY ACT_NAME_
   </select>
 
 </mapper>
