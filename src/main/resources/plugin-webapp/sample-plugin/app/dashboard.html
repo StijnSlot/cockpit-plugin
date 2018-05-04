@@ -18,7 +18,7 @@
   </table>
 </div>
 <div>
-  <h1>Activity average duration</h1>
+  <h1>Process Activity Statistics</h1>
   <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
@@ -27,9 +27,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr data-ng-repeat="count in processInstanceActivityDuration">
+    <tr data-ng-repeat="count in processActivityStatistics">
       <td>{{ count.name }}</td>
-      <td>{{ count.processActivityDurationAvg }}</td>
+      <td>{{ count.avgDuration }}</td>
     </tr>
     </tbody>
   </table>

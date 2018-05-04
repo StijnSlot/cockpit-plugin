@@ -5,7 +5,7 @@ define(['angular'], function(angular) {
   var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
       $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-activity?procDefId=" + procDefId))
           .success(function(data) {
-              $scope.processInstanceActivityDuration = data;
+              $scope.processActivityStatistics = data;
           });
 
     $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))

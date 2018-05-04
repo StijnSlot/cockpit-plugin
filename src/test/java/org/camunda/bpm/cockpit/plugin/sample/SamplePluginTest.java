@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.camunda.bpm.cockpit.Cockpit;
 import org.camunda.bpm.cockpit.db.QueryParameters;
-import org.camunda.bpm.cockpit.db.QueryService;
-import org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceActivityDto;
+import org.camunda.bpm.cockpit.plugin.sample.db.ProcessActivityDto;
 import org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceCountDto;
 import org.camunda.bpm.cockpit.plugin.spi.CockpitPlugin;
 import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
@@ -41,13 +40,13 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
   @Test
   public void testProcessInstanceActivityQueryWorks() {
 
-    QueryParameters<ProcessInstanceActivityDto> parameters = new QueryParameters<ProcessInstanceActivityDto>();
+    QueryParameters<ProcessActivityDto> parameters = new QueryParameters<ProcessActivityDto>();
     parameters.setParameter("");
 
-    List<ProcessInstanceActivityDto> instanceCounts =
+    List<ProcessActivityDto> instanceCounts =
       getQueryService()
         .executeQuery(
-        "cockpit.sample.selectProcessInstanceAverageDurationPerActivity",
+        "cockpit.sample.selectProcessActivityStatistics",
          parameters);
 
     Assert.assertEquals(0, instanceCounts.size());

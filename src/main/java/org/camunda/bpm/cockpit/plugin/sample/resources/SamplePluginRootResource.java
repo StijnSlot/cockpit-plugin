@@ -20,9 +20,9 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
   }
 
   @Path("{engineName}/process-activity")
-  public ProcessInstanceActivityResource getProcessInstanceActivityResource(
+  public ProcessActivityResource getProcessInstanceActivityResource(
           @PathParam("engineName") String engineName,
           @QueryParam("procDefId") String procDefId) {
-    return subResource(new ProcessInstanceActivityResource(engineName, procDefId), engineName);
+    return subResource(new ProcessActivityResource(engineName, procDefId), engineName);
   }
 }

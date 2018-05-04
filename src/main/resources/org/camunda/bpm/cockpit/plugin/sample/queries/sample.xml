@@ -9,9 +9,9 @@
     <result property="instanceCount" column="INSTANCES_" jdbcType="INTEGER" />
   </resultMap>
 
-  <resultMap id="processInstanceAverageDuration" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceActivityDto">
+  <resultMap id="processAverageStatistics" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessActivityDto">
     <result property="name" column="ACT_NAME_" jdbcType="VARCHAR" />
-    <result property="processActivityDurationAvg" column="INSTANCES_" jdbcType="INTEGER" />
+    <result property="avgDuration" column="INSTANCES_" jdbcType="INTEGER" />
   </resultMap>
 
   <select id="selectProcessInstanceCountsByProcessDefinition" resultMap="processInstanceCountMap">
@@ -20,7 +20,7 @@
       GROUP BY d.KEY_
   </select>
 
-  <select id="selectProcessInstanceAverageDurationPerActivity" resultMap="processInstanceAverageDuration" parameterType="String">
+  <select id="selectProcessActivityStatistics" resultMap="processAverageStatistics" parameterType="String">
     SELECT ACT_NAME_, AVG(DURATION_) INSTANCES_
     FROM ACT_HI_ACTINST
     WHERE PROC_DEF_ID_ = #{parameter}
