@@ -25,4 +25,9 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
           @QueryParam("procDefId") String procDefId) {
     return subResource(new ProcessActivityResource(engineName, procDefId), engineName);
   }
+
+  @Path("{engineName}/sse")
+  public SSETestingResource getSSETestingResource(@PathParam("engineName") String engineName) {
+    return subResource(new SSETestingResource(engineName), engineName);
+  }
 }

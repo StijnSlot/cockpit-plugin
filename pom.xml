@@ -5,7 +5,41 @@
   <groupId>org.camunda.bpm.cockpit.plugin</groupId>
   <artifactId>cockpit-plugin</artifactId>
   <version>1.0.0</version>
-  <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.logicbig.example.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <packaging>jar</packaging>
 
   <name>Camunda Cockpit Plugin</name>
   <description>This is a plugin developed to better visualize the processes in the Camunda Cockpit</description>
@@ -38,6 +72,11 @@
       <scope>provided</scope>
       <version>3.0.2.Final</version>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-sse</artifactId>
+      <version>2.26</version>
+    </dependency>
     
     <!-- test dependencies -->
     <dependency>
@@ -65,6 +104,16 @@
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.7.12</version>
       <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-compiler-javac</artifactId>
+          <version>2.2</version>
+      </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.ws.rs</groupId>
+      <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+      <version>1.0.1.Final</version>
     </dependency>
   </dependencies>
 
