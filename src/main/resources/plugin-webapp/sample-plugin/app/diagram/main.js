@@ -2,6 +2,19 @@
 
 // var instanceCount = require('src\main\resources\plugin-webapp\sample-plugin\app\demoText\brain.js');
 
+//Define colors
+
+var redColor = '<div class="highlight-overlay-red">';
+var orangeColor = '<div class="highlight-overlay-orange">';
+var greenColor = '<div class="highlight-overlay-green">';
+
+//Define events which change color
+
+var redEvent = 'ServiceTask_1';
+var orangeEvent = 'UserTask_1';
+var greenEvent = 'ServiceTask_2';
+
+
 define(['angular'], function(angular) {
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
@@ -45,14 +58,18 @@ define(['angular'], function(angular) {
                                 });
                         }
 
-                        if (element.id == 'ServiceTask_1') {
-                            addColorToId(element.id, '<div class="highlight-overlay-red">')
-                        } else if (element.id == 'UserTask_1') {
-                            addColorToId(element.id, '<div class="highlight-overlay-green">')
-                        } else {
-                            addColorToId(element.id, '<div class="highlight-overlay-orange">')
+                        switch(element.id) {
+                            case redEvent:
+                                addColorToId(element.id, redColor);
+                                break;
+                            case orangeEvent:
+                                addColorToId(element.id, orangeColor);
+                                break;
+                            case greenEvent:
+                                addColorToId(element.id, greenColor);
+                            default:
+                                break;
                         }
-
                     });
                     
 
