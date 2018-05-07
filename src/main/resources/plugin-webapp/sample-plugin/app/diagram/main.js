@@ -24,25 +24,33 @@ define(['angular'], function(angular) {
                         var element = processDiagram.bpmnElements[shape.businessObject.id];
                         console.log(element.id);
 
-                        if (element.id == 'ServiceTask_1') {
+                        function addColorToId(elementId, color) {
                             var $overlayHtml =
-                                $('<div class="highlight-overlay">')
-                                .css({
-                                    width: shape.width,
-                                    height: shape.height
+                                    $(color)
+                                    .css({
+                                        width: shape.width,
+                                        height: shape.height
+                                    });
+    
+                                overlays.add(elementId, {
+                                    position: {
+                                    top: 0,
+                                    left: 0
+                                    },
+                                    show: {
+                                      minZoom: -Infinity,
+                                      maxZoom: +Infinity
+                                    },
+                                    html: $overlayHtml
                                 });
+                        }
 
-                            overlays.add(element.id, {
-                                position: {
-                                top: 0,
-                                left: 0
-                                },
-                                show: {
-                                  minZoom: -Infinity,
-                                  maxZoom: +Infinity
-                                },
-                                html: $overlayHtml
-                            });
+                        if (element.id == 'ServiceTask_1') {
+                            addColorToId(element.id, '<div class="highlight-overlay-red">')
+                        } else if (element.id == 'UserTask_1') {
+                            addColorToId(element.id, '<div class="highlight-overlay-green">')
+                        } else {
+                            addColorToId(element.id, '<div class="highlight-overlay-orange">')
                         }
 
                     });
