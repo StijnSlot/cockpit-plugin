@@ -13,3 +13,6 @@ buildNumber.properties
 
 # Ignore intellij stuff
 .idea/
+
+.iml
+.bat
