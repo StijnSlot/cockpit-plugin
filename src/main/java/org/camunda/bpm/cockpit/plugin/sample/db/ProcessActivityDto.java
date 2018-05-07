@@ -4,13 +4,13 @@ public class ProcessActivityDto {
 
     private String name;
 
-    private int absFrequency;
+    private Integer absFrequency;
 
-    private int avgDuration;
+    private Integer avgDuration;
 
-    private int minDuration;
+    private Integer minDuration;
 
-    private int maxDuration;
+    private Integer maxDuration;
 
     public String getName() {
         return name;
@@ -20,35 +20,35 @@ public class ProcessActivityDto {
         this.name = name;
     }
 
-    public int getAvgDuration() {
+    public Integer getAvgDuration() {
         return avgDuration;
     }
 
-    public void setAvgDuration(int avgDuration) {
+    public void setAvgDuration(Integer avgDuration) {
         this.avgDuration = avgDuration;
     }
 
-    public int getAbsFrequency() {
+    public Integer getAbsFrequency() {
         return absFrequency;
     }
 
-    public void setAbsFrequency(int absFrequency) {
+    public void setAbsFrequency(Integer absFrequency) {
         this.absFrequency = absFrequency;
     }
 
-    public int getMinDuration() {
+    public Integer getMinDuration() {
         return minDuration;
     }
 
-    public void setMinDuration(int minDuration) {
+    public void setMinDuration(Integer minDuration) {
         this.minDuration = minDuration;
     }
 
-    public int getMaxDuration() {
+    public Integer getMaxDuration() {
         return maxDuration;
     }
 
-    public void setMaxDuration(int maxDuration) {
+    public void setMaxDuration(Integer maxDuration) {
         this.maxDuration = maxDuration;
     }
 }
