@@ -6,6 +6,8 @@
         <th>Key</th>
         <th>Name</th>
         <th>Instances</th>
+        <th>Max Duration</th>
+        <th>Max Frequency</th>
       </tr>
     </thead>
     <tbody>
@@ -13,6 +15,8 @@
         <td>{{ count.key }}</td>
         <td>{{ count.name }}</td>
         <td>{{ count.instanceCount }}</td>
+        <td>{{ count.maxDuration }}</td>
+        <td>{{ count.maxFrequency }}</td>
       </tr>
     </tbody>
   </table>
@@ -37,6 +41,26 @@
       <td>{{ count.minDuration }}</td>
       <td>{{ count.maxDuration }}</td>
     </tr>
+    </tbody>
+  </table>
+</div>
+<div>
+  <h1>Instance Variables</h1>
+  <table class="table table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Long</th>
+      <th>Double</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-ng-repeat="count in instanceVariables">
+      <td>{{ count.name }}</td>
+      <td>{{ count.type}}</td>
+      <td>{{ count.long_}}</td>
+      <td>{{ count.double_ }}</td>
     </tbody>
   </table>
 </div>

@@ -2,6 +2,9 @@ define(['angular',
     'jquery'], function(angular) {
 
     var procDefId = "invoice:2:e163823d-4ecc-11e8-856a-104a7d534b93";
+    var executionId = "e1978acf-4ecc-11e8-856a-104a7d534b93";
+    var caseExecutionId = "";
+    var taskId = "";
 
     var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
 
@@ -10,9 +13,18 @@ define(['angular',
                 $scope.processInstanceCounts = data;
             });
 
-        $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-activity?procDefId=" + procDefId))
+        $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-activity?" +
+                            "procDefId=" + procDefId))
             .success(function(data) {
                 $scope.processActivityStatistics = data;
+            });
+
+        $http.get(Uri.appUri("plugin://sample-plugin/:engine/instance-variables" +
+                            "?executionId=" + executionId +
+                            "&caseExecutionId=" + caseExecutionId +
+                            "&taskId=" + taskId))
+            .success(function(data) {
+                $scope.instanceVariables = data;
             });
         console.log("Loaded");
 

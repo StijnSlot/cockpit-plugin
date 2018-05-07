@@ -1,12 +1,16 @@
 package org.camunda.bpm.cockpit.plugin.sample.db;
 
-public class ProcessInstanceCountDto {
+public class ProcessStatisticsDto {
 
   private String key;
 
   private String name;
 
   private int instanceCount;
+
+  private int maxDuration;
+
+  private int maxFrequency;
 
   public String getKey() {
     return key;
@@ -30,5 +34,21 @@ public class ProcessInstanceCountDto {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public int getMaxDuration() {
+    return maxDuration;
+  }
+
+  public void setMaxDuration(int maxDuration) {
+    this.maxDuration = maxDuration;
+  }
+
+  public int getMaxFrequency() {
+    return maxFrequency;
+  }
+
+  public void setMaxFrequency(int maxFrequency) {
+    this.maxFrequency = maxFrequency;
   }
 }

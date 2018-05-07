@@ -5,7 +5,7 @@ import java.util.List;
 import org.camunda.bpm.cockpit.Cockpit;
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.sample.db.ProcessActivityDto;
-import org.camunda.bpm.cockpit.plugin.sample.db.ProcessInstanceCountDto;
+import org.camunda.bpm.cockpit.plugin.sample.db.ProcessStatisticsDto;
 import org.camunda.bpm.cockpit.plugin.spi.CockpitPlugin;
 import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
 import org.junit.Assert;
@@ -28,11 +28,11 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
   @Test
   public void testProcessInstanceQueryWorks() {
 
-    List<ProcessInstanceCountDto> instanceCounts =
+    List<ProcessStatisticsDto> instanceCounts =
       getQueryService()
         .executeQuery(
-          "cockpit.sample.selectProcessInstanceCountsByProcessDefinition",
-          new QueryParameters<ProcessInstanceCountDto>());
+          "cockpit.sample.selectProcessStatistics",
+          new QueryParameters<>());
 
     Assert.assertEquals(0, instanceCounts.size());
   }
@@ -40,7 +40,7 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
   @Test
   public void testProcessInstanceActivityQueryWorks() {
 
-    QueryParameters<ProcessActivityDto> parameters = new QueryParameters<ProcessActivityDto>();
+    QueryParameters<ProcessActivityDto> parameters = new QueryParameters<>();
     parameters.setParameter("");
 
     List<ProcessActivityDto> instanceCounts =

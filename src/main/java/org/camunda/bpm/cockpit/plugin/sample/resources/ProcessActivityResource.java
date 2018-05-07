@@ -18,7 +18,7 @@ public class ProcessActivityResource extends AbstractCockpitPluginResource {
 
     @GET
     public List<ProcessActivityDto> getProcessActivityStatistics() {
-        QueryParameters<ProcessActivityDto> queryParameters = new QueryParameters<ProcessActivityDto>();
+        QueryParameters<ProcessActivityDto> queryParameters = new QueryParameters<>();
         queryParameters.setParameter(procDefId);
         configureTenantCheck(queryParameters);
 
