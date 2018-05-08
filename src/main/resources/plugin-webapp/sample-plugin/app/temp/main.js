@@ -1,8 +1,6 @@
 define(['angular',
     'jquery'], function(angular) {
 
-    console.log('before configuration');
-
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
             id: 'runtime',
@@ -15,10 +13,18 @@ define(['angular',
                     $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
                     .success(function(data) {
                         $scope.processInstanceCounts = data;
-                        console.log('Damn success');
+                        
                         console.log($scope.processInstanceCounts);
-                        console.log($scope.processInstanceCounts.instanceCount);
+                        
+
+                        for (var i = 0; i < $scope.processInstanceCounts.length; i++) {
+                            console.log($scope.processInstanceCounts[i]);
+                            console.log($scope.processInstanceCounts[i].name);
+                        }
                     });
+
+
+                    
 }]
 });
 }];
