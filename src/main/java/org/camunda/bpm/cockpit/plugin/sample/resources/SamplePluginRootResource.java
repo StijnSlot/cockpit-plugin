@@ -15,7 +15,8 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
   }
 
   @Path("{engineName}/process-instance")
-  public ProcessStatisticsResource getProcessInstanceResource(@PathParam("engineName") String engineName) {
+  public ProcessStatisticsResource getProcessInstanceResource(
+          @PathParam("engineName") String engineName) {
     return subResource(new ProcessStatisticsResource(engineName), engineName);
   }
 
@@ -32,11 +33,19 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
           @QueryParam("executionId") String executionId,
           @QueryParam("caseExecutionId") String caseExecutionId,
           @QueryParam("taskId") String taskId) {
-    return subResource(new InstanceVariablesResource(engineName, executionId, caseExecutionId, taskId), engineName);
+    return subResource(new InstanceVariablesResource(engineName, executionId, caseExecutionId, taskId),
+            engineName);
+  }
+
+  @Path("{engineName}/instance-start-time")
+  public InstanceStartTimeResource getInstanceVariableResource(
+          @PathParam("engineName") String engineName) {
+    return subResource(new InstanceStartTimeResource(engineName), engineName);
   }
 
   @Path("{engineName}/sse")
-  public SSETestingResource getSSETestingResource(@PathParam("engineName") String engineName) {
+  public SSETestingResource getSSETestingResource(
+          @PathParam("engineName") String engineName) {
     return subResource(new SSETestingResource(engineName), engineName);
   }
 }

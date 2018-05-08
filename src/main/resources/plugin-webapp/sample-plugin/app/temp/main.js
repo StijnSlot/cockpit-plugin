@@ -26,6 +26,12 @@ define(['angular',
             .success(function(data) {
                 $scope.instanceVariables = data;
             });
+
+        $http.get(Uri.appUri("plugin://sample-plugin/:engine/instance-start-time"))
+            .success(function(data) {
+                $scope.instanceStartTime = data;
+            });
+
         console.log("Loaded");
 
     }];

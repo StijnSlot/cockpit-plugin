@@ -26,7 +26,12 @@
     <result property="long_" column="LONG_" jdbcType="BIGINT" />
     <result property="text" column="TEXT_" jdbcType="VARCHAR" />
     <result property="text2" column="TEXT2_" jdbcType="VARCHAR" />
-    <result property="bytes" column="BYTES_" jdbcType="VARBINARY" />
+  <result property="bytes" column="BYTES_" jdbcType="VARBINARY" />
+  </resultMap>
+
+  <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.sample.db.InstanceStartTimeDto">
+    <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">
@@ -58,6 +63,15 @@
     WHERE (a.EXECUTION_ID_ = #{parameter.executionId} OR #{parameter.executionId} = '')
       AND (a.CASE_EXECUTION_ID_ = #{parameter.caseExecutionId} OR #{parameter.caseExecutionId} = '')
       AND (a.TASK_ID_ = #{parameter.taskId} OR #{parameter.taskId} = '')
+  </select>
+
+  <select id="selectInstanceStartTime" resultMap="instanceStartTime">
+    SELECT a.ID_, b.START_TIME_
+    FROM ACT_RU_EXECUTION a
+      JOIN ACT_HI_ACTINST b
+        ON a.ID_ = b.EXECUTION_ID_
+    WHERE b.END_TIME_ IS NULL
+          AND a.IS_ACTIVE_ = TRUE
   </select>
 
 </mapper>
