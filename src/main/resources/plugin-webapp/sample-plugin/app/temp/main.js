@@ -1,13 +1,7 @@
 define(['angular',
     'jquery'], function(angular) {
 
-    var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
-
-        $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
-            .success(function(data) {
-                $scope.processInstanceCounts = data;
-            });
-    }];
+    console.log('before configuration');
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
@@ -15,13 +9,21 @@ define(['angular',
             priority: 20,
             label: 'Runtime',
             overlay: [
-                'control', 'processData', 'pageData', 'processDiagram',
-                function(control, processData, pageData, processDiagram) {
+                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', 'processDiagram',
+                function($scope, $http, Uri, control, processData, pageData, processDiagram) {
+                    console.log('in configuration');
+                    $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
+                    .success(function(data) {
+                        $scope.processInstanceCounts = data;
+                        console.log('Damn success');
+                        console.log($scope.processInstanceCounts);
+                        console.log($scope.processInstanceCounts.instanceCount);
+                    });
 }]
 });
 }];
 
-var ngModule = angular.module('cockpit.plugin.sample-plugin', []);
+var ngModule = angular.module('cockpit.plugin.sample-plugin.temp', []);
 
 ngModule.config(Configuration);
 
