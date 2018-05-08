@@ -1,25 +1,35 @@
-'use strict'
-
-// var instanceCount = require('src\main\resources\plugin-webapp\sample-plugin\app\demoText\brain.js');
-
 define(['angular'], function(angular) {
 
-    var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
-        ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
-            id: 'runtime-demoText',
-            priority: 20,
-            label: 'Runtime',
-            overlay: [
-                'control', 'processData', 'pageData', 'processDiagram',
-                function(control, processData, pageData, processDiagram) {
-                    console.log("test demoText");
-                }]
-        });
-    }];
+  var procDefId = "invoice:2:485730c2-4f7d-11e8-94dc-52e8da98b31d";
 
-    var ngModule = angular.module('cockpit.plugin.sample-plugin.diagram.text', []);
+  var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
+      $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-activity?procDefId=" + procDefId))
+          .success(function(data) {
+              $scope.processActivityStatistics = data;
+          });
 
-    ngModule.config(Configuration);
+    $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-instance"))
+      .success(function(data) {
+        $scope.processInstanceCounts = data;
+      });
+  }];
 
-    return ngModule;
+  var Configuration = ['ViewsProvider', function(ViewsProvider) {
+
+    ViewsProvider.registerDefaultView('cockpit.dashboard', {
+      id: 'process-definitions',
+      label: 'Deployed Processes',
+      url: 'plugin://sample-plugin/static/app/demoText/dashboard.html',
+      controller: DashboardController,
+
+      // make sure we have a higher priority than the default plugin
+      priority: 12
+    });
+  }];
+
+  var ngModule = angular.module('cockpit.plugin.sample-plugin.demoText.process-definitions', []);
+
+  ngModule.config(Configuration);
+
+  return ngModule;
 });
