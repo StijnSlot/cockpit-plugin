@@ -1,4 +1,5 @@
 #!/bin/bash
+pkill -9 -f tomcat
 
 mvn clean install
 
