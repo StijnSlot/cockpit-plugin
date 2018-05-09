@@ -5,58 +5,26 @@
   <groupId>org.camunda.bpm.cockpit.plugin</groupId>
   <artifactId>cockpit-plugin</artifactId>
   <version>1.0.0</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.logicbig.example.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    <packaging>jar</packaging>
+  <packaging>jar</packaging>
 
-  <name>Camunda Cockpit Plugin</name>
-  <description>This is a plugin developed to better visualize the processes in the Camunda Cockpit</description>
+    <name>Camunda Cockpit Plugin</name>
+    <description>This is a plugin developed to better visualize the processes in the Camunda Cockpit</description>
 
-  <properties>
-    <camunda.version>7.8.0</camunda.version>
+    <properties>
+        <camunda.version>7.8.0</camunda.version>
 
-    <!-- This property must be present for the pom.xml to be recognized as a plugin -->
-    <camunda.plugin.category>Visualization</camunda.plugin.category>
+        <!-- This property must be present for the pom.xml to be recognized as a plugin -->
+        <camunda.plugin.category>Visualization</camunda.plugin.category>
 
-    <camunda.plugin.testedOnVersion>7.8.0</camunda.plugin.testedOnVersion>
-    <camunda.plugin.language>EN</camunda.plugin.language>
+        <camunda.plugin.testedOnVersion>7.8.0</camunda.plugin.testedOnVersion>
+        <camunda.plugin.language>EN</camunda.plugin.language>
 
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <jersey.version>2.26</jersey.version>
+    </properties>
 
   <dependencies>
     <dependency>
@@ -73,12 +41,45 @@
       <version>3.0.2.Final</version>
     </dependency>
     <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-grizzly2-http</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-sse</artifactId>
-      <version>2.26</version>
+      <version>${jersey.version}</version>
     </dependency>
     
     <!-- test dependencies -->
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>${jersey.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+      <artifactId>jersey-test-framework-provider-jetty</artifactId>
+      <version>${jersey.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+      <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+      <version>${jersey.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
@@ -95,6 +96,12 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxrs</artifactId>
+      <version>3.5.1.Final</version>
+      <scope>runtime</scope>
     </dependency>
     
     <!-- redirect slf4j logging to jdk logging -->
@@ -116,6 +123,41 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>com.logicbig.example.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <repositories>
     <repository>
       <id>camunda-bpm-nexus</id>
@@ -123,4 +165,5 @@
       <url>https://app.camunda.com/nexus/content/groups/public</url>
     </repository>
   </repositories>
+
 </project>

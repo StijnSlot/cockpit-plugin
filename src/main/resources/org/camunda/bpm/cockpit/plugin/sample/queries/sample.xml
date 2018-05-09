@@ -34,6 +34,10 @@
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessVariablesDto">
+    <result property="name" column="NAME_" jdbcType="VARCHAR" />
+  </resultMap>
+
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">
     SELECT d.ID_, d.NAME_, COUNT(e.PROC_INST_ID_) INSTANCES_,
         (SELECT MAX(f.DURATION_) FROM ACT_HI_ACTINST f WHERE f.PROC_DEF_ID_ = d.ID_)
@@ -63,6 +67,14 @@
     WHERE (a.EXECUTION_ID_ = #{parameter.executionId} OR #{parameter.executionId} = '')
       AND (a.CASE_EXECUTION_ID_ = #{parameter.caseExecutionId} OR #{parameter.caseExecutionId} = '')
       AND (a.TASK_ID_ = #{parameter.taskId} OR #{parameter.taskId} = '')
+  </select>
+
+  <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">
+    SELECT DISTINCT a.NAME_
+    FROM ACT_RU_VARIABLE a
+      JOIN ACT_RU_EXECUTION b
+        ON a.EXECUTION_ID_ = b.ID_
+    WHERE b.PROC_DEF_ID_ = #{parameter}
   </select>
 
   <select id="selectInstanceStartTime" resultMap="instanceStartTime">

@@ -1,8 +1,7 @@
 package org.camunda.bpm.cockpit.plugin.sample.resources;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.sample.SamplePlugin;
@@ -10,9 +9,17 @@ import org.camunda.bpm.cockpit.plugin.sample.SamplePlugin;
 @Path("plugin/" + SamplePlugin.ID)
 public class SamplePluginRootResource extends AbstractCockpitPluginRootResource {
 
+
   public SamplePluginRootResource() {
     super(SamplePlugin.ID);
   }
+
+  @GET
+  @Produces(MediaType.TEXT_PLAIN)
+  public String getIt() {
+    return "Got it!";
+  }
+
 
   @Path("{engineName}/process-instance")
   public ProcessStatisticsResource getProcessInstanceResource(
@@ -37,8 +44,15 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
             engineName);
   }
 
+  @Path("{engineName}/process-variables")
+  public ProcessVariablesResource getProcessVariableResource(
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new ProcessVariablesResource(engineName, procDefId), engineName);
+  }
+
   @Path("{engineName}/instance-start-time")
-  public InstanceStartTimeResource getInstanceVariableResource(
+  public InstanceStartTimeResource getInstanceStartTimeResource(
           @PathParam("engineName") String engineName) {
     return subResource(new InstanceStartTimeResource(engineName), engineName);
   }
