@@ -3,7 +3,7 @@ define(['angular'], function(angular) {
     var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
 
         $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-variables" +
-            "?procDefId=:id"));
+            "?procDefId=:id"))
             .success(function(data) {
                 $scope.processVariables = data;
             });
@@ -25,4 +25,4 @@ define(['angular'], function(angular) {
     ngModule.config(Configuration);
 
     return ngModule;
-}
+});

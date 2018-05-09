@@ -31,6 +31,7 @@
 
   <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.sample.db.InstanceStartTimeDto">
     <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
@@ -78,7 +79,7 @@
   </select>
 
   <select id="selectInstanceStartTime" resultMap="instanceStartTime">
-    SELECT a.ID_, b.START_TIME_
+    SELECT a.ID_, , b.ACT_ID_, b.START_TIME_
     FROM ACT_RU_EXECUTION a
       JOIN ACT_HI_ACTINST b
         ON a.ID_ = b.EXECUTION_ID_
