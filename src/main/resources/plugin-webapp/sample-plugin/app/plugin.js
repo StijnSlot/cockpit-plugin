@@ -8,11 +8,6 @@ define(function (require) {
     var diagramModule = require('./diagram/main');
     var demoText = require('./demoText/main');
     var temp = require('./temp/main');
-<<<<<<< HEAD
     var options = require('./options/main');
-    return angular.module('cockpit.plugin.sample-plugin', [diagramModule.name, demoText.name, temp.name/*, options.name*/]);
-=======
-    var duration = require('./duration/main');
-    return angular.module('cockpit.plugin.sample-plugin', [diagramModule.name, demoText.name, temp.name, duration.name]);
->>>>>>> front-end
+    return angular.module('cockpit.plugin.sample-plugin', [diagramModule.name, demoText.name, temp.name, duration.name/*, options.name*/]);
 });
