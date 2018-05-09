@@ -25,14 +25,4 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
 
     Assert.assertNotNull(samplePlugin);
   }
-
-
-  @Test(expected = SQLException.class)
-  public void testTrigger(){
-
-    getQueryService().executeQuery("createMyTrigger", new QueryParameters<Object>());
-    getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
-
-  }
-
 }
