@@ -24,6 +24,12 @@
          new Thread(() -> {
              for (int i = 0; i < 10; i++) {
                  // ... code that waits 1 second
+                 try {
+					wait(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                  final OutboundSseEvent event = sse.newEventBuilder()
                          .name("message-to-client")
                          .data(String.class, "Hello world " + i + "!")
