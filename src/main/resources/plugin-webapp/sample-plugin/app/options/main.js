@@ -3,7 +3,7 @@ define(['angular'], function(angular) {
     var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
 
         $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-variables" +
-            "?procDefId=:id"))
+            "?procDefId=" + $scope.$parent.processDefinition.id))
             .success(function(data) {
                 $scope.processVariables = data;
             });
@@ -13,7 +13,7 @@ define(['angular'], function(angular) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
             id: 'optionsTab',
             label: 'Options tab',
-            url: 'plugin://sample-plugin/static/app/demoText/dashboard.html',
+            url: 'plugin://sample-plugin/static/app/options/tab.html',
             controller: DashboardController,
 
             priority: 20
