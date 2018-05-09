@@ -5,6 +5,8 @@ import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 import org.camunda.bpm.cockpit.plugin.sample.db.InstanceVariablesDto;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +25,11 @@ public class InstanceVariablesResource extends AbstractCockpitPluginResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<InstanceVariablesDto> getInstanceVariableStatistics() {
         QueryParameters<InstanceVariablesDto> queryParameters = new QueryParameters<>();
         queryParameters.setParameter(param);
+
         configureTenantCheck(queryParameters);
 
         return getQueryService().executeQuery(

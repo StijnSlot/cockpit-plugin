@@ -2,6 +2,8 @@ package org.camunda.bpm.cockpit.plugin.sample.resources;
 
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
@@ -14,9 +16,11 @@ public class ProcessStatisticsResource extends AbstractCockpitPluginResource {
   }
 
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public List<ProcessStatisticsDto> getProcessStatistics() {
 	  QueryParameters<ProcessStatisticsDto> queryParameters = new QueryParameters<>();
-      configureTenantCheck(queryParameters);
+
+	  configureTenantCheck(queryParameters);
 
 	  return getQueryService().executeQuery(
 	          "cockpit.sample.selectProcessStatistics", queryParameters);

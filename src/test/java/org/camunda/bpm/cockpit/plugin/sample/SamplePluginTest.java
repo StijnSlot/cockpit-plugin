@@ -25,31 +25,5 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
     Assert.assertNotNull(samplePlugin);
   }
 
-  @Test
-  public void testProcessInstanceQueryWorks() {
-
-    List<ProcessStatisticsDto> instanceCounts =
-      getQueryService()
-        .executeQuery(
-          "cockpit.sample.selectProcessStatistics",
-          new QueryParameters<>());
-
-    Assert.assertEquals(0, instanceCounts.size());
-  }
-
-  @Test
-  public void testProcessInstanceActivityQueryWorks() {
-
-    QueryParameters<ProcessActivityDto> parameters = new QueryParameters<>();
-    parameters.setParameter("");
-
-    List<ProcessActivityDto> instanceCounts =
-      getQueryService()
-        .executeQuery(
-        "cockpit.sample.selectProcessActivityStatistics",
-         parameters);
-
-    Assert.assertEquals(0, instanceCounts.size());
-  }
 
 }
