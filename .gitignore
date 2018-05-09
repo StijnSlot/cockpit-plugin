@@ -18,6 +18,7 @@ buildNumber.properties
 .classpath
 .project
 .settings
+.vscode/
 
 .iml
 .bat
