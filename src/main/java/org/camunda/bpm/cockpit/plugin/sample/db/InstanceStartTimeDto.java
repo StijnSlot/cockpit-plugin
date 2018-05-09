@@ -6,6 +6,8 @@ public class InstanceStartTimeDto {
 
     private String instanceId;
 
+    private String activityId;
+
     private Timestamp startTime;
 
     public String getInstanceId() {
@@ -22,5 +24,13 @@ public class InstanceStartTimeDto {
 
     public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 }
