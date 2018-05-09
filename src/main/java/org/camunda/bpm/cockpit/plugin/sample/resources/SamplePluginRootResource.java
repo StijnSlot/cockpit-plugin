@@ -44,6 +44,13 @@ public class SamplePluginRootResource extends AbstractCockpitPluginRootResource 
             engineName);
   }
 
+  @Path("{engineName}/process-variables")
+  public ProcessVariablesResource getProcessVariableResource(
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new ProcessVariablesResource(engineName, procDefId), engineName);
+  }
+
   @Path("{engineName}/instance-start-time")
   public InstanceStartTimeResource getInstanceStartTimeResource(
           @PathParam("engineName") String engineName) {
