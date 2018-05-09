@@ -3,9 +3,10 @@ package org.camunda.bpm.cockpit.plugin.sample.resources;
 import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 import org.camunda.bpm.cockpit.plugin.sample.db.InstanceStartTimeDto;
-import org.camunda.bpm.cockpit.plugin.sample.db.InstanceVariablesDto;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
@@ -15,6 +16,7 @@ public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public List<InstanceStartTimeDto> InstanceStartTime() {
         QueryParameters<InstanceStartTimeDto> queryParameters = new QueryParameters<>();
 

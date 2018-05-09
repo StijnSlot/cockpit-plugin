@@ -3,10 +3,8 @@
  import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 
  import javax.ws.rs.GET;
- import javax.ws.rs.Path;
  import javax.ws.rs.Produces;
  import javax.ws.rs.core.Context;
- import java.util.Date;
  import javax.ws.rs.core.MediaType;
  import javax.ws.rs.sse.Sse;
  import javax.ws.rs.sse.SseEventSink;
