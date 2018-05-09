@@ -2,6 +2,19 @@
 
 // var instanceCount = require('src\main\resources\plugin-webapp\sample-plugin\app\demoText\brain.js');
 
+//Define colors
+
+var redColor = '<div class="highlight-overlay-red">';
+var orangeColor = '<div class="highlight-overlay-orange">';
+var greenColor = '<div class="highlight-overlay-green">';
+
+//Define events which change color
+
+var redEvent = 'ServiceTask_1';
+var orangeEvent = 'UserTask_1';
+var greenEvent = 'ServiceTask_2';
+
+
 define(['angular'], function(angular) {
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
@@ -24,27 +37,39 @@ define(['angular'], function(angular) {
                         var element = processDiagram.bpmnElements[shape.businessObject.id];
                         console.log(element.id);
 
-                        if (element.id == 'ServiceTask_1') {
+                        function addColorToId(elementId, color) {
                             var $overlayHtml =
-                                $('<div class="highlight-overlay">')
-                                .css({
-                                    width: shape.width,
-                                    height: shape.height
+                                    $(color)
+                                    .css({
+                                        width: shape.width,
+                                        height: shape.height
+                                    });
+    
+                                overlays.add(elementId, {
+                                    position: {
+                                    top: 0,
+                                    left: 0
+                                    },
+                                    show: {
+                                      minZoom: -Infinity,
+                                      maxZoom: +Infinity
+                                    },
+                                    html: $overlayHtml
                                 });
-
-                            overlays.add(element.id, {
-                                position: {
-                                top: 0,
-                                left: 0
-                                },
-                                show: {
-                                  minZoom: -Infinity,
-                                  maxZoom: +Infinity
-                                },
-                                html: $overlayHtml
-                            });
                         }
 
+                        switch(element.id) {
+                            case redEvent:
+                                addColorToId(element.id, redColor);
+                                break;
+                            case orangeEvent:
+                                addColorToId(element.id, orangeColor);
+                                break;
+                            case greenEvent:
+                                addColorToId(element.id, greenColor);
+                            default:
+                                break;
+                        }
                     });
                     
 
