@@ -1,5 +1,6 @@
 package org.camunda.bpm.cockpit.plugin.sample;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.camunda.bpm.cockpit.Cockpit;
@@ -24,6 +25,4 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
 
     Assert.assertNotNull(samplePlugin);
   }
-
-
 }

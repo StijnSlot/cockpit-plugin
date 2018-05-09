@@ -31,7 +31,12 @@
 
   <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.sample.db.InstanceStartTimeDto">
     <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.sample.db.ProcessVariablesDto">
+    <result property="name" column="NAME_" jdbcType="VARCHAR" />
   </resultMap>
 
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">
@@ -65,13 +70,34 @@
       AND (a.TASK_ID_ = #{parameter.taskId} OR #{parameter.taskId} = '')
   </select>
 
+  <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">
+    SELECT DISTINCT a.NAME_
+    FROM ACT_RU_VARIABLE a
+      JOIN ACT_RU_EXECUTION b
+        ON a.EXECUTION_ID_ = b.ID_
+    WHERE b.PROC_DEF_ID_ = #{parameter}
+  </select>
+
   <select id="selectInstanceStartTime" resultMap="instanceStartTime">
-    SELECT a.ID_, b.START_TIME_
+    SELECT a.ID_, b.ACT_ID_, b.START_TIME_
     FROM ACT_RU_EXECUTION a
       JOIN ACT_HI_ACTINST b
         ON a.ID_ = b.EXECUTION_ID_
     WHERE b.END_TIME_ IS NULL
           AND a.IS_ACTIVE_ = TRUE
+  </select>
+
+  <select id="createMyTrigger">
+    CREATE TRIGGER aTrigger
+    AFTER INSERT
+    ON ACT_RU_EXECUTION
+    FOR EACH ROW
+    CALL "org.camunda.bpm.cockpit.plugin.sample.db.MyTrigger"
+  </select>
+
+  <select id="makeChangesInTheTable">
+    INSERT INTO ACT_RU_EXECUTION (ID_)
+    VALUES ("5")
   </select>
 
 </mapper>

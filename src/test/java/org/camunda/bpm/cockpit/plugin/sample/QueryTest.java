@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.ws.rs.QueryParam;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,4 +69,12 @@ public class QueryTest extends AbstractCockpitPluginTest {
 
         Assert.assertEquals(0, result.size());
     }
+
+    /*@Test(expected = SQLException.class)
+    public void testTrigger(){
+
+        getQueryService().executeQuery("createMyTrigger", new QueryParameters<Object>());
+        getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
+
+    }*/
 }
