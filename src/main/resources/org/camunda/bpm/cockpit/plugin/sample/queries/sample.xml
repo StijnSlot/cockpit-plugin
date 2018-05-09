@@ -15,4 +15,17 @@
       group by d.KEY_
   </select>
 
+  <select id="createMyTrigger">
+    CREATE TRIGGER aTrigger
+    AFTER INSERT
+    ON ACT_RU_EXECUTION
+    FOR EACH ROW
+    CALL "org.camunda.bpm.cockpit.plugin.sample.db.MyTrigger"
+  </select>
+
+  <select id="makeChangesInTheTable">
+    INSERT INTO ACT_RU_EXECUTION(ID_)
+    VALUES("5")
+  </select>
+
 </mapper>

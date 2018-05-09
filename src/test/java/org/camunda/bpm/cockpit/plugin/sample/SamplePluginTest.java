@@ -1,5 +1,6 @@
 package org.camunda.bpm.cockpit.plugin.sample;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.camunda.bpm.cockpit.Cockpit;
@@ -38,6 +39,14 @@ public class SamplePluginTest extends AbstractCockpitPluginTest {
           new QueryParameters<ProcessInstanceCountDto>());
 
     Assert.assertEquals(0, instanceCounts.size());
+  }
+
+  @Test(expected = SQLException.class)
+  public void testTrigger(){
+
+    getQueryService().executeQuery("createMyTrigger", new QueryParameters<Object>());
+    getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
+
   }
 
 }
