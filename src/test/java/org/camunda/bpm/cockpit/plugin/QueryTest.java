@@ -1,10 +1,7 @@
 package org.camunda.bpm.cockpit.plugin;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
-import org.camunda.bpm.cockpit.plugin.db.InstanceStartTimeDto;
-import org.camunda.bpm.cockpit.plugin.db.InstanceVariablesDto;
-import org.camunda.bpm.cockpit.plugin.db.ProcessActivityDto;
-import org.camunda.bpm.cockpit.plugin.db.ProcessStatisticsDto;
+import org.camunda.bpm.cockpit.plugin.db.*;
 import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +12,7 @@ import java.util.List;
 public class QueryTest extends AbstractCockpitPluginTest {
 
     @Test
-    public void testProcessInstanceQueryWorks() {
+    public void testProcessStatisticsQueryWorks() {
         List<ProcessStatisticsDto> result =
             getQueryService()
             .executeQuery(
@@ -64,6 +61,17 @@ public class QueryTest extends AbstractCockpitPluginTest {
             .executeQuery(
                 "cockpit.query.selectInstanceStartTime",
                 new QueryParameters<>());
+
+        Assert.assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testProcessVariables() {
+        List<ProcessVariablesDto> result =
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectProcessVariables",
+                    new QueryParameters<>());
 
         Assert.assertEquals(0, result.size());
     }

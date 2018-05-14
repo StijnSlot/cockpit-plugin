@@ -66,6 +66,14 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
     }
 
     @Test
+    public void processVariablesTest() {
+        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
+                getProcessEngine().getName() + "/process-variables").request().get();
+        assertEquals(200, output.getStatus());
+        assertNotNull(output.readEntity(List.class));
+    }
+
+    @Test
     public void instanceVariablesTest() {
         Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
                 getProcessEngine().getName() + "/instance-variables").request().get();
