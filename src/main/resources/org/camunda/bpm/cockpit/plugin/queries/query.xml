@@ -4,7 +4,7 @@
 
 <mapper namespace="cockpit.query">
   <resultMap id="processStatisticsMap" type="org.camunda.bpm.cockpit.plugin.db.ProcessStatisticsDto">
-    <result property="key" column="KEY_" jdbcType="VARCHAR" />
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="instanceCount" column="INSTANCES_" jdbcType="INTEGER" />
     <result property="maxDuration" column="MAXDURATION_" jdbcType="INTEGER" />

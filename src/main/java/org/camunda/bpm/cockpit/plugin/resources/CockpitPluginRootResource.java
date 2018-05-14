@@ -19,8 +19,7 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   public String getIt() {
     return "Got it!";
   }
-
-
+  
   @Path("{engineName}/process-instance")
   public ProcessStatisticsResource getProcessInstanceResource(
           @PathParam("engineName") String engineName) {
