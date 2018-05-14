@@ -2,13 +2,13 @@
     <h4>Select KPI's to show</h4>
     <form data-ng-repeat="variable in KPI">
         <input type="checkbox" ng-checked="variable.checked"
-               ng-change="change(variable.id, checked)"  ng-model="checked"> {{ variable.name }}<br>
+               ng-change="changeKPI(variable.id, checked)"  ng-model="checked"> {{ variable.name }}<br>
     </form>
 </div>
 <div style="display:inline-block; width:49%; vertical-align: top;">
     <h4>Select process-instance variables to show</h4>
     <form data-ng-repeat="variable in processVariables">
         <input type="checkbox" ng-checked="variable.checked"
-               ng-change="change(variable.name, checked)"  ng-model="checked"> {{ variable.name }}<br>
+               ng-change="changeVar(variable.name, checked)"  ng-model="checked"> {{ variable.name }}<br>
     </form>
 </div>

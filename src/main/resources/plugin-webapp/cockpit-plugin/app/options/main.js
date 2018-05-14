@@ -17,11 +17,11 @@ define(['angular'], function(angular) {
 
                 for(var i in data) {
                     var variable = $scope.processVariables[i];
-                    if($window.localStorage.getItem(variable.name) === null) {
-                        $window.localStorage.setItem(variable.name, 'false');
+                    if($window.localStorage.getItem(procDefId + "_" + variable.name) === null) {
+                        $window.localStorage.setItem(procDefId + "_" + variable.name, 'false');
                         variable.checked = 'false';
                     } else {
-                        variable.checked = $window.localStorage.getItem(variable.name) === 'true';
+                        variable.checked = $window.localStorage.getItem(procDefId + "_" + variable.name) === 'true';
                     }
                 }
 
@@ -36,9 +36,14 @@ define(['angular'], function(angular) {
                 }
             });
 
-        $scope.change = function(id, checked) {
+        $scope.changeVar = function(id, checked) {
+            $window.localStorage.setItem(procDefId + "_" + id, checked);
+        }
+
+        $scope.changeKPI = function(id, checked) {
             $window.localStorage.setItem(id, checked);
         }
+
     }];
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
