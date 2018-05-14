@@ -29,9 +29,9 @@ define(['angular'], function(angular) {
                     var elementRegistry = viewer.get('elementRegistry');
                     var overlaysNodes = {};
 
-                    console.log('colors loaded twice, yayyyyyy');
+                    //console.log('colors loaded twice, yayyyyyy');
                     
-                    console.log("Display overlay:");
+                    //console.log("Display overlay:");
                     //console.log(viewer,overlays,elementRegistry);
 
                     function millisToMinutes(millis) {
@@ -42,12 +42,12 @@ define(['angular'], function(angular) {
                                         "procDefId=" + procDefId))
                         .success(function(data) {
                             $scope.processActivityStatistics = data;
-                            console.log($scope.processActivityStatistics);
-                            console.log('Here comes the duration data');
+                            // console.log($scope.processActivityStatistics);
+                            // console.log('Here comes the duration data');
 
                             elementRegistry.forEach(function(shape) { 
                                 var element = processDiagram.bpmnElements[shape.businessObject.id];
-                                console.log(element.id);
+                                //console.log(element.id);
         
                                 function addColorToId(elementId, duration) {
                                     var $overlayHtml =
@@ -72,9 +72,9 @@ define(['angular'], function(angular) {
         
                                 for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
                                     if ($scope.processActivityStatistics[i].id == element.id) {
-                                        console.log('Its the same');
-                                        console.log($scope.processActivityStatistics[i].id);
-                                        console.log(element.id);
+                                        //console.log('Its the same');
+                                        //console.log($scope.processActivityStatistics[i].id);
+                                        //console.log(element.id);
                                         var getAvgDuration = millisToMinutes($scope.processActivityStatistics[i].avgDuration);
                                         var getMinDuration = millisToMinutes($scope.processActivityStatistics[i].minDuration);
                                         var getMaxDuration = millisToMinutes($scope.processActivityStatistics[i].maxDuration);
