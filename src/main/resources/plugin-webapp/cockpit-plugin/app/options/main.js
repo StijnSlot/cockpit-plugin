@@ -44,7 +44,7 @@ define(['angular'], function(angular) {
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
             id: 'optionsTab',
-            label: 'Options tab',
+            label: 'Options',
             url: 'plugin://cockpit-plugin/static/app/options/tab.html',
             controller: DashboardController,
 
