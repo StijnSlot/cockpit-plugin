@@ -73,8 +73,8 @@ public class QueryTest extends AbstractCockpitPluginTest {
     /*@Test(expected = SQLException.class)
     public void testTrigger(){
 
-        getQueryService().executeQuery("cockpit.sample.createMyTrigger", new QueryParameters<Object>());
-        getQueryService().executeQuery("cockpit.sample.makeChangesInTheTable", new QueryParameters<Object>());
+        getQueryService().executeQuery("createMyTrigger", new QueryParameters<Object>());
+        getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
 
     }*/
 }

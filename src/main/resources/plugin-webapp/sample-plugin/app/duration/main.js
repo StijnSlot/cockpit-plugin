@@ -41,6 +41,12 @@ define(['angular'], function(angular) {
                     console.log("Display overlay:");
                     console.log(viewer,overlays,elementRegistry);
 
+                    function millisToMinutesAndSeconds(millis) {
+                        var minutes = Math.floor(millis / 60000);
+                        var seconds = ((millis % 60000) / 1000).toFixed(0);
+                        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+                    }
+
                     $http.get(Uri.appUri("plugin://sample-plugin/:engine/process-activity?" +
                                         "procDefId=" + procDefId))
                         .success(function(data) {
@@ -78,9 +84,9 @@ define(['angular'], function(angular) {
                                         console.log('Its the same');
                                         console.log($scope.processActivityStatistics[i].id);
                                         console.log(element.id);
-                                        var getAvgDuration = $scope.processActivityStatistics[i].avgDuration;
-                                        var getMinDuration = $scope.processActivityStatistics[i].minDuration;
-                                        var getMaxDuration = $scope.processActivityStatistics[i].maxDuration;
+                                        var getAvgDuration = millisToMinutesAndSeconds($scope.processActivityStatistics[i].avgDuration);
+                                        var getMinDuration = millisToMinutesAndSeconds($scope.processActivityStatistics[i].minDuration);
+                                        var getMaxDuration = millisToMinutesAndSeconds($scope.processActivityStatistics[i].maxDuration);
                                         if (getAvgDuration != null && getMinDuration != null && getMaxDuration != null) {
                                             var htmlText2 = getAvgDuration.toString();
                                             var htmlText3 = getMinDuration.toString();
