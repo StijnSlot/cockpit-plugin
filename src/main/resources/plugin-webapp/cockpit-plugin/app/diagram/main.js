@@ -30,12 +30,12 @@ define(['angular'], function(angular) {
                     var elementRegistry = viewer.get('elementRegistry');
                     var overlaysNodes = {};
 
-                    console.log("Display bpmnElements:");
-                    console.log(viewer,overlays,elementRegistry);
+                    // console.log("Display bpmnElements:");
+                    // console.log(viewer,overlays,elementRegistry);
 
                     elementRegistry.forEach(function(shape) { 
                         var element = processDiagram.bpmnElements[shape.businessObject.id];
-                        console.log(element.id);
+                        // console.log(element.id);
 
                         function addColorToId(elementId, color) {
                             var $overlayHtml =
@@ -74,7 +74,7 @@ define(['angular'], function(angular) {
                     
 
 
-                    console.log("End of decorate element");
+                    // console.log("End of decorate element");
 
                 }]
         });
