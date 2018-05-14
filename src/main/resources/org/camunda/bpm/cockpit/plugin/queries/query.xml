@@ -97,7 +97,7 @@
 
   <select id="makeChangesInTheTable">
     INSERT INTO ACT_RU_EXECUTION (ID_)
-    VALUES ("5")
+    VALUES ('5')
   </select>
 
 </mapper>

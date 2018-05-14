@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.List;
+import java.io.*;
 
 public class QueryTest extends AbstractCockpitPluginTest {
 
@@ -76,11 +77,18 @@ public class QueryTest extends AbstractCockpitPluginTest {
         Assert.assertEquals(0, result.size());
     }
 
-    /*@Test(expected = SQLException.class)
+    @Test
     public void testTrigger(){
 
         getQueryService().executeQuery("createMyTrigger", new QueryParameters<Object>());
+
+        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
         getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
 
-    }*/
+        Assert.assertEquals("The trigger fires", outContent.toString());
+
+
+    }
 }

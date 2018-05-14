@@ -17,7 +17,10 @@ public class MyTrigger implements Trigger {
             throws SQLException {
         // broadcast to connected users
         SingletonBroadcast.getInstance().broadcast();
-        throw new SQLException();
+
+        System.out.print("The trigger fires");
+
+        //throw new SQLException();
     }
 
 
