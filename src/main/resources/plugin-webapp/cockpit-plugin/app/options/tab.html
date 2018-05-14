@@ -1,6 +1,7 @@
 <div>
-<h4>Select process-instance variables</h4>
-<form action="" data-ng-repeat="variable in processVariables">
-    <input type="checkbox" name={{ variable.name }}> {{ variable.name }}<br>
-</form>
+    <h4>Select process-instance variables {{ name }}</h4>
+    <form data-ng-repeat="variable in processVariables">
+        <input type="checkbox" ng-checked="variable.checked"
+               ng-change="change(variable.name, checked)"  ng-model="checked"> {{ variable.name }}<br>
+    </form>
 </div>
