@@ -1,4 +1,5 @@
 package org.camunda.bpm.cockpit.plugin.sample.db;
+import org.camunda.bpm.cockpit.plugin.sample.resources.SingletonBroadcast;
 import org.h2.api.Trigger;
 import java.sql.*;
 
@@ -14,9 +15,8 @@ public class MyTrigger implements Trigger {
     public void fire(Connection conn,
                      Object[] oldRow, Object[] newRow)
             throws SQLException {
-        // the trigger is fired
-        //Call some method to refresh the page;
-        System.out.println("boom");
+        // broadcast to connected users
+        SingletonBroadcast.getInstance().broadcast();
         throw new SQLException();
     }
 
