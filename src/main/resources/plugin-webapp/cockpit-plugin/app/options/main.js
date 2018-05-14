@@ -1,12 +1,28 @@
 define(['angular'], function(angular) {
 
-    var DashboardController = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
+    var DashboardController = ["$scope", "$window", "$http", "Uri", function($scope, $window, $http, Uri) {
+
+        var procDefId = $scope.$parent.processDefinition.id;
 
         $http.get(Uri.appUri("plugin://cockpit-plugin/:engine/process-variables" +
-            "?procDefId=" + $scope.$parent.processDefinition.id))
+            "?procDefId=" + procDefId))
             .success(function(data) {
                 $scope.processVariables = data;
+
+                for(var i in data) {
+                    var variable = $scope.processVariables[i];
+                    if($window.localStorage.getItem(variable.name) === null) {
+                        $window.localStorage.setItem(variable.name, 'false');
+                        variable.checked = 'false';
+                    } else {
+                        variable.checked = $window.localStorage.getItem(variable.name) === 'true';
+                    }
+                }
             });
+
+        $scope.change = function(name, checked) {
+            $window.localStorage.setItem(name, checked);
+        }
     }];
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
