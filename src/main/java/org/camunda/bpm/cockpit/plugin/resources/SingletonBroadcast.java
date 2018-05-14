@@ -9,6 +9,7 @@ public final class SingletonBroadcast {
     private static final SingletonBroadcast instance = new SingletonBroadcast();
     private SseBroadcaster sseBroadcaster;
     private OutboundSseEvent event;
+    private Boolean trigger = false;
 
     private SingletonBroadcast() {
     }
@@ -41,5 +42,13 @@ public final class SingletonBroadcast {
         if (event != null && this.sseBroadcaster != null) {
             this.sseBroadcaster.broadcast(event);
         }
+    }
+
+    public void setTrigger() {
+        this.trigger = true;
+    }
+
+    public Boolean getTrigger() {
+        return this.trigger;
     }
 }
