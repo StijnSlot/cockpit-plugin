@@ -1,1 +1,0 @@
-var instanceCount = require('../../common/diagramPlugins/instanceCount');
