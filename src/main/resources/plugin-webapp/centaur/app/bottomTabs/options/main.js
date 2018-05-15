@@ -1,7 +1,6 @@
 define(['angular'], function(angular) {
 
     var DashboardController = ["$scope", "$window", "$http", "Uri", function($scope, $window, $http, Uri) {
-
         var procDefId = $scope.$parent.processDefinition.id;
 
         $scope.KPI = [
@@ -48,16 +47,16 @@ define(['angular'], function(angular) {
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
-            id: 'optionsTab',
+            id: 'options',
             label: 'Options',
-            url: 'plugin://centaur/static/app/options/tab.html',
+            url: 'plugin://centaur/static/app/bottomTabs/options/tab.html',
             controller: DashboardController,
 
             priority: 1
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.demoText.optionsTab', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.bottomTabs.options', []);
 
     ngModule.config(Configuration);
 
