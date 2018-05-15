@@ -10,5 +10,6 @@ define(function (require) {
     var temp = require('./temp/main');
     var options = require('./options/main');
     var duration = require('./duration/main');
-    return angular.module('cockpit.plugin.cockpit-plugin', [diagramModule.name, demoText.name, temp.name, duration.name, options.name]);
+    var bulletGraph = require('./bulletGraph/main');
+    return angular.module('cockpit.plugin.cockpit-plugin', [diagramModule.name, demoText.name, temp.name, duration.name, options.name, bulletGraph.name]);
 });
