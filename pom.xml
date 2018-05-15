@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.camunda.bpm.cockpit.plugin</groupId>
-  <artifactId>cockpit-plugin</artifactId>
+  <artifactId>centaur</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-    <name>Camunda Cockpit Plugin</name>
-    <description>This is a plugin developed to better visualize the processes in the Camunda Cockpit</description>
+    <name>Centaur - a Camunda Cockpit plugin</name>
+    <description>This is a plugin developed for the Camunda cockpit to give additional process information</description>
 
     <properties>
         <camunda.version>7.8.0</camunda.version>

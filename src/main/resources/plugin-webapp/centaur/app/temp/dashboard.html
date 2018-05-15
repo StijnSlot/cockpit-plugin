@@ -1,0 +1,24 @@
+<script>
+    console.log("My fault");
+    if (!!window.EventSource) {
+    var source = new EventSource('http://localhost:8080/camunda/api/cockpit/plugin/centaur/default/SSE');
+    } else {
+    // Result to xhr polling :(
+    }
+
+    source.addEventListener('message', function(e) {
+        console.log(e.data);
+    }, false);
+
+    source.addEventListener('open', function(e) {
+    // Connection was opened.
+        console.log("connection opened");
+    }, false);
+
+    source.addEventListener('error', function(e) {
+    if (e.readyState == EventSource.CLOSED) {
+        console.log("connection closed");
+        // Connection was closed.
+    }
+    }, false);
+</script>
