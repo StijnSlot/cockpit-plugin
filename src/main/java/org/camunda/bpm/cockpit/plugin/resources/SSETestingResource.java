@@ -1,8 +1,10 @@
 package org.camunda.bpm.cockpit.plugin.resources;
 
+import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,16 +22,22 @@ public class SSETestingResource extends AbstractCockpitPluginResource {
 
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
-    public void subscribe(@Context SseEventSink sink, @Context Sse sse) throws IOException {
+    public List<Object> subscribe(@Context SseEventSink sink, @Context Sse sse) throws IOException {
+        List<Object> query = null;
         SingletonBroadcast ss = SingletonBroadcast.getInstance();
         ss.setBroadcaster(sse.newBroadcaster());
         ss.setMessage(sse);
         ss.getBroadcaster().register(sink);
+        if (!ss.getTrigger()) {
+            query = getQueryService().executeQuery("cockpit.query.createMyTrigger", new QueryParameters<Object>());
+            ss.setTrigger();
+        }
+        return query;
     }
     
     @GET 
     @Path("hello/")
     public void send() {
-        SingletonBroadcast.getInstance().broadcast();
+        getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
     }
  }

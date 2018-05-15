@@ -4,6 +4,12 @@ define(['angular'], function(angular) {
 
         var procDefId = $scope.$parent.processDefinition.id;
 
+        $scope.KPI = [
+            {id: "act_cur_duration", name: "Activity current duration"},
+            {id: "act_avg_duration", name: "Activity average duration"},
+            {id: "act_max_duration", name: "Activity maximum duration"}
+        ];
+
         $http.get(Uri.appUri("plugin://cockpit-plugin/:engine/process-variables" +
             "?procDefId=" + procDefId))
             .success(function(data) {
@@ -18,21 +24,31 @@ define(['angular'], function(angular) {
                         variable.checked = $window.localStorage.getItem(variable.name) === 'true';
                     }
                 }
+
+                for(var i in $scope.KPI) {
+                    var variable = $scope.KPI[i];
+                    if($window.localStorage.getItem(variable.id) === null) {
+                        $window.localStorage.setItem(variable.id, 'false');
+                        variable.checked = 'false';
+                    } else {
+                        variable.checked = $window.localStorage.getItem(variable.id) === 'true';
+                    }
+                }
             });
 
-        $scope.change = function(name, checked) {
-            $window.localStorage.setItem(name, checked);
+        $scope.change = function(id, checked) {
+            $window.localStorage.setItem(id, checked);
         }
     }];
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
             id: 'optionsTab',
-            label: 'Options tab',
+            label: 'Options',
             url: 'plugin://cockpit-plugin/static/app/options/tab.html',
             controller: DashboardController,
 
-            priority: 20
+            priority: 1
         });
     }];
 
