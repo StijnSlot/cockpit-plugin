@@ -78,7 +78,7 @@ define(['angular'], function(angular) {
                                         var getAvgDuration = millisToMinutes($scope.processActivityStatistics[i].avgDuration);
                                         var getMinDuration = millisToMinutes($scope.processActivityStatistics[i].minDuration);
                                         var getMaxDuration = millisToMinutes($scope.processActivityStatistics[i].maxDuration);
-                                        if (getAvgDuration != null && getMinDuration != null && getMaxDuration != null) {
+                                        if (getAvgDuration != null && getMinDuration != null && getMaxDuration != null && getAvgDuration != '0') {
                                             var htmlText2 = getAvgDuration.toString();
                                             var htmlText3 = getMinDuration.toString();
                                             var htmlText4 = getMaxDuration.toString();
