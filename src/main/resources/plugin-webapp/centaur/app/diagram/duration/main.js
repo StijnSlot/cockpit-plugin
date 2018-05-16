@@ -3,7 +3,6 @@
 // var instanceCount = require('src\main\resources\plugin-webapp\centaur\app\demoText\brain.js');
 
 //Hardcoded stuff
-var procDefId = "invoice:2:2a152b09-5366-11e8-8246-54ee7557b990";
 
 //Define colors
 
@@ -29,7 +28,7 @@ define(['angular'], function(angular) {
                     var elementRegistry = viewer.get('elementRegistry');
                     var overlaysNodes = {};
 
-                    //console.log('colors loaded twice, yayyyyyy');
+                    var procDefId = $scope.$parent.processDefinition.id;
                     
                     //console.log("Display overlay:");
                     //console.log(viewer,overlays,elementRegistry);
@@ -42,8 +41,11 @@ define(['angular'], function(angular) {
                                         "procDefId=" + procDefId))
                         .success(function(data) {
                             $scope.processActivityStatistics = data;
-                            // console.log($scope.processActivityStatistics);
-                            // console.log('Here comes the duration data');
+
+
+
+                            //console.log($scope.processActivityStatistics);
+                            //console.log('Here comes the duration data');
 
                             elementRegistry.forEach(function(shape) { 
                                 var element = processDiagram.bpmnElements[shape.businessObject.id];
@@ -72,9 +74,9 @@ define(['angular'], function(angular) {
         
                                 for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
                                     if ($scope.processActivityStatistics[i].id == element.id) {
-                                        //console.log('Its the same');
-                                        //console.log($scope.processActivityStatistics[i].id);
-                                        //console.log(element.id);
+                                        // console.log('Its the same');
+                                        // console.log($scope.processActivityStatistics[i].id);
+                                        // console.log(element.id);
                                         var getAvgDuration = millisToMinutes($scope.processActivityStatistics[i].avgDuration);
                                         var getMinDuration = millisToMinutes($scope.processActivityStatistics[i].minDuration);
                                         var getMaxDuration = millisToMinutes($scope.processActivityStatistics[i].maxDuration);

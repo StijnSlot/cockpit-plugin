@@ -1,6 +1,6 @@
 define(['angular'], function(angular) {
 
-    var procDefId = "invoice:2:e163823d-4ecc-11e8-856a-104a7d534b93";
+    var procDefId = "invoice:1:eb631ecb-58d5-11e8-b9ca-54ee7557b990";
     var executionId = "e1978acf-4ecc-11e8-856a-104a7d534b93";
     var caseExecutionId = "";
     var taskId = "";
