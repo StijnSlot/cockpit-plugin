@@ -2,7 +2,9 @@
 
 define(['angular'], function(angular) {
 
-    // contains process definition id of the process shown
+    /**
+     * contains process definition id of the process shown
+      */
     var procDefId;
 
     /**
@@ -133,15 +135,27 @@ define(['angular'], function(angular) {
         return {name: String(data.name), data: dataString, clickable: clickable};
     }
 
+    /**
+     * Adds html string of variable data to the bpmn element
+     *
+     * @param shape         Activity element containing information like height/width
+     * @param overlays      Collection of overlays to which can be added to
+     * @param elementId     Id of element where we add overlay
+     * @param htmlText      Text of html string of variable data
+     */
     function addTextElement(shape, overlays, elementId, htmlText) {
+
+        // create html object of html string and add some css
         var $html = $(htmlText).css({
-            width: shape.width * 2,
+            width: shape.width * 1.5,
             height: shape.height
         });
+
+        // add our overlay to the bpmn element with our html object
         overlays.add(elementId, {
             position: {
-                bottom: 10,
-                left: -100
+                bottom: 25,
+                left: -120
             },
             show: {
                 minZoom: -Infinity,
@@ -151,7 +165,9 @@ define(['angular'], function(angular) {
         });
     }
 
-    // Config object containing view and overlay
+    /**
+     * Configuration object that places plugin
+     */
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
             id: 'runtime',
