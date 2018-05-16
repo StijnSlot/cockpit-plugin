@@ -3,7 +3,7 @@
 // var instanceCount = require('src\main\resources\plugin-webapp\centaur\app\demoText\brain.js');
 
 //Hardcoded stuff
-var procDefId = "invoice:2:2a152b09-5366-11e8-8246-54ee7557b990";
+var procDefId = "invoice:2:e163823d-4ecc-11e8-856a-104a7d534b93";
 
 //Define colors
 
@@ -41,6 +41,7 @@ define(['angular'], function(angular) {
                     $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" +
                                         "procDefId=" + procDefId))
                         .success(function(data) {
+                            console.log(data);
                             $scope.processActivityStatistics = data;
                             // console.log($scope.processActivityStatistics);
                             // console.log('Here comes the duration data');

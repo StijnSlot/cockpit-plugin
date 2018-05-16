@@ -20,6 +20,7 @@
   </resultMap>
 
   <resultMap id="instanceVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceVariablesDto">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="type" column="TYPE_" jdbcType="VARCHAR" />
     <result property="double_" column="DOUBLE_" jdbcType="DOUBLE" />
@@ -61,13 +62,14 @@
   </select>
 
   <select id="selectInstanceVariables" resultMap="instanceVariables" parameterType="java.util.Map">
-    SELECT a.NAME_, a.TYPE_, a.DOUBLE_, a.LONG_, a.TEXT_, a.TEXT2_, b.BYTES_
-    FROM ACT_RU_VARIABLE a
-      LEFT JOIN ACT_GE_BYTEARRAY b
-        ON a.BYTEARRAY_ID_ = b.ID_
-    WHERE (a.EXECUTION_ID_ = #{parameter.executionId} OR #{parameter.executionId} = '')
-      AND (a.CASE_EXECUTION_ID_ = #{parameter.caseExecutionId} OR #{parameter.caseExecutionId} = '')
-      AND (a.TASK_ID_ = #{parameter.taskId} OR #{parameter.taskId} = '')
+    SELECT a.ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_, c.BYTES_
+    FROM ACT_RU_EXECUTION a
+      JOIN ACT_RU_VARIABLE b
+        ON a.ID_ = b.EXECUTION_ID_
+      LEFT JOIN ACT_GE_BYTEARRAY c
+        ON b.BYTEARRAY_ID_ = c.ID_
+    WHERE a.PROC_DEF_ID_ = #{parameter.procDefId}
+      AND a.ACT_ID_ = #{parameter.actId}
   </select>
 
   <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">

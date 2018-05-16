@@ -13,15 +13,13 @@ import java.util.Map;
 
 public class InstanceVariablesResource extends AbstractCockpitPluginResource {
 
-    Map<String, String> param;
+    private Map<String, String> param;
 
-    public InstanceVariablesResource(String engineName, String exId, String caExId, String taskId) {
+    public InstanceVariablesResource(String engineName, String procDefId, String actId) {
         super(engineName);
         param = new HashMap<>();
-
-        param.put("executionId", exId);
-        param.put("caseExecutionId", caExId);
-        param.put("taskId", taskId);
+        param.put("procDefId", procDefId);
+        param.put("actId", actId);
     }
 
     @GET
