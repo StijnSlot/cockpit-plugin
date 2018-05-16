@@ -1,6 +1,6 @@
 define(['angular'], function(angular) {
 
-    var DashboardController = ["$scope", "$window", "$http", "Uri", function($scope, $window, $http, Uri) {
+    var DashboardController = ["$scope", "$window", "$http", '$rootScope', "Uri", function($scope, $window, $http, $rootScope, Uri) {
         var procDefId = $scope.$parent.processDefinition.id;
 
         $scope.KPI = [
@@ -37,6 +37,7 @@ define(['angular'], function(angular) {
 
         $scope.changeVar = function(id, checked) {
             $window.localStorage.setItem(procDefId + "_" + id, checked);
+            $rootScope.$broadcast("cockpit.plugin.centaur:options:variable-change");
         }
 
         $scope.changeKPI = function(id, checked) {

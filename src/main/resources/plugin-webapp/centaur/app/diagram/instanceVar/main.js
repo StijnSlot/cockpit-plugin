@@ -3,15 +3,20 @@
 define(['angular'], function(angular) {
 
     /**
-     * contains process definition id of the process shown
+     * variable containing process definition id of the process shown
       */
     var procDefId;
 
     /**
+     * variable containing all ids of overlays created here
+     */
+    var overlayIds = [];
+
+    /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processDiagram',
-        function($scope, $http, $window, Uri, control, processDiagram) {
+    var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
+        function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
             procDefId = $scope.$parent.processDefinition.id;
@@ -20,6 +25,16 @@ define(['angular'], function(angular) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
+
+            // subscribe to broadcast any variable options change
+            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+
+                // clear any current overlays displayed
+                clearOverlays(overlays);
+
+                // rerun adding the overlays to all activities
+                addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
+            });
 
             // add the activity variable elements to the overlay
             addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
@@ -126,6 +141,9 @@ define(['angular'], function(angular) {
             case 'double':
                 dataString = String(data.double_);
                 break;
+            case 'boolean':
+                dataString = (data.long_ === 1 ? "true" : "false");
+                break;
             case 'file':
                 dataString = String(data.text);
                 clickable = true;
@@ -152,7 +170,7 @@ define(['angular'], function(angular) {
         });
 
         // add our overlay to the bpmn element with our html object
-        overlays.add(elementId, {
+        var element = overlays.add(elementId, {
             position: {
                 bottom: 25,
                 left: -120
@@ -162,6 +180,20 @@ define(['angular'], function(angular) {
                 maxZoom: +Infinity
             },
             html: $html
+        });
+
+        // add element id returned from overlays.add to array
+        overlayIds.push(element);
+    }
+
+    /**
+     * Clears all custom made overlays whose id is stored in overlayIds
+     *
+     * @param overlays  overlays object containing all diagram overlays
+     */
+    function clearOverlays(overlays) {
+        overlayIds.forEach(function(element) {
+            overlays.remove(element);
         });
     }
 
