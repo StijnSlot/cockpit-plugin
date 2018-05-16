@@ -33,8 +33,14 @@ define(['angular'], function(angular) {
                     //console.log("Display overlay:");
                     //console.log(viewer,overlays,elementRegistry);
 
+                    
                     function millisToMinutes(millis) {
-                        return millis / 60000;
+                        // return millis / 60000;
+                        return millis;
+                    }
+
+                    function converToString(toConvert) {
+                        return toConvert.toString();
                     }
 
                     function getStartTime(){
@@ -49,6 +55,63 @@ define(['angular'], function(angular) {
                         return $scope.instanceStartTime;
                     }
 
+                    function addTextToId(elementId, duration, shape) {
+                        var $overlayHtml =
+                                $(duration)
+                                .css({
+                                    width: shape.width,
+                                    height: shape.height
+                                });
+
+                            overlays.add(elementId, {
+                                position: {
+                                top: -30,
+                                left: -30
+                                },
+                                show: {
+                                minZoom: -Infinity,
+                                maxZoom: +Infinity
+                                },
+                                html: $overlayHtml
+                            });
+                    }
+
+                    function calculateCurDuration(instance, elementID) {
+                        for (var j = 0; j < instance.length; j++) {
+                            if (instance[j].activityId == elementID) {
+                                var startTime = Date.parse(instance[j].startTime);
+                                var computerTime = new Date().getTime();
+                                var timeDifference = millisToMinutes(computerTime - startTime);
+                                return timeDifference;
+                                break;
+                            }
+                        }
+                    }
+
+                    function checkTimes(duration) {
+                        if (duration > 1000 && duration < 60001) {
+                            var durationHTML = (converToString(Math.round(duration / 1000))) + ' seconds';
+                        } else if (duration > 60000 && duration < 1440001) {
+                            var durationHTML = (converToString(Math.round(duration / 6000))) + ' minutes';
+                        } else if (duration > 1440000) {
+                            var durationHTML = (converToString(Math.round(duration / 1440000))) + ' hours';
+                        } else {
+                            var durationHTML = converToString(duration) + ' ms';
+                        }
+                        return durationHTML;
+                    }
+
+                    function composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
+                        if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
+                            var minDurationHTML = checkTimes(minDuration);
+                            var avgDurationHTML = checkTimes(avgDuration);
+                            var maxDurationHTML = checkTimes(maxDuration);
+                            var curDurationHTML = checkTimes(curDuration);
+                            var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Min: ' +  minDurationHTML + ' <br>' + 'Max: ' +  maxDurationHTML + '</div>';
+                            addTextToId(elementID, htmlText, shape);
+                        }
+                    }
+
                     $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" +
                                         "procDefId=" + procDefId))
                         .success(function(data) {
@@ -57,70 +120,19 @@ define(['angular'], function(angular) {
                             $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"))
                                 .success(function(data) {
                                     $scope.instanceStartTime = data;
-                                    console.log($scope.instanceStartTime);
-
-                                    console.log("StartTime received");
-
-                                    //console.log($scope.processActivityStatistics);
 
                                     elementRegistry.forEach(function(shape) { 
                                         var element = processDiagram.bpmnElements[shape.businessObject.id];
-                                        //console.log(element.id);
-                
-                                        function addColorToId(elementId, duration) {
-                                            var $overlayHtml =
-                                                    $(duration)
-                                                    .css({
-                                                        width: shape.width,
-                                                        height: shape.height
-                                                    });
-                    
-                                                overlays.add(elementId, {
-                                                    position: {
-                                                    top: -30,
-                                                    left: -30
-                                                    },
-                                                    show: {
-                                                    minZoom: -Infinity,
-                                                    maxZoom: +Infinity
-                                                    },
-                                                    html: $overlayHtml
-                                                });
-                                        }
-                
+
+
                                         for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
                                             if ($scope.processActivityStatistics[i].id == element.id) {
-                                                // console.log('Its the same');
-                                                // console.log($scope.processActivityStatistics[i].id);
-                                                console.log(element.id);
                                                 var getAvgDuration = millisToMinutes($scope.processActivityStatistics[i].avgDuration);
                                                 var getMinDuration = millisToMinutes($scope.processActivityStatistics[i].minDuration);
                                                 var getMaxDuration = millisToMinutes($scope.processActivityStatistics[i].maxDuration);
+                                                var getCurDuration = calculateCurDuration($scope.instanceStartTime, element.id);
 
-                                                var getCurrentTime = 'not found';
-
-                                                for (var j = 0; j < $scope.instanceStartTime.length; j++) {
-                                                    if ($scope.instanceStartTime[j].activityId == element.id) {
-                                                        var getCurrentTime = $scope.instanceStartTime[j].startTime;
-                                                        var getCurrentTimeMS = Date.parse(getCurrentTime);
-                                                        var getComputerTime = new Date();
-                                                        var getComputerTimeMS = getComputerTime.getTime();
-                                                        var getActualTime = getComputerTimeMS - getCurrentTimeMS;
-                                                        var getActualTime = millisToMinutes(getActualTime);
-                                                        break;
-                                                    }
-                                                }
-
-                                                console.log(getCurrentTime);
-
-                                                if (getAvgDuration != null && getMinDuration != null && getMaxDuration != null && getAvgDuration != '0') {
-                                                    var htmlText2 = getAvgDuration.toString();
-                                                    var htmlText3 = getMinDuration.toString();
-                                                    var htmlText4 = getMaxDuration.toString();
-                                                    var htmlText4222 = getActualTime.toString();
-                                                    var htmlText = htmlText1 + 'Avg:' + htmlText2 + ' min <br>' + 'Min:' +  htmlText3 + ' min <br>' + 'Max:' +  htmlText4 + ' min <br>' + 'Cur:' + htmlText4222 + htmlText5;
-                                                    addColorToId(element.id, htmlText);
-                                                }
+                                                composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);                                                
                                                 break;
                                             }
                                         }                        
