@@ -27,7 +27,6 @@
     <result property="long_" column="LONG_" jdbcType="BIGINT" />
     <result property="text" column="TEXT_" jdbcType="VARCHAR" />
     <result property="text2" column="TEXT2_" jdbcType="VARCHAR" />
-  <result property="bytes" column="BYTES_" jdbcType="VARBINARY" />
   </resultMap>
 
   <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceStartTimeDto">
@@ -62,12 +61,10 @@
   </select>
 
   <select id="selectInstanceVariables" resultMap="instanceVariables" parameterType="java.util.Map">
-    SELECT a.ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_, c.BYTES_
+    SELECT b.ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_
     FROM ACT_RU_EXECUTION a
       JOIN ACT_RU_VARIABLE b
         ON a.ID_ = b.EXECUTION_ID_
-      LEFT JOIN ACT_GE_BYTEARRAY c
-        ON b.BYTEARRAY_ID_ = c.ID_
     WHERE a.PROC_DEF_ID_ = #{parameter.procDefId}
       AND a.ACT_ID_ = #{parameter.actId}
   </select>

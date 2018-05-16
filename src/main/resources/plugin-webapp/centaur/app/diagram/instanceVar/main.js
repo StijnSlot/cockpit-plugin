@@ -49,7 +49,7 @@ define(['angular'], function(angular) {
                 .success(function(data) {
 
                     // create html string from data
-                    var html = createHtmlText($window, data);
+                    var html = createHtmlText($window, Uri, data);
 
                     // create element from html string and add to overlay
                     addTextElement(shape, overlays, element.id, html);
@@ -64,7 +64,7 @@ define(['angular'], function(angular) {
      * @param data      variable data from GET request
      * @returns {string}
      */
-    function createHtmlText($window, data) {
+    function createHtmlText($window, Uri, data) {
 
         // object storing current html string
         var htmlText = "<div class='variableText'>";
@@ -79,8 +79,19 @@ define(['angular'], function(angular) {
             if($window.localStorage.getItem(procDefId + "_" + variable.name) === null ||
                 $window.localStorage.getItem(procDefId + "_" + variable.name) === 'false') continue;
 
-            // add variable name and value to html string
-            htmlText += variable.name + ": " + variable.data + "<br>";
+            htmlText += "<b>" + variable.name + ":</b> ";
+
+            // if clickable link to file data
+            if(variable.clickable) htmlText += "<a href=" +
+                Uri.appUri("engine://engine/:engine/variable-instance/" + data[i].id + "/data") +
+                ">";
+
+            htmlText += variable.data;
+
+            // close link tag if clickable
+            if(variable.clickable) htmlText += "</a>";
+
+            htmlText += "<br>";
         }
 
         htmlText += "</div>";
@@ -99,7 +110,10 @@ define(['angular'], function(angular) {
         // string storing the data value of variable
         var dataString = "";
 
-        // different variables can have different types
+        // boolean value whether the object should be clickable
+        var clickable = false;
+
+        // handle different variable data types
         switch(data.type) {
             case 'string':
                 dataString = String(data.text);
@@ -110,22 +124,24 @@ define(['angular'], function(angular) {
             case 'double':
                 dataString = String(data.double_);
                 break;
-            default:
+            case 'file':
+                dataString = String(data.text);
+                clickable = true;
                 break;
         }
 
-        return {name: String(data.name), data: dataString};
+        return {name: String(data.name), data: dataString, clickable: clickable};
     }
 
     function addTextElement(shape, overlays, elementId, htmlText) {
         var $html = $(htmlText).css({
-            width: shape.width,
+            width: shape.width * 2,
             height: shape.height
         });
         overlays.add(elementId, {
             position: {
-                bottom: 20,
-                left: -80
+                bottom: 10,
+                left: -100
             },
             show: {
                 minZoom: -Infinity,

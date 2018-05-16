@@ -16,8 +16,6 @@ public class InstanceVariablesDto {
 
     private String text2;
 
-    private Byte[] bytes;
-
     public String getName() {
         return name;
     }
@@ -64,14 +62,6 @@ public class InstanceVariablesDto {
 
     public void setText2(String text2) {
         this.text2 = text2;
-    }
-
-    public Byte[] getBytes() {
-        return bytes;
-    }
-
-    public void setBytes(Byte[] bytes) {
-        this.bytes = bytes;
     }
 
     public String getId() {
