@@ -1,66 +1,105 @@
 'use strict';
 
-//var fs = require('fs');
-var template = './instanceVar.html';
-
 define(['angular'], function(angular) {
 
-    var overlay = [
-        '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', 'processDiagram',
-        function($scope, $http, Uri, control, processData, pageData, processDiagram) {
-            //console.log($scope.$parent);
+    // contains process definition id of the process shown
+    var procDefId;
 
-            var procDefId = $scope.$parent.processDefinition.id;
+    /**
+     * Overlay object that contains the elements put on the diagram
+     */
+    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processDiagram',
+        function($scope, $http, $window, Uri, control, processDiagram) {
 
+            // process definition id is set (HARDCODED nr. of parents)
+            procDefId = $scope.$parent.processDefinition.id;
+
+            // get overlay and elements from the diagram
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 
-            elementRegistry.forEach(function(shape) {
-                var element = processDiagram.bpmnElements[shape.businessObject.id];
-                console.log(procDefId + " " + element.id);
-                $http.get(Uri.appUri("plugin://centaur/:engine/instance-variables" +
-                    "?procDefId=" + procDefId +
-                    "&actId=" + element.id))
-                    .success(function(data) {
-                        addActivityVariables(shape, element.id, data);
-                    });
-            });
+            // add the activity variable elements to the overlay
+            addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
+        }
+    ];
 
-            function addActivityVariables(shape, elementId, data) {
-                //console.log(element, data);
-                var htmlText = "<div class='variableText'>"
-                for(var i in data) {
-                    var variable = getVariableData(data[i]);
-                    htmlText += variable.name + ": " + variable.data + "<br>";
-                }
-                htmlText += "</div>";
+    /**
+     * Adds an element with variables to each activity
+     *
+     * @param $window           browser window containing localStorage
+     * @param $http             http client for GET request
+     * @param elementRegistry   registry containing bpmn elements
+     * @param processDiagram    diagram containing elements
+     * @param overlays          collection of overlays to add to
+     * @param Uri uniform       resource identifier to create GET request
+     */
+    function addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri) {
 
-                addTextElement(shape, elementId, htmlText);
-            }
+        // loop over all elements in the diagram
+        elementRegistry.forEach(function(shape) {
 
-            function addTextElement(shape, elementId, htmlText) {
-                var $html = $(htmlText).css({
-                    width: shape.width,
-                    height: shape.height
+            // get corresponding element from processDiagram
+            var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+            // get all variables attached to this activity
+            $http.get(Uri.appUri("plugin://centaur/:engine/instance-variables" +
+                "?procDefId=" + procDefId +
+                "&actId=" + element.id))
+                .success(function(data) {
+
+                    // create html string from data
+                    var html = createHtmlText($window, data);
+
+                    // create element from html string and add to overlay
+                    addTextElement(shape, overlays, element.id, html);
                 });
-                overlays.add(elementId, {
-                    position: {
-                        bottom: 20,
-                        left: -80
-                    },
-                    show: {
-                        minZoom: -Infinity,
-                        maxZoom: +Infinity
-                    },
-                    html: $html
-                });
-            }
-        }];
+        });
+    }
 
+    /**
+     * Creates html string from data and options settings
+     *
+     * @param $window   browser window containing localStorage
+     * @param data      variable data from GET request
+     * @returns {string}
+     */
+    function createHtmlText($window, data) {
+
+        // object storing current html string
+        var htmlText = "<div class='variableText'>";
+
+        // loop over all variables to add to html string
+        for(var i in data) {
+
+            // get variable object {name, data} from raw variable data
+            var variable = getVariableData(data[i]);
+
+            // skip over variable which is not in localStorage option settings
+            if($window.localStorage.getItem(procDefId + "_" + variable.name) === null ||
+                $window.localStorage.getItem(procDefId + "_" + variable.name) === 'false') continue;
+
+            // add variable name and value to html string
+            htmlText += variable.name + ": " + variable.data + "<br>";
+        }
+
+        htmlText += "</div>";
+
+        return htmlText;
+    }
+
+    /**
+     * Transforms raw variable data to object with name and data string
+     *
+     * @param data
+     * @returns {{name: string, data: string}}
+     */
     function getVariableData(data) {
-        console.log(data);
+
+        // string storing the data value of variable
         var dataString = "";
+
+        // different variables can have different types
         switch(data.type) {
             case 'string':
                 dataString = String(data.text);
@@ -74,9 +113,29 @@ define(['angular'], function(angular) {
             default:
                 break;
         }
-        return {name: data.name, data: dataString};
+
+        return {name: String(data.name), data: dataString};
     }
 
+    function addTextElement(shape, overlays, elementId, htmlText) {
+        var $html = $(htmlText).css({
+            width: shape.width,
+            height: shape.height
+        });
+        overlays.add(elementId, {
+            position: {
+                bottom: 20,
+                left: -80
+            },
+            show: {
+                minZoom: -Infinity,
+                maxZoom: +Infinity
+            },
+            html: $html
+        });
+    }
+
+    // Config object containing view and overlay
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
             id: 'runtime',
