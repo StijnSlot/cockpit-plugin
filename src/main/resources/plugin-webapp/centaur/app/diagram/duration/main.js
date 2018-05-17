@@ -21,20 +21,35 @@ define(['angular'], function(angular) {
             priority: 20,
             label: 'Runtime',
             overlay: [
-                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', 'processDiagram',
-                function($scope, $http, Uri, control, processData, pageData, processDiagram) {
+                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', '$timeout', 'processDiagram',
+                function($scope, $http, Uri, control, processData, pageData, $q, $timeout, processDiagram) {
                     var viewer = control.getViewer();
                     var overlays = viewer.get('overlays');
                     var elementRegistry = viewer.get('elementRegistry');
                     var overlaysNodes = {};
 
                     var procDefId = $scope.$parent.processDefinition.id;
-                    
+
                     //console.log("Display overlay:");
                     //console.log(viewer,overlays,elementRegistry);
 
                     function millisToMinutes(millis) {
                         return millis / 60000;
+                    }
+
+                    function getStartTime(callback){
+                        // var defer = $q.defer();
+                        var promise = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"))
+                            .success(function(data) {
+                                // $scope.instanceStartTime = data;
+                                console.log("got data");
+                                // callback(data)
+                                // console.log(data);
+                                // defer.resolve(data);
+                                return data.memebers;
+                            });
+                        // console.log(defer.promise);
+                        return promise;
                     }
 
                     $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" +
@@ -43,14 +58,18 @@ define(['angular'], function(angular) {
                             $scope.processActivityStatistics = data;
 
 
+                            var startTime = getStartTime();
+                            console.log("start time complete");
+                            console.log(startTime);
+
 
                             //console.log($scope.processActivityStatistics);
                             //console.log('Here comes the duration data');
 
-                            elementRegistry.forEach(function(shape) { 
+                            elementRegistry.forEach(function(shape) {
                                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                                 //console.log(element.id);
-        
+
                                 function addColorToId(elementId, duration) {
                                     var $overlayHtml =
                                             $(duration)
@@ -58,7 +77,7 @@ define(['angular'], function(angular) {
                                                 width: shape.width,
                                                 height: shape.height
                                             });
-            
+
                                         overlays.add(elementId, {
                                             position: {
                                             top: -30,
@@ -71,7 +90,7 @@ define(['angular'], function(angular) {
                                             html: $overlayHtml
                                         });
                                 }
-        
+
                                 for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
                                     if ($scope.processActivityStatistics[i].id == element.id) {
                                         // console.log('Its the same');
@@ -89,17 +108,9 @@ define(['angular'], function(angular) {
                                         }
                                         break;
                                     }
-                                }                        
+                                }
                             });
-
-                            
                         });
-
-                    
-                    
-
-
-                    
                 }]
         });
     }];
