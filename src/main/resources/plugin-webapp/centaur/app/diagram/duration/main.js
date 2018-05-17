@@ -1,18 +1,5 @@
 'use strict';
 
-// var instanceCount = require('src\main\resources\plugin-webapp\centaur\app\demoText\brain.js');
-
-//Hardcoded stuff
-
-//Define colors
-
-var htmlText1 = '<div class="durationText">';
-var htmlText2 = 'My text2';
-var htmlText3 = 'My text2';
-var htmlText4 = 'My text3';
-var htmlText5 = '</div>';
-var htmlText = htmlText1 + htmlText2 + '<br>' + htmlText3 + '<br>' + htmlText4 + htmlText5;
-
 define(['angular'], function(angular) {
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
@@ -30,15 +17,6 @@ define(['angular'], function(angular) {
 
                     var procDefId = $scope.$parent.processDefinition.id;
                     
-                    //console.log("Display overlay:");
-                    //console.log(viewer,overlays,elementRegistry);
-
-                    
-                    function millisToMinutes(millis) {
-                        // return millis / 60000;
-                        return millis;
-                    }
-
                     function converToString(toConvert) {
                         return toConvert.toString();
                     }
@@ -65,8 +43,8 @@ define(['angular'], function(angular) {
 
                             overlays.add(elementId, {
                                 position: {
-                                top: -30,
-                                left: -30
+                                top: -40,
+                                left: -40
                                 },
                                 show: {
                                 minZoom: -Infinity,
@@ -81,7 +59,7 @@ define(['angular'], function(angular) {
                             if (instance[j].activityId == elementID) {
                                 var startTime = Date.parse(instance[j].startTime);
                                 var computerTime = new Date().getTime();
-                                var timeDifference = millisToMinutes(computerTime - startTime);
+                                var timeDifference = computerTime - startTime;
                                 return timeDifference;
                                 break;
                             }
@@ -90,11 +68,15 @@ define(['angular'], function(angular) {
 
                     function checkTimes(duration) {
                         if (duration > 1000 && duration < 60001) {
-                            var durationHTML = (converToString(Math.round(duration / 1000))) + ' seconds';
+                            var durationHTML = (converToString(Math.round(duration / 1000 * 10) / 10)) + ' seconds';
                         } else if (duration > 60000 && duration < 1440001) {
-                            var durationHTML = (converToString(Math.round(duration / 6000))) + ' minutes';
-                        } else if (duration > 1440000) {
-                            var durationHTML = (converToString(Math.round(duration / 1440000))) + ' hours';
+                            var durationHTML = (converToString(Math.round(duration / 6000 * 10) / 10)) + ' minutes';
+                        } else if (duration > 1440000 && duration < 34560001) {
+                            var durationHTML = (converToString(Math.round(duration / 1440000 * 10) / 10)) + ' hours';
+                        } else if (duration > 34560000 && duration < 241920001) {
+                            var durationHTML = (converToString(Math.round(duration / 34560000 * 10) / 10)) + ' days';
+                        } else if (duration > 241920000) {
+                            var durationHTML = (converToString(Math.round(duration / 241920000 * 10) / 10)) + ' weeks';
                         } else {
                             var durationHTML = converToString(duration) + ' ms';
                         }
@@ -107,7 +89,7 @@ define(['angular'], function(angular) {
                             var avgDurationHTML = checkTimes(avgDuration);
                             var maxDurationHTML = checkTimes(maxDuration);
                             var curDurationHTML = checkTimes(curDuration);
-                            var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Min: ' +  minDurationHTML + ' <br>' + 'Max: ' +  maxDurationHTML + '</div>';
+                            var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' +  maxDurationHTML + '</div>';
                             addTextToId(elementID, htmlText, shape);
                         }
                     }
@@ -127,9 +109,9 @@ define(['angular'], function(angular) {
 
                                         for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
                                             if ($scope.processActivityStatistics[i].id == element.id) {
-                                                var getAvgDuration = millisToMinutes($scope.processActivityStatistics[i].avgDuration);
-                                                var getMinDuration = millisToMinutes($scope.processActivityStatistics[i].minDuration);
-                                                var getMaxDuration = millisToMinutes($scope.processActivityStatistics[i].maxDuration);
+                                                var getAvgDuration = $scope.processActivityStatistics[i].avgDuration;
+                                                var getMinDuration = $scope.processActivityStatistics[i].minDuration;
+                                                var getMaxDuration = $scope.processActivityStatistics[i].maxDuration;
                                                 var getCurDuration = calculateCurDuration($scope.instanceStartTime, element.id);
 
                                                 composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);                                                
