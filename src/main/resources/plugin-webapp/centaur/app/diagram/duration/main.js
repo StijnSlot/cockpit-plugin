@@ -1,18 +1,5 @@
 'use strict';
 
-// var instanceCount = require('src\main\resources\plugin-webapp\centaur\app\demoText\brain.js');
-
-//Hardcoded stuff
-
-//Define colors
-
-var htmlText1 = '<div class="durationText">';
-var htmlText2 = 'My text2';
-var htmlText3 = 'My text2';
-var htmlText4 = 'My text3';
-var htmlText5 = '</div>';
-var htmlText = htmlText1 + htmlText2 + '<br>' + htmlText3 + '<br>' + htmlText4 + htmlText5;
-
 define(['angular'], function(angular) {
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
@@ -21,8 +8,8 @@ define(['angular'], function(angular) {
             priority: 20,
             label: 'Runtime',
             overlay: [
-                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', '$timeout', 'processDiagram',
-                function($scope, $http, Uri, control, processData, pageData, $q, $timeout, processDiagram) {
+                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+                function($scope, $http, Uri, control, processData, pageData, $q, processDiagram) {
                     var viewer = control.getViewer();
                     var overlays = viewer.get('overlays');
                     var elementRegistry = viewer.get('elementRegistry');
@@ -30,87 +17,104 @@ define(['angular'], function(angular) {
 
                     var procDefId = $scope.$parent.processDefinition.id;
 
-                    //console.log("Display overlay:");
-                    //console.log(viewer,overlays,elementRegistry);
-
-                    function millisToMinutes(millis) {
-                        return millis / 60000;
+                    function converToString(toConvert) {
+                        return toConvert.toString();
                     }
 
-                    function getStartTime(callback){
-                        // var defer = $q.defer();
-                        var promise = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"))
-                            .success(function(data) {
-                                // $scope.instanceStartTime = data;
-                                console.log("got data");
-                                // callback(data)
-                                // console.log(data);
-                                // defer.resolve(data);
-                                return data.memebers;
-                            });
-                        // console.log(defer.promise);
-                        return promise;
+                    function getStartTime(){
+                        console.log("getStartTime");
+                        $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"))
+                                .success(function(data) {
+                                    $scope.instanceStartTime = data;
+                                    console.log($scope.instanceStartTime);
+                                });
+                        console.log("StartTime received");
+                        console.log($scope.instanceStartTime);
+                        return $scope.instanceStartTime;
                     }
 
-                    $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" +
-                                        "procDefId=" + procDefId))
-                        .success(function(data) {
-                            $scope.processActivityStatistics = data;
+                    function addTextToId(elementId, duration, shape) {
+                        var $overlayHtml =
+                                $(duration)
+                                .css({
+                                    width: shape.width,
+                                    height: shape.height
+                                });
 
-
-                            var startTime = getStartTime();
-                            console.log("start time complete");
-                            console.log(startTime);
-
-
-                            //console.log($scope.processActivityStatistics);
-                            //console.log('Here comes the duration data');
-
-                            elementRegistry.forEach(function(shape) {
-                                var element = processDiagram.bpmnElements[shape.businessObject.id];
-                                //console.log(element.id);
-
-                                function addColorToId(elementId, duration) {
-                                    var $overlayHtml =
-                                            $(duration)
-                                            .css({
-                                                width: shape.width,
-                                                height: shape.height
-                                            });
-
-                                        overlays.add(elementId, {
-                                            position: {
-                                            top: -30,
-                                            left: -30
-                                            },
-                                            show: {
-                                              minZoom: -Infinity,
-                                              maxZoom: +Infinity
-                                            },
-                                            html: $overlayHtml
-                                        });
-                                }
-
-                                for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
-                                    if ($scope.processActivityStatistics[i].id == element.id) {
-                                        // console.log('Its the same');
-                                        // console.log($scope.processActivityStatistics[i].id);
-                                        // console.log(element.id);
-                                        var getAvgDuration = millisToMinutes($scope.processActivityStatistics[i].avgDuration);
-                                        var getMinDuration = millisToMinutes($scope.processActivityStatistics[i].minDuration);
-                                        var getMaxDuration = millisToMinutes($scope.processActivityStatistics[i].maxDuration);
-                                        if (getAvgDuration != null && getMinDuration != null && getMaxDuration != null && getAvgDuration != '0') {
-                                            var htmlText2 = getAvgDuration.toString();
-                                            var htmlText3 = getMinDuration.toString();
-                                            var htmlText4 = getMaxDuration.toString();
-                                            var htmlText = htmlText1 + 'Avg:' + htmlText2 + ' min <br>' + 'Min:' +  htmlText3 + ' min <br>' + 'Max:' +  htmlText4 + ' min' + htmlText5;
-                                            addColorToId(element.id, htmlText);
-                                        }
-                                        break;
-                                    }
-                                }
+                            overlays.add(elementId, {
+                                position: {
+                                top: -40,
+                                left: -40
+                                },
+                                show: {
+                                minZoom: -Infinity,
+                                maxZoom: +Infinity
+                                },
+                                html: $overlayHtml
                             });
-                        });
+                    }
+
+                    function calculateCurDuration(instance, elementID) {
+                        for (var j = 0; j < instance.length; j++) {
+                            if (instance[j].activityId == elementID) {
+                                var startTime = Date.parse(instance[j].startTime);
+                                var computerTime = new Date().getTime();
+                                var timeDifference = computerTime - startTime;
+                                return timeDifference;
+                                break;
+                            }
+                        }
+                    }
+
+                    function checkTimes(duration) {
+                        if (duration > 1000 && duration < 60001) {
+                            var durationHTML = (converToString(Math.round(duration / 1000 * 10) / 10)) + ' seconds';
+                        } else if (duration > 60000 && duration < 1440001) {
+                            var durationHTML = (converToString(Math.round(duration / 6000 * 10) / 10)) + ' minutes';
+                        } else if (duration > 1440000 && duration < 34560001) {
+                            var durationHTML = (converToString(Math.round(duration / 1440000 * 10) / 10)) + ' hours';
+                        } else if (duration > 34560000 && duration < 241920001) {
+                            var durationHTML = (converToString(Math.round(duration / 34560000 * 10) / 10)) + ' days';
+                        } else if (duration > 241920000) {
+                            var durationHTML = (converToString(Math.round(duration / 241920000 * 10) / 10)) + ' weeks';
+                        } else {
+                            var durationHTML = converToString(duration) + ' ms';
+                        }
+                        return durationHTML;
+                    }
+
+                    function composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
+                        if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
+                            var minDurationHTML = checkTimes(minDuration);
+                            var avgDurationHTML = checkTimes(avgDuration);
+                            var maxDurationHTML = checkTimes(maxDuration);
+                            var curDurationHTML = checkTimes(curDuration);
+                            var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' +  maxDurationHTML + '</div>';
+                            addTextToId(elementID, htmlText, shape);
+                        }
+                    }
+
+                    $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {catch: false});
+                    $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {catch: false});
+
+                    $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function(data){
+                      $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
+                      $scope.instanceStartTime = data[1];
+                      elementRegistry.forEach(function(shape) {
+                          var element = processDiagram.bpmnElements[shape.businessObject.id];
+                          for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
+                              if ($scope.processActivityStatistics.data[i].id == element.id) {
+                                  var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
+                                  var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
+                                  var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
+                                  var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
+
+                                  composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
+                                  break;
+                              }
+                          }
+                      });
+                    });
                 }]
         });
     }];
