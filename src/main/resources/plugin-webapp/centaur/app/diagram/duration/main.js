@@ -8,15 +8,15 @@ define(['angular'], function(angular) {
             priority: 20,
             label: 'Runtime',
             overlay: [
-                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', 'processDiagram',
-                function($scope, $http, Uri, control, processData, pageData, processDiagram) {
+                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+                function($scope, $http, Uri, control, processData, pageData, $q, processDiagram) {
                     var viewer = control.getViewer();
                     var overlays = viewer.get('overlays');
                     var elementRegistry = viewer.get('elementRegistry');
                     var overlaysNodes = {};
 
                     var procDefId = $scope.$parent.processDefinition.id;
-                    
+
                     function converToString(toConvert) {
                         return toConvert.toString();
                     }
@@ -94,33 +94,27 @@ define(['angular'], function(angular) {
                         }
                     }
 
-                    $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" +
-                                        "procDefId=" + procDefId))
-                        .success(function(data) {
-                            $scope.processActivityStatistics = data;
+                    $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {catch: false});
+                    $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {catch: false});
 
-                            $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"))
-                                .success(function(data) {
-                                    $scope.instanceStartTime = data;
+                    $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function(data){
+                      $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
+                      $scope.instanceStartTime = data[1];
+                      elementRegistry.forEach(function(shape) {
+                          var element = processDiagram.bpmnElements[shape.businessObject.id];
+                          for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
+                              if ($scope.processActivityStatistics.data[i].id == element.id) {
+                                  var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
+                                  var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
+                                  var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
+                                  var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
 
-                                    elementRegistry.forEach(function(shape) { 
-                                        var element = processDiagram.bpmnElements[shape.businessObject.id];
-
-
-                                        for (var i = 0; i < $scope.processActivityStatistics.length; i++) {
-                                            if ($scope.processActivityStatistics[i].id == element.id) {
-                                                var getAvgDuration = $scope.processActivityStatistics[i].avgDuration;
-                                                var getMinDuration = $scope.processActivityStatistics[i].minDuration;
-                                                var getMaxDuration = $scope.processActivityStatistics[i].maxDuration;
-                                                var getCurDuration = calculateCurDuration($scope.instanceStartTime, element.id);
-
-                                                composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);                                                
-                                                break;
-                                            }
-                                        }                        
-                                    });
-                                });     
-                        });  
+                                  composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
+                                  break;
+                              }
+                          }
+                      });
+                    });
                 }]
         });
     }];
