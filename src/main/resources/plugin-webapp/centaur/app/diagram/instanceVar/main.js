@@ -128,28 +128,18 @@ define(['angular'], function(angular) {
         var dataString = "";
 
         // boolean value whether the object should be clickable
-        var clickable = false;
+        var clickable = (data.type === "file");
 
-        // handle different variable data types
-        switch(data.type) {
-            case 'string':
-                dataString = String(data.text);
-                break;
-            case 'long':
-                dataString = String(data.long_);
-                break;
-            case 'double':
-                dataString = String(data.double_);
-                break;
-            case 'boolean':
-                dataString = (data.long_ === 1 ? "true" : "false");
-                break;
-            case 'file':
-                dataString = String(data.text);
-                clickable = true;
-                break;
-        }
+        // handle different variable data types with null checking
+        if(data.double_ != null) dataString = String(data.double_);
+        else if(data.long_ != null) dataString = String(data.long_);
+        else if(data.text != null) dataString = String(data.text);
+        else dataString = String(data.text2);
 
+        // Transform boolean 1 or 0 to true or false
+        if(data.type === "boolean") dataString = (data.long_ === 1 ? "true" : "false");
+
+        // return object with name, the data and whether or not it is a file (clickable)
         return {name: String(data.name), data: dataString, clickable: clickable};
     }
 
