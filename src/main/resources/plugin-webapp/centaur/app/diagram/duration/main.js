@@ -21,18 +21,6 @@ define(['angular'], function(angular) {
                         return toConvert.toString();
                     }
 
-                    function getStartTime(){
-                        console.log("getStartTime");
-                        $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"))
-                                .success(function(data) {
-                                    $scope.instanceStartTime = data;
-                                    console.log($scope.instanceStartTime);
-                                });
-                        console.log("StartTime received");
-                        console.log($scope.instanceStartTime);
-                        return $scope.instanceStartTime;
-                    }
-
                     function addTextToId(elementId, duration, shape) {
                         var $overlayHtml =
                                 $(duration)
@@ -64,6 +52,7 @@ define(['angular'], function(angular) {
                                 break;
                             }
                         }
+                        return null;
                     }
 
                     function checkTimes(duration) {
@@ -88,11 +77,12 @@ define(['angular'], function(angular) {
                             var minDurationHTML = checkTimes(minDuration);
                             var avgDurationHTML = checkTimes(avgDuration);
                             var maxDurationHTML = checkTimes(maxDuration);
-                            if (curDurationHTML != undefined) {
-                                var curDurationHTML = checkTimes(curDuration);                                
+                            if (curDuration != null) {
+                                var curDurationHTML = checkTimes(curDuration);
                             } else {
                                 var curDurationHTML = '-';
                             }
+                            
                             var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' +  maxDurationHTML + '</div>';
                             addTextToId(elementID, htmlText, shape);
                         }
