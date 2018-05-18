@@ -88,7 +88,11 @@ define(['angular'], function(angular) {
                             var minDurationHTML = checkTimes(minDuration);
                             var avgDurationHTML = checkTimes(avgDuration);
                             var maxDurationHTML = checkTimes(maxDuration);
-                            var curDurationHTML = checkTimes(curDuration);
+                            if (curDurationHTML != undefined) {
+                                var curDurationHTML = checkTimes(curDuration);                                
+                            } else {
+                                var curDurationHTML = '-';
+                            }
                             var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' +  maxDurationHTML + '</div>';
                             addTextToId(elementID, htmlText, shape);
                         }
