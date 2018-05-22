@@ -4,20 +4,16 @@
 //     //script is loaded and executed put your dependent JS here
 // });
 
-var sparklineResource = require(['https://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js'], function(){
-
-    $(".sparkline").sparkline([10,12,12,9,7], {
-        type: 'bullet'});
+var bulletgraphResource = require(['https://code.highcharts.com/highcharts.js'], function(){
     
 });
-
 // require('https://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js');
 
 //Hardcoded stuff
 
 //Define colors
 
-var htmlText12 = '<div class="sparkline">';
+var htmlText12 = '<div id="container">';
 var htmlText22 = 'My text2';
 var htmlText32 = 'My text2';
 var htmlText42 = 'My text3';
@@ -74,8 +70,8 @@ define(['angular'], function(angular) {
                                     var $overlayHtml =
                                             $(duration)
                                             .css({
-                                                width: shape.width,
-                                                height: shape.height
+                                                // width: shape.width,
+                                                // height: shape.height
                                             });
             
                                         overlays.add(elementId, {
@@ -105,6 +101,34 @@ define(['angular'], function(angular) {
                                             // var htmlText4 = getMaxDuration.toString();
                                             // var htmlText = htmlText1 + 'Avg:' + htmlText2 + ' min <br>' + 'Min:' +  htmlText3 + ' min <br>' + 'Max:' +  htmlText4 + ' min' + htmlText5;
                                             addColorToId(element.id, htmlText2);
+
+                                            Highcharts.chart('container', {
+
+                                                title: {
+                                                  text: 'Highcharts pie chart'
+                                                },
+                                              
+                                                xAxis: {
+                                                  categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                                                },
+                                              
+                                                series: [{
+                                                  type: 'pie',
+                                                  allowPointSelect: true,
+                                                  keys: ['name', 'y', 'selected', 'sliced'],
+                                                  data: [
+                                                    ['Apples', 29.9, false],
+                                                    ['Pears', 71.5, false],
+                                                    ['Oranges', 106.4, false],
+                                                    ['Plums', 129.2, false],
+                                                    ['Bananas', 144.0, false],
+                                                    ['Peaches', 176.0, false],
+                                                    ['Prunes', 135.6, true, true],
+                                                    ['Avocados', 148.5, false]
+                                                  ],
+                                                  showInLegend: true
+                                                }]
+                                              });
                                         }
                                         
                                         break;

@@ -8,5 +8,5 @@ define(function (require) {
     var color = require('./color/main');
     var duration = require('./duration/main');
     var bulletgraph = require('./bulletgraph/main');
-    return angular.module('cockpit.plugin.centaur.diagram', [color.name, duration.name]);
+    return angular.module('cockpit.plugin.centaur.diagram', [color.name, duration.name, bulletgraph.name]);
 });
