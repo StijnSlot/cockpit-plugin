@@ -14,7 +14,6 @@ var sparklineResource = require(['https://omnipotent.net/jquery.sparkline/2.1.2/
 // require('https://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js');
 
 //Hardcoded stuff
-var procDefId = "invoice:2:2a152b09-5366-11e8-8246-54ee7557b990";
 
 //Define colors
 
@@ -46,6 +45,9 @@ define(['angular'], function(angular) {
                     var overlays = viewer.get('overlays');
                     var elementRegistry = viewer.get('elementRegistry');
                     var overlaysNodes = {};
+
+                    var procDefId = $scope.$parent.processDefinition.id;
+
 
                     // console.log('colors loaded twice, yayyyyyy');
                     
