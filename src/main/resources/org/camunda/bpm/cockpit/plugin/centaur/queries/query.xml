@@ -44,6 +44,11 @@
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
   </resultMap>
 
+  <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
+    SELECT SEQUENCE_COUNTER_
+    FROM  ACT_RU_EXECUTION
+  </select>
+
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">
     SELECT d.ID_, d.NAME_, COUNT(e.PROC_INST_ID_) INSTANCES_,
         (SELECT MAX(f.DURATION_) FROM ACT_HI_ACTINST f WHERE f.PROC_DEF_ID_ = d.ID_)
