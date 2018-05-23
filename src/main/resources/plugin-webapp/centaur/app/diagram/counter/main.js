@@ -1,11 +1,10 @@
 /**
- * Displays the current, average and maximal duration of a process onto the
- * process diagram of Camunda.
+ * TODO: Summery
  *
  * TODO: Description.
  *
- * @author Lukas Ant, Tim Hübener.
- * @since  22.05.2018 in Testing
+ * @author Tim Hübener
+ * @since  23.05.2018 in progress
  */
 
 'use strict';
@@ -66,56 +65,6 @@ define(['angular'], function(angular) {
           }
 
           /**
-           * Calculates the current duration of a instance of a process.
-           *
-           * The database only keeps track of the starting time of each
-           * process. So we calculate the current duration of each process.
-           *
-           * @param   Number  instance    Instance of a process
-           * @param   Number  elementId   ID of diagram element that represents instance
-           */
-          function calculateCurDuration(instance, elementID) {
-            for (var j = 0; j < instance.length; j++) {
-              if (instance[j].activityId == elementID) {
-                var startTime = Date.parse(instance[j].startTime);
-                var computerTime = new Date().getTime();
-                var timeDifference = computerTime - startTime;
-                return timeDifference;
-                break;
-              }
-            }
-            return null;
-          }
-
-          /**
-           * Decides which time interval to use.
-           *
-           * The database keeps track of the duration in milli seconds.
-           * This is difficult to read in the diagram, so we convert the
-           * milli senconds into following intervals: seconds, minutes,
-           * hours, days, weeks to make it easier to read.
-           *
-           * @param   Number  duration      duration of process
-           * @return  String  durationHTML  duration as String
-           */
-          function checkTimes(duration) {
-            if (duration > 1000 && duration < 60001) {
-              var durationHTML = (converToString(Math.round(duration / 1000 * 10) / 10)) + ' seconds';
-            } else if (duration > 60000 && duration < 1440001) {
-              var durationHTML = (converToString(Math.round(duration / 6000 * 10) / 10)) + ' minutes';
-            } else if (duration > 1440000 && duration < 34560001) {
-              var durationHTML = (converToString(Math.round(duration / 1440000 * 10) / 10)) + ' hours';
-            } else if (duration > 34560000 && duration < 241920001) {
-              var durationHTML = (converToString(Math.round(duration / 34560000 * 10) / 10)) + ' days';
-            } else if (duration > 241920000) {
-              var durationHTML = (converToString(Math.round(duration / 241920000 * 10) / 10)) + ' weeks';
-            } else {
-              var durationHTML = converToString(duration) + ' ms';
-            }
-            return durationHTML;
-          }
-
-          /**
            * Combines all information of given process into single
            * String variable which is added to its diagram element.
            *
@@ -155,12 +104,9 @@ define(['angular'], function(angular) {
            * Angular http.get promises that wait for a JSON object of
            * the process activity and the instance start time.
            */
-          $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {
-            catch: false
-          });
-          $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
-            catch: false
-          });
+          //TODO: Get data from database
+          $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {catch: false});
+          $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {catch: false});
 
           /**
            * Waits until data is received from http.get request and
