@@ -104,6 +104,7 @@ define(['angular'], function(angular) {
            * the process activity and the instance start time.
            */
           //TODO: Get data from database
+          $scope.executionSequenceCounter_temp = $http.get(Uri.appUri("plugin://centaur/:engine/execcution-sequence-counter"), {catch: false});
           // $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {catch: false});
           // $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {catch: false});
 
@@ -116,10 +117,9 @@ define(['angular'], function(angular) {
            *
            * @param   {Object}  data   minimal duration of process
            */
-          $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function(data) {
-            $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-            $scope.instanceStartTime = data[1];
-
+          $q.all($scope.executionSequenceCounter_temp]).then(function(data) {
+            $scope.executionSequenceCounter = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
+            console.log($scope.executionSequenceCounter);
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
@@ -127,20 +127,20 @@ define(['angular'], function(angular) {
              * @param   {Object}  shape   shape of element
              * TODO: refactor out into seperate function
              */
-            elementRegistry.forEach(function(shape) {
-              var element = processDiagram.bpmnElements[shape.businessObject.id];
-              for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                if ($scope.processActivityStatistics.data[i].id == element.id) {
-                  var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                  var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                  var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                  var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
-
-                  composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
-                  break;
-                }
-              }
-            });
+            // elementRegistry.forEach(function(shape) {
+            //   var element = processDiagram.bpmnElements[shape.businessObject.id];
+            //   for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
+            //     if ($scope.processActivityStatistics.data[i].id == element.id) {
+            //       var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
+            //       var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
+            //       var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
+            //       var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
+            //
+            //       composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
+            //       break;
+            //     }
+            //   }
+            // });
           });
         }
       ]
