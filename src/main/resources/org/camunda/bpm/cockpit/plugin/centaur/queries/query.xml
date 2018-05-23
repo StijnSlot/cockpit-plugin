@@ -35,6 +35,11 @@
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <resultMap id="ExecutionSequenceCounter" type="org.camunda.bpm.cockpit.plugin.centaur.db.ExecutionSequenceCounterDto">
+    <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+    <result property="sequenceCounter" column="SEQUENCE_COUNTER_" jdbcType="INTEGER" />
+  </resultMap>
+
   <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessVariablesDto">
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
   </resultMap>
