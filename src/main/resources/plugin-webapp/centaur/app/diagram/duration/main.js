@@ -2,7 +2,7 @@
  * Displays the current, average and maximal duration of a process onto the
  * process diagram of Camunda.
  *
- * TODO: Description. 
+ * TODO: Description.
  *
  * @author Lukas Ant, Tim Hübener.
  * @since  22.05.2018 in Testing
@@ -150,8 +150,6 @@ define(['angular'], function(angular) {
                             addTextToId(elementID, htmlText, shape);
                         }
                     }
-
-                    function element
 
                     /*
                      * Angular http.get promises that wait for a JSON object of
