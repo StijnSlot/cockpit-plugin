@@ -31,7 +31,6 @@ define(['angular'], function(angular) {
           });
 
       console.log("Loaded");
-
   }];
 
   var Configuration = ['ViewsProvider', function(ViewsProvider) {

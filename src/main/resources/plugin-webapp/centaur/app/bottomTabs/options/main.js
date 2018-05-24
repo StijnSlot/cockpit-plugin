@@ -24,6 +24,7 @@ define(['require', 'angular', './util'], function(require, angular) {
         $scope.changeVar = function(id, checked) {
             util.changeVar($window, $rootScope, procDefId, id, checked);
         };
+
         $scope.changeKPI = function(id, checked) {
             util.changeKPI($window, $rootScope, procDefId, id, checked);
         };
