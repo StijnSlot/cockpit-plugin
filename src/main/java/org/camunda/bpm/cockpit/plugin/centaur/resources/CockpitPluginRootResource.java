@@ -19,7 +19,7 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   public String getIt() {
     return "Got it!";
   }
-  
+
   @Path("{engineName}/process-instance")
   public ProcessStatisticsResource getProcessInstanceResource(
           @PathParam("engineName") String engineName) {
@@ -60,5 +60,11 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   public SSETestingResource getSSETestingResource(
           @PathParam("engineName") String engineName) {
     return subResource(new SSETestingResource(engineName), engineName);
+  }
+
+  @Path("{engineName}/execution-sequence-counter")
+  public ExecutionSequenceCounterResource getExecutionSequenceCounter(
+          @PathParam("engineName") String engineName) {
+    return subResource(new ExecutionSequenceCounterResource(engineName), engineName);
   }
 }

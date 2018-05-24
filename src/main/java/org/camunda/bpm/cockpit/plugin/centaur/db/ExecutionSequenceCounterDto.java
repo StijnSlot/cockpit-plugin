@@ -14,13 +14,11 @@ public class ExecutionSequenceCounterDto {
         this.instanceId = instanceId;
     }
 
-    public Timestamp getSequenceCounter() {
+    public int getSequenceCounter() {
         return sequenceCounter;
     }
 
-    public void setsequenceCounter(int sequenceCounter) {
+    public void setSequenceCounter(int sequenceCounter) {
         this.sequenceCounter = sequenceCounter;
     }
-
-
 }
