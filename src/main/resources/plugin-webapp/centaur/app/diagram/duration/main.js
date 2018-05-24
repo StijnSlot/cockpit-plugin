@@ -10,6 +10,20 @@
 
 'use strict';
 
+// var instanceCount = require('src\main\resources\plugin-webapp\centaur\app\demoText\brain.js');
+
+//Hardcoded stuff
+var procDefId = "invoice:2:e163823d-4ecc-11e8-856a-104a7d534b93";
+
+//Define colors
+
+var htmlText1 = '<div class="durationText">';
+var htmlText2 = 'My text2';
+var htmlText3 = 'My text2';
+var htmlText4 = 'My text3';
+var htmlText5 = '</div>';
+var htmlText = htmlText1 + htmlText2 + '<br>' + htmlText3 + '<br>' + htmlText4 + htmlText5;
+
 define(['angular'], function(angular) {
 
   var Configuration = ['ViewsProvider', function(ViewsProvider) {
