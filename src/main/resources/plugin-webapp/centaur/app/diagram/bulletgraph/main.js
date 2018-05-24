@@ -306,7 +306,7 @@ define(['angular'], function (angular) {
 
                             function bulletTranslate(x) {
                                 return function (d) {
-                                    return "translate(" + x(d) + ",0)";
+                                    return "translate(" + -x(d) + ",0)";
                                 };
                             }
 
@@ -361,8 +361,8 @@ define(['angular'], function (angular) {
 
                                             var data = [
                                                 {
-                                                    "title": "Avg Sales",
-                                                    "subtitle": "$/Store",
+                                                    "title": "",
+                                                    "subtitle": "",
                                                     "ranges": [300],
                                                     "measures": [220, 220],
                                                     "markers": [250]
