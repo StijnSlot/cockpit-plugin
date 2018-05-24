@@ -4,6 +4,8 @@ public class ExecutionSequenceCounterDto {
 
     private String instanceId;
 
+    private String activityId;
+
     private int sequenceCounter;
 
     public String getInstanceId() {
@@ -20,5 +22,13 @@ public class ExecutionSequenceCounterDto {
 
     public void setSequenceCounter(int sequenceCounter) {
         this.sequenceCounter = sequenceCounter;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 }

@@ -37,6 +37,7 @@
 
   <resultMap id="ExecutionSequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.ExecutionSequenceCounterDto">
     <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="sequenceCounter" column="SEQUENCE_COUNTER_" jdbcType="INTEGER" />
   </resultMap>
 
@@ -45,8 +46,8 @@
   </resultMap>
 
   <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
-    SELECT ID_, SEQUENCE_COUNTER_
-    FROM  ACT_RU_EXECUTION
+    SELECT ID_, ACT_ID_, SEQUENCE_COUNTER_
+    FROM ACT_RU_EXECUTION
   </select>
 
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">

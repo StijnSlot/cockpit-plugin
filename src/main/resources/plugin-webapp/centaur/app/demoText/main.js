@@ -30,7 +30,6 @@ define(['angular'], function(angular) {
               $scope.instanceStartTime = data;
           });
 
-      console.log("Loaded");
 
   }];
 
