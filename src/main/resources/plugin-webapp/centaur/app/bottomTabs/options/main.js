@@ -18,7 +18,7 @@ define(['angular'], function(angular) {
                     var variable = $scope.processVariables[i];
                     if($window.localStorage.getItem(procDefId + "_" + variable.name) === null) {
                         $window.localStorage.setItem(procDefId + "_" + variable.name, 'false');
-                        variable.checked = 'false';
+                        variable.checked = false;
                     } else {
                         variable.checked = $window.localStorage.getItem(procDefId + "_" + variable.name) === 'true';
                     }
@@ -28,7 +28,7 @@ define(['angular'], function(angular) {
                     var variable = $scope.KPI[i];
                     if($window.localStorage.getItem(variable.id) === null) {
                         $window.localStorage.setItem(variable.id, 'false');
-                        variable.checked = 'false';
+                        variable.checked = false;
                     } else {
                         variable.checked = $window.localStorage.getItem(variable.id) === 'true';
                     }
