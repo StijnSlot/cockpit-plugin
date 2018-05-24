@@ -93,8 +93,8 @@ define(['angular'], function(angular) {
             var variable = getVariableData(data[i]);
 
             // skip over variable which is not in localStorage option settings
-            if($window.localStorage.getItem(procDefId + "_" + variable.name) === null ||
-                $window.localStorage.getItem(procDefId + "_" + variable.name) === 'false') continue;
+            if($window.localStorage.getItem(procDefId + "_var_" + variable.name) === null ||
+                $window.localStorage.getItem(procDefId + "_var_" + variable.name) === 'false') continue;
 
             htmlText += "<b>" + variable.name + ":</b> ";
 

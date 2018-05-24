@@ -1,26 +1,47 @@
 define({
-    setChecked: function ($window, procDefId, data) {
+    /**
+     * Sets checked attribute in variables in data according to localStorage
+     * If nothing is found localStorage, puts false there and sets checked to false
+     *
+     * @param localStorage  contains user options
+     * @param prefix        used for naming the item in localStorage
+     * @param data          contains variables with checked attribute
+     */
+    setChecked: function (localStorage, prefix, data) {
         data.forEach(function (variable) {
-            if ($window.localStorage.getItem(procDefId + "_" + variable.name) === null) {
-                $window.localStorage.setItem(procDefId + "_" + variable.name, 'false');
+            var get = localStorage.getItem(prefix + variable.name);
+            if (get === null) {
+                localStorage.setItem(prefix + variable.name, 'false');
                 variable.checked = false;
             } else {
-                variable.checked = $window.localStorage.getItem(procDefId + "_" + variable.name) === 'true';
+                variable.checked = get === 'true';
             }
         });
-        console.log('ran');
     },
 
-    changeVar:  function ($window, $rootScope, procDefId, id, checked) {
-        $window.localStorage.setItem(procDefId + "_" + id, checked);
+    /**
+     * Changes variable options in localStorage and broadcasts this change
+     *
+     * @param localStorage  contains user options
+     * @param $rootScope    used for broadcasting change
+     * @param id            used for retrieving correct item
+     * @param checked       new item value
+     */
+    changeVar:  function (localStorage, $rootScope, id, checked) {
+        localStorage.setItem(id, checked);
         $rootScope.$broadcast("cockpit.plugin.centaur:options:variable-change");
     },
 
-    changeKPI: function ($window, procDefId, id, checked) {
-        $window.localStorage.setItem(procDefId + "_" + id, checked);
-    },
-
-    test: function () {
-        return 1;
+    /**
+     * Changes KPI options in localStorage and broadcasts this change
+     *
+     * @param localStorage  contains user options
+     * @param $rootScope    used for broadcasting change
+     * @param id            used for retrieving correct item
+     * @param checked       new item value
+     */
+    changeKPI: function (localStorage, $rootScope, id, checked) {
+        localStorage.setItem(id, checked);
+        $rootScope.$broadcast("cockpit.plugin.centaur:options:KPI-change");
     }
 });
