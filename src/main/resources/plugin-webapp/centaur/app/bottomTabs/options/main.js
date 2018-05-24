@@ -1,6 +1,8 @@
-define(['angular'], function(angular) {
+define(['require', 'angular', './util'], function(require, angular) {
 
-    var DashboardController = ["$scope", "$window", "$http", "Uri", function($scope, $window, $http, Uri) {
+    var util = require('./util');
+
+    var DashboardController = ["$scope", "$window", "$http", "$rootScope", "Uri", function($scope, $window, $http, $rootScope, Uri) {
         var procDefId = $scope.$parent.processDefinition.id;
 
         $scope.KPI = [
@@ -14,35 +16,17 @@ define(['angular'], function(angular) {
             .success(function(data) {
                 $scope.processVariables = data;
 
-                for(var i in data) {
-                    var variable = $scope.processVariables[i];
-                    if($window.localStorage.getItem(procDefId + "_" + variable.name) === null) {
-                        $window.localStorage.setItem(procDefId + "_" + variable.name, 'false');
-                        variable.checked = 'false';
-                    } else {
-                        variable.checked = $window.localStorage.getItem(procDefId + "_" + variable.name) === 'true';
-                    }
-                }
+                util.setChecked($window, procDefId, $scope.processVariables);
+                util.setChecked($window, procDefId, $scope.KPI);
 
-                for(var i in $scope.KPI) {
-                    var variable = $scope.KPI[i];
-                    if($window.localStorage.getItem(variable.id) === null) {
-                        $window.localStorage.setItem(variable.id, 'false');
-                        variable.checked = 'false';
-                    } else {
-                        variable.checked = $window.localStorage.getItem(variable.id) === 'true';
-                    }
-                }
             });
 
         $scope.changeVar = function(id, checked) {
-            $window.localStorage.setItem(procDefId + "_" + id, checked);
-        }
-
+            util.changeVar($window, $rootScope, procDefId, id, checked);
+        };
         $scope.changeKPI = function(id, checked) {
-            $window.localStorage.setItem(id, checked);
-        }
-
+            util.changeKPI($window, $rootScope, procDefId, id, checked);
+        };
     }];
 
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
