@@ -369,7 +369,7 @@ define(['angular'], function (angular) {
                                                 }
                                             ];
                                             var container = d3.select('.bullet-chart-container').node().getBoundingClientRect();
-                                            var margin = {top: 5, right: 40, bottom: 20, left: 5},
+                                            var margin = {top: 5, right: 5, bottom: 15, left: 5},
                                                 width = 100 - margin.left - margin.right,
                                                 height = 50 - margin.top - margin.bottom;
 
