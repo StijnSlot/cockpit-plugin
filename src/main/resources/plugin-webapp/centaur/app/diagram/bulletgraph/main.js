@@ -306,7 +306,7 @@ define(['angular'], function (angular) {
 
                             function bulletTranslate(x) {
                                 return function (d) {
-                                    return "translate(" + -x(d) + ",0)";
+                                    return "translate(" + x(d) + ",0)";
                                 };
                             }
 
@@ -327,8 +327,8 @@ define(['angular'], function (angular) {
                                     var $overlayHtml =
                                         $(duration)
                                             .css({
-                                                width: shape.width,
-                                                height: shape.height
+                                                width: 'auto',
+                                                height: 'auto'
                                             });
 
                                     overlays.add(elementId, {
@@ -369,8 +369,9 @@ define(['angular'], function (angular) {
                                                 }
                                             ];
                                             var container = d3.select('.bullet-chart-container').node().getBoundingClientRect();
-                                            var width = 100;
-                                            var height = 40;
+                                            var margin = {top: 5, right: 40, bottom: 20, left: 5},
+                                                width = 100 - margin.left - margin.right,
+                                                height = 50 - margin.top - margin.bottom;
 
                                             var chart = d3.bullet(width, height)
                                                 .width(width)
@@ -380,9 +381,10 @@ define(['angular'], function (angular) {
                                                 .data(data)
                                                 .enter().append("svg")
                                                 .attr("class", "bullet")
-                                                .attr("width", width)
-                                                .attr("height", height)
+                                                .attr("width", 100)
+                                                .attr("height", 50)
                                                 .append("g")
+                                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                                                 .call(chart);
                                         }
 
