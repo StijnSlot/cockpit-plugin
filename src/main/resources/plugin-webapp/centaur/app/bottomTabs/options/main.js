@@ -56,7 +56,7 @@ define(['require', 'angular', './util'], function(require, angular) {
          * @param checked       value of change, either true or false
          */
         $scope.changeKPI = function(id, checked) {
-            util.changeKPI($window.localStorage, $rootScope.$broadcast, procDefId + '_KPI_' + id, checked);
+            util.changeKPI($window.localStorage, $rootScope, procDefId + '_KPI_' + id, checked);
         };
     }];
 
