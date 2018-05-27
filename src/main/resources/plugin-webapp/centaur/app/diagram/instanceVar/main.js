@@ -70,6 +70,8 @@ define(['require', 'angular', './util'], function(require, angular) {
                 "&actId=" + element.id))
                 .success(function (data) {
 
+                    if(data === undefined || !data.length) return;
+
                     // transform each variable
                     data = data.map(util.transformVariableData);
 
@@ -80,6 +82,9 @@ define(['require', 'angular', './util'], function(require, angular) {
 
                     // create DOM element from data
                     var html = util.createDOMElement(Uri, data);
+
+                    $(html).hover(function() {html.className = "variableTextFull"},
+                        function() {html.className = "variableTextSmall"});
 
                     // create element from DOM element and add to overlay
                     var elementId = util.addTextElement(overlays, element.id, html);

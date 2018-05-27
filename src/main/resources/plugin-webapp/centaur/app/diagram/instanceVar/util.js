@@ -9,24 +9,33 @@ define({
     createDOMElement: function (Uri, data) {
 
         var html = document.createElement('ul');
-        html.className = "variableText";
+        html.className = "variableTextSmall";
+
+        var act_id;
 
         // loop over all variables to add to html string
         data.forEach(function(variable) {
 
+            if(act_id !== undefined && act_id !== variable.act_id) {
+                var separator = document.createElement('div');
+                separator.className = "separator";
+                html.appendChild(separator);
+            }
+            act_id = variable.act_id;
+
             var variableHtml = document.createElement('li');
 
-            var innerHtml = "<b>" + variable.name + ":</b> " + variable.data;
+            var variableName = "<b>" + variable.name + "</b>: ";
+            var variableData = variable.data;
 
             if(variable.clickable) {
                 var link = document.createElement('a');
                 link.setAttribute('href', Uri.appUri("engine://engine/:engine/variable-instance/" + variable.id + "/data"));
-                link.innerHTML = innerHtml;
-
-                variableHtml.appendChild(link);
-            } else {
-                variableHtml.innerHTML = innerHtml;
+                link.innerHTML = variable.data;
+                variableData = link.outerHTML;
             }
+
+            variableHtml.innerHTML = variableName + variableData;
 
             html.appendChild(variableHtml);
         });
@@ -68,7 +77,7 @@ define({
         if (data.type === "boolean") dataString = (data.long_ === 1 ? "true" : "false");
 
         // return object with name, the data and whether or not it is a file (clickable)
-        return {id: data.id, name: String(data.name), data: dataString, clickable: clickable};
+        return {act_id: data.act_id, id: data.id, name: String(data.name), data: dataString, clickable: clickable};
     },
 
     /**
