@@ -45,10 +45,6 @@
     text-overflow: ellipsis;
 }
 
-.variableTextSmall :nth-child(1n+6) {
-    display: none;
-}
-
 .variableTextSmall b {
     color: red;
 }
@@ -81,10 +77,10 @@
 }
 
 .dot {
-    height: 5px;
-    width: 5px;
+    height: 3px;
+    width: 3px;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 4px;
 }

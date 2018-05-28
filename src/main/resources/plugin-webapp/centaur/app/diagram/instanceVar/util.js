@@ -14,13 +14,25 @@ define({
 
         var act_id;
 
-        // loop over all variables to add to html string
-        //data.forEach(function(variable) {
+        var sepCounter = 0;
+
         for(var i = 0; i < data.length; i++) {
 
             var variable = data[i];
 
-            if(i === variableNum) {
+            // creates separator, list item with div inside
+            // only if no dots should be placed, and act_id changes
+            if(i + sepCounter !== variableNum && act_id !== undefined && act_id !== variable.act_id) {
+                var li = document.createElement('li');
+                var separator = document.createElement('div');
+                separator.className = "separator";
+                li.appendChild(separator);
+                html.appendChild(li);
+                sepCounter++;
+            }
+
+            // places list item which contains three dots
+            if(i + sepCounter === variableNum) {
                 var dots = document.createElement('li');
                 dots.className = "dots";
                 for(var j = 0; j < 3; j++) {
@@ -30,12 +42,6 @@ define({
                 }
                 html.appendChild(dots);
             }
-
-            if(act_id !== undefined && act_id !== variable.act_id) {
-                var separator = document.createElement('div');
-                separator.className = "separator";
-                html.appendChild(separator);
-            }
             act_id = variable.act_id;
 
             var variableHtml = document.createElement('li');
@@ -43,6 +49,7 @@ define({
             var variableName = "<b>" + variable.name + "</b>: ";
             var variableData = variable.data;
 
+            // adds clickable link for files
             if(variable.clickable) {
                 var link = document.createElement('a');
                 link.setAttribute('href', Uri.appUri("engine://engine/:engine/variable-instance/" + variable.id + "/data"));
@@ -128,5 +135,23 @@ define({
             overlays.remove(element);
         });
         overlayIds.length = 0;
+    },
+
+    /**
+     * Gets the value of variable num inside localStorage
+     * Will set to default value 5 if not set
+     *
+     * @param localStorage      contains options item
+     * @param id                id of item in localStorage
+     * @returns {number}
+     */
+    getNumValue: function(localStorage, id) {
+        var get = localStorage.getItem(id);
+        if(get === null) {
+            localStorage.setItem(id, 5);
+            return 5;
+        } else {
+            return parseInt(get);
+        }
     }
 });

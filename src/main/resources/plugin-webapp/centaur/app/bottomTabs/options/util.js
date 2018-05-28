@@ -58,6 +58,5 @@ define({
     changeVarNum: function(localStorage, $rootScope, id, value) {
         localStorage.setItem(id, value);
         $rootScope.$broadcast("cockpit.plugin.centaur:options:var-num-change");
-        console.log(value);
     }
 });

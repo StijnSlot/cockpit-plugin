@@ -17,6 +17,8 @@ define(['require', 'angular', './util'], function(require, angular) {
       */
     var procDefId;
 
+    var numValue;
+
     /**
      * Overlay object that contains the elements put on the diagram
      */
@@ -31,18 +33,20 @@ define(['require', 'angular', './util'], function(require, angular) {
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 
-            // subscribe to broadcast any variable options change
-            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+            numValue = util.getNumValue($window.localStorage, procDefId + "_var_num");
 
-                // clear any current overlays displayed
-                util.clearOverlays(overlays, overlayIds);
+            // add the activity variable elements to the overlay
+            addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
+
+            // subscribe to broadcast any variable options change
+            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", addActivityElements);
+
+            $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
+                numValue = util.getNumValue($window.localStorage, procDefId + "_var_num");
 
                 // rerun adding the overlays to all activities
                 addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
             });
-
-            // add the activity variable elements to the overlay
-            addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
         }
     ];
 
@@ -58,6 +62,9 @@ define(['require', 'angular', './util'], function(require, angular) {
      */
     function addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri) {
 
+        // clear any current overlays displayed
+        util.clearOverlays(overlays, overlayIds);
+
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
 
@@ -70,38 +77,66 @@ define(['require', 'angular', './util'], function(require, angular) {
                 "&actId=" + element.id))
                 .success(function (data) {
 
-                    if(data === undefined || !data.length) return;
-
-                    // transform each variable
-                    data = data.map(util.transformVariableData);
-
-                    // remove all unselected variables
-                    data = data.filter(function(x) {
-                        return util.isSelectedVariable($window.localStorage, procDefId + "_var_" + x.name)
-                    });
-
-                    var variableNum = 5;
-
-                    // create DOM element from data
-                    var html = util.createDOMElement(Uri, data, variableNum);
-
-
-
-                    $(html).hover(function() {
-                            html.className = "variableTextFull";
-                        }, function() {
-                            html.className = "variableTextSmall";
-                            //$(".variableTextSmall :nth-child(1n+" + String(variableNum) + ")").css("display",  "none");
-                    });
-
-                    // create element from DOM element and add to overlay
-                    var elementId = util.addTextElement(overlays, element.id, html);
-
-                    // save element ids
-                    overlayIds.push(elementId);
+                    // if data is not empty, add element
+                    if(data !== undefined && data.length) {
+                        addElement($window, overlays, Uri, element, data);
+                    }
                 });
         });
     }
+
+    /**
+     * Adds overlay to the activity element
+     *
+     * @param $window       browser window containing localStorage
+     * @param overlays      collection of overlays to add to
+     * @param Uri           uniform resource identifier to create GET request
+     * @param element       Activity element
+     * @param data          Variable data
+     */
+    var addElement = function($window, overlays, Uri,  element, data) {
+        // transform each variable
+        data = data.map(util.transformVariableData);
+
+        // remove all unselected variables
+        data = data.filter(function(x) {
+            return util.isSelectedVariable($window.localStorage, procDefId + "_var_" + x.name)
+        });
+
+        // create DOM element from data
+        var html = util.createDOMElement(Uri, data, numValue);
+
+        // hide children with index higher than numValue
+        $(html).children().each(function(i) {
+            if(i > numValue) $(this).css("display", "none");
+        });
+
+        // add hover functionality
+        $(html).hover(function() {
+            // change class to show all variables
+            html.className = "variableTextFull";
+
+            // unhide the hidden variables
+            $(html).children().each(function() {
+                if(!this.classList.contains('dots'))
+                    $(this).css("display", "initial");
+            });
+        }, function() {
+            // change class to smaller variable list
+            html.className = "variableTextSmall";
+
+            // hide children with index higher than numValue
+            $(html).children().each(function(i) {
+                if(i > numValue) $(this).css("display", "none");
+            });
+        });
+
+        // create element from DOM element and add to overlay
+        var elementId = util.addTextElement(overlays, element.id, html);
+
+        // save element ids
+        overlayIds.push(elementId);
+    };
 
     /**
      * Configuration object that places plugin

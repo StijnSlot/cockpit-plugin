@@ -52,7 +52,6 @@ define(['require', 'angular', './util'], function(require, angular) {
          */
         $scope.changeVar = function(id, checked) {
             util.changeVar($window.localStorage, $rootScope, procDefId + '_var_' + id, checked);
-            //$rootScope.$broadcast("cockpit.plugin.centaur:options:variable-change");
         };
 
         /**
