@@ -27,13 +27,6 @@
 
 /*  --Bulletgraph--  */
 
-/* Hack*/
-
-
-/* .tick {
-  transform: scaleX(-1);
-} */
-
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 1.5px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }
@@ -42,7 +35,7 @@
 .bullet .range.s1 { fill: #ddd; }
 .bullet .range.s2 { fill: #ccc; }
 .bullet .measure.s0 { fill: lightsteelblue; }
-.bullet .measure.s1 { fill: green; }
+.bullet .measure.s1 {}
 .bullet .title { font-size: 14px; font-weight: bold; }
 .bullet .subtitle { fill: #999; }
 .bullet .measure-label tspan {

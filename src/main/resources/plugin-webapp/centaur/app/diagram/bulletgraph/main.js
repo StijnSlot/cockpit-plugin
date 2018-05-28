@@ -361,17 +361,17 @@ define(['angular'], function (angular) {
                      */
                     function checkTimes(duration) {
                         if (duration > 1000 && duration < 60001) {
-                            var durationHTML = (converToString(Math.round(duration / 1000 * 10) / 10)) + ' seconds';
+                            var durationHTML = (Math.round(duration / 1000 * 10) / 10);
                         } else if (duration > 60000 && duration < 1440001) {
-                            var durationHTML = (converToString(Math.round(duration / 6000 * 10) / 10)) + ' minutes';
+                            var durationHTML = (Math.round(duration / 6000 * 10) / 10);
                         } else if (duration > 1440000 && duration < 34560001) {
-                            var durationHTML = (converToString(Math.round(duration / 1440000 * 10) / 10)) + ' hours';
+                            var durationHTML = (Math.round(duration / 1440000 * 10) / 10);
                         } else if (duration > 34560000 && duration < 241920001) {
-                            var durationHTML = (converToString(Math.round(duration / 34560000 * 10) / 10)) + ' days';
+                            var durationHTML = (Math.round(duration / 34560000 * 10) / 10);
                         } else if (duration > 241920000) {
-                            var durationHTML = (converToString(Math.round(duration / 241920000 * 10) / 10)) + ' weeks';
+                            var durationHTML = (Math.round(duration / 241920000 * 10) / 10);
                         } else {
-                            var durationHTML = converToString(duration) + ' ms';
+                            var durationHTML = duration;
                         }
                         return durationHTML;
                     }
@@ -398,31 +398,45 @@ define(['angular'], function (angular) {
                      */
                     function composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
                         if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
-                            var minDurationHTML = checkTimes(minDuration);
-                            var avgDurationHTML = checkTimes(avgDuration);
-                            var maxDurationHTML = checkTimes(maxDuration);
+                            var minDuration = checkTimes(minDuration);
+                            var avgDuration = checkTimes(avgDuration);
+                            var maxDuration = checkTimes(maxDuration);
                             if (curDuration != null) {
-                                var curDurationHTML = checkTimes(curDuration);
+                                var curDuration = checkTimes(curDuration);
                             } else {
-                                var curDurationHTML = '-';
+                                var curDuration = 0;
                             }
 
-                            var htmlText = '<div class="bullet-chart-container"> </div>';
+
+                            var htmlText = '<div class="bullet-duration-' + elementID + '"> </div>';
+                            var colorBullet = determineColor(avgDuration, maxDuration, curDuration);
+
+
                             addTextToId(elementID, htmlText, shape);
+                            setGraphSettings(elementID, maxDuration, curDuration, avgDuration, colorBullet);
                         }
                     }
 
-                    function setGraphSettings(range, current, marker) {
+                    function determineColor(avgDuration, maxDuration, curDuration) {
+                        if (curDuration <= maxDuration && curDuration <= avgDuration) {
+                            return 'green';
+                        } else if (curDuration <= maxDuration && curDuration > avgDuration) {
+                            return 'orange';
+                        } else {
+                            return 'red';
+                        }
+                    }
+
+                    function setGraphSettings(elementID, rangeBullet, currentBullet, markerBullet, colorBullet) {
+                        var cssClass = '.bullet-duration-' + elementID ;
                         var data = [
                             {
-                                "title": "",
-                                "subtitle": "",
-                                "ranges": [300],
-                                "measures": [220, 220],
-                                "markers": [250]
+                                "ranges": [rangeBullet],
+                                "measures": [currentBullet, currentBullet],
+                                "markers": [markerBullet]
                             }
                         ];
-                        var container = d3.select('.bullet-chart-container').node().getBoundingClientRect();
+                        var container = d3.select(cssClass).node().getBoundingClientRect();
                         var margin = {top: 5, right: 5, bottom: 15, left: 5},
                             width = 100 - margin.left - margin.right,
                             height = 50 - margin.top - margin.bottom;
@@ -431,7 +445,7 @@ define(['angular'], function (angular) {
                             .width(width)
                             .height(height);
 
-                        var svg = d3.select(".bullet-chart-container").selectAll("svg")
+                        var svg = d3.select(cssClass).selectAll("svg")
                             .data(data)
                             .enter().append("svg")
                             .attr("class", "bullet")
@@ -440,6 +454,9 @@ define(['angular'], function (angular) {
                             .append("g")
                             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                             .call(chart);
+
+                        var coloring = d3.select(cssClass).selectAll("rect.measure.s1")    
+                            .attr("fill", colorBullet)
                     }
 
                     /*
@@ -483,7 +500,6 @@ define(['angular'], function (angular) {
                                     var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
 
                                     composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
-                                    setGraphSettings(300, 220, 250);
                                     break;
                                 }
                             }
