@@ -25,9 +25,11 @@
 
 .variableText {
     font-size: 7px;
+    list-style-type: none;
+    width: 150px;
+    height: 100px;
 }
 
 .variableText b {
     color: red;
-    font-size: 9px;
 }

@@ -17,8 +17,8 @@ before(function(done) {
     });
 });
 
-it('should find options util file', function() {
-    expect(util).to.not.be.undefined;
+it('should find options util file for options tab', function() {
+    expect(util).to.exist;
 });
 
 describe('setChecked tests', function() {
