@@ -14,7 +14,21 @@ define({
         var act_id;
 
         // loop over all variables to add to html string
-        data.forEach(function(variable) {
+        //data.forEach(function(variable) {
+        for(var i = 0; i < data.length; i++) {
+
+            var variable = data[i];
+
+            if(i === 4) {
+                var dots = document.createElement('li');
+                dots.className = "dots";
+                for(var j = 0; j < 3; j++) {
+                    var dot = document.createElement('span');
+                    dot.className = "dot";
+                    dots.appendChild(dot);
+                }
+                html.appendChild(dots);
+            }
 
             if(act_id !== undefined && act_id !== variable.act_id) {
                 var separator = document.createElement('div');
@@ -38,7 +52,7 @@ define({
             variableHtml.innerHTML = variableName + variableData;
 
             html.appendChild(variableHtml);
-        });
+        }//);
 
         return html;
     },

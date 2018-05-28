@@ -65,7 +65,20 @@
     color: red;
 }
 
+.variableTextFull .dots {
+    display: none;
+}
+
 .separator {
     height: 1em;
     border-left: 1px solid;
+}
+
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
 }
