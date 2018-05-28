@@ -19,6 +19,13 @@ define({
         });
     },
 
+    /**
+     * Gets num value from localStorage, or sets it as default value
+     *
+     * @param localStorage  contains user options
+     * @param id            used for getting the options from locaLStorage
+     * @returns {number}
+     */
     getNumValue: function(localStorage, id) {
         var get = localStorage.getItem(id);
         if(get === null) {
@@ -55,6 +62,14 @@ define({
         $rootScope.$broadcast("cockpit.plugin.centaur:options:KPI-change");
     },
 
+    /**
+     * Changes variable number in localStorage and broadcasts
+     *
+     * @param localStorage  contains user options
+     * @param $rootScope    used for broadcasting change
+     * @param id            used for retrieving correct item
+     * @param value         new item value
+     */
     changeVarNum: function(localStorage, $rootScope, id, value) {
         localStorage.setItem(id, value);
         $rootScope.$broadcast("cockpit.plugin.centaur:options:var-num-change");

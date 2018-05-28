@@ -135,23 +135,5 @@ define({
             overlays.remove(element);
         });
         overlayIds.length = 0;
-    },
-
-    /**
-     * Gets the value of variable num inside localStorage
-     * Will set to default value 5 if not set
-     *
-     * @param localStorage      contains options item
-     * @param id                id of item in localStorage
-     * @returns {number}
-     */
-    getNumValue: function(localStorage, id) {
-        var get = localStorage.getItem(id);
-        if(get === null) {
-            localStorage.setItem(id, 5);
-            return 5;
-        } else {
-            return parseInt(get);
-        }
     }
 });

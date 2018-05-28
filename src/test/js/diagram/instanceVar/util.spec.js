@@ -48,7 +48,7 @@ describe('createDOMElement tests', function() {
         expect(out.children).to.have.lengthOf.at.least(2)
     });
 
-    /*it('should have first child with data[0]', function() {
+    it('should have first child with data[0]', function() {
         expect(out.firstChild).to.be.an.instanceOf(window.Element);
         expect(out.firstChild.innerHTML).to.contain(data[0].name);
         expect(out.firstChild.innerHTML).to.contain(data[0].data);
@@ -59,7 +59,7 @@ describe('createDOMElement tests', function() {
         expect(out.children[1].innerHTML).to.contain(data[1].name);
         expect(out.children[1].innerHTML).to.contain(data[1].data);
         expect(out.children[1].innerHTML).to.contain("<a");
-    });*/
+    });
 });
 
 describe('isSelectedVariable tests', function() {

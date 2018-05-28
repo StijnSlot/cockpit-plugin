@@ -1,11 +1,16 @@
 'use strict';
 
-define(['require', 'angular', './util'], function(require, angular) {
+define(['require', 'angular', './util', '../../bottomTabs/options/util'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
      */
     var util = require('./util');
+
+    /**
+     * retrieve options util, containing getNumValue function
+     */
+    var optionsUtil = require('../../bottomTabs/options/util');
 
     /**
      * variable containing all ids of overlays created here
@@ -17,6 +22,9 @@ define(['require', 'angular', './util'], function(require, angular) {
       */
     var procDefId;
 
+    /**
+     * value containing the number of instance variables to show
+     */
     var numValue;
 
     /**
@@ -33,20 +41,14 @@ define(['require', 'angular', './util'], function(require, angular) {
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 
-            numValue = util.getNumValue($window.localStorage, procDefId + "_var_num");
-
             // add the activity variable elements to the overlay
             addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
 
-            // subscribe to broadcast any variable options change
-            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", addActivityElements);
-
+            // subscribe to broadcast any options change
+            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+                addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri) });
             $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
-                numValue = util.getNumValue($window.localStorage, procDefId + "_var_num");
-
-                // rerun adding the overlays to all activities
-                addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
-            });
+                addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri) });
         }
     ];
 
@@ -60,10 +62,12 @@ define(['require', 'angular', './util'], function(require, angular) {
      * @param overlays          collection of overlays to add to
      * @param Uri               uniform resource identifier to create GET request
      */
-    function addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri) {
-
+    var addActivityElements = function($window, $http, elementRegistry, processDiagram, overlays, Uri) {
         // clear any current overlays displayed
         util.clearOverlays(overlays, overlayIds);
+
+        // get number of instance variables to show
+        numValue = optionsUtil.getNumValue($window.localStorage, procDefId + "_var_num");
 
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
