@@ -80,11 +80,19 @@ define(['require', 'angular', './util'], function(require, angular) {
                         return util.isSelectedVariable($window.localStorage, procDefId + "_var_" + x.name)
                     });
 
-                    // create DOM element from data
-                    var html = util.createDOMElement(Uri, data);
+                    var variableNum = 5;
 
-                    $(html).hover(function() {html.className = "variableTextFull"},
-                        function() {html.className = "variableTextSmall"});
+                    // create DOM element from data
+                    var html = util.createDOMElement(Uri, data, variableNum);
+
+
+
+                    $(html).hover(function() {
+                            html.className = "variableTextFull";
+                        }, function() {
+                            html.className = "variableTextSmall";
+                            //$(".variableTextSmall :nth-child(1n+" + String(variableNum) + ")").css("display",  "none");
+                    });
 
                     // create element from DOM element and add to overlay
                     var elementId = util.addTextElement(overlays, element.id, html);

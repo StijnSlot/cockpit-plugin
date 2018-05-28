@@ -19,6 +19,12 @@
     border-radius: 10px;
 }
 
+.option-box {
+    display:inline-block;
+    width:32%;
+    vertical-align: top;
+}
+
 .durationText {
     font-size: 7px;
 }

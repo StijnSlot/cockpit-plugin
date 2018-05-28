@@ -19,6 +19,16 @@ define({
         });
     },
 
+    getNumValue: function(localStorage, id) {
+        var get = localStorage.getItem(id);
+        if(get === null) {
+            localStorage.setItem(id, 5);
+            return 5;
+        } else {
+            return parseInt(get);
+        }
+    },
+
     /**
      * Changes variable options in localStorage and broadcasts this change
      *
@@ -43,5 +53,11 @@ define({
     changeKPI: function (localStorage, $rootScope, id, checked) {
         localStorage.setItem(id, checked);
         $rootScope.$broadcast("cockpit.plugin.centaur:options:KPI-change");
+    },
+
+    changeVarNum: function(localStorage, $rootScope, id, value) {
+        localStorage.setItem(id, value);
+        $rootScope.$broadcast("cockpit.plugin.centaur:options:var-num-change");
+        console.log(value);
     }
 });

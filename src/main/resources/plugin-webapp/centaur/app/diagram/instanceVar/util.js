@@ -2,11 +2,12 @@ define({
     /**
      * Creates DOM element from data and options settings
      *
-     * @param Uri       uniform resource identifier to create link
-     * @param data      variable data from GET request
+     * @param Uri           uniform resource identifier to create link
+     * @param data          variable data from GET request
+     * @param variableNum   number of variables to be displayed without hovering
      * @returns {object}
      */
-    createDOMElement: function (Uri, data) {
+    createDOMElement: function (Uri, data, variableNum) {
 
         var html = document.createElement('ul');
         html.className = "variableTextSmall";
@@ -19,7 +20,7 @@ define({
 
             var variable = data[i];
 
-            if(i === 4) {
+            if(i === variableNum) {
                 var dots = document.createElement('li');
                 dots.className = "dots";
                 for(var j = 0; j < 3; j++) {
