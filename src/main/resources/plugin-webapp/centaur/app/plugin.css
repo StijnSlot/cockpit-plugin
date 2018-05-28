@@ -36,8 +36,6 @@
 .bullet .range.s2 { fill: #ccc; }
 .bullet .measure.s0 { fill: lightsteelblue; }
 .bullet .measure.s1 {}
-.bullet .title { font-size: 14px; font-weight: bold; }
-.bullet .subtitle { fill: #999; }
 .bullet .measure-label tspan {
     fill: white;
     font-weight: bold;
