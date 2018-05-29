@@ -109,7 +109,7 @@ define(['angular'], function(angular) {
             if (duration > 1000 && duration < 60001) {
               var durationHTML = ((Math.round(duration / 1000 * 10) / 10).toString()) + ' seconds';
             } else if (duration > 60000 && duration < 1440001) {
-              var durationHTML = ((Math.round(duration / 6000 * 10) / 10).toString()) + ' minutes';
+              var durationHTML = ((Math.round(duration / 60000 * 10) / 10).toString()) + ' minutes';
             } else if (duration > 1440000 && duration < 34560001) {
               var durationHTML = ((Math.round(duration / 1440000 * 10) / 10).toString()) + ' hours';
             } else if (duration > 34560000 && duration < 241920001) {
