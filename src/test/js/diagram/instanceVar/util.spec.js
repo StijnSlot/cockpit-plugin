@@ -169,5 +169,5 @@ describe('clearOverlays tests', function() {
 
     it('should return overlayIds empty', function() {
         expect(overlayIds).to.be.empty;
-    })
+    });
 });

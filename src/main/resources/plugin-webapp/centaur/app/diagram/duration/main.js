@@ -42,16 +42,6 @@ define(['angular'], function(angular) {
           var procDefId = $scope.$parent.processDefinition.id;
 
           /**
-           * Converts variable to String.
-           * @param   Number  toConvert   Variable to be converted.
-           * @return  String              String representation of toConvert
-           * TODO: make into service
-           */
-          function converToString(toConvert) {
-            return toConvert.toString();
-          }
-
-          /**
            * Adds text to specified diagram element.
            * @param   Number  elementId   ID of diagram element
            * @param   Number  text        The text to be displayed
@@ -87,6 +77,7 @@ define(['angular'], function(angular) {
            *
            * @param   Number  instance    Instance of a process
            * @param   Number  elementId   ID of diagram element that represents instance
+           * @return  Number timeDifference Returns time duration in milliseconds
            */
           function calculateCurDuration(instance, elementID) {
             for (var j = 0; j < instance.length; j++) {
@@ -114,17 +105,17 @@ define(['angular'], function(angular) {
            */
           function checkTimes(duration) {
             if (duration > 1000 && duration < 60001) {
-              var durationHTML = (converToString(Math.round(duration / 1000 * 10) / 10)) + ' seconds';
+              var durationHTML = ((Math.round(duration / 1000 * 10) / 10).toString()) + ' seconds';
             } else if (duration > 60000 && duration < 1440001) {
-              var durationHTML = (converToString(Math.round(duration / 6000 * 10) / 10)) + ' minutes';
+              var durationHTML = ((Math.round(duration / 6000 * 10) / 10).toString()) + ' minutes';
             } else if (duration > 1440000 && duration < 34560001) {
-              var durationHTML = (converToString(Math.round(duration / 1440000 * 10) / 10)) + ' hours';
+              var durationHTML = ((Math.round(duration / 1440000 * 10) / 10).toString()) + ' hours';
             } else if (duration > 34560000 && duration < 241920001) {
-              var durationHTML = (converToString(Math.round(duration / 34560000 * 10) / 10)) + ' days';
+              var durationHTML = ((Math.round(duration / 34560000 * 10) / 10).toString()) + ' days';
             } else if (duration > 241920000) {
-              var durationHTML = (converToString(Math.round(duration / 241920000 * 10) / 10)) + ' weeks';
+              var durationHTML = ((Math.round(duration / 241920000 * 10) / 10).toString()) + ' weeks';
             } else {
-              var durationHTML = converToString(duration) + ' ms';
+              var durationHTML = (duration).toString() + ' ms';
             }
             return durationHTML;
           }
