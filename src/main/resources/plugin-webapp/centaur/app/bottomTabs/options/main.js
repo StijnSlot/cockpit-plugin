@@ -26,7 +26,13 @@ define(['require', 'angular', './util'], function(require, angular) {
         ];
 
         // retrieve localStorage info on KPI's and set checkboxes
-        util.setChecked($window.localStorage, procDefId + "_KPI_", $scope.KPI);
+        $scope.setVariableChecked = function() {
+            util.setChecked($window.localStorage, procDefId + "_KPI_", $scope.KPI);
+        };
+
+        $scope.setNumValue = function() {
+            $scope.numValue = util.getNumValue($window.localStorage, procDefId + "_var_num");
+        };
 
         // get all variable ids for this process
         $http.get(Uri.appUri("plugin://centaur/:engine/process-variables" +
@@ -46,7 +52,6 @@ define(['require', 'angular', './util'], function(require, angular) {
          */
         $scope.changeVar = function(id, checked) {
             util.changeVar($window.localStorage, $rootScope, procDefId + '_var_' + id, checked);
-            //$rootScope.$broadcast("cockpit.plugin.centaur:options:variable-change");
         };
 
         /**
@@ -58,6 +63,10 @@ define(['require', 'angular', './util'], function(require, angular) {
         $scope.changeKPI = function(id, checked) {
             util.changeKPI($window.localStorage, $rootScope, procDefId + '_KPI_' + id, checked);
         };
+
+        $scope.changeVarNum = function(value) {
+            util.changeVarNum($window.localStorage, $rootScope, procDefId + "_var_num", value);
+        }
     }];
 
     /**

@@ -20,7 +20,8 @@
   </resultMap>
 
   <resultMap id="instanceVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceVariablesDto">
-    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="act_id" column="ACT_ID_" jdbcType="VARCHAR" />
+    <result property="id" column="VAR_ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="type" column="TYPE_" jdbcType="VARCHAR" />
     <result property="double_" column="DOUBLE_" jdbcType="DOUBLE" />
@@ -72,12 +73,13 @@
   </select>
 
   <select id="selectInstanceVariables" resultMap="instanceVariables" parameterType="java.util.Map">
-    SELECT b.ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_
+    SELECT a.ID_ ACT_ID_, b.ID_ VAR_ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_
     FROM ACT_RU_EXECUTION a
       JOIN ACT_RU_VARIABLE b
         ON a.ID_ = b.EXECUTION_ID_
     WHERE a.PROC_DEF_ID_ = #{parameter.procDefId}
       AND a.ACT_ID_ = #{parameter.actId}
+    ORDER BY a.ID_
   </select>
 
   <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">
