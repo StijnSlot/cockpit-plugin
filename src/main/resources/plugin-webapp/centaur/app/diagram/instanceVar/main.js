@@ -8,13 +8,6 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util'], functi
     var util = require('./util');
 
     /**
-     * retrieve options util, containing getNumValue function
-<<<<<<< HEAD
-=======
-     */
-    var optionsUtil = require('../../bottomTabs/options/util');
-
-    /**
      * variable containing all ids of overlays created here
      */
     var optionsUtil = require('../../bottomTabs/options/util');
@@ -27,6 +20,7 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util'], functi
 
             // process definition id is set (HARDCODED nr. of parents)
             var procDefId = $scope.$parent.processDefinition.id;
+            util.procDefId = procDefId;
 
             // get overlay and elements from the diagram
             var viewer = control.getViewer();
