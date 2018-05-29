@@ -24,3 +24,5 @@ buildNumber.properties
 .bat
 .vscode/settings.json
 *.bat
+
+node_modules/

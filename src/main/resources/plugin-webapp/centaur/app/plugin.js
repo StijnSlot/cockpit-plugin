@@ -10,3 +10,5 @@ define(function (require) {
     var demoText = require('./demoText/main');
     return angular.module('cockpit.plugin.centaur', [diagramModule.name, demoText.name, bottomTabsModule.name]);
 });
+
+//git hook test

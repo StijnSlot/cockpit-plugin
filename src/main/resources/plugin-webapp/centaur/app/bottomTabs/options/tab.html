@@ -1,14 +1,18 @@
-<div style="display:inline-block; width:49%; vertical-align: top;">
+<div class="option-box">
     <h4>Select KPI's to show</h4>
     <form data-ng-repeat="variable in KPI">
         <input type="checkbox" ng-checked="variable.checked"
                ng-change="changeKPI(variable.id, checked)"  ng-model="checked"> {{ variable.name }}<br>
     </form>
 </div>
-<div style="display:inline-block; width:49%; vertical-align: top;">
+<div class="option-box">
     <h4>Select process-instance variables to show</h4>
-    <form data-ng-repeat="variable in processVariables">
+    <form data-ng-repeat="variable in processVariables" ng-init="setVariableChecked()">
         <input type="checkbox" ng-checked="variable.checked"
                ng-change="changeVar(variable.name, checked)"  ng-model="checked"> {{ variable.name }}<br>
     </form>
+</div>
+<div class="option-box">
+    <h4>Select number of variables to show</h4>
+    <input type="number" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()" ng-min="0"/>
 </div>

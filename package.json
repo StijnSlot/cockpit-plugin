@@ -1,0 +1,33 @@
+{
+  "name": "centaur",
+  "version": "1.0.0",
+  "description": "A custom plugin for the Camunda cockpit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stynder/cockpit-plugin.git"
+  },
+  "keywords": [
+    "Camunda",
+    "cockpit",
+    "plugin",
+    "dashboard"
+  ],
+  "author": "Stijn Slot",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stynder/cockpit-plugin/issues"
+  },
+  "homepage": "https://github.com/stynder/cockpit-plugin#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "jsdom": "11.11.0",
+    "jsdom-global": "3.0.2",
+    "mocha": "^5.2.0",
+    "requirejs": "^2.3.5",
+    "sinon": "^5.0.10"
+  }
+}

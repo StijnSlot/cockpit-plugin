@@ -19,7 +19,7 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   public String getIt() {
     return "Got it!";
   }
-  
+
   @Path("{engineName}/process-instance")
   public ProcessStatisticsResource getProcessInstanceResource(
           @PathParam("engineName") String engineName) {
@@ -36,11 +36,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   @Path("{engineName}/instance-variables")
   public InstanceVariablesResource getInstanceVariableResource(
           @PathParam("engineName") String engineName,
-          @QueryParam("executionId") String executionId,
-          @QueryParam("caseExecutionId") String caseExecutionId,
-          @QueryParam("taskId") String taskId) {
-    return subResource(new InstanceVariablesResource(engineName, executionId, caseExecutionId, taskId),
-            engineName);
+          @QueryParam("procDefId") String procDefId,
+          @QueryParam("actId") String actId) {
+    return subResource(new InstanceVariablesResource(engineName, procDefId, actId), engineName);
   }
 
   @Path("{engineName}/process-variables")
@@ -54,6 +52,12 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   public InstanceStartTimeResource getInstanceStartTimeResource(
           @PathParam("engineName") String engineName) {
     return subResource(new InstanceStartTimeResource(engineName), engineName);
+  }
+
+  @Path("{engineName}/execution-sequence-counter")
+  public ExecutionSequenceCounterResource getExecutionSequenceCounter(
+          @PathParam("engineName") String engineName) {
+    return subResource(new ExecutionSequenceCounterResource(engineName), engineName);
   }
 
   @Path("{engineName}/sse")
