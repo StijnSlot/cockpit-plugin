@@ -56,15 +56,15 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
     return subResource(new InstanceStartTimeResource(engineName), engineName);
   }
 
-  @Path("{engineName}/sse")
-  public SSETestingResource getSSETestingResource(
-          @PathParam("engineName") String engineName) {
-    return subResource(new SSETestingResource(engineName), engineName);
-  }
-
   @Path("{engineName}/execution-sequence-counter")
   public ExecutionSequenceCounterResource getExecutionSequenceCounter(
           @PathParam("engineName") String engineName) {
     return subResource(new ExecutionSequenceCounterResource(engineName), engineName);
+  }
+
+  @Path("{engineName}/sse")
+  public SSETestingResource getSSETestingResource(
+          @PathParam("engineName") String engineName) {
+    return subResource(new SSETestingResource(engineName), engineName);
   }
 }
