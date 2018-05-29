@@ -2,6 +2,8 @@ package org.camunda.bpm.cockpit.plugin.centaur.db;
 
 public class InstanceVariablesDto {
 
+    private String id;
+
     private String name;
 
     private String type;
@@ -13,8 +15,6 @@ public class InstanceVariablesDto {
     private String text;
 
     private String text2;
-
-    private Byte[] bytes;
 
     public String getName() {
         return name;
@@ -64,11 +64,11 @@ public class InstanceVariablesDto {
         this.text2 = text2;
     }
 
-    public Byte[] getBytes() {
-        return bytes;
+    public String getId() {
+        return id;
     }
 
-    public void setBytes(Byte[] bytes) {
-        this.bytes = bytes;
+    public void setId(String id) {
+        this.id = id;
     }
 }

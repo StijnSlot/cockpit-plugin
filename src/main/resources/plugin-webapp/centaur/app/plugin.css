@@ -20,5 +20,16 @@
 }
 
 .durationText {
-    font-size: 9px;
+    font-size: 7px;
+}
+
+.variableText {
+    font-size: 7px;
+    list-style-type: none;
+    width: 150px;
+    height: 100px;
+}
+
+.variableText b {
+    color: red;
 }

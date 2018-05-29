@@ -41,9 +41,8 @@ public class QueryTest extends AbstractCockpitPluginTest {
     public void testInstanceVariablesQueryWorks() {
         QueryParameters<InstanceVariablesDto> parameters = new QueryParameters<>();
         HashMap<String, String> param = new HashMap<>();
-        param.put("executionId", "");
-        param.put("caseExecutionId", "");
-        param.put("taskId", "");
+        param.put("procDefId", "");
+        param.put("actId", "");
         parameters.setParameter(param);
 
         List<InstanceVariablesDto> result =

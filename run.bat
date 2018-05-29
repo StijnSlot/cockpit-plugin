@@ -1,7 +1,10 @@
-call mvn package
+call mvn clean package || pause
 
-xcopy /y "C:\Users\s152139\OneDrive - TU Eindhoven\TUe Third Year\Software Engineering Project\cockpit-plugin\target\centaur-1.0.0.jar" "C:\Users\s152139\OneDrive - TU Eindhoven\TUe Third Year\Software Engineering Project\camunda-bpm-tomcat-7.8.0\server\apache-tomcat-8.0.47\webapps\camunda\WEB-INF\lib"
+cd src
+call mocha --recursive -r jsdom-global/register || pause
 
-cd "C:\Users\s152139\OneDrive - TU Eindhoven\TUe Third Year\Software Engineering Project\camunda-bpm-tomcat-7.8.0"
+xcopy /y "..\target\centaur-1.0.0.jar" "C:\YOUR_PATH\camunda-bpm-tomcat-7.8.0\server\apache-tomcat-8.0.47\webapps\camunda\WEB-INF\lib"
+
+cd "YOUR_PATH\camunda-bpm-tomcat-7.8.0"
 call start-camunda.bat
 exit

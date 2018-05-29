@@ -29,8 +29,6 @@ define(['angular'], function(angular) {
           .success(function(data) {
               $scope.instanceStartTime = data;
           });
-
-
   }];
 
   var Configuration = ['ViewsProvider', function(ViewsProvider) {
