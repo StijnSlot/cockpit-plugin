@@ -19,17 +19,70 @@
     border-radius: 10px;
 }
 
+.option-box {
+    display:inline-block;
+    width:32%;
+    vertical-align: top;
+}
+
 .durationText {
     font-size: 7px;
 }
 
-.variableText {
+.variableTextSmall {
     font-size: 7px;
-    list-style-type: none;
     width: 150px;
-    height: 100px;
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    border: 1px solid transparent;
 }
 
-.variableText b {
+.variableTextSmall li {
+    margin-left: -20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.variableTextSmall b {
     color: red;
+}
+
+.variableTextFull {
+    font-size: 7px;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    border: 1px solid black;
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.variableTextFull li {
+    margin-left: -20px;
+}
+
+.variableTextFull b {
+    color: red;
+}
+
+.variableTextFull .dots {
+    display: none;
+}
+
+.separator {
+    height: 1em;
+    border-left: 1px solid;
+}
+
+.dot {
+    height: 3px;
+    width: 3px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
 }

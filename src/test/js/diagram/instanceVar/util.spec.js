@@ -45,20 +45,20 @@ describe('createDOMElement tests', function() {
     });
 
     it('should contain 2 children', function() {
-        expect(out.children).to.have.lengthOf(2)
+        expect(out.children).to.have.lengthOf.at.least(2)
     });
 
-    it('should have first child of data[0]', function() {
+    it('should have first child with data[0]', function() {
         expect(out.firstChild).to.be.an.instanceOf(window.Element);
         expect(out.firstChild.innerHTML).to.contain(data[0].name);
         expect(out.firstChild.innerHTML).to.contain(data[0].data);
     });
 
-    it('should have first child of data[0]', function() {
+    it('should have second child with data[1]', function() {
         expect(out.children[1]).to.be.an.instanceOf(window.Element);
-        expect(out.children[1].firstChild).to.be.an.instanceOf(window.Element);
-        expect(out.children[1].firstChild.innerHTML).to.contain(data[1].name);
-        expect(out.children[1].firstChild.innerHTML).to.contain(data[1].data);
+        expect(out.children[1].innerHTML).to.contain(data[1].name);
+        expect(out.children[1].innerHTML).to.contain(data[1].data);
+        expect(out.children[1].innerHTML).to.contain("<a");
     });
 });
 
@@ -152,19 +152,19 @@ describe('addTextElement tests', function() {
 
 describe('clearOverlays tests', function() {
     var spy, overlays;
-    var overlayIds = [1, 2, -3];
+    var overlayIds = {'a': [1], 'b': [-2], 'c': [3]};
 
     beforeEach(function() {
         spy = sinon.spy();
         overlays = {remove: spy};
 
-        util.clearOverlays(overlays, overlayIds);
+        util.clearOverlays(overlays, overlayIds, 'a');
+        util.clearOverlays(overlays, overlayIds, 'b');
     });
 
     it('should call remove for all ids', function() {
         expect(spy.calledWith(1)).to.eql(true);
-        expect(spy.calledWith(2)).to.eql(true);
-        expect(spy.calledWith(-3)).to.eql(true);
+        expect(spy.calledWith(-2)).to.eql(true);
     });
 
     it('should return overlayIds empty', function() {

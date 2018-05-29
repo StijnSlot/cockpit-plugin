@@ -1,6 +1,6 @@
 'use strict';
 
-define(['require', 'angular', './util'], function(require, angular) {
+define(['require', 'angular', './util', '../../bottomTabs/options/util'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
@@ -10,12 +10,7 @@ define(['require', 'angular', './util'], function(require, angular) {
     /**
      * variable containing all ids of overlays created here
      */
-    var overlayIds = [];
-
-    /**
-     * variable containing process definition id of the process shown
-      */
-    var procDefId;
+    var optionsUtil = require('../../bottomTabs/options/util');
 
     /**
      * Overlay object that contains the elements put on the diagram
@@ -24,71 +19,32 @@ define(['require', 'angular', './util'], function(require, angular) {
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
-            procDefId = $scope.$parent.processDefinition.id;
+            var procDefId = $scope.$parent.processDefinition.id;
+            util.procDefId = procDefId;
 
             // get overlay and elements from the diagram
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 
-            // subscribe to broadcast any variable options change
-            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
-
-                // clear any current overlays displayed
-                util.clearOverlays(overlays, overlayIds);
-
-                // rerun adding the overlays to all activities
-                addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
-            });
+            // get number of instance variables to show
+            util.numValue = optionsUtil.getNumValue($window.localStorage, procDefId + "_var_num");
 
             // add the activity variable elements to the overlay
-            addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri);
+            util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, util);
+
+            // subscribe to any broadcast variables options change
+            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, util) });
+
+            // subscribe to any broadcast variable number changes
+            $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
+                // get number of instance variables to show
+                util.numValue = optionsUtil.getNumValue($window.localStorage, procDefId + "_var_num");
+
+                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, util) });
         }
     ];
-
-    /**
-     * Adds an element with variables to each activity
-     *
-     * @param $window           browser window containing localStorage
-     * @param $http             http client for GET request
-     * @param elementRegistry   registry containing bpmn elements
-     * @param processDiagram    diagram containing elements
-     * @param overlays          collection of overlays to add to
-     * @param Uri               uniform resource identifier to create GET request
-     */
-    function addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri) {
-
-        // loop over all elements in the diagram
-        elementRegistry.forEach(function (shape) {
-
-            // get corresponding element from processDiagram
-            var element = processDiagram.bpmnElements[shape.businessObject.id];
-
-            // get all variables attached to this activity
-            $http.get(Uri.appUri("plugin://centaur/:engine/instance-variables" +
-                "?procDefId=" + procDefId +
-                "&actId=" + element.id))
-                .success(function (data) {
-
-                    // transform each variable
-                    data = data.map(util.transformVariableData);
-
-                    // remove all unselected variables
-                    data = data.filter(function(x) {
-                        return util.isSelectedVariable($window.localStorage, procDefId + "_var_" + x.name)
-                    });
-
-                    // create DOM element from data
-                    var html = util.createDOMElement(Uri, data);
-
-                    // create element from DOM element and add to overlay
-                    var elementId = util.addTextElement(overlays, element.id, html);
-
-                    // save element ids
-                    overlayIds.push(elementId);
-                });
-        });
-    }
 
     /**
      * Configuration object that places plugin
