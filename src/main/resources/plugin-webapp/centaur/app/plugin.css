@@ -52,10 +52,12 @@
 .variableTextFull {
     font-size: 7px;
     width: 150px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     list-style-type: none;
     border: 1px solid black;
+    overflow-y: scroll;
     background-color: white;
 }
 
