@@ -38,8 +38,6 @@ define({
                     // clear any current overlays displayed
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
-                    util.overlayActivityIds[element.id] = [];
-
                     // transform each variable
                     data = data.map(util.transformVariableData);
 

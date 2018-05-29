@@ -150,24 +150,26 @@ describe('addTextElement tests', function() {
     });
 });
 
-/*describe('clearOverlays tests', function() {
+describe('clearOverlays tests', function() {
     var spy, overlays;
-    var overlayIds = [1, 2, -3];
+    var overlayIds = {'a': [1], 'b': [-2], 'c': [3]};
 
     beforeEach(function() {
         spy = sinon.spy();
         overlays = {remove: spy};
 
-        util.clearOverlays(overlays, overlayIds);
+        util.clearOverlays(overlays, overlayIds, 'a');
+        util.clearOverlays(overlays, overlayIds, 'b');
     });
 
     it('should call remove for all ids', function() {
         expect(spy.calledWith(1)).to.eql(true);
-        expect(spy.calledWith(2)).to.eql(true);
-        expect(spy.calledWith(-3)).to.eql(true);
+        expect(spy.calledWith(-2)).to.eql(true);
     });
 
     it('should return overlayIds empty', function() {
-        expect(overlayIds).to.be.empty;
+        expect(overlayIds['a']).to.be.empty;
+        expect(overlayIds['b']).to.be.empty;
+        expect(overlayIds['c']).to.be.not.empty;
     })
-});*/
+});
