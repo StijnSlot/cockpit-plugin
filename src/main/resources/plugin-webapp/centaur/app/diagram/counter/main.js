@@ -28,9 +28,8 @@ define(['angular'], function(angular) {
 
           /**
            * Converts variable to String.
-           * @param   Number  toConvert   Variable to be converted.
-           * @return  String              String representation of toConvert
-           * TODO: make into service
+           * @param  {Number} toConvert Variable to be converted.
+           * @return {String}           String representation of toConvert
            */
           function converToString(toConvert) {
             return toConvert.toString();
@@ -38,9 +37,9 @@ define(['angular'], function(angular) {
 
           /**
            * Adds text to specified diagram element.
-           * @param   Number  elementId   ID of diagram element
-           * @param   Number  text        The text to be displayed
-           * @param   Object  shape       Shape of the element
+           * @param   {Number}  elementId   ID of diagram element
+           * @param   {Number}  text        The text to be displayed
+           * @param   {Object}  shape       Shape of the element
            * TODO: make into service
            */
           function addTextToId(elementId, text, shape) {
@@ -53,8 +52,8 @@ define(['angular'], function(angular) {
 
             overlays.add(elementId, {
               position: {
-                top: -40,
-                left: -40
+                top: 80,
+                left: 50
               },
               show: {
                 minZoom: -Infinity,
@@ -77,36 +76,28 @@ define(['angular'], function(angular) {
            * so that the duration varables are displayed next to the
            * process diagram element.
            *
-           * @param   Number  minDuration   minimal duration of process
-           * @param   Number  avgDuration   average duration of process
-           * @param   Number  maxDuration   maximal duration of process
-           * @param   Number  curDuration   current duration of process
-           * @param   Number  elementID     ID of element
-           * @param   Object  shape         Shape of the element
+           * @param   {Number}  minDuration   minimal duration of process
+           * @param   {Number}  avgDuration   average duration of process
+           * @param   {Number}  maxDuration   maximal duration of process
+           * @param   {Number}  curDuration   current duration of process
+           * @param   {Number}  elementID     ID of element
+           * @param   {Object}  shape         Shape of the element
            */
-          function composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
-            if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
-              var minDurationHTML = checkTimes(minDuration);
-              var avgDurationHTML = checkTimes(avgDuration);
-              var maxDurationHTML = checkTimes(maxDuration);
-              if (curDuration != null) {
-                var curDurationHTML = checkTimes(curDuration);
-              } else {
-                var curDurationHTML = '-';
-              }
-
-              var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
-              addTextToId(elementID, htmlText, shape);
-            }
+          function composeHTML(executionSequenceCounter, elementID, shape) {
+            var htmlText = '<div class="counterText"> Counter: ' + executionSequenceCounter + '</div>';
+            addTextToId(elementID, htmlText, shape);
           }
 
           /*
            * Angular http.get promises that wait for a JSON object of
            * the process activity and the instance start time.
            */
-          //TODO: Get data from database
-          $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {catch: false});
-          $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {catch: false});
+          $scope.executionSequenceCounter_temp = $http.get(Uri.appUri("plugin://centaur/:engine/execution-sequence-counter"), {
+            catch: false
+          });
+          $scope.processVariables_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-variables" + "?procDefId=" + procDefId), {
+            catch: false
+          });
 
           /**
            * Waits until data is received from http.get request and
@@ -115,29 +106,25 @@ define(['angular'], function(angular) {
            * Database quersies take a relative long time. So we have to
            * wait until the data is retrieved before we can continue.
            *
-           * @param   Object  data   minimal duration of process
+           * @param   {Object}  data   minimal duration of process
            */
-          $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function(data) {
-            $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-            $scope.instanceStartTime = data[1];
-
+          $q.all([$scope.executionSequenceCounter_temp]).then(function(data) {
+            $scope.executionSequenceCounter = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
+            $scope.processVariables = data[1];
+            console.log($scope.processVariables);
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
              *
-             * @param   Object  shape   shape of element
+             * @param   {Object}  shape   shape of element
              * TODO: refactor out into seperate function
              */
             elementRegistry.forEach(function(shape) {
               var element = processDiagram.bpmnElements[shape.businessObject.id];
-              for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                if ($scope.processActivityStatistics.data[i].id == element.id) {
-                  var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                  var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                  var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                  var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
-
-                  composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
+              for (var i = 0; i < $scope.executionSequenceCounter.data.length; i++) {
+                if ($scope.executionSequenceCounter.data[i].activityId == element.id) {
+                  var executionSequenceCounter = $scope.executionSequenceCounter.data[i].sequenceCounter;
+                  composeHTML(executionSequenceCounter, element.id, shape);
                   break;
                 }
               }
@@ -148,7 +135,7 @@ define(['angular'], function(angular) {
     });
   }];
 
-  var ngModule = angular.module('cockpit.plugin.centaur.diagram.duration', []);
+  var ngModule = angular.module('cockpit.plugin.centaur.diagram.counter', []);
 
   ngModule.config(Configuration);
 

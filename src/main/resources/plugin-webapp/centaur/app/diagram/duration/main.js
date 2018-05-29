@@ -43,8 +43,8 @@ define(['angular'], function(angular) {
 
           /**
            * Converts variable to String.
-           * @param   Number  toConvert   Variable to be converted.
-           * @return  String              String representation of toConvert
+           * @param   {Number}  toConvert   Variable to be converted.
+           * @return  {String}              String representation of toConvert
            * TODO: make into service
            */
           function converToString(toConvert) {
@@ -53,9 +53,9 @@ define(['angular'], function(angular) {
 
           /**
            * Adds text to specified diagram element.
-           * @param   Number  elementId   ID of diagram element
-           * @param   Number  text        The text to be displayed
-           * @param   Object  shape       Shape of the element
+           * @param   {Number}  elementId   ID of diagram element
+           * @param   {Number}  text        The text to be displayed
+           * @param   {Object}  shape       Shape of the element
            * TODO: make into service
            */
           function addTextToId(elementId, text, shape) {
@@ -85,8 +85,8 @@ define(['angular'], function(angular) {
            * The database only keeps track of the starting time of each
            * process. So we calculate the current duration of each process.
            *
-           * @param   Number  instance    Instance of a process
-           * @param   Number  elementId   ID of diagram element that represents instance
+           * @param   {Number}  instance    Instance of a process
+           * @param   {Number}  elementId   ID of diagram element that represents instance
            */
           function calculateCurDuration(instance, elementID) {
             for (var j = 0; j < instance.length; j++) {
@@ -109,8 +109,8 @@ define(['angular'], function(angular) {
            * milli senconds into following intervals: seconds, minutes,
            * hours, days, weeks to make it easier to read.
            *
-           * @param   Number  duration      duration of process
-           * @return  String  durationHTML  duration as String
+           * @param   {Number}  duration      duration of process
+           * @return  {String}  durationHTML  duration as String
            */
           function checkTimes(duration) {
             if (duration > 1000 && duration < 60001) {
@@ -142,12 +142,12 @@ define(['angular'], function(angular) {
            * so that the duration varables are displayed next to the
            * process diagram element.
            *
-           * @param   Number  minDuration   minimal duration of process
-           * @param   Number  avgDuration   average duration of process
-           * @param   Number  maxDuration   maximal duration of process
-           * @param   Number  curDuration   current duration of process
-           * @param   Number  elementID     ID of element
-           * @param   Object  shape         Shape of the element
+           * @param   {Number}  minDuration   minimal duration of process
+           * @param   {Number}  avgDuration   average duration of process
+           * @param   {Number}  maxDuration   maximal duration of process
+           * @param   {Number}  curDuration   current duration of process
+           * @param   {Number}  elementID     ID of element
+           * @param   {Object}  shape         Shape of the element
            */
           function composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
             if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
@@ -183,17 +183,17 @@ define(['angular'], function(angular) {
            * Database quersies take a relative long time. So we have to
            * wait until the data is retrieved before we can continue.
            *
-           * @param   Object  data   minimal duration of process
+           * @param   {Object}  data   minimal duration of process
            */
           $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function(data) {
             $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.instanceStartTime = data[1];
-
+            console.log($scope.instanceStartTime);
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
              *
-             * @param   Object  shape   shape of element
+             * @param   {Object}  shape   shape of element
              * TODO: refactor out into seperate function
              */
             elementRegistry.forEach(function(shape) {
