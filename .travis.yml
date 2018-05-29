@@ -16,3 +16,8 @@ matrix:
       - npm install
       - cd src
       script: mocha --recursive -r jsdom-global/register
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    branch: deploy
