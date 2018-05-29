@@ -10,7 +10,7 @@ matrix:
           - /.*/
     - language: node_js
       node_js:
-        - "4.1"
+        - "10.2"
       before_install:
       - npm install -g mocha sinon chai jsdom jsdom-global
       - cd src
