@@ -4,7 +4,7 @@
   "description": "A custom plugin for the Camunda cockpit",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive -r jsdom-global/register"
   },
   "repository": {
     "type": "git",
