@@ -108,10 +108,9 @@ define(['angular'], function(angular) {
            *
            * @param   {Object}  data   minimal duration of process
            */
-          $q.all([$scope.executionSequenceCounter_temp]).then(function(data) {
+          $q.all([$scope.executionSequenceCounter_temp, $scope.processVariables_temp]).then(function(data) {
             $scope.executionSequenceCounter = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.processVariables = data[1];
-            console.log($scope.processVariables);
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
