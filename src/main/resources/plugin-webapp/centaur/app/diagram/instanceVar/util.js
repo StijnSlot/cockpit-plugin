@@ -99,34 +99,65 @@ define({
     /**
      * Creates DOM element from data and options settings
      *
-     * @param Uri       uniform resource identifier to create link
-     * @param data      variable data from GET request
+     * @param Uri           uniform resource identifier to create link
+     * @param data          variable data from GET request
+     * @param variableNum   number of variables to be displayed without hovering
      * @returns {object}
      */
-    createDOMElement: function (Uri, data) {
+    createDOMElement: function (Uri, data, variableNum) {
 
         var html = document.createElement('ul');
-        html.className = "variableText";
+        html.className = "variableTextSmall";
 
-        // loop over all variables to add to html string
-        data.forEach(function(variable) {
+        var act_id;
+
+        var sepCounter = 0;
+
+        for(var i = 0; i < data.length; i++) {
+
+            var variable = data[i];
+
+            // creates separator, list item with div inside
+            // only if no dots should be placed, and act_id changes
+            if(i + sepCounter !== variableNum && act_id !== undefined && act_id !== variable.act_id) {
+                var li = document.createElement('li');
+                var separator = document.createElement('div');
+                separator.className = "separator";
+                li.appendChild(separator);
+                html.appendChild(li);
+                sepCounter++;
+            }
+
+            // places list item which contains three dots
+            if(i + sepCounter === variableNum) {
+                var dots = document.createElement('li');
+                dots.className = "dots";
+                for(var j = 0; j < 3; j++) {
+                    var dot = document.createElement('span');
+                    dot.className = "dot";
+                    dots.appendChild(dot);
+                }
+                html.appendChild(dots);
+            }
+            act_id = variable.act_id;
 
             var variableHtml = document.createElement('li');
 
-            var innerHtml = "<b>" + variable.name + ":</b> " + variable.data;
+            var variableName = "<b>" + variable.name + "</b>: ";
+            var variableData = variable.data;
 
+            // adds clickable link for files
             if(variable.clickable) {
                 var link = document.createElement('a');
                 link.setAttribute('href', Uri.appUri("engine://engine/:engine/variable-instance/" + variable.id + "/data"));
-                link.innerHTML = innerHtml;
-
-                variableHtml.appendChild(link);
-            } else {
-                variableHtml.innerHTML = innerHtml;
+                link.innerHTML = variable.data;
+                variableData = link.outerHTML;
             }
 
+            variableHtml.innerHTML = variableName + variableData;
+
             html.appendChild(variableHtml);
-        });
+        }//);
 
         return html;
     },
@@ -165,7 +196,7 @@ define({
         if (data.type === "boolean") dataString = (data.long_ === 1 ? "true" : "false");
 
         // return object with name, the data and whether or not it is a file (clickable)
-        return {id: data.id, name: String(data.name), data: dataString, clickable: clickable};
+        return {act_id: data.act_id, id: data.id, name: String(data.name), data: dataString, clickable: clickable};
     },
 
     /**

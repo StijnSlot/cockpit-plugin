@@ -1,6 +1,6 @@
 'use strict';
 
-define(['require', 'angular', './util'], function(require, angular) {
+define(['require', 'angular', './util', '../../bottomTabs/options/util'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
@@ -9,10 +9,17 @@ define(['require', 'angular', './util'], function(require, angular) {
 
     /**
      * retrieve options util, containing getNumValue function
+<<<<<<< HEAD
+=======
      */
     var optionsUtil = require('../../bottomTabs/options/util');
 
-     /**
+    /**
+     * variable containing all ids of overlays created here
+     */
+    var optionsUtil = require('../../bottomTabs/options/util');
+
+    /**
      * Overlay object that contains the elements put on the diagram
      */
     var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
