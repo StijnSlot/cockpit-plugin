@@ -2,7 +2,7 @@ define({
     /**
      * variable containing all ids of overlays created here
      */
-    overlayIds: [],
+    overlayActivityIds: {},
 
     /**
      * contains user options for number of variables to show
@@ -21,8 +21,7 @@ define({
      * @param util          object of this class, to call its functions and variables
      */
     addActivityElements: function($window, $http, elementRegistry, processDiagram, overlays, Uri, util) {
-        // clear any current overlays displayed
-        util.clearOverlays(overlays, util.overlayIds);
+
 
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
@@ -36,10 +35,23 @@ define({
                 "&actId=" + element.id))
                 .success(function (data) {
 
+                    // clear any current overlays displayed
+                    util.clearOverlays(overlays, util.overlayActivityIds, element.id);
+
+                    util.overlayActivityIds[element.id] = [];
+
+                    // transform each variable
+                    data = data.map(util.transformVariableData);
+
+                    // remove all unselected variables
+                    data = data.filter(function(x) {
+                        return util.isSelectedVariable($window.localStorage, procDefId + "_var_" + x.name)
+                    });
+
                     // if data is not empty, add element
-                    if(data !== undefined && data.length) {
+                    if(data !== undefined && data.length && util.numValue > 0) {
                         var newOverlayId = util.addElement($window, overlays, Uri, element, data, util);
-                        util.overlayIds.push(newOverlayId);
+                        util.overlayActivityIds[element.id].push(newOverlayId);
                     }
                 });
         });
@@ -56,13 +68,6 @@ define({
      * @param util          object of this class, to call its functions and variables
      */
     addElement: function($window, overlays, Uri,  element, data, util) {
-        // transform each variable
-        data = data.map(util.transformVariableData);
-
-        // remove all unselected variables
-        data = data.filter(function(x) {
-            return util.isSelectedVariable($window.localStorage, procDefId + "_var_" + x.name)
-        });
 
         // create DOM element from data
         var html = util.createDOMElement(Uri, data, util.numValue);
@@ -224,13 +229,16 @@ define({
     /**
      * Clears all overlays whose id is stored in overlayIds and clears overlayIds
      *
-     * @param overlays      overlays object containing all diagram overlays
-     * @param overlayIds    ids of overlays which should be removed
+     * @param overlays              overlays object containing all diagram overlays
+     * @param overlayActivityIds    ids of overlays which should be removed
+     * @param id
      */
-    clearOverlays: function (overlays, overlayIds) {
-        overlayIds.forEach(function (element) {
-            overlays.remove(element);
-        });
-        overlayIds.length = 0;
+    clearOverlays: function (overlays, overlayActivityIds, id) {
+        if(overlayActivityIds[id] !== undefined) {
+            overlayActivityIds[id].forEach(function (element) {
+                overlays.remove(element);
+            });
+        }
+        overlayActivityIds[id] = [];
     }
 });

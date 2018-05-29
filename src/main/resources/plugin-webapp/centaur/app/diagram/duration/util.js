@@ -49,9 +49,4 @@ define({
     }
     return durationHTML;
     }
-
-
-
-
-
-}
+});

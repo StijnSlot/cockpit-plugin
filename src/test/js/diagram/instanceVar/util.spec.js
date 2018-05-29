@@ -150,7 +150,7 @@ describe('addTextElement tests', function() {
     });
 });
 
-describe('clearOverlays tests', function() {
+/*describe('clearOverlays tests', function() {
     var spy, overlays;
     var overlayIds = [1, 2, -3];
 
@@ -170,4 +170,4 @@ describe('clearOverlays tests', function() {
     it('should return overlayIds empty', function() {
         expect(overlayIds).to.be.empty;
     })
-});
+});*/
