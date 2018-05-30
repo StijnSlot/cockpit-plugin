@@ -49,50 +49,64 @@ describe('check times conversion test', function () {
 
     var spy;
     var duration;
+    var choice;
     describe('check duration format is correct', function () {
         beforeEach(function() {
             spy = sinon.spy();
         });
 
         it('test for duration to be in seconds', function () {
-            duration = 2000;
-            expect(util.checkTimes(duration)).to.eql('2 seconds');
-            duration = 60000;
-            expect(util.checkTimes(duration)).to.eql('60 seconds');
-            duration = 61000;
-            expect(util.checkTimes(duration)).to.not.eql('61 seconds');
+            duration = 1000*2;
+            choice = 'seconds';
+            expect(util.convertTimes(duration, choice)).to.eql(2);
+            duration = 1000*60;
+            choice = 'seconds';
+            expect(util.convertTimes(duration, choice)).to.eql(60);
+            duration = 1000*145;
+            choice = 'seconds';
+            expect(util.convertTimes(duration, choice)).to.eql(145);
         });
 
         it('test for duration to be in minutes', function(){
             duration = 60001;
-            expect(util.checkTimes(duration)).to.eql('1 minutes');
-            duration = 1440000;
-            expect(util.checkTimes(duration)).to.eql('24 minutes');
-            duration = 3600001;
-            expect(util.checkTimes(duration)).to.not.eql('60 minutes');
+            choice = 'minutes';
+            expect(util.convertTimes(duration, choice)).to.eql(1);
+            duration = 60000*24;
+            choice = 'minutes';
+            expect(util.convertTimes(duration, choice)).to.eql(24);
+            duration = 60000*124;
+            choice = 'minutes';
+            expect(util.convertTimes(duration, choice)).to.eql(124);
         });
 
         it('test for duration to be in hours', function(){
             duration = 3600001;
-            expect(util.checkTimes(duration)).to.eql('1 hours');
-            duration = 86400000;
-            expect(util.checkTimes(duration)).to.eql('24 hours');
+            choice = 'hours';
+            expect(util.convertTimes(duration, choice)).to.eql(1);
+            duration = 3600000*75;
+            choice = 'hours';
+            expect(util.convertTimes(duration, choice)).to.eql(75);
         });
 
         it('test for duration to be in days', function(){
             duration = 86400001;
-            expect(util.checkTimes(duration)).to.eql('1 days');
-            duration = 604800000;
-            expect(util.checkTimes(duration)).to.eql('7 days');
+            choice = 'days';
+            expect(util.convertTimes(duration, choice)).to.eql(1);
+            duration = 86400001*10;
+            choice = 'days';
+            expect(util.convertTimes(duration, choice)).to.eql(10);
         });
 
         it('test for duration to be in weeks', function(){
             duration = 604800001;
-            expect(util.checkTimes(duration)).to.eql('1 weeks');
-            duration = 604800001*2;
-            expect(util.checkTimes(duration)).to.eql('2 weeks');
-            duration = 604800001*5;
-            expect(util.checkTimes(duration)).to.eql('5 weeks');
+            choice = 'weeks';
+            expect(util.convertTimes(duration, choice)).to.eql(1);
+            duration = 604800000*2;
+            choice = 'weeks';
+            expect(util.convertTimes(duration, choice)).to.eql(2);
+            duration = 604800000*5;
+            choice = 'weeks';
+            expect(util.convertTimes(duration, choice)).to.eql(5);
 
         });
 
@@ -163,19 +177,56 @@ describe('check checkIfCurValid', function () {
 
 describe('check createHTML', function () {
     var spy;
-    var curDurationHTML, avgDurationHTML, maxDurationHTML, returnValue;
+    var elementID;
+    var returnValue;
 
     describe('check create HTML', function () {
         beforeEach(function () {
             spy = sinon.spy();
-            curDurationHTML = '6000';
-            avgDurationHTML = '4200';
-            maxDurationHTML = '10000';
+            elementID = 'thisIsAnElement'
 
-            returnValue = util.createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
+            returnValue = util.createHTML(elementID);
         });
         it('check if returns correct values', function () {
-            expect(returnValue).to.eql('<div class="durationText"> Cur: 6000 <br> Avg: 4200 <br> Max: 10000</div>');
+            expect(returnValue).to.eql('<div class="bullet-duration-thisIsAnElement"> </div>');
+        });
+
+    });
+
+
+});
+
+describe('check if current duration is bigger or equal to the maximum duration', function () {
+    var spy;
+    var curDuration;
+    var maxDuration;
+    var returnValue;
+
+    describe('check if cur bigger max', function () {
+        beforeEach(function () {
+            spy = sinon.spy();
+            
+        });
+
+        it('check if returns correct values', function () {
+            curDuration = 1000;
+            maxDuration = 1000;
+            returnValue = util.checkIfCurBiggerMax(curDuration, maxDuration);
+            expect(returnValue).to.eql(1000);
+        });
+
+        it('check if returns correct values', function () {
+            curDuration = 1200;
+            maxDuration = 1000;
+            returnValue = util.checkIfCurBiggerMax(curDuration, maxDuration);
+            expect(returnValue).to.eql(1000);
+        });
+
+        it('check if returns correct values', function () {
+            curDuration = 1000;
+            maxDuration = 1300;
+            returnValue = util.checkIfCurBiggerMax(curDuration, maxDuration);
+            expect(returnValue).to.eql(1000);
         });
 
     });
