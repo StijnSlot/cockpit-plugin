@@ -10,7 +10,7 @@ define({
      * @param   Number  instance    Instance of a process
      * @param   Number  elementId   ID of diagram element that represents instance
      */
-    calculateCurDuration: function(instance, elementID) {
+    calculateCurDuration: function (instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
                 var startTime = Date.parse(instance[j].startTime);
@@ -34,7 +34,7 @@ define({
      * @param   Number  duration      duration of process
      * @return  String  durationHTML  duration as String
      */
-    checkTimes: function(duration) {
+    checkTimes: function (duration) {
         if (duration > 1000 && duration < 60001) {
             var durationHTML = (Math.round(duration / 1000 * 10) / 10).toString() + ' seconds';
         } else if (duration > 60000 && duration < 3600001) {
@@ -58,7 +58,7 @@ define({
      * @param   Object  shape       Shape of the element
      * TODO: make into service
      */
-    addTextToId: function(elementId, text, shape, overlays) {
+    addTextToId: function (elementId, text, shape, overlays) {
 
         var $overlayHtml =
             $(text)
@@ -81,6 +81,17 @@ define({
     },
 
     /**
+     * 
+     */
+    checkConditions: function (avgDuration, maxDuration) {
+        if (avgDuration != null && maxDuration != null && avgDuration != '0') {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
      * Combines all information of given process into single
      * String variable which is added to its diagram element.
      *
@@ -100,38 +111,29 @@ define({
      * @param   Number  elementID     ID of element
      * @param   Object  shape         Shape of the element
      */
-composeHTML: function( avgDuration, maxDuration, curDuration, elementID, shape, util, overlays) {
+    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape) {
         if (util.checkConditions(avgDuration, maxDuration)) {
             var avgDurationHTML = util.checkTimes(avgDuration);
             var maxDurationHTML = util.checkTimes(maxDuration);
-            var curDurationHTML = util.checkIfCurValid(curDuration);
+            var curDurationHTML = util.checkIfCurValid(util, curDuration);
             var htmlText = util.createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
             util.addTextToId(elementID, htmlText, shape, overlays);
         }
-},
+    },
 
-/**
- * 
- */
-checkConditions: function(avgDuration, maxDuration) {
-    if (avgDuration != null && maxDuration != null && avgDuration != '0') {
-        return true;
-    } else {
-        return false;
+
+
+    checkIfCurValid: function (util, curDuration) {
+        if (curDuration != null) {
+            return util.checkTimes(curDuration);
+        } else {
+            return '-';
+        }
+    },
+
+    createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
+        return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
     }
-},
-
-checkIfCurValid: function (curDuration) {
-    if (curDuration != null) {
-        return util.checkTimes(curDuration);
-    } else {
-        return '-';
-    }
-},
-
-createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
-    return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
-}
 
 
 
