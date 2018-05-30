@@ -1,8 +1,18 @@
-language: java
-jdk: oraclejdk8
-cache:
-  directories:
-  - $HOME/.m2
-branches:
-  only:
-  - /.*/
+matrix:
+  include:
+    - language: java
+      jdk: oraclejdk8
+      cache:
+        directories:
+          - $HOME/.m2
+      branches:
+        only:
+          - /.*/
+    - language: node_js
+      node_js:
+        - "10.2"
+      before_install:
+      - npm install -g mocha sinon chai jsdom jsdom-global
+      - npm install
+      - cd src
+      script: mocha --recursive -r jsdom-global/register
