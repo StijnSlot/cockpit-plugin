@@ -101,18 +101,33 @@ define({
      * @param   Object  shape         Shape of the element
      */
 composeHTML: function( avgDuration, maxDuration, curDuration, elementID, shape, util, overlays) {
-        if (avgDuration != null && maxDuration != null && avgDuration != '0') {
+        if (checkConditions(avgDuration, maxDuration)) {
             var avgDurationHTML = util.checkTimes(avgDuration);
             var maxDurationHTML = util.checkTimes(maxDuration);
-            if (curDuration != null) {
-                var curDurationHTML = util.checkTimes(curDuration);
-            } else {
-                var curDurationHTML = '-';
-            }
-
-            var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
+            var curDurationHTML = util.checkIfCurValid(curDuration);
+            var htmlText = createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
             util.addTextToId(elementID, htmlText, shape, overlays);
         }
+},
+
+checkConditions: function(avgDuration, maxDuration) {
+    if (avgDuration != null && maxDuration != null && avgDuration != '0') {
+        return true;
+    } else {
+        return false;
+    }
+},
+
+checkIfCurValid: function (curDuration) {
+    if (curDuration != null) {
+        return util.checkTimes(curDuration);
+    } else {
+        return '-';
+    }
+},
+
+createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
+    return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
 }
 
 
