@@ -1,42 +1,5 @@
 define({
     /**
-     * Converts variable to String.
-     * @param   Number  toConvert   Variable to be converted.
-     * @return  String              String representation of toConvert
-     */
-    converToString: function(toConvert) {
-        return toConvert.toString();
-    },
-
-    /**
-     * Adds text to specified diagram element.
-     * @param   Overlay overlays    collection of overlays to add to
-     * @param   String  elementId   ID of diagram element
-     * @param   Number  text        The text to be displayed
-     * @param   Object  shape       Shape of the element
-     */
-    addHTMLToId: function(overlays, elementId, text, shape) {
-        var $overlayHtml =
-            $(text)
-                .css({
-                    width: 'auto',
-                    height: 'auto'
-                });
-
-        overlays.add(elementId, {
-            position: {
-                top: -40,
-                left: 30
-            },
-            show: {
-                minZoom: -Infinity,
-                maxZoom: +Infinity
-            },
-            html: $overlayHtml
-        });
-    },
-
-    /**
      * Calculates the current duration of a instance of a process.
      *
      * The database only keeps track of the starting time of each
@@ -56,62 +19,6 @@ define({
             }
         }
         return null;
-    },
-
-    /**
-     * Decides which time unit to use.
-     *
-     * The database keeps track of the duration in milli seconds.
-     * Since a discision has to be made to show in the bulletgraph,
-     * this determines which time unit (seconds, minutes,
-     * hours, days, weeks) should be used.
-     *
-     * @param   Number  time      duration of process
-     * @return  String            time unit choice
-     */
-    checkTimeUnit: function(time) {
-        if (time > 1000 && time < 60001) {
-            return 'seconds';
-        } else if (time > 60000 && time < 1440001) {
-            return 'minutes';
-        } else if (time > 1440000 && time < 34560001) {
-            return 'hours';
-        } else if (time > 34560000 && time < 241920001) {
-            return 'days';
-        } else if (time > 241920000) {
-            return 'weeks';
-        } else {
-            return 'ms';
-        }
-    },
-
-    /**
-     * Convert the duration into the chosen time unit.
-     *
-     * The database keeps track of the duration in milli seconds.
-     * This is difficult to read in the diagram, so we convert the
-     * milli senconds into following intervals: seconds, minutes,
-     * hours, days, weeks to make it easier to read. The choice
-     * determines which time unit to use.
-     *
-     * @param   Number  duration      duration of process
-     * @param   String  choice        choice of time unit
-     * @return  Number                duration as Integer
-     */
-    convertTimes: function(duration, choice) {
-        if (choice == 'seconds') {
-            return (Math.round(duration / 1000 * 10) / 10);
-        } else if (choice == 'minutes') {
-            return (Math.round(duration / 60000 * 10) / 10);
-        } else if (choice == 'hours') {
-            return (Math.round(duration / 1440000 * 10) / 10);
-        } else if (choice == 'days') {
-            return (Math.round(duration / 34560000 * 10) / 10);
-        } else if (choice == 'weeks') {
-            return (Math.round(duration / 241920000 * 10) / 10);
-        } else {
-            return duration;
-        }
     },
 
     /**
@@ -173,12 +80,59 @@ define({
     },
 
     /**
-     * Creates an HTML line with has a class that includes the elementID
-     * @param   String  elementID   Variable to be converted.
-     * @return  String              A string which represents an HTML line which will be added later
+     * Decides which time unit to use.
+     *
+     * The database keeps track of the duration in milli seconds.
+     * Since a discision has to be made to show in the bulletgraph,
+     * this determines which time unit (seconds, minutes,
+     * hours, days, weeks) should be used.
+     *
+     * @param   Number  time      duration of process
+     * @return  String            time unit choice
      */
-    createHTML: function(elementID) {
-        return '<div class="bullet-duration-' + elementID + '"> </div>';
+    checkTimeUnit: function(time) {
+        if (time > 1000 && time < 60001) {
+            return 'seconds';
+        } else if (time > 60000 && time < 1440001) {
+            return 'minutes';
+        } else if (time > 1440000 && time < 34560001) {
+            return 'hours';
+        } else if (time > 34560000 && time < 241920001) {
+            return 'days';
+        } else if (time > 241920000) {
+            return 'weeks';
+        } else {
+            return 'ms';
+        }
+    },
+
+    /**
+     * Convert the duration into the chosen time unit.
+     *
+     * The database keeps track of the duration in milli seconds.
+     * This is difficult to read in the diagram, so we convert the
+     * milli senconds into following intervals: seconds, minutes,
+     * hours, days, weeks to make it easier to read. The choice
+     * determines which time unit to use.
+     *
+     * @param   Number  duration      duration of process
+     * @param   String  choice        choice of time unit
+     * @return  Number                duration as Integer
+     */
+    convertTimes: function(duration, choice) {
+        if (choice == 'seconds') {
+            return (Math.round(duration / 1000 * 10) / 10);
+        } else if (choice == 'minutes') {
+            return (Math.round(duration / 60000 * 10) / 10);
+        } else if (choice == 'hours') {
+            return (Math.round(duration / 1440000 * 10) / 10);
+        } else if (choice == 'days') {
+            return (Math.round(duration / 34560000 * 10) / 10);
+        } else if (choice == 'weeks') {
+            return (Math.round(duration / 241920000 * 10) / 10);
+        } else {
+            return duration;
+        }
     },
 
     /**
@@ -203,18 +157,40 @@ define({
     },
 
     /**
-     * This function checks if the current duration is greater or equal to the maximal duration
-     * since the bullet graph should not exceed the maximal duration.
-     * @param   Number  maxDuration   maximal duration of process
-     * @param   Number  curDuration   current duration of process
-     * @return  Number                either current duration or maximal duration
+     * Adds text to specified diagram element.
+     * @param   Overlay overlays    collection of overlays to add to
+     * @param   String  elementId   ID of diagram element
+     * @param   Number  text        The text to be displayed
+     * @param   Object  shape       Shape of the element
      */
-    checkIfCurBiggerMax: function(curDuration, maxDuration) {
-        if (curDuration >= maxDuration) {
-            return maxDuration;
-        } else {
-            return curDuration;
-        }
+    addHTMLToId: function(overlays, elementId, text, shape) {
+        var $overlayHtml =
+            $(text)
+                .css({
+                    width: 'auto',
+                    height: 'auto'
+                });
+
+        overlays.add(elementId, {
+            position: {
+                top: -40,
+                left: 30
+            },
+            show: {
+                minZoom: -Infinity,
+                maxZoom: +Infinity
+            },
+            html: $overlayHtml
+        });
+    },
+
+    /**
+     * Creates an HTML line with has a class that includes the elementID
+     * @param   String  elementID   Variable to be converted.
+     * @return  String              A string which represents an HTML line which will be added later
+     */
+    createHTML: function(elementID) {
+        return '<div class="bullet-duration-' + elementID + '"> </div>';
     },
 
     /**
@@ -264,5 +240,22 @@ define({
 
         var coloring = d3.select(cssClass).selectAll("rect.measure.s1")
             .attr("fill", colorBullet)
-    }   
+    },
+
+    /**
+     * This function checks if the current duration is greater or equal to the maximal duration
+     * since the bullet graph should not exceed the maximal duration.
+     * @param   Number  maxDuration   maximal duration of process
+     * @param   Number  curDuration   current duration of process
+     * @return  Number                either current duration or maximal duration
+     */
+    checkIfCurBiggerMax: function(curDuration, maxDuration) {
+        if (curDuration >= maxDuration) {
+            return maxDuration;
+        } else {
+            return curDuration;
+        }
+    }
+
+    
 });
