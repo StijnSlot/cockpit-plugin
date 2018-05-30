@@ -36,14 +36,14 @@ define({
     checkTimes: function(duration) {
         if (duration > 1000 && duration < 60001) {
             var durationHTML = ((Math.round(duration / 1000 * 10) / 10).toString()) + ' seconds';
-        } else if (duration > 60000 && duration < 1440001) {
-            var durationHTML = ((Math.round(duration / 6000 * 10) / 10).toString()) + ' minutes';
-        } else if (duration > 1440000 && duration < 34560001) {
-            var durationHTML = ((Math.round(duration / 1440000 * 10) / 10).toString()) + ' hours';
-        } else if (duration > 34560000 && duration < 241920001) {
-            var durationHTML = ((Math.round(duration / 34560000 * 10) / 10).toString()) + ' days';
-        } else if (duration > 241920000) {
-            var durationHTML = ((Math.round(duration / 241920000 * 10) / 10).toString()) + ' weeks';
+        } else if (duration > 60000 && duration < 3600001) {
+            var durationHTML = ((Math.round(duration / 60000 * 10) / 10).toString()) + ' minutes';
+        } else if (duration > 3600000 && duration < 86400001) {
+            var durationHTML = ((Math.round(duration / 3600000 * 10) / 10).toString()) + ' hours';
+        } else if (duration > 86400000 && duration < 604800001) {
+            var durationHTML = ((Math.round(duration / 86400000 * 10) / 10).toString()) + ' days';
+        } else if (duration > 604800000) {
+            var durationHTML = ((Math.round(duration / 604800001 * 10) / 10).toString()) + ' weeks';
         } else {
             var durationHTML = (duration).toString() + ' ms';
         }
@@ -68,8 +68,8 @@ define({
                 minZoom: -Infinity,
                 maxZoom: +Infinity
             },
-            html: $overlayHtml
         });
+        return overlays;
     },
 
     /**
@@ -94,17 +94,13 @@ define({
      */
     composeHTML: function(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
     if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
-        var minDurationHTML = checkTimes(minDuration);
-        var avgDurationHTML = checkTimes(avgDuration);
-        var maxDurationHTML = checkTimes(maxDuration);
+
         if (curDuration != null) {
-            var curDurationHTML = checkTimes(curDuration);
+           // var curDurationHTML = checkTimes(curDuration);
         } else {
             var curDurationHTML = '-';
         }
-
-        var htmlText = '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
-        return minDurationHTML;
+        return curDurationHTML;
     }
 }
 
