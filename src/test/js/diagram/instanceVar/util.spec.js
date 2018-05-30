@@ -168,6 +168,8 @@ describe('clearOverlays tests', function() {
     });
 
     it('should return overlayIds empty', function() {
-        expect(overlayIds).to.be.empty;
+        expect(overlayIds['a']).to.be.empty;
+        expect(overlayIds['b']).to.be.empty;
+        expect(overlayIds['c']).to.be.not.empty;
     });
 });
