@@ -23,12 +23,10 @@ it('should find duration util file', function() {
 
 describe('calculate current duration test', function(){
 
-    var spy;
     var instance;
     var elementID;
     describe('check if time difference is correct', function () {
         beforeEach(function () {
-            spy = sinon.spy();
             instance = [{activityId: 12, startTime: 0}, {activityId:14, startTime: 2}];
         });
 
@@ -47,12 +45,8 @@ describe('calculate current duration test', function(){
 
 describe('check times conversion test', function () {
 
-    var spy;
     var duration;
     describe('check duration format is correct', function () {
-        beforeEach(function() {
-            spy = sinon.spy();
-        });
 
         it('test for duration to be in seconds', function () {
             duration = 2000;
@@ -102,13 +96,11 @@ describe('check times conversion test', function () {
 
 
 describe('check Conditions', function () {
-    var spy;
     var avgDuration, maxDuration;
     var returnValue;
     describe('check if conditions are checked correctly', function () {
 
        beforeEach(function () {
-           spy = sinon.spy();
            avgDuration = '4';
            maxDuration = '12';
            returnValue = util.checkConditions(avgDuration, maxDuration);
@@ -139,12 +131,10 @@ describe('check Conditions', function () {
 });
 
 describe('check checkIfCurValid', function () {
-    var spy;
     var curDuration;
     var returnValue;
     describe('check if curDuration has the right value', function () {
         beforeEach(function () {
-            spy = sinon.spy();
             curDuration = 6000;
             returnValue = util.checkIfCurValid(util, curDuration);
         });
@@ -162,12 +152,10 @@ describe('check checkIfCurValid', function () {
 });
 
 describe('check createHTML', function () {
-    var spy;
     var curDurationHTML, avgDurationHTML, maxDurationHTML, returnValue;
 
     describe('check create HTML', function () {
         beforeEach(function () {
-            spy = sinon.spy();
             curDurationHTML = '6000';
             avgDurationHTML = '4200';
             maxDurationHTML = '10000';
