@@ -101,15 +101,18 @@ define({
      * @param   Object  shape         Shape of the element
      */
 composeHTML: function( avgDuration, maxDuration, curDuration, elementID, shape, util, overlays) {
-        if (checkConditions(avgDuration, maxDuration)) {
+        if (util.checkConditions(avgDuration, maxDuration)) {
             var avgDurationHTML = util.checkTimes(avgDuration);
             var maxDurationHTML = util.checkTimes(maxDuration);
             var curDurationHTML = util.checkIfCurValid(curDuration);
-            var htmlText = createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
+            var htmlText = util.createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
             util.addTextToId(elementID, htmlText, shape, overlays);
         }
 },
 
+/**
+ * 
+ */
 checkConditions: function(avgDuration, maxDuration) {
     if (avgDuration != null && maxDuration != null && avgDuration != '0') {
         return true;
