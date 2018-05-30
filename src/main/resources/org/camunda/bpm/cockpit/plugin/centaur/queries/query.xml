@@ -20,13 +20,14 @@
   </resultMap>
 
   <resultMap id="instanceVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceVariablesDto">
+    <result property="act_id" column="ACT_ID_" jdbcType="VARCHAR" />
+    <result property="id" column="VAR_ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="type" column="TYPE_" jdbcType="VARCHAR" />
     <result property="double_" column="DOUBLE_" jdbcType="DOUBLE" />
     <result property="long_" column="LONG_" jdbcType="BIGINT" />
     <result property="text" column="TEXT_" jdbcType="VARCHAR" />
     <result property="text2" column="TEXT2_" jdbcType="VARCHAR" />
-  <result property="bytes" column="BYTES_" jdbcType="VARBINARY" />
   </resultMap>
 
   <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceStartTimeDto">
@@ -35,9 +36,20 @@
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <resultMap id="ExecutionSequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.ExecutionSequenceCounterDto">
+    <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
+    <result property="sequenceCounter" column="SEQUENCE_COUNTER_" jdbcType="INTEGER" />
+  </resultMap>
+
   <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessVariablesDto">
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
   </resultMap>
+
+  <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
+    SELECT ID_, ACT_ID_, SEQUENCE_COUNTER_
+    FROM ACT_RU_EXECUTION
+  </select>
 
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">
     SELECT d.ID_, d.NAME_, COUNT(e.PROC_INST_ID_) INSTANCES_,
@@ -61,13 +73,13 @@
   </select>
 
   <select id="selectInstanceVariables" resultMap="instanceVariables" parameterType="java.util.Map">
-    SELECT a.NAME_, a.TYPE_, a.DOUBLE_, a.LONG_, a.TEXT_, a.TEXT2_, b.BYTES_
-    FROM ACT_RU_VARIABLE a
-      LEFT JOIN ACT_GE_BYTEARRAY b
-        ON a.BYTEARRAY_ID_ = b.ID_
-    WHERE (a.EXECUTION_ID_ = #{parameter.executionId} OR #{parameter.executionId} = '')
-      AND (a.CASE_EXECUTION_ID_ = #{parameter.caseExecutionId} OR #{parameter.caseExecutionId} = '')
-      AND (a.TASK_ID_ = #{parameter.taskId} OR #{parameter.taskId} = '')
+    SELECT a.ID_ ACT_ID_, b.ID_ VAR_ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_
+    FROM ACT_RU_EXECUTION a
+      JOIN ACT_RU_VARIABLE b
+        ON a.ID_ = b.EXECUTION_ID_
+    WHERE a.PROC_DEF_ID_ = #{parameter.procDefId}
+      AND a.ACT_ID_ = #{parameter.actId}
+    ORDER BY a.ID_
   </select>
 
   <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">
