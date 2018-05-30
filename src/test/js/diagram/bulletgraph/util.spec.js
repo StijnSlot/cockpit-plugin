@@ -101,36 +101,38 @@ describe('check times conversion test', function () {
 });
 
 
-describe('check Conditions', function () {
+describe('check Time Unit', function () {
     var spy;
-    var avgDuration, maxDuration;
-    var returnValue;
-    describe('check if conditions are checked correctly', function () {
+    var duration;
+    describe('check if time units are calculated correctly', function () {
 
        beforeEach(function () {
            spy = sinon.spy();
-           avgDuration = '4';
-           maxDuration = '12';
-           returnValue = util.checkConditions(avgDuration, maxDuration);
        });
 
-       it('test if condition is true when arguments are valid', function () {
-           expect(returnValue).to.eql(true);
+       it('test seconds', function () {
+           duration = 5000;
+           expect(util.checkTimeUnit(duration)).to.eql('seconds');
        });
 
-       it('test if condition is false when arguments are invalid', function(){
-           maxDuration = null;
-           expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+       it('test minutes', function(){
+           duration = 100000;
+           expect(util.checkTimeUnit(duration)).to.eql('minutes');
         });
 
-        it('test if condition is false when arguments are invalid', function(){
-            avgDuration = null;
-            expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+        it('test hours', function(){
+            duration = 3700001
+            expect(util.checkTimeUnit(duration)).to.eql('hours');
         });
 
-        it('test if condition is false when arguments are invalid', function(){
-            avgDuration = '0';
-            expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+        it('test days', function(){
+            duration = 90400001;
+            expect(util.checkTimeUnit(duration)).to.eql('days');
+        });
+
+        it('test weeks', function(){
+            duration = 605800001;
+                expect(util.checkTimeUnit(duration)).to.eql('weeks');
         });
 
     });

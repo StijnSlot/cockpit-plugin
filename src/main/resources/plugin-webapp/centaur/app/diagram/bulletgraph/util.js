@@ -93,13 +93,13 @@ define({
     checkTimeUnit: function(time) {
         if (time > 1000 && time < 60001) {
             return 'seconds';
-        } else if (time > 60000 && time < 1440001) {
+        } else if (time > 60000 && time < 3600001) {
             return 'minutes';
-        } else if (time > 1440000 && time < 34560001) {
+        } else if (time > 3600000 && time < 86400001) {
             return 'hours';
-        } else if (time > 34560000 && time < 241920001) {
+        } else if (time > 86400000 && time < 604800001) {
             return 'days';
-        } else if (time > 241920000) {
+        } else if (time > 604800000) {
             return 'weeks';
         } else {
             return 'ms';
@@ -125,11 +125,11 @@ define({
         } else if (choice == 'minutes') {
             return (Math.round(duration / 60000 * 10) / 10);
         } else if (choice == 'hours') {
-            return (Math.round(duration / 1440000 * 10) / 10);
+            return (Math.round(duration / 3600000 * 10) / 10);
         } else if (choice == 'days') {
-            return (Math.round(duration / 34560000 * 10) / 10);
+            return (Math.round(duration / 86400000 * 10) / 10);
         } else if (choice == 'weeks') {
-            return (Math.round(duration / 241920000 * 10) / 10);
+            return (Math.round(duration / 604800000 * 10) / 10);
         } else {
             return duration;
         }
