@@ -14,26 +14,77 @@ define({
      */
     procDefId: "",
 
+    procInstanceId: "",
+
     /**
-     * Adds overlay to the activity element
+     * Creates DOM element from data and options settings
      *
-     * @param $window       browser window containing localStorage
-     * @param overlays      collection of overlays to add to
-     * @param Uri           uniform resource identifier to create GET request
-     * @param element       activity element
-     * @param data          variable data
-     * @param util          object of this class, to call its functions and variables
+     * @returns {object}
      */
-    addElement: function($window, overlays, Uri,  element, data, util) {
+    createVariableList: function() {
 
-        // create DOM element from data
-        var html = util.createDOMElement(Uri, data, util.numValue);
+        var html = document.createElement('ul');
+        html.className = "variableTextSmall";
 
-        // hide children with index higher than numValue
-        $(html).children().each(function(i) {
-            if(i > util.numValue) $(this).css("display", "none");
-        });
+        return html;
+    },
 
+    addData: function(html, data, overlays, elementId, util, i, max) {
+        util.addVariables(html, data, util.numValue);
+        if(i > 0) util.addSeparator(html, util.numValue);
+
+        if(i === max && html.childElementCount) {
+            util.addHoverFunctionality(html, util.numValue);
+            var id = util.addTextElement(overlays, elementId, html);
+            util.overlayActivityIds[elementId].push(id);
+        }
+    },
+
+    addVariables: function(html, data, variableNum) {
+
+        for(var variable in data) {
+
+            // places list item which contains three dots
+            if(html.childElementCount === variableNum) {
+                var dots = document.createElement('li');
+                dots.className = "dots";
+                for(var j = 0; j < 3; j++) {
+                    var dot = document.createElement('span');
+                    dot.className = "dot";
+                    dots.appendChild(dot);
+                }
+                html.appendChild(dots);
+            }
+
+            var variableHtml = document.createElement('li');
+
+            var variableName = "<b>" + variable + ":</b> ";
+            var variableData;
+
+            // adds clickable link for files
+            if(data[variable].value !== null) {
+                variableData = data[variable].value;
+            } else {
+                variableData = data[variable].valueInfo.fileName;
+            }
+
+            variableHtml.innerHTML = variableName + variableData;
+
+            html.appendChild(variableHtml);
+        }
+    },
+
+    addSeparator: function(html, variableNum) {
+        if(html.childElementCount === variableNum) return;
+
+        var li = document.createElement('li');
+        var separator = document.createElement('div');
+        separator.className = "separator";
+        li.appendChild(separator);
+        html.appendChild(li);
+    },
+
+    addHoverFunctionality: function(html, variableNum) {
         // add hover functionality
         $(html).hover(function() {
             // change class to show all variables
@@ -50,88 +101,26 @@ define({
 
             // hide children with index higher than numValue
             $(html).children().each(function(i) {
-                if(i > util.numValue) $(this).css("display", "none");
+                if(i > variableNum) $(this).css("display", "none");
             });
         });
-
-        // create element from DOM element and add to overlay
-        return util.addTextElement(overlays, element.id, html);
-    },
-
-    /**
-     * Creates DOM element from data and options settings
-     *
-     * @param Uri           uniform resource identifier to create link
-     * @param data          variable data from GET request
-     * @param variableNum   number of variables to be displayed without hovering
-     * @returns {object}
-     */
-    createDOMElement: function (Uri, data, variableNum) {
-
-        var html = document.createElement('ul');
-        html.className = "variableTextSmall";
-
-        var act_id;
-
-        var sepCounter = 0;
-
-        for(var i = 0; i < data.length; i++) {
-
-            var variable = data[i];
-
-            // creates separator, list item with div inside
-            // only if no dots should be placed, and act_id changes
-            if(i + sepCounter !== variableNum && act_id !== undefined && act_id !== variable.act_id) {
-                var li = document.createElement('li');
-                var separator = document.createElement('div');
-                separator.className = "separator";
-                li.appendChild(separator);
-                html.appendChild(li);
-                sepCounter++;
-            }
-
-            // places list item which contains three dots
-            if(i + sepCounter === variableNum) {
-                var dots = document.createElement('li');
-                dots.className = "dots";
-                for(var j = 0; j < 3; j++) {
-                    var dot = document.createElement('span');
-                    dot.className = "dot";
-                    dots.appendChild(dot);
-                }
-                html.appendChild(dots);
-            }
-            act_id = variable.act_id;
-
-            var variableHtml = document.createElement('li');
-
-            var variableName = "<b>" + variable.name + "</b>: ";
-            var variableData = variable.data;
-
-            // adds clickable link for files
-            if(variable.clickable) {
-                var link = document.createElement('a');
-                link.setAttribute('href', Uri.appUri("engine://engine/:engine/variable-instance/" + variable.id + "/data"));
-                link.innerHTML = variable.data;
-                variableData = link.outerHTML;
-            }
-
-            variableHtml.innerHTML = variableName + variableData;
-
-            html.appendChild(variableHtml);
-        }//);
-
-        return html;
     },
 
     /**
      * Removes all variables which are not selected by the user
      *
      * @param localStorage  contains user options
-     * @param item          used for getting localStorage item option
+     * @param data          variables to filter
+     * @param prefix        prefix before variable name, for localStorage
      */
-    isSelectedVariable: function(localStorage, item) {
-        return localStorage.getItem(item) === 'true';
+    filterVariables: function(localStorage, data, prefix) {
+        var out = {};
+        for(var variable in data) {
+            if(localStorage.getItem(prefix + variable) === 'true') {
+                out[variable] = data[variable];
+            }
+        }
+        return out;
     },
 
     /**

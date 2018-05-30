@@ -71,7 +71,7 @@
 .variableTextFull {
     font-size: 7px;
     width: 150px;
-    height: 150px;
+    max-height: 150px;
     display: flex;
     flex-direction: column;
     list-style-type: none;

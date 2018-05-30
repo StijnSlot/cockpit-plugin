@@ -74,7 +74,7 @@ define(['require', 'angular', './util'], function(require, angular) {
      */
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
-            id: 'options',
+            id: 'processDefinition-options',
             label: 'Options',
             url: 'plugin://centaur/static/app/bottomTabs/options/tab.html',
             controller: DashboardController,
