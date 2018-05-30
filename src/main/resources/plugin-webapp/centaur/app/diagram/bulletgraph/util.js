@@ -72,7 +72,7 @@ define({
      * @return  Boolean               if condtions are satisfied or not
      */
     checkConditions: function(minDuration, avgDuration, maxDuration, curDuration) {
-        if (avgDuration != null && minDuration != null && maxDuration != null  && curDuration != null && avgDuration != '0') {
+        if (avgDuration != null && minDuration != null && maxDuration != null  && curDuration != null && avgDuration != 0) {
             return true;
         } else {
             return false;
