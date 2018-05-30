@@ -115,6 +115,7 @@ describe('addText to process ID test', function(){
             overlays = {add: spy};
             elementID = 12;
             shape = {width: 1, height: 2};
+            text = 'Some text';
 
             util.addTextToId(elementID, text, shape, overlays);
         });
@@ -132,7 +133,7 @@ describe('addText to process ID test', function(){
 describe('testing compose html', function(){
 
     var spy;
-    var minDuration, avgDuration, maxDuration, curDuration, elementID, shape;
+    var minDuration, avgDuration, maxDuration, curDuration, elementID, shape, overlays;
 
 
 
@@ -147,10 +148,12 @@ describe('testing compose html', function(){
             avgDuration = 3;
             curDuration = null;
             elementID = 45;
+            overlays = {add: spy};
+            util.composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, util, overlays)
         });
 
-        it('test if the minduration datatype is changed to string', function(){
-            expect( util.composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape)).to.eql('-');
+        it('test if the curDuration datatype is changed to string when its null', function(){
+            expect(curDuration).to.eql('-');
         });
 
     });

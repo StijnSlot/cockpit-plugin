@@ -10,21 +10,13 @@
 
 'use strict';
 
-// var instanceCount = require('src\main\resources\plugin-webapp\centaur\app\demoText\brain.js');
 
-//Hardcoded stuff
-var procDefId = "invoice:2:e163823d-4ecc-11e8-856a-104a7d534b93";
+define(['require','angular','./util'], function(require, angular) {
 
-//Define colors
-
-var htmlText1 = '<div class="durationText">';
-var htmlText2 = 'My text2';
-var htmlText3 = 'My text2';
-var htmlText4 = 'My text3';
-var htmlText5 = '</div>';
-var htmlText = htmlText1 + htmlText2 + '<br>' + htmlText3 + '<br>' + htmlText4 + htmlText5;
-
-define(['angular'], function(angular) {
+    /**
+     * retrieve the util file containing functions
+     */
+    var util = require('./util');
 
   var Configuration = ['ViewsProvider', function(ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
@@ -37,19 +29,17 @@ define(['angular'], function(angular) {
           var viewer = control.getViewer();
           var overlays = viewer.get('overlays');
           var elementRegistry = viewer.get('elementRegistry');
-          var overlaysNodes = {};
-
           var procDefId = $scope.$parent.processDefinition.id;
 
 
-
+/*
           /**
            * Adds text to specified diagram element.
            * @param   {Number}  elementId   ID of diagram element
            * @param   {Number}  text        The text to be displayed
            * @param   {Object}  shape       Shape of the element
            * TODO: make into service
-           */
+
           function addTextToId(elementId, text, shape) {
             var $overlayHtml =
               $(text)
@@ -80,7 +70,7 @@ define(['angular'], function(angular) {
            * @param   Number  instance    Instance of a process
            * @param   Number  elementId   ID of diagram element that represents instance
            * @return  Number timeDifference Returns time duration in milliseconds
-           */
+
           function calculateCurDuration(instance, elementID) {
             for (var j = 0; j < instance.length; j++) {
               if (instance[j].activityId == elementID) {
@@ -104,7 +94,7 @@ define(['angular'], function(angular) {
            *
            * @param   {Number}  duration      duration of process
            * @return  {String}  durationHTML  duration as String
-           */
+
           function checkTimes(duration) {
             if (duration > 1000 && duration < 60001) {
               var durationHTML = ((Math.round(duration / 1000 * 10) / 10).toString()) + ' seconds';
@@ -135,16 +125,14 @@ define(['angular'], function(angular) {
            * so that the duration varables are displayed next to the
            * process diagram element.
            *
-           * @param   {Number}  minDuration   minimal duration of process
            * @param   {Number}  avgDuration   average duration of process
            * @param   {Number}  maxDuration   maximal duration of process
            * @param   {Number}  curDuration   current duration of process
            * @param   {Number}  elementID     ID of element
            * @param   {Object}  shape         Shape of the element
-           */
-          function composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
-            if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
-              var minDurationHTML = checkTimes(minDuration);
+
+          function composeHTML( avgDuration, maxDuration, curDuration, elementID, shape) {
+            if (avgDuration != null && maxDuration != null && avgDuration != '0') {
               var avgDurationHTML = checkTimes(avgDuration);
               var maxDurationHTML = checkTimes(maxDuration);
               if (curDuration != null) {
@@ -157,7 +145,7 @@ define(['angular'], function(angular) {
               addTextToId(elementID, htmlText, shape);
             }
           }
-
+*/
           /*
            * Angular http.get promises that wait for a JSON object of
            * the process activity and the instance start time.
@@ -196,9 +184,9 @@ define(['angular'], function(angular) {
                   var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
                   var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                   var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                  var getCurDuration = calculateCurDuration($scope.instanceStartTime.data, element.id);
+                  var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
 
-                  composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
+                  util.composeHTML(getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, util, overlays);
                   break;
                 }
               }
