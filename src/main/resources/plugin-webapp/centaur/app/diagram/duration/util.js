@@ -132,7 +132,7 @@ define({
     },
 
     createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
-        return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br>' + 'Max: ' + maxDurationHTML + '</div>';
+        return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br> ' + 'Max: ' + maxDurationHTML + '</div>';
     }
 
 
