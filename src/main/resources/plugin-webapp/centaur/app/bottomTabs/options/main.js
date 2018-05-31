@@ -36,7 +36,7 @@ define(['require', 'angular', './util', '../../common/variableUtil'], function(r
         };
 
         $scope.setNumValue = function() {
-            $scope.numValue = commonUtil.getNumValue($window.localStorage, procDefId + "_var_num");
+            $scope.numValue = commonUtil.getVariableNum($window.localStorage, procDefId + "_var_num");
         };
 
         // get all variable ids for this process

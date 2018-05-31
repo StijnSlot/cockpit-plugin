@@ -11,7 +11,7 @@ requirejs.config({
 var util;
 
 before(function(done) {
-    requirejs(['main/resources/plugin-webapp/centaur/app/diagram/instanceVar/util'], function(utl) {
+    requirejs(['main/resources/plugin-webapp/centaur/app/diagram/processInstance/util'], function(utl) {
         util = utl;
         done();
     });
@@ -21,7 +21,7 @@ it('should find util for instanceVar', function() {
     expect(util).to.exist;
 });
 
-describe('instance variables tests', function() {
+describe('execution variables tests', function() {
     describe('addActivityElements tests', function() {
 
     });

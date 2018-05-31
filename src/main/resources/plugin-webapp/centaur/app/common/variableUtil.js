@@ -7,7 +7,7 @@ define({
     /**
      * contains user options for number of variables to show
      */
-    numValue: [],
+    variableNum: [],
 
     /**
      * contains process definition id
@@ -46,8 +46,8 @@ define({
         html.appendChild(util.createVariableUl(data));
 
         if(!i && html.childElementCount) {
-            util.addDots(html, util.numValue);
-            util.addHoverFunctionality(html, util.numValue);
+            util.addDots(html, util);
+            util.addHoverFunctionality(html, util.variableNum);
             var id = util.addTextElement(overlays, elementId, html);
             util.overlayActivityIds[elementId].push(id);
         }
@@ -85,30 +85,41 @@ define({
     },
 
     /**
-     * Adds dots to the html object, on position variablNum
+     * Adds dots to the html object, on position variableNum
      *
      * @param html          html object containing ul elements
-     * @param variableNum   number of variables to show before dots are placed
+     * @param util          object containing variableNum and createDots
      */
-    addDots: function(html, variableNum) {
+    addDots: function(html, util) {
         var prev = 0;
         for(var i = 0; i < html.childElementCount; i++) {
             var child = html.children[i];
             for(var j = 0; j < child.childElementCount; j++) {
                 // places list item which contains three dots
-                if(prev + j === variableNum) {
-                    var dots = document.createElement('li');
-                    dots.className = "dots";
-                    for(var k = 0; k < 3; k++) {
-                        var dot = document.createElement('span');
-                        dot.className = "dot";
-                        dots.appendChild(dot);
-                    }
-                    child.insertBefore(dots, child.children[j]);
+                if(prev + j === util.variableNum) {
+                    child.insertBefore(util.createDots(3), child.children[j]);
+                    return;
                 }
             }
             prev += child.childElementCount;
         }
+    },
+
+    /**
+     * Creates dots and returns list item
+     *
+     * @param number        number of dots to create
+     * @returns {HTMLLIElement}
+     */
+    createDots: function(number) {
+        var dots = document.createElement('li');
+        dots.className = "dots";
+        for(var k = 0; k < number; k++) {
+            var dot = document.createElement('span');
+            dot.className = "dot";
+            dots.appendChild(dot);
+        }
+        return dots;
     },
 
     /**
@@ -172,33 +183,6 @@ define({
     },
 
     /**
-     * Transforms raw variable data to object with name and data string
-     *
-     * @param data      has name, type and (long_, double_, text, text2)
-     * @returns {{name: string, data: string}}
-     */
-    transformVariableData: function (data) {
-
-        // string storing the data value of variable
-        var dataString = "";
-
-        // boolean value whether the object should be clickable
-        var clickable = (data.type === "file");
-
-        // handle different variable data types with null checking
-        if (data.double_ != null) dataString = String(data.double_);
-        else if (data.long_ != null) dataString = String(data.long_);
-        else if (data.text != null) dataString = String(data.text);
-        else dataString = String(data.text2);
-
-        // Transform boolean 1 or 0 to true or false
-        if (data.type === "boolean") dataString = (data.long_ === 1 ? "true" : "false");
-
-        // return object with name, the data and whether or not it is a file (clickable)
-        return {act_id: data.act_id, id: data.id, name: String(data.name), data: dataString, clickable: clickable};
-    },
-
-    /**
      * Adds html string of variable data to the bpmn element and return its id
      *
      * @param overlays      Collection of overlays to which can be added to
@@ -243,7 +227,7 @@ define({
      * @param id            used for getting the options from locaLStorage
      * @returns {number}
      */
-    getNumValue: function(localStorage, id) {
+    getVariableNum: function(localStorage, id) {
         var get = localStorage.getItem(id);
         if(get === null) {
             localStorage.setItem(id, 5);
