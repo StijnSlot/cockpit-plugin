@@ -9,11 +9,6 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
     var commonUtil = require('../../common/variableUtil');
 
     /**
-     * variable containing all ids of overlays created here
-     */
-    var optionsUtil = require('../../bottomTabs/options/util');
-
-    /**
      * Overlay object that contains the elements put on the diagram
      */
     var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
@@ -28,9 +23,6 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 
-            // get number of instance variables to show
-            commonUtil.numValue = optionsUtil.getNumValue($window.localStorage, procDefId + "_var_num");
-
             // add the activity variable elements to the overlay
             util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil);
 
@@ -41,10 +33,8 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
 
             // subscribe to any broadcast variable number changes
             $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
-                // get number of instance variables to show
-                commonUtil.numValue = optionsUtil.getNumValue($window.localStorage, procDefId + "_var_num");
-
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil) });
+                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
+            });
         }
     ];
 

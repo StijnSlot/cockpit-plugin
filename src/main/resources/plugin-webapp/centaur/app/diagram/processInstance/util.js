@@ -12,6 +12,9 @@ define({
      */
     addActivityElements: function($window, $http, elementRegistry, processDiagram, overlays, Uri, util) {
 
+        // get number of instance variables to show
+        util.numValue = util.getNumValue($window.localStorage, util.procDefId + "_var_num");
+
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
 

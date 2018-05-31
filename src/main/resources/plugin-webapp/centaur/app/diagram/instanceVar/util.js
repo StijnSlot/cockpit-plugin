@@ -20,6 +20,9 @@ define({
 
             var html = util.createVariableList();
 
+            // get number of instance variables to show
+            util.numValue = util.getNumValue($window.localStorage, util.procDefId + "_var_num");
+
             $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
                 "?processDefinitionId=" + util.procDefId +
                 "&activityIdIn=" + element.id))

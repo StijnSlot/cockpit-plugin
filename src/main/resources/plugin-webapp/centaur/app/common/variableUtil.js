@@ -14,6 +14,9 @@ define({
      */
     procDefId: "",
 
+    /**
+     * contains process instance id
+     */
     procInstanceId: "",
 
     /**
@@ -29,18 +32,33 @@ define({
         return html;
     },
 
+    /**
+     * Adds variable data for one instance/execution to html object
+     *
+     * @param html          html object which variable data needs to be added
+     * @param data          variable data
+     * @param overlays      overlays object where overlay can be added
+     * @param elementId     id of activity element
+     * @param util          util object containing functions
+     * @param i             number of variable objects still to come (counting down to 0)
+     */
     addData: function(html, data, overlays, elementId, util, i) {
         html.appendChild(util.createVariableUl(data));
 
         if(!i && html.childElementCount) {
             util.addDots(html, util.numValue);
             util.addHoverFunctionality(html, util.numValue);
-            console.log(html);
             var id = util.addTextElement(overlays, elementId, html);
             util.overlayActivityIds[elementId].push(id);
         }
     },
 
+    /**
+     * Creates a ul element containing the variable data
+     *
+     * @param data      variable data for single instance/execution
+     * @returns {HTMLUListElement}
+     */
     createVariableUl: function(data) {
 
         var variables = document.createElement('ul');
@@ -66,13 +84,17 @@ define({
         return variables;
     },
 
+    /**
+     * Adds dots to the html object, on position variablNum
+     *
+     * @param html          html object containing ul elements
+     * @param variableNum   number of variables to show before dots are placed
+     */
     addDots: function(html, variableNum) {
         var prev = 0;
         for(var i = 0; i < html.childElementCount; i++) {
             var child = html.children[i];
             for(var j = 0; j < child.childElementCount; j++) {
-                //console.log(prev + " " + j + " " + variableNum);
-                //console.log(child.children[j]);
                 // places list item which contains three dots
                 if(prev + j === variableNum) {
                     var dots = document.createElement('li');
@@ -89,6 +111,11 @@ define({
         }
     },
 
+    /**
+     * Adds the hovering functionality to html object
+     *
+     * @param html      div element with variable data
+     */
     addHoverFunctionality: function(html) {
 
         // initialize removing dots
@@ -207,5 +234,22 @@ define({
             });
         }
         overlayActivityIds[id] = [];
+    },
+
+    /**
+     * Gets num value from localStorage, or sets it as default value
+     *
+     * @param localStorage  contains user options
+     * @param id            used for getting the options from locaLStorage
+     * @returns {number}
+     */
+    getNumValue: function(localStorage, id) {
+        var get = localStorage.getItem(id);
+        if(get === null) {
+            localStorage.setItem(id, 5);
+            return 5;
+        } else {
+            return parseInt(get);
+        }
     }
 });
