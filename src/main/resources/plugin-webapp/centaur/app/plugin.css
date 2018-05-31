@@ -53,12 +53,16 @@
     width: 150px;
     display: flex;
     flex-direction: column;
-    list-style-type: none;
     border: 1px solid transparent;
 }
 
-.variableTextSmall li {
+.variableTextSmall ul {
+    margin-top: 5px;
     margin-left: -20px;
+    list-style-type: none;
+}
+
+.variableTextSmall li {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -74,13 +78,14 @@
     max-height: 150px;
     display: flex;
     flex-direction: column;
-    list-style-type: none;
     border: 1px solid black;
     overflow-y: scroll;
     background-color: white;
 }
 
-.variableTextFull li {
+.variableTextFull ul {
+    margin-top: 5px;
+    list-style-type: none;
     margin-left: -20px;
 }
 

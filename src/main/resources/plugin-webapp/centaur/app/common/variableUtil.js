@@ -23,7 +23,7 @@ define({
      */
     createVariableList: function() {
 
-        var html = document.createElement('ul');
+        var html = document.createElement('div');
         html.className = "variableTextSmall";
 
         return html;
@@ -31,16 +31,20 @@ define({
 
     addData: function(html, data, overlays, elementId, util, i, max) {
         util.addVariables(html, data, util.numValue);
-        if(i > 0) util.addSeparator(html, util.numValue);
+        //if(i < max) util.addSeparator(html, util.numValue);
 
         if(i === max && html.childElementCount) {
             util.addHoverFunctionality(html, util.numValue);
             var id = util.addTextElement(overlays, elementId, html);
+
+            overlays
             util.overlayActivityIds[elementId].push(id);
         }
     },
 
     addVariables: function(html, data, variableNum) {
+
+        var variables = document.createElement('ul');
 
         for(var variable in data) {
 
@@ -70,8 +74,9 @@ define({
 
             variableHtml.innerHTML = variableName + variableData;
 
-            html.appendChild(variableHtml);
+            variables.appendChild(variableHtml);
         }
+        html.appendChild(variables);
     },
 
     addSeparator: function(html, variableNum) {
