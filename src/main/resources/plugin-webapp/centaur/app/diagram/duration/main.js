@@ -70,15 +70,7 @@ define(['require', 'angular', './util'], function (require, angular) {
                                     var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                                     var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                                     var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
-
-                                    console.log('Show if Average duration selected');
-                                    console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity average duration"));
-                                    console.log('Show if Current duration selected');
-                                    console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity current duration"));
-                                    console.log('Show if Maximum duration selected');
-                                    console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity maximum duration"));
-
-                                    util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
+                                    util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window, procDefId);
                                     break;
                                 }
                             }

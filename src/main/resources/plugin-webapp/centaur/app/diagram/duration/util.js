@@ -122,12 +122,12 @@ define({
      * @param   Number  elementID     ID of element
      * @param   Object  shape         Shape of the element
      */
-    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape) {
+    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window, procDefId) {
         if (util.checkConditions(avgDuration, maxDuration)) {
             var avgDurationHTML = util.checkTimes(avgDuration);
             var maxDurationHTML = util.checkTimes(maxDuration);
             var curDurationHTML = util.checkIfCurValid(util, curDuration);
-            var htmlText = util.createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
+            var htmlText = util.createHTML(util, $window, procDefId, curDurationHTML, avgDurationHTML, maxDurationHTML);
             util.addTextToId(elementID, htmlText, shape, overlays);
         }
     },
@@ -142,8 +142,24 @@ define({
         }
     },
 
-    createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
-        return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br> ' + 'Max: ' + maxDurationHTML + '</div>';
+    createHTML: function (util, $window, procDefId, curDurationHTML, avgDurationHTML, maxDurationHTML) {
+        console.log('Show if Average duration selected');
+        console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity average duration"));
+        console.log('Show if Current duration selected');
+        console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity current duration"));
+        console.log('Show if Maximum duration selected');
+        console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity maximum duration"));
+
+        if (util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity current duration")) {
+            curDurationHTML = 'Cur: ' + curDurationHTML;
+        } else {curDurationHTML = ''}
+        if (util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity average duration")) {
+            avgDurationHTML = ' <br> Avg: ' + avgDurationHTML;
+        } else {avgDurationHTML = ''}
+        if (util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity maximum duration")) {
+            maxDurationHTML = ' <br> Max: ' + maxDurationHTML;
+        } else {maxDurationHTML = ''}
+        return '<div class="durationText"> ' + curDurationHTML + avgDurationHTML + maxDurationHTML + '</div>';
     },
 
     /**
@@ -152,7 +168,7 @@ define({
      * @param localStorage  contains user options
      * @param item          used for getting localStorage item option
      */
-    isSelectedVariable: function(localStorage, item) {
+    isSelectedVariable: function (localStorage, item) {
         return localStorage.getItem(item) === 'true';
     },
 
