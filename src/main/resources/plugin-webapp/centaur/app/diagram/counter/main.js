@@ -95,9 +95,6 @@ define(['angular'], function(angular) {
           $scope.executionSequenceCounter_temp = $http.get(Uri.appUri("plugin://centaur/:engine/execution-sequence-counter"), {
             catch: false
           });
-          $scope.processVariables_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-variables" + "?procDefId=" + procDefId), {
-            catch: false
-          });
 
           /**
            * Waits until data is received from http.get request and
@@ -108,9 +105,9 @@ define(['angular'], function(angular) {
            *
            * @param   {Object}  data   minimal duration of process
            */
-          $q.all([$scope.executionSequenceCounter_temp, $scope.processVariables_temp]).then(function(data) {
+          $q.all([$scope.executionSequenceCounter_temp]).then(function(data) {
             $scope.executionSequenceCounter = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-            $scope.processVariables = data[1];
+            // console.log($scope.executionSequenceCounter);
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
@@ -121,8 +118,11 @@ define(['angular'], function(angular) {
             elementRegistry.forEach(function(shape) {
               var element = processDiagram.bpmnElements[shape.businessObject.id];
               for (var i = 0; i < $scope.executionSequenceCounter.data.length; i++) {
-                if ($scope.executionSequenceCounter.data[i].activityId == element.id) {
-                  var executionSequenceCounter = $scope.executionSequenceCounter.data[i].sequenceCounter;
+                // console.log('activityId ' + $scope.executionSequenceCounter.data[i].activityId);
+                // console.log(element.id);
+                if ($scope.executionSequenceCounter.data[i].activityId == element.id
+                  && element.$type == 'bpmn:CallActivity' && $scope.executionSequenceCounter.data[i].long_ > 0) {
+                  var executionSequenceCounter = $scope.executionSequenceCounter.data[i].long_;
                   composeHTML(executionSequenceCounter, element.id, shape);
                   break;
                 }
