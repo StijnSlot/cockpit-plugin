@@ -24,8 +24,8 @@ define(['require', 'angular', './util'], function (require, angular) {
             priority: 20,
             label: 'Runtime',
             overlay: [
-                '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
-                function ($scope, $http, Uri, control, processData, pageData, $q, processDiagram) {
+                '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+                function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
                     var viewer = control.getViewer();
                     var overlays = viewer.get('overlays');
                     var elementRegistry = viewer.get('elementRegistry');
@@ -70,6 +70,13 @@ define(['require', 'angular', './util'], function (require, angular) {
                                     var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                                     var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                                     var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
+
+                                    console.log('Show if Average duration selected');
+                                    console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity average duration"));
+                                    console.log('Show if Current duration selected');
+                                    console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity current duration"));
+                                    console.log('Show if Maximum duration selected');
+                                    console.log(util.isSelectedVariable($window.localStorage, procDefId + "_KPI_" + "Activity maximum duration"));
 
                                     util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
                                     break;

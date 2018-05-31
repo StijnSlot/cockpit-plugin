@@ -2,6 +2,17 @@ define({
 
 
     /**
+     * variable containing all ids of overlays created here
+     */
+    overlayActivityIds: {},
+
+    /**
+     * contains process definition id
+     */
+    procDefId: "",
+
+
+    /**
      * Calculates the current duration of a instance of a process.
      *
      * The database only keeps track of the starting time of each
@@ -133,8 +144,17 @@ define({
 
     createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
         return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br> ' + 'Max: ' + maxDurationHTML + '</div>';
-    }
+    },
 
+    /**
+     * Removes all variables which are not selected by the user
+     *
+     * @param localStorage  contains user options
+     * @param item          used for getting localStorage item option
+     */
+    isSelectedVariable: function(localStorage, item) {
+        return localStorage.getItem(item) === 'true';
+    },
 
 
 });
