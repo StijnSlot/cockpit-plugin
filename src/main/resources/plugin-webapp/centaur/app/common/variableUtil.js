@@ -29,36 +29,23 @@ define({
         return html;
     },
 
-    addData: function(html, data, overlays, elementId, util, i, max) {
-        util.addVariables(html, data, util.numValue);
-        //if(i < max) util.addSeparator(html, util.numValue);
+    addData: function(html, data, overlays, elementId, util, i) {
+        html.appendChild(util.createVariableUl(data));
 
-        if(i === max && html.childElementCount) {
+        if(!i && html.childElementCount) {
+            util.addDots(html, util.numValue);
             util.addHoverFunctionality(html, util.numValue);
+            console.log(html);
             var id = util.addTextElement(overlays, elementId, html);
-
-            overlays
             util.overlayActivityIds[elementId].push(id);
         }
     },
 
-    addVariables: function(html, data, variableNum) {
+    createVariableUl: function(data) {
 
         var variables = document.createElement('ul');
 
         for(var variable in data) {
-
-            // places list item which contains three dots
-            if(html.childElementCount === variableNum) {
-                var dots = document.createElement('li');
-                dots.className = "dots";
-                for(var j = 0; j < 3; j++) {
-                    var dot = document.createElement('span');
-                    dot.className = "dot";
-                    dots.appendChild(dot);
-                }
-                html.appendChild(dots);
-            }
 
             var variableHtml = document.createElement('li');
 
@@ -76,20 +63,44 @@ define({
 
             variables.appendChild(variableHtml);
         }
-        html.appendChild(variables);
+        return variables;
     },
 
-    addSeparator: function(html, variableNum) {
-        if(html.childElementCount === variableNum) return;
-
-        var li = document.createElement('li');
-        var separator = document.createElement('div');
-        separator.className = "separator";
-        li.appendChild(separator);
-        html.appendChild(li);
+    addDots: function(html, variableNum) {
+        var prev = 0;
+        for(var i = 0; i < html.childElementCount; i++) {
+            var child = html.children[i];
+            for(var j = 0; j < child.childElementCount; j++) {
+                //console.log(prev + " " + j + " " + variableNum);
+                //console.log(child.children[j]);
+                // places list item which contains three dots
+                if(prev + j === variableNum) {
+                    var dots = document.createElement('li');
+                    dots.className = "dots";
+                    for(var k = 0; k < 3; k++) {
+                        var dot = document.createElement('span');
+                        dot.className = "dot";
+                        dots.appendChild(dot);
+                    }
+                    child.insertBefore(dots, child.children[j]);
+                }
+            }
+            prev += child.childElementCount;
+        }
     },
 
-    addHoverFunctionality: function(html, variableNum) {
+    addHoverFunctionality: function(html) {
+
+        // initialize removing dots
+        var dots = false;
+        // hide children with index higher than numValue
+        $(html).children().each(function() {
+            $(this).children().each(function () {
+                if (dots) $(this).css("display", "none");
+                if (this.classList.contains('dots')) dots = true;
+            });
+        });
+
         // add hover functionality
         $(html).hover(function() {
             // change class to show all variables
@@ -97,16 +108,21 @@ define({
 
             // unhide the hidden variables
             $(html).children().each(function() {
-                if(!this.classList.contains('dots'))
-                    $(this).css("display", "initial");
+                $(this).children().each(function() {
+                    $(this).removeAttr("style");
+                });
             });
         }, function() {
             // change class to smaller variable list
             html.className = "variableTextSmall";
 
+            var dots = false;
             // hide children with index higher than numValue
-            $(html).children().each(function(i) {
-                if(i > variableNum) $(this).css("display", "none");
+            $(html).children().each(function() {
+                $(this).children().each(function() {
+                    if(dots) $(this).css("display", "none");
+                    if(this.classList.contains('dots')) dots = true;
+                });
             });
         });
     },
@@ -167,7 +183,7 @@ define({
         return overlays.add(elementId, {
             position: {
                 bottom: 25,
-                left: -150
+                left: -120
             },
             show: {
                 minZoom: -Infinity,

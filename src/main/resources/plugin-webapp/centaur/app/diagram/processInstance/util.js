@@ -29,14 +29,14 @@ define({
 
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
-                    var i = 0;
+                    var i = executions.length - 1;
                     executions.forEach(function(execution) {
                         $http.get(Uri.appUri("engine://engine/:engine/execution/" +
                             execution.id + "/localVariables"))
                             .success(function(data) {
 
                                 data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
-                                util.addData(html, data, overlays, element.id, util, i, executions.length - 1);
+                                util.addData(html, data, overlays, element.id, util, i);
                                 i++;
                             });
                     });

@@ -27,7 +27,7 @@ define({
 
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
-                    var i = 0;
+                    var i = instances.length - 1;
                     instances.forEach(function(instance) {
 
                         $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
@@ -36,7 +36,7 @@ define({
 
                                 data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
 
-                                util.addData(html, data, overlays, element.id, util, i, instances.length - 1);
+                                util.addData(html, data, overlays, element.id, util, i);
                                 i++;
                             });
                     });
