@@ -34,7 +34,6 @@ define({
                     $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
                         instance.id + "/variables"))
                         .success(function(data) {
-                            console.log(data);
                         });
                 });
             });
@@ -44,7 +43,6 @@ define({
 
             // get corresponding element from processDiagram
             var element = processDiagram.bpmnElements[shape.businessObject.id];
-
             // get all variables attached to this activity
             $http.get(Uri.appUri("engine://engine/:engine/execution" +
                 "?processDefinitionId=" + util.procDefId +
@@ -52,13 +50,10 @@ define({
                 .success(function(executions) {
                     if(!executions.length) return;
 
-                    console.log(executions);
-
                     executions.forEach(function(execution) {
                         $http.get(Uri.appUri("engine://engine/:engine/execution/" +
                             execution.id + "/localVariables"))
                             .success(function(data) {
-                                console.log(data);
                             });
                     });
 
@@ -69,7 +64,6 @@ define({
                 "?procDefId=" + util.procDefId +
                 "&actId=" + element.id))
                 .success(function (data) {
-
                     // clear any current overlays displayed
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
