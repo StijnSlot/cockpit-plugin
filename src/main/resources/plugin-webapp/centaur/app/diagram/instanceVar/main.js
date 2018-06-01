@@ -19,8 +19,7 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
-            var procDefId = $scope.$parent.processDefinition.id;
-            commonUtil.procDefId = procDefId;
+            commonUtil.procDefId = $scope.$parent.processDefinition.id;
 
             // get overlay and elements from the diagram
             var viewer = control.getViewer();

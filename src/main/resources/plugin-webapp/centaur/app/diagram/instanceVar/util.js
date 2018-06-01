@@ -36,7 +36,6 @@ define({
                         $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
                             instance.id + "/variables"))
                             .success(function(data) {
-
                                 data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
 
                                 util.addData(html, data, overlays, element.id, util, i);

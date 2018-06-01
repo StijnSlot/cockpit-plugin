@@ -8,9 +8,12 @@ requirejs.config({
     baseUrl: '.'
 });
 
-var util;
+global.window = window;
+global.$ = require('jquery');
 
 describe('VariableUtil tests', function() {
+    var util;
+
     before(function(done) {
         requirejs(['main/resources/plugin-webapp/centaur/app/common/variableUtil'], function(utl) {
             util = utl;
@@ -34,6 +37,76 @@ describe('VariableUtil tests', function() {
 
         it('should return a variableTextSmall', function() {
             expect(out.className).to.eql("variableTextSmall");
+        });
+    });
+
+    describe('addData tests', function() {
+        var html;
+        var comUtil;
+        var stub;
+
+        before(function(done) {
+            requirejs(['main/resources/plugin-webapp/centaur/app/common/variableUtil'], function(utl) {
+                comUtil = utl;
+                done();
+            });
+        });
+
+        beforeEach(function() {
+            util.overlayActivityIds['3'] = [];
+            stub = sinon.stub().returns(4);
+            html = util.createVariableList();
+            for(var i = 2; i >= 0; i--) {
+                util.addData(html, [{}, {}], {add: stub}, '3', comUtil, i);
+            }
+        });
+
+        it('should not have comUtil undefined', function() {
+            expect(comUtil).to.exist;
+        });
+
+        it('should create 2 ids in overlayActivityId', function() {
+            expect(util.overlayActivityIds['3']).to.have.lengthOf(1);
+            expect(util.overlayActivityIds['3']).to.have.members([4]);
+        });
+
+        it('should create html element with 3 children', function() {
+            expect(html.childElementCount).to.eql(3);
+        });
+
+        it('should place dots after default 5', function() {
+            expect(html.children[2].children[1].className).to.eql("dots");
+        });
+    });
+
+    describe('createVariableUl tests', function() {
+        var out;
+
+        beforeEach(function() {
+            var data = {"a": {value: 1, valueInfo: {fileName: null}},
+                "b": {value: null, valueInfo: {fileName: "tmp.pdf"}}};
+            out = util.createVariableUl(data);
+        });
+
+        it('should return a ul', function() {
+            expect(out.nodeName).to.eql("UL");
+        });
+
+        it('should have two list items as children', function() {
+            expect(out.childElementCount).to.eql(2);
+            expect(out.children[0].nodeName).to.eql("LI")
+            expect(out.children[1].nodeName).to.eql("LI")
+        });
+
+        it('should contain the name of variables', function() {
+            expect(out.children[0].innerHTML).to.contain("a");
+            expect(out.children[1].innerHTML).to.contain("b");
+        });
+
+        it('should contain the value or filename of variables', function() {
+            expect(out.children[0].innerHTML).to.contain(1);
+            expect(out.children[1].innerHTML).to.contain("tmp.pdf");
+
         });
     });
 

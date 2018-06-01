@@ -7,7 +7,7 @@ define({
     /**
      * contains user options for number of variables to show
      */
-    variableNum: [],
+    variableNum: 5,
 
     /**
      * contains process definition id
@@ -49,6 +49,8 @@ define({
             util.addDots(html, util);
             util.addHoverFunctionality(html, util.variableNum);
             var id = util.addTextElement(overlays, elementId, html);
+
+            if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
             util.overlayActivityIds[elementId].push(id);
         }
     },
