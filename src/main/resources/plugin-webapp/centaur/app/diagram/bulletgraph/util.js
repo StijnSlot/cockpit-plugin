@@ -224,19 +224,19 @@ define({
             width = 100 - margin.left - margin.right,
             height = 40 - margin.top - margin.bottom;
 
-        var chart = d3.bullet(width, height)
-            .width(width)
-            .height(height);
+    var chart = d3.bullet(width, height)
+      .width(width)
+      .height(height);
 
-        var svg = d3.select(cssClass).selectAll("svg")
-            .data(data)
-            .enter().append("svg")
-            .attr("class", "bullet")
-            .attr("width", 100)
-            .attr("height", 40)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-            .call(chart);
+    var svg = d3.select(cssClass).selectAll("svg")
+      .data(data)
+      .enter().append("svg")
+      .attr("class", "bullet")
+      .attr("width", 100)
+      .attr("height", 40)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(chart);
 
         var coloring = d3.select(cssClass).selectAll("rect.measure.s1")
             .attr("fill", colorBullet)

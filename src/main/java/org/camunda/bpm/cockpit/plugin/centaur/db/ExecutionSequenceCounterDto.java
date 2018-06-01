@@ -6,7 +6,9 @@ public class ExecutionSequenceCounterDto {
 
     private String activityId;
 
-    private int sequenceCounter;
+    private String name;
+
+    private Long long_;
 
     public String getInstanceId() {
         return instanceId;
@@ -16,19 +18,27 @@ public class ExecutionSequenceCounterDto {
         this.instanceId = instanceId;
     }
 
-    public int getSequenceCounter() {
-        return sequenceCounter;
-    }
-
-    public void setSequenceCounter(int sequenceCounter) {
-        this.sequenceCounter = sequenceCounter;
-    }
-
     public String getActivityId() {
         return activityId;
     }
 
     public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getLong_() {
+        return long_;
+    }
+
+    public void setLong_(Long long_) {
+        this.long_ = long_;
     }
 }
