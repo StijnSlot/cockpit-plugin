@@ -17,6 +17,6 @@ before(function(done) {
   });
 });
 
-it('should find duration util file', function() {
+it('should find counter util file', function() {
   expect(util).to.not.be.undefined;
 });
