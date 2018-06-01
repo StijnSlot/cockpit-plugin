@@ -1,5 +1,6 @@
 define({
 
+
     /**
      * Calculates the current duration of a instance of a process.
      *
@@ -9,7 +10,7 @@ define({
      * @param   Number  instance    Instance of a process
      * @param   Number  elementId   ID of diagram element that represents instance
      */
-    calculateCurDuration: function(instance, elementID) {
+    calculateCurDuration: function (instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
                 var startTime = Date.parse(instance[j].startTime);
@@ -33,17 +34,17 @@ define({
      * @param   Number  duration      duration of process
      * @return  String  durationHTML  duration as String
      */
-    checkTimes: function(duration) {
+    checkTimes: function (duration) {
         if (duration > 1000 && duration < 60001) {
-            var durationHTML = ((Math.round(duration / 1000 * 10) / 10).toString()) + ' seconds';
+            var durationHTML = (Math.round(duration / 1000 * 10) / 10).toString() + ' seconds';
         } else if (duration > 60000 && duration < 3600001) {
-            var durationHTML = ((Math.round(duration / 60000 * 10) / 10).toString()) + ' minutes';
+            var durationHTML = (Math.round(duration / 60000 * 10) / 10).toString() + ' minutes';
         } else if (duration > 3600000 && duration < 86400001) {
-            var durationHTML = ((Math.round(duration / 3600000 * 10) / 10).toString()) + ' hours';
+            var durationHTML = (Math.round(duration / 3600000 * 10) / 10).toString() + ' hours';
         } else if (duration > 86400000 && duration < 604800001) {
-            var durationHTML = ((Math.round(duration / 86400000 * 10) / 10).toString()) + ' days';
+            var durationHTML = (Math.round(duration / 86400000 * 10) / 10).toString() + ' days';
         } else if (duration > 604800000) {
-            var durationHTML = ((Math.round(duration / 604800001 * 10) / 10).toString()) + ' weeks';
+            var durationHTML = (Math.round(duration / 604800001 * 10) / 10).toString() + ' weeks';
         } else {
             var durationHTML = (duration).toString() + ' ms';
         }
@@ -53,11 +54,18 @@ define({
     /**
      * Adds text to specified diagram element.
      * @param   Number  elementId   ID of diagram element
-     * @param   Number  text        The text to be displayed
+     * @param   String  text        The text to be displayed
      * @param   Object  shape       Shape of the element
      * TODO: make into service
      */
-    addTextToId: function(elementId, text, shape, overlays) {
+    addTextToId: function (elementId, text, shape, overlays) {
+
+        var $overlayHtml =
+            $(text)
+                .css({
+                    width: shape.width,
+                    height: shape.height
+                });
 
         overlays.add(elementId, {
             position: {
@@ -68,8 +76,19 @@ define({
                 minZoom: -Infinity,
                 maxZoom: +Infinity
             },
+            html: $overlayHtml
         });
-        return overlays;
+    },
+
+    /**
+     * 
+     */
+    checkConditions: function (avgDuration, maxDuration) {
+        if (avgDuration != null && maxDuration != null && avgDuration != '0') {
+            return true;
+        } else {
+            return false;
+        }
     },
 
     /**
@@ -92,17 +111,29 @@ define({
      * @param   Number  elementID     ID of element
      * @param   Object  shape         Shape of the element
      */
-    composeHTML: function(minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
-    if (avgDuration != null && minDuration != null && maxDuration != null && avgDuration != '0') {
-
-        if (curDuration != null) {
-           // var curDurationHTML = checkTimes(curDuration);
-        } else {
-            var curDurationHTML = '-';
+    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape) {
+        if (util.checkConditions(avgDuration, maxDuration)) {
+            var avgDurationHTML = util.checkTimes(avgDuration);
+            var maxDurationHTML = util.checkTimes(maxDuration);
+            var curDurationHTML = util.checkIfCurValid(util, curDuration);
+            var htmlText = util.createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
+            util.addTextToId(elementID, htmlText, shape, overlays);
         }
-        return curDurationHTML;
+    },
+
+
+
+    checkIfCurValid: function (util, curDuration) {
+        if (curDuration != null) {
+            return util.checkTimes(curDuration);
+        } else {
+            return '-';
+        }
+    },
+
+    createHTML: function (curDurationHTML, avgDurationHTML, maxDurationHTML) {
+        return '<div class="durationText"> Cur: ' + curDurationHTML + ' <br> Avg: ' + avgDurationHTML + ' <br> ' + 'Max: ' + maxDurationHTML + '</div>';
     }
-}
 
 
 

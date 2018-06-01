@@ -23,12 +23,10 @@ it('should find duration util file', function() {
 
 describe('calculate current duration test', function(){
 
-    var spy;
     var instance;
     var elementID;
     describe('check if time difference is correct', function () {
         beforeEach(function () {
-            spy = sinon.spy();
             instance = [{activityId: 12, startTime: 0}, {activityId:14, startTime: 2}];
         });
 
@@ -47,12 +45,8 @@ describe('calculate current duration test', function(){
 
 describe('check times conversion test', function () {
 
-    var spy;
     var duration;
     describe('check duration format is correct', function () {
-        beforeEach(function() {
-            spy = sinon.spy();
-        });
 
         it('test for duration to be in seconds', function () {
             duration = 2000;
@@ -100,27 +94,35 @@ describe('check times conversion test', function () {
 
 });
 
-describe('addText to process ID test', function(){
 
-    var spy;
-    var overlays;
-    var elementID, text, shape;
+describe('check Conditions', function () {
+    var avgDuration, maxDuration;
+    var returnValue;
+    describe('check if conditions are checked correctly', function () {
 
+       beforeEach(function () {
+           avgDuration = '4';
+           maxDuration = '12';
+           returnValue = util.checkConditions(avgDuration, maxDuration);
+       });
 
+       it('test if condition is true when arguments are valid', function () {
+           expect(returnValue).to.eql(true);
+       });
 
-    describe('test if the overlays is assigned', function() {
-
-        beforeEach(function() {
-            spy = sinon.spy();
-            overlays = {add: spy};
-            elementID = 12;
-            shape = {width: 1, height: 2};
-
-            util.addTextToId(elementID, text, shape, overlays);
+       it('test if condition is false when arguments are invalid', function(){
+           maxDuration = null;
+           expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
         });
 
-        it('test if the overlays reference variable is assigned the value', function(){
-          expect(spy.calledWith(elementID, {position:{top: -40, left: -40 },show: {minZoom: -Infinity,maxZoom: +Infinity}})).to.eql(true);
+        it('test if condition is false when arguments are invalid', function(){
+            avgDuration = null;
+            expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+        });
+
+        it('test if condition is false when arguments are invalid', function(){
+            avgDuration = '0';
+            expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
         });
 
     });
@@ -128,29 +130,40 @@ describe('addText to process ID test', function(){
 
 });
 
-
-describe('testing compose html', function(){
-
-    var spy;
-    var minDuration, avgDuration, maxDuration, curDuration, elementID, shape;
-
-
-
-    describe('check if the composeHTML assigns text values', function() {
-
-        beforeEach(function() {
-            spy = sinon.spy();
-            elementID = 12;
-            shape = {width:7, height: 6};
-            minDuration = 2000;
-            maxDuration = 4;
-            avgDuration = 3;
+describe('check checkIfCurValid', function () {
+    var curDuration;
+    var returnValue;
+    describe('check if curDuration has the right value', function () {
+        beforeEach(function () {
+            curDuration = 6000;
+            returnValue = util.checkIfCurValid(util, curDuration);
+        });
+        it('check if returns correct values', function () {
+            expect(returnValue).to.eql('6 seconds');
+        });
+        it('check if returns nothing when null', function(){
             curDuration = null;
-            elementID = 45;
+           expect(util.checkIfCurValid(util, curDuration)).to.eql('-');
         });
 
-        it('test if the minduration datatype is changed to string', function(){
-            expect( util.composeHTML(minDuration, avgDuration, maxDuration, curDuration, elementID, shape)).to.eql('-');
+    });
+
+
+});
+
+describe('check createHTML', function () {
+    var curDurationHTML, avgDurationHTML, maxDurationHTML, returnValue;
+
+    describe('check create HTML', function () {
+        beforeEach(function () {
+            curDurationHTML = '6000';
+            avgDurationHTML = '4200';
+            maxDurationHTML = '10000';
+
+            returnValue = util.createHTML(curDurationHTML, avgDurationHTML, maxDurationHTML);
+        });
+        it('check if returns correct values', function () {
+            expect(returnValue).to.eql('<div class="durationText"> Cur: 6000 <br> Avg: 4200 <br> Max: 10000</div>');
         });
 
     });

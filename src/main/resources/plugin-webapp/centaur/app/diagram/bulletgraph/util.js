@@ -8,7 +8,7 @@ define({
      * @param   Number  instance    Instance of a process
      * @param   String  elementId   ID of diagram element that represents instance
      */
-    calculateCurDuration: function(instance, elementID) {
+    calculateCurDuration: function (instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
                 var startTime = Date.parse(instance[j].startTime);
@@ -44,7 +44,7 @@ define({
      * @param   String  elementID     ID of element
      * @param   Object  shape         Shape of the element
      */
-    combineBulletgraphElements: function(util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
+    combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
         if (util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
             var timeChoice = util.checkTimeUnit(maxDuration);
             var minDuration = util.convertTimes(minDuration, timeChoice);
@@ -72,7 +72,7 @@ define({
      * @return  Boolean               if condtions are satisfied or not
      */
     checkConditions: function(minDuration, avgDuration, maxDuration, curDuration) {
-        if (avgDuration != null && minDuration != null && maxDuration != null  && curDuration != null && avgDuration != '0') {
+        if (avgDuration != null && minDuration != null && maxDuration != null  && curDuration != null && avgDuration != 0) {
             return true;
         } else {
             return false;
@@ -90,16 +90,16 @@ define({
      * @param   Number  time      duration of process
      * @return  String            time unit choice
      */
-    checkTimeUnit: function(time) {
+    checkTimeUnit: function (time) {
         if (time > 1000 && time < 60001) {
             return 'seconds';
-        } else if (time > 60000 && time < 1440001) {
+        } else if (time > 60000 && time < 3600001) {
             return 'minutes';
-        } else if (time > 1440000 && time < 34560001) {
+        } else if (time > 3600000 && time < 86400001) {
             return 'hours';
-        } else if (time > 34560000 && time < 241920001) {
+        } else if (time > 86400000 && time < 604800001) {
             return 'days';
-        } else if (time > 241920000) {
+        } else if (time > 604800000) {
             return 'weeks';
         } else {
             return 'ms';
@@ -119,17 +119,17 @@ define({
      * @param   String  choice        choice of time unit
      * @return  Number                duration as Integer
      */
-    convertTimes: function(duration, choice) {
+    convertTimes: function (duration, choice) {
         if (choice == 'seconds') {
             return (Math.round(duration / 1000 * 10) / 10);
         } else if (choice == 'minutes') {
             return (Math.round(duration / 60000 * 10) / 10);
         } else if (choice == 'hours') {
-            return (Math.round(duration / 1440000 * 10) / 10);
+            return (Math.round(duration / 3600000 * 10) / 10);
         } else if (choice == 'days') {
-            return (Math.round(duration / 34560000 * 10) / 10);
+            return (Math.round(duration / 86400000 * 10) / 10);
         } else if (choice == 'weeks') {
-            return (Math.round(duration / 241920000 * 10) / 10);
+            return (Math.round(duration / 604800000 * 10) / 10);
         } else {
             return duration;
         }
@@ -146,7 +146,7 @@ define({
      * @param   Number  curDuration   current duration of process
      * @return  String              A string which represents the color
      */
-    determineColor: function(avgDuration, maxDuration, curDuration) {
+    determineColor: function (avgDuration, maxDuration, curDuration) {
         if (curDuration <= maxDuration && curDuration <= avgDuration) {
             return 'green';
         } else if (curDuration <= maxDuration && curDuration > avgDuration) {
@@ -163,7 +163,7 @@ define({
      * @param   Number  text        The text to be displayed
      * @param   Object  shape       Shape of the element
      */
-    addHTMLToId: function(overlays, elementId, text, shape) {
+    addHTMLToId: function (overlays, elementId, text, shape) {
         var $overlayHtml =
             $(text)
                 .css({
@@ -189,7 +189,7 @@ define({
      * @param   String  elementID   Variable to be converted.
      * @return  String              A string which represents an HTML line which will be added later
      */
-    createHTML: function(elementID) {
+    createHTML: function (elementID) {
         return '<div class="bullet-duration-' + elementID + '"> </div>';
     },
 
@@ -210,7 +210,7 @@ define({
      * @param   Number  markerBullet  marker value of bulletgraph
      * @param   Number  colorBullet   color of bulletgraph
      */
-    setGraphSettings: function(elementID, rangeBullet, currentBullet, markerBullet, colorBullet) {
+    setGraphSettings: function (elementID, rangeBullet, currentBullet, markerBullet, colorBullet) {
         var cssClass = '.bullet-duration-' + elementID;
         var data = [
             {
@@ -224,19 +224,19 @@ define({
             width = 100 - margin.left - margin.right,
             height = 40 - margin.top - margin.bottom;
 
-        var chart = d3.bullet(width, height)
-            .width(width)
-            .height(height);
+    var chart = d3.bullet(width, height)
+      .width(width)
+      .height(height);
 
-        var svg = d3.select(cssClass).selectAll("svg")
-            .data(data)
-            .enter().append("svg")
-            .attr("class", "bullet")
-            .attr("width", 100)
-            .attr("height", 40)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-            .call(chart);
+    var svg = d3.select(cssClass).selectAll("svg")
+      .data(data)
+      .enter().append("svg")
+      .attr("class", "bullet")
+      .attr("width", 100)
+      .attr("height", 40)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(chart);
 
         var coloring = d3.select(cssClass).selectAll("rect.measure.s1")
             .attr("fill", colorBullet)
@@ -249,7 +249,7 @@ define({
      * @param   Number  curDuration   current duration of process
      * @return  Number                either current duration or maximal duration
      */
-    checkIfCurBiggerMax: function(curDuration, maxDuration) {
+    checkIfCurBiggerMax: function (curDuration, maxDuration) {
         if (curDuration >= maxDuration) {
             return maxDuration;
         } else {
@@ -257,5 +257,5 @@ define({
         }
     }
 
-    
+
 });

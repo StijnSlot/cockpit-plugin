@@ -27,7 +27,6 @@ define({
                 "?processDefinitionId=" + util.procDefId +
                 "&activityIdIn=" + element.id))
                 .success(function(instances) {
-
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
                     var i = instances.length - 1;
