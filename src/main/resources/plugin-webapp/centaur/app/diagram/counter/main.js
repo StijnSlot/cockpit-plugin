@@ -1,7 +1,10 @@
 /**
- * TODO: Summery
+ * Adds a counter to CallActivity tasks.
  *
- * TODO: Description.
+ * Camunda has the ability to have a task call multiple tasks in sequence or
+ * parallel. However, the amount of tasks called it not displayed in the diagram
+ * by default. This module adds a counter to display this number at the bottom
+ * right of a call activity task.
  *
  * @author Tim Hübener
  * @since  23.05.2018 in progress
@@ -25,8 +28,8 @@ define(['require', 'angular', './util'], function(require, angular) {
       var procDefId = $scope.$parent.processDefinition.id;
 
       /*
-       * Angular http.get promises that wait for a JSON object of
-       * the process activity and the instance start time.
+       * Angular http.get promise that waits for a JSON object of
+       * the executionSequenceCounter.
        */
       $scope.executionSequenceCounter_temp = $http.get(Uri.appUri(
         "plugin://centaur/:engine/execution-sequence-counter"), {
