@@ -27,8 +27,9 @@ describe('VariableUtil tests', function() {
 
     describe('createVariableList tests', function() {
         var out;
+
         beforeEach(function() {
-            out = util.createVariableList();
+            out = util.createVariableList({getItem: function(){}}, "");
         });
 
         it('should be a div item', function() {
@@ -38,44 +39,61 @@ describe('VariableUtil tests', function() {
         it('should return a variableTextSmall', function() {
             expect(out.className).to.eql("variableTextSmall");
         });
-    });
 
-    describe('addData tests', function() {
-        var html;
-        var comUtil;
-        var stub;
+        describe('position stored in local', function() {
+            var stub;
+            beforeEach(function() {
+                stub = sinon.stub();
+                stub.withArgs("left").returns("1px");
+                stub.withArgs("top").returns("-5px");
+                out = util.createVariableList({getItem: stub}, "");
+            });
 
-        before(function(done) {
-            requirejs(['main/resources/plugin-webapp/centaur/app/common/variableUtil'], function(utl) {
-                comUtil = utl;
-                done();
+            it('should return left position 1px', function() {
+                expect(out.getAttribute("style")).to.contain("left: 1px");
+            });
+
+            it('should return top position -5px', function() {
+
             });
         });
+    });
+
+    describe('finishElement tests', function() {
+        var sandbox, stub;
 
         beforeEach(function() {
             util.overlayActivityIds['3'] = [];
-            stub = sinon.stub().returns(4);
-            html = util.createVariableList();
-            for(var i = 2; i >= 0; i--) {
-                util.addData(html, [{}, {}], {add: stub}, '3', comUtil, i);
-            }
+            sandbox = sinon.createSandbox();
+            stub = sandbox.stub(util);
+            stub.addTextElement.returns(4);
+            stub.finishElement.restore();
+            util.finishElement({}, {}, {}, '3', stub);
         });
 
-        it('should not have comUtil undefined', function() {
-            expect(comUtil).to.exist;
+        afterEach(function() {
+            sandbox.restore();
         });
 
-        it('should create 2 ids in overlayActivityId', function() {
-            expect(util.overlayActivityIds['3']).to.have.lengthOf(1);
-            expect(util.overlayActivityIds['3']).to.have.members([4]);
+        it('should create id in overlayActivityId', function() {
+            expect(stub.overlayActivityIds['3']).to.have.lengthOf(1);
+            expect(stub.overlayActivityIds['3']).to.have.members([4]);
         });
 
-        it('should create html element with 3 children', function() {
-            expect(html.childElementCount).to.eql(3);
+        it('should call addDots', function() {
+            expect(stub.addDots.callCount).to.eql(1);
         });
 
-        it('should place dots after default 5', function() {
-            expect(html.children[2].children[1].className).to.eql("dots");
+        it('should call addHoverFunctionality', function() {
+            expect(stub.addHoverFunctionality.callCount).to.eql(1);
+        });
+
+        it('should call addDraggableFunctionality', function() {
+            expect(stub.addDraggableFunctionality.callCount).to.eql(1);
+        });
+
+        it('should call addTextElement', function() {
+            expect(stub.addTextElement.callCount).to.eql(1);
         });
     });
 

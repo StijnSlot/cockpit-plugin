@@ -22,12 +22,22 @@ define({
     /**
      * Creates DOM element from data and options settings
      *
+     * @param localStorage      used for getting offset data
+     * @param prefix            prefix used in localStorage items
      * @returns {object}
      */
-    createVariableList: function() {
-
+    createVariableList: function(localStorage, prefix) {
         var html = document.createElement('div');
         html.className = "variableTextSmall";
+
+        var offsetTop = localStorage.getItem(prefix + "top");
+        if(offsetTop !== null) {
+            $(html).css("top", offsetTop);
+        }
+        var offsetLeft = localStorage.getItem(prefix + "left");
+        if(offsetLeft !== null) {
+            $(html).css("left", offsetLeft);
+        }
 
         return html;
     },
@@ -35,24 +45,21 @@ define({
     /**
      * Adds variable data for one instance/execution to html object
      *
+     * @param localStorage  used for storing draggable position in addDraggableFunctionality
      * @param html          html object which variable data needs to be added
-     * @param data          variable data
      * @param overlays      overlays object where overlay can be added
      * @param elementId     id of activity element
      * @param util          util object containing functions
-     * @param i             number of variable objects still to come (counting down to 0)
      */
-    addData: function(html, data, overlays, elementId, util, i) {
-        html.appendChild(util.createVariableUl(data));
+    finishElement: function(localStorage, html, overlays, elementId, util) {
+        console.log("heee");
+        util.addDots(html, util);
+        util.addHoverFunctionality(html, util.variableNum);
+        util.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
+        var id = util.addTextElement(overlays, elementId, html);
 
-        if(!i && html.childElementCount) {
-            util.addDots(html, util);
-            util.addHoverFunctionality(html, util.variableNum);
-            var id = util.addTextElement(overlays, elementId, html);
-
-            if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
-            util.overlayActivityIds[elementId].push(id);
-        }
+        if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
+        util.overlayActivityIds[elementId].push(id);
     },
 
     /**
@@ -164,6 +171,15 @@ define({
                     if(this.classList.contains('dots')) dots = true;
                 });
             });
+        });
+    },
+
+    addDraggableFunctionality: function(localStorage, prefix, html) {
+        $(html).draggable({
+            stop: function() {
+                localStorage.setItem(prefix + "top", $(this).css("top"));
+                localStorage.setItem(prefix + "left", $(this).css("left"));
+            }
         });
     },
 

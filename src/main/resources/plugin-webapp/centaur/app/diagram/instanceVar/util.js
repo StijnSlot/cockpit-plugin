@@ -18,7 +18,7 @@ define({
             // get corresponding element from processDiagram
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
-            var html = util.createVariableList();
+            var html = util.createVariableList($window.localStorage, util.procDefId + "_" + element.id + "_offset_");
 
             // get number of instance variables to show
             util.variableNum = util.getVariableNum($window.localStorage, util.procDefId + "_var_num");
@@ -36,9 +36,10 @@ define({
                             instance.id + "/variables"))
                             .success(function(data) {
                                 data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
-
-                                util.addData(html, data, overlays, element.id, util, i);
-                                i++;
+                                html.appendChild(util.createVariableUl(data));
+                                if(!i && html.childElementCount)
+                                    util.finishElement($window.localStorage, html, overlays, element.id, util);
+                                i--;
                             });
                     });
                 });

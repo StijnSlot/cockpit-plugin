@@ -21,7 +21,7 @@ define({
             // get corresponding element from processDiagram
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
-            var html = util.createVariableList();
+            var html = util.createVariableList($window.localStorage, util.procDefId + "_" + element.id + "_offset_");
 
             $http.get(Uri.appUri("engine://engine/:engine/execution" +
                 "?processInstanceId=" + util.procInstanceId +
@@ -37,10 +37,12 @@ define({
                         $http.get(Uri.appUri("engine://engine/:engine/execution/" +
                             execution.id + "/localVariables"))
                             .success(function(data) {
-
                                 data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
-                                util.addData(html, data, overlays, element.id, util, i);
-                                i++;
+
+                                html.appendChild(util.createVariableUl(data));
+                                if(!i && html.childElementCount)
+                                    util.finishElement($window.localStorage, html, overlays, element.id, util);
+                                i--;
                             });
                     });
                 });
