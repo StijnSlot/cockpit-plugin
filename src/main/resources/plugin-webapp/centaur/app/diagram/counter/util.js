@@ -38,8 +38,19 @@ define({
    * @param   {Object}  shape         Shape of the element
    */
   composeHTML: function(util, overlays, executionSequenceCounter, elementID, shape) {
-    var htmlText = '<div class="counterText"> Counter: ' + executionSequenceCounter + '</div>';
+    var htmlText = util.createHTML (executionSequenceCounter);
     util.addTextToId(overlays, elementID, htmlText, shape);
+  },
+
+
+    /**
+     * Creates an HTML line with has a class that includes the elementID
+     * @param   String  elementID   Variable to be converted.
+     * @return  String              A string which represents an HTML line which will be added later
+     */
+  createHTML: function (executionSequenceCounter) {
+    return '<div class="counterText"> Counter: ' + executionSequenceCounter + '</div>';
   }
+
 
 });

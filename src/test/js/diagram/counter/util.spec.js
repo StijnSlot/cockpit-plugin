@@ -20,3 +20,21 @@ before(function(done) {
 it('should find duration util file', function() {
   expect(util).to.not.be.undefined;
 });
+
+describe('check createHTML', function () {
+    var executionSequenceCounter, returnValue;
+
+    describe('check create HTML', function () {
+        beforeEach(function () {
+            executionSequenceCounter = '6000';
+
+            returnValue = util.createHTML(executionSequenceCounter);
+        });
+        it('check if returns correct values', function () {
+            expect(returnValue).to.eql('<div class="counterText"> Counter: 6000</div>');
+        });
+
+    });
+
+
+});
