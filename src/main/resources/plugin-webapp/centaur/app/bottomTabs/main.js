@@ -6,5 +6,6 @@
 define(function (require) {
     var angular = require('angular');
     var options = require('./options/main');
-    return angular.module('cockpit.plugin.centaur.bottomTabs', [options.name]);
+    var history = require('./history/main');
+    return angular.module('cockpit.plugin.centaur.bottomTabs', [options.name, history.name]);
 });
