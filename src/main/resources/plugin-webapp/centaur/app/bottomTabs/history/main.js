@@ -11,14 +11,22 @@ define(['require', 'angular'], function(require, angular) {
         var procDefId = $scope.$parent.processDefinition.id;
 
         // get all variable ids for this process
-        $http.get(Uri.appUri("engine://engine/:engine/history/process-instance" +
-            "?processDefinitionId=" + procDefId +
-            "&finished=true" +
-            "&sortBy=endTime" +
-            "&sortOrder=desc"))
-            .success(function(data) {
-                $scope.processInstances = data;
-            });
+        $scope.setData = function() {
+            $http.get(Uri.appUri("engine://engine/:engine/history/process-instance" +
+                "?processDefinitionId=" + procDefId +
+                "&finished=true" +
+                ($scope.startedBefore !== undefined ? "&startedBefore=" + $scope.startedBefore + ":00" : "") +
+                ($scope.startedAfter !== undefined ? "&startedAfter=" + $scope.startedAfter + ":00" : "") +
+                ($scope.finishedBefore !== undefined ? "&finishedBefore=" + $scope.finishedBefore + ":00" : "") +
+                ($scope.finishedAfter !== undefined ? "&finishedAfter=" + $scope.finishedAfter + ":00" : "") +
+                "&sortBy=endTime" +
+                "&sortOrder=desc"))
+                .success(function (data) {
+                    console.log(data);
+                    $scope.processInstances = data;
+                });
+        };
+        $scope.setData();
 
         $scope.checkTimes = function (duration) {
             var durationString;
@@ -38,7 +46,7 @@ define(['require', 'angular'], function(require, angular) {
             return durationString;
         };
 
-        $scope.toUTC = function(time) {
+        $scope.toTruncatedUTC = function(time) {
             // convert to utc time
             var date = new Date(time).toISOString();
 
