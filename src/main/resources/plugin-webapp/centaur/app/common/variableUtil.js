@@ -52,7 +52,6 @@ define({
      * @param util          util object containing functions
      */
     finishElement: function(localStorage, html, overlays, elementId, util) {
-        console.log("heee");
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
         util.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
@@ -175,10 +174,40 @@ define({
     },
 
     addDraggableFunctionality: function(localStorage, prefix, html) {
+        var viewport = $("g.viewport"), oldTransformViewport;
+        var overlays = $("div.djs-overlay-container"), oldStyleOverlays;
+        var oldTop, oldLeft;
+
         $(html).draggable({
+            start: function() {
+                // store old values
+                oldTop = $(this).css("top");
+                oldLeft = $(this).css("left");
+                oldTransformViewport = viewport.attr("transform");
+                oldStyleOverlays = overlays.attr("style");
+
+                // hide diagram
+                viewport.attr("display", "none");
+            },
+            drag: function() {
+                //viewport.setAttribute("transform", oldTransform);
+                //viewport.attr("class", "diagram-holder grab-cursor");
+            },
             stop: function() {
+                var newTop = 2 * parseInt($(this).css("top")) - parseInt(oldTop);
+                var newLeft = 2 * parseInt($(this).css("left")) - parseInt(oldLeft);
+                $(this).css("top", String(newTop) + "px");
+                $(this).css("left", String(newLeft) + "px");
+
+                // store settings in localStorage
                 localStorage.setItem(prefix + "top", $(this).css("top"));
                 localStorage.setItem(prefix + "left", $(this).css("left"));
+
+                viewport.attr("transform", oldTransformViewport);
+                overlays.attr("style", oldStyleOverlays);
+
+                // show diagram again
+                viewport.attr("display", "block");
             }
         });
     },
