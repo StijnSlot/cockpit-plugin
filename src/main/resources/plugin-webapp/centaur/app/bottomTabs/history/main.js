@@ -15,7 +15,7 @@ define(['require', 'angular'], function(require, angular) {
             "?processDefinitionId=" + procDefId +
             "&finished=true" +
             "&sortBy=endTime" +
-            "&sortOrder=asc"))
+            "&sortOrder=desc"))
             .success(function(data) {
                 $scope.processInstances = data;
             });
