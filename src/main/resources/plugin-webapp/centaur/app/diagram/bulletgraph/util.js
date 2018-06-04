@@ -116,6 +116,7 @@ define({
      * @param   Number  curDuration   current duration of process
      * @param   String  elementID     ID of element
      * @param   Object  shape         Shape of the element
+     * @param   Object  $window       browser window containing localStorage
      */
     combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
@@ -221,6 +222,7 @@ define({
      * - Green: If the current duration is less or equal to the average and maximal duration
      * - Orange: If the current duration is less or equal to the maximal duration and greater than the average duration
      * - Red: If he current duration is greater than both the average durationa and the maximal duration
+     * 
      * @param   Number  avgDuration   average duration of process
      * @param   Number  maxDuration   maximal duration of process
      * @param   Number  curDuration   current duration of process
@@ -238,6 +240,7 @@ define({
 
     /**
      * Adds text to specified diagram element.
+     * 
      * @param   Overlay overlays    collection of overlays to add to
      * @param   String  elementId   ID of diagram element
      * @param   Number  text        The text to be displayed
@@ -265,7 +268,11 @@ define({
     },
 
     /**
-     * Creates an HTML line with has a class that includes the elementID
+     * Creates an HTML line with has a class that includes the elementID. If the bulletgraph
+     * is not selected to show it will add another class to the HTML to hide the bulletgraph
+     * 
+     * @param   Object  util            object of this class, to call its functions and variables
+     * @param   Object  $window         browser window containing localStorage
      * @param   String  elementID   Variable to be converted.
      * @return  String              A string which represents an HTML line which will be added later
      */

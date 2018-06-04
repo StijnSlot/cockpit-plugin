@@ -29,13 +29,13 @@
     font-size: 9px;
 }
 
-.bullet-hidden {
-    display: none;
-}
-
 
 
 /*  --Bulletgraph--  */
+
+.bullet-hidden {
+    display: none;
+}
 
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 1.5px; }
