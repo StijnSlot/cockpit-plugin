@@ -28,7 +28,6 @@ describe('Execution variables tests', function() {
         var spy;
         var comUtil;
         var http, uri;
-        var localStorage;
 
         before(function(done) {
             requirejs(['main/resources/plugin-webapp/centaur/app/common/variableUtil'], function(utl) {
