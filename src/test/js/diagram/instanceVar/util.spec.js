@@ -46,6 +46,7 @@ describe('instance variables tests', function() {
             stub1.filterVariables.returns([{}]);
             stub1.createVariableList.returns(document.createElement('div'));
             stub1.createVariableUl.returns(document.createElement('ul'));
+            stub1.procDefId = "asdf1234";
             stub2 = sandbox.stub().returns({success: function(x) {
                 var instances = [{}, {}];
                 x(instances);}
@@ -70,6 +71,10 @@ describe('instance variables tests', function() {
             expect(spy.callCount).to.eql(3);
         });
 
+        it('should do a http request with process definition', function() {
+            expect(spy.args[0][0]).to.contain(stub1.procDefId);
+        });
+
         it('should call createVariableList', function() {
             expect(stub1.createVariableList.callCount).to.eql(1);
         });
@@ -78,12 +83,8 @@ describe('instance variables tests', function() {
             expect(stub1.clearOverlays.callCount).to.eql(1);
         });
 
-        it('should call filterVariables', function() {
-            expect(stub1.filterVariables.callCount).to.eql(2);
-        });
-
-        it('should call finishElement', function() {
-            expect(stub1.finishElement.callCount).to.eql(1);
+        it('should call handleData', function() {
+            expect(stub1.handleVariableData.callCount).to.eql(2);
         });
     });
 });

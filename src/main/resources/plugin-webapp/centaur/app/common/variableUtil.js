@@ -43,6 +43,26 @@ define({
     },
 
     /**
+     * handles the variable data, adding it to the html
+     *
+     * @param data              variable data
+     * @param localStorage      contains the options
+     * @param html              html element to which to add
+     * @param overlays          overlays object to which to add the overlay
+     * @param elementId         element id to which to add the overlay
+     * @param util              util object containing the functions
+     * @param i                 number of variable elements still to go
+     */
+    handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
+        data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
+
+        html.appendChild(util.createVariableUl(data));
+        if(!i && html.childElementCount)
+            util.finishElement(localStorage, html, overlays, elementId, util);
+
+    },
+
+    /**
      * Adds variable data for one instance/execution to html object
      *
      * @param localStorage  used for storing draggable position in addDraggableFunctionality

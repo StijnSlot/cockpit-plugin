@@ -28,8 +28,6 @@ define({
                 "&activityId=" + element.id))
                 .success(function(executions) {
 
-                    //console.log(executions);
-
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
                     var i = executions.length - 1;
@@ -37,11 +35,7 @@ define({
                         $http.get(Uri.appUri("engine://engine/:engine/execution/" +
                             execution.id + "/localVariables"))
                             .success(function(data) {
-                                data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
-
-                                html.appendChild(util.createVariableUl(data));
-                                if(!i && html.childElementCount)
-                                    util.finishElement($window.localStorage, html, overlays, element.id, util);
+                                util.handleVariableData(data, $window.localStorage, html, overlays, element.id, util, i);
                                 i--;
                             });
                     });

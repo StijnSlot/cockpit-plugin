@@ -35,10 +35,7 @@ define({
                         $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
                             instance.id + "/variables"))
                             .success(function(data) {
-                                data = util.filterVariables($window.localStorage, data, util.procDefId + "_var_");
-                                html.appendChild(util.createVariableUl(data));
-                                if(!i && html.childElementCount)
-                                    util.finishElement($window.localStorage, html, overlays, element.id, util);
+                                util.handleVariableData(data, $window.localStorage, html, overlays, element.id, util, i);
                                 i--;
                             });
                     });
