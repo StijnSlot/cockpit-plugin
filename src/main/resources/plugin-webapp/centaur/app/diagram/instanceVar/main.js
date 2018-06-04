@@ -23,6 +23,8 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
 
             // get overlay and elements from the diagram
             var viewer = control.getViewer();
+            console.log(viewer.get('canvas').getZoom);
+            console.log(viewer.get('zoomScroll'));
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
 

@@ -150,7 +150,8 @@ define({
         // add hover functionality
         $(html).hover(function() {
             // change class to show all variables
-            html.className = "variableTextFull";
+            html.classList.remove("variableTextSmall");
+            html.classList.add("variableTextFull");
 
             // unhide the hidden variables
             $(html).children().each(function() {
@@ -160,7 +161,8 @@ define({
             });
         }, function() {
             // change class to smaller variable list
-            html.className = "variableTextSmall";
+            html.classList.remove("variableTextFull");
+            html.classList.add("variableTextSmall");
 
             var dots = false;
             // hide children with index higher than numValue
@@ -174,40 +176,13 @@ define({
     },
 
     addDraggableFunctionality: function(localStorage, prefix, html) {
-        var viewport = $("g.viewport"), oldTransformViewport;
-        var overlays = $("div.djs-overlay-container"), oldStyleOverlays;
-        var oldTop, oldLeft;
+        html.classList.add("djs-draggable");
 
         $(html).draggable({
-            start: function() {
-                // store old values
-                oldTop = $(this).css("top");
-                oldLeft = $(this).css("left");
-                oldTransformViewport = viewport.attr("transform");
-                oldStyleOverlays = overlays.attr("style");
-
-                // hide diagram
-                viewport.attr("display", "none");
-            },
-            drag: function() {
-                //viewport.setAttribute("transform", oldTransform);
-                //viewport.attr("class", "diagram-holder grab-cursor");
-            },
             stop: function() {
-                var newTop = 2 * parseInt($(this).css("top")) - parseInt(oldTop);
-                var newLeft = 2 * parseInt($(this).css("left")) - parseInt(oldLeft);
-                $(this).css("top", String(newTop) + "px");
-                $(this).css("left", String(newLeft) + "px");
-
                 // store settings in localStorage
                 localStorage.setItem(prefix + "top", $(this).css("top"));
                 localStorage.setItem(prefix + "left", $(this).css("left"));
-
-                viewport.attr("transform", oldTransformViewport);
-                overlays.attr("style", oldStyleOverlays);
-
-                // show diagram again
-                viewport.attr("display", "block");
             }
         });
     },
