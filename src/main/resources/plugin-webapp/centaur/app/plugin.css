@@ -105,3 +105,12 @@
     display: inline-block;
     margin-right: 4px;
 }
+
+.delete-process-button {
+    border-radius: 5px;
+    border-color: red;
+    float: right;
+    background-color: red;
+    margin-right: 20px;
+    margin-top: -20px;
+}

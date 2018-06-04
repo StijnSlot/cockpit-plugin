@@ -5,32 +5,45 @@ define(['angular'], function(angular) {
     var controller = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
         var checkExist = setInterval(function() {
             if ($(".process-definitions-list > thead > tr").length) {
-                console.log('loaded');
                 putCheckboxes();
+                putButton();
                 clearInterval(checkExist);
             }
         }, 100);
 
+        $scope.test = "hi";
+
         function putCheckboxes() {
-            var th = document.createElement('th');
+
+            // create title
+            var th = document.createElement('TH');
             th.className = "ng-binding";
             th.innerHTML = "Selection";
             $(".process-definitions-list > thead > tr").append(th);
+
+            // create checkboxes
             $(".process-definitions-list > tbody > tr").each(function(i) {
                 //var name = $(this).children(".name").text();
-                var td = document.createElement('td');
+                var td = document.createElement('TD');
                 var box = document.createElement('INPUT');
                 box.type = "checkbox";
                 box.id = "processSelect" + i;
-                box.setAttribute("ng-change", "processSelect(" + i + ", checked)");
-                box.setAttribute("ng-model", "checked");
+                box.setAttribute("ng-model", "pd.checked");
+                box.setAttribute("ng-change", "processSelect(pd)");
                 td.appendChild(box);
                 $(this).append(td);
             });
         }
 
-        $scope.processSelect = function(i, checked) {
-            console.log(i + " " + checked);
+        function putButton() {
+            var button = document.createElement("BUTTON");
+            button.className = "delete-process-button";
+            button.innerText = "Delete";
+            $(".loader-state").append(button);
+        }
+
+        $scope.processSelect = function(pd) {
+            console.log(pd);
         }
     }];
 
