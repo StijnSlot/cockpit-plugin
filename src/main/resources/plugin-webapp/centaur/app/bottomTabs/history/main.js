@@ -11,22 +11,21 @@ define(['require', 'angular'], function(require, angular) {
         var procDefId = $scope.$parent.processDefinition.id;
 
         // get all variable ids for this process
-        $scope.setData = function() {
+        //$scope.setData = function() {
             $http.get(Uri.appUri("engine://engine/:engine/history/process-instance" +
                 "?processDefinitionId=" + procDefId +
                 "&finished=true" +
-                ($scope.startedBefore !== undefined ? "&startedBefore=" + $scope.startedBefore + ":00" : "") +
-                ($scope.startedAfter !== undefined ? "&startedAfter=" + $scope.startedAfter + ":00" : "") +
-                ($scope.finishedBefore !== undefined ? "&finishedBefore=" + $scope.finishedBefore + ":00" : "") +
-                ($scope.finishedAfter !== undefined ? "&finishedAfter=" + $scope.finishedAfter + ":00" : "") +
+                /*$scope.startedBefore !== undefined ? "&startedBefore=\"" + $scope.startedBefore + ":00.000Z\"" : "") +
+                ($scope.startedAfter !== undefined ? "&startedAfter=\"" + $scope.startedAfter + ":00.000Z\"" : "") +
+                ($scope.finishedBefore !== undefined ? "&finishedBefore=\"" + $scope.finishedBefore + ":00.000Z\"" : "") +
+                ($scope.finishedAfter !== undefined ? "&finishedAfter=\"" + $scope.finishedAfter + ":00.000Z\"" : "") +*/
                 "&sortBy=endTime" +
                 "&sortOrder=desc"))
                 .success(function (data) {
-                    console.log(data);
                     $scope.processInstances = data;
                 });
-        };
-        $scope.setData();
+        //};
+        //$scope.setData();
 
         $scope.checkTimes = function (duration) {
             var durationString;
