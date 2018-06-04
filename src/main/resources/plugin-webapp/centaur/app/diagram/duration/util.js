@@ -78,7 +78,7 @@ define({
                     height: shape.height
                 });
 
-        overlays.add(elementId, {
+        return overlays.add(elementId, {
             position: {
                 top: -40,
                 left: -40
@@ -89,6 +89,7 @@ define({
             },
             html: $overlayHtml
         });
+
     },
 
     /**
@@ -124,11 +125,16 @@ define({
      */
     composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window, procDefId) {
         if (util.checkConditions(avgDuration, maxDuration)) {
+
+            // clear any current overlays displayed
+            util.clearOverlays(overlays, util.overlayActivityIds, elementID);
+
             var avgDurationHTML = util.checkTimes(avgDuration);
             var maxDurationHTML = util.checkTimes(maxDuration);
             var curDurationHTML = util.checkIfCurValid(util, curDuration);
             var htmlText = util.createHTML(util, $window, procDefId, curDurationHTML, avgDurationHTML, maxDurationHTML);
-            util.addTextToId(elementID, htmlText, shape, overlays);
+            var newOverlayId = util.addTextToId(elementID, htmlText, shape, overlays);
+            util.overlayActivityIds[elementID].push(newOverlayId);
         }
     },
 
@@ -171,6 +177,22 @@ define({
     isSelectedVariable: function (localStorage, item) {
         return localStorage.getItem(item) === 'true';
     },
+
+    /**
+     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
+     *
+     * @param overlays              overlays object containing all diagram overlays
+     * @param overlayActivityIds    ids of overlays which should be removed
+     * @param id
+     */
+    clearOverlays: function (overlays, overlayActivityIds, id) {
+        if(overlayActivityIds[id] !== undefined) {
+            overlayActivityIds[id].forEach(function (element) {
+                overlays.remove(element);
+            });
+        }
+        overlayActivityIds[id] = [];
+    }
 
 
 });
