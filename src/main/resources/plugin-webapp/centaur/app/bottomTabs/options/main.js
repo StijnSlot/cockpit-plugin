@@ -22,7 +22,8 @@ define(['require', 'angular', './util'], function(require, angular) {
         $scope.KPI = [
             {id: "act_cur_duration", name: "Activity current duration"},
             {id: "act_avg_duration", name: "Activity average duration"},
-            {id: "act_max_duration", name: "Activity maximum duration"}
+            {id: "act_max_duration", name: "Activity maximum duration"},
+            {id: "bulletgraph", name: "Bulletgraph"}
         ];
 
         // retrieve localStorage info on KPI's and set checkboxes

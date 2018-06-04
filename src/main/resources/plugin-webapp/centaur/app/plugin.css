@@ -29,6 +29,10 @@
     font-size: 9px;
 }
 
+.bullet-hidden {
+    display: none;
+}
+
 
 
 /*  --Bulletgraph--  */

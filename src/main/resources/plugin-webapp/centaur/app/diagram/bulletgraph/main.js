@@ -26,61 +26,23 @@ define(['require', 'angular', './bullet', './util'], function (require, angular)
      * Overlay object that contains the elements put on the diagram
      */
     var overlay = [
-        '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
-        function ($scope, $http, Uri, control, processData, pageData, $q, processDiagram) {
+        '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
+        function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
             var overlaysNodes = {};
 
             var procDefId = $scope.$parent.processDefinition.id;
+            util.procDefId = procDefId;
 
+            util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
 
-            /*
-             * Angular http.get promises that wait for a JSON object of
-             * the process activity and the instance start time.
-             */
-            $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + procDefId), {
-                catch: false
-            });
-            $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
-                catch: false
-            });
-
-            /**
-             * Waits until data is received from http.get request and
-             * added to promises.
-             *
-             * Database quersies take a relative long time. So we have to
-             * wait until the data is retrieved before we can continue.
-             *
-             * @param   Object  data   minimal duration of process
-             */
-            $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function (data) {
-                $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-                $scope.instanceStartTime = data[1];
-
-                /**
-                 * Extracts data from JSON objects and calls composeHTML()
-                 * function to add the extracted to the diagram.
-                 *
-                 * @param   Object  shape   shape of element
-                 */
-                elementRegistry.forEach(function (shape) {
-                    var element = processDiagram.bpmnElements[shape.businessObject.id];
-                    for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                        if ($scope.processActivityStatistics.data[i].id == element.id) {
-                            var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                            var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                            var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                            var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
-
-                            util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape);
-                            break;
-                        }
-                    }
-                });
-            });
+                    // subscribe to any broadcast KPI options change
+                    $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
+                        util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+                    });
+            
         }
     ]
 
