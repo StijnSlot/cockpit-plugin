@@ -5,9 +5,9 @@
 
 define(function (require) {
     var angular = require('angular');
-    var diagramModule = require('./diagram/main');
-    var bottomTabsModule = require('./bottomTabs/main');
-    return angular.module('cockpit.plugin.centaur', [diagramModule.name, bottomTabsModule.name]);
+    var processDefinition = require('./processDefinition/main');
+    var processInstance = require('./processInstance/main');
+    return angular.module('cockpit.plugin.centaur', [processDefinition.name, processInstance.name]);
 });
 
 //git hook test
