@@ -7,11 +7,11 @@ define({
      * @param html          DOM element of overlay
      * @returns {int}
      */
-    addTextElement: function (overlays, elementId, html) {
+    addTextElement: function (overlays, elementId, html, bottom, left) {
         return overlays.add(elementId, {
             position: {
-                bottom: 25,
-                left: -120
+                bottom: bottom,
+                left: left
             },
             show: {
                 minZoom: -Infinity,

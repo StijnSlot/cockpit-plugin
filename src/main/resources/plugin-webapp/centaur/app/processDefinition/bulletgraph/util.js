@@ -141,7 +141,7 @@ define({
             var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
             var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
             var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
-            var newOverlayId = util.addHTMLToId(overlays, elementID, util.createHTML(util, $window, elementID), shape);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, util.createHTML(util, $window, elementID), 120, 30);
             util.overlayActivityIds[elementID].push(newOverlayId);
             console.log(util.overlayActivityIds);
             util.setGraphSettings(elementID, maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet);
@@ -191,35 +191,6 @@ define({
         } else {
             return 'red';
         }
-    },
-
-    /**
-     * Adds text to specified diagram element.
-     * 
-     * @param   Overlay overlays    collection of overlays to add to
-     * @param   String  elementId   ID of diagram element
-     * @param   Number  text        The text to be displayed
-     * @param   Object  shape       Shape of the element
-     */
-    addHTMLToId: function (overlays, elementId, text, shape) {
-        var $overlayHtml =
-            $(text)
-                .css({
-                    width: 'auto',
-                    height: 'auto'
-                });
-
-        return overlays.add(elementId, {
-            position: {
-                top: -40,
-                left: 30
-            },
-            show: {
-                minZoom: -Infinity,
-                maxZoom: +Infinity
-            },
-            html: $overlayHtml
-        });
     },
 
     /**
