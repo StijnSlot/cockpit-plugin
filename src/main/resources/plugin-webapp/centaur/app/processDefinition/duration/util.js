@@ -1,5 +1,13 @@
 define({
 
+    commonConversion: {},
+
+    commonOptions: {},
+
+    commonOverlays: {},
+
+    commonVariables: {},
+
 
     /**
      * variable containing all ids of overlays created here
@@ -97,66 +105,6 @@ define({
     },
 
     /**
-     * Decides which time interval to use.
-     *
-     * The database keeps track of the duration in milli seconds.
-     * This is difficult to read in the diagram, so we convert the
-     * milli senconds into following intervals: seconds, minutes,
-     * hours, days, weeks to make it easier to read.
-     *
-     * @param   Number  duration      duration of process
-     * @return  String  durationHTML  duration as String
-     */
-    checkTimes: function (duration) {
-        if (duration > 1000 && duration < 60001) {
-            var durationHTML = (Math.round(duration / 1000 * 10) / 10).toString() + ' seconds';
-        } else if (duration > 60000 && duration < 3600001) {
-            var durationHTML = (Math.round(duration / 60000 * 10) / 10).toString() + ' minutes';
-        } else if (duration > 3600000 && duration < 86400001) {
-            var durationHTML = (Math.round(duration / 3600000 * 10) / 10).toString() + ' hours';
-        } else if (duration > 86400000 && duration < 604800001) {
-            var durationHTML = (Math.round(duration / 86400000 * 10) / 10).toString() + ' days';
-        } else if (duration > 604800000) {
-            var durationHTML = (Math.round(duration / 604800001 * 10) / 10).toString() + ' weeks';
-        } else {
-            var durationHTML = (duration).toString() + ' ms';
-        }
-        return durationHTML;
-    },
-
-    /**
-     * Adds text to specified diagram element.
-     * 
-     * @param   Number  elementId   ID of diagram element
-     * @param   String  text        The text to be displayed
-     * @param   Object  shape       Shape of the element
-     * @param   Overlay overlays    collection of overlays to add to
-     * 
-     */
-    addTextToId: function (elementId, text, shape, overlays) {
-
-        var $overlayHtml =
-            $(text)
-                .css({
-                    width: shape.width,
-                    height: shape.height
-                });
-
-        return overlays.add(elementId, {
-            position: {
-                top: -40,
-                left: -40
-            },
-            show: {
-                minZoom: -Infinity,
-                maxZoom: +Infinity
-            },
-            html: $overlayHtml
-        });
-
-    },
-
-    /**
      * This function will check if the conditions to show the durations are
      * satisfied.
      *
@@ -203,11 +151,14 @@ define({
             // clear any current overlays displayed
             util.clearOverlays(overlays, util.overlayActivityIds, elementID);
 
-            var avgDurationHTML = util.checkTimes(avgDuration);
-            var maxDurationHTML = util.checkTimes(maxDuration);
+            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
+            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
+            var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
+            var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.checkIfCurValid(util, curDuration);
+            
             var htmlText = util.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
-            var newOverlayId = util.addTextToId(elementID, htmlText, shape, overlays);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, htmlText, 120, -40);
             util.overlayActivityIds[elementID].push(newOverlayId);
         }
     },
@@ -222,7 +173,8 @@ define({
      */
     checkIfCurValid: function (util, curDuration) {
         if (curDuration != null) {
-            return util.checkTimes(curDuration);
+            var curDurationUnit = util.commonConversion.checkTimeUnit(curDuration);
+            return util.commonConversion.convertTimes(curDuration, curDurationUnit).toString() + ' ' + curDurationUnit;
         } else {
             return '-';
         }

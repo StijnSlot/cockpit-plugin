@@ -9,11 +9,11 @@ define({
      * @param y             the left offset
      * @returns {int}
      */
-    addTextElement: function (overlays, elementId, html, x, y) {
+    addTextElement: function (overlays, elementId, html, bottom, left) {
         return overlays.add(elementId, {
             position: {
-                bottom: y,
-                left: x
+                bottom: bottom,
+                left: left
             },
             show: {
                 minZoom: -Infinity,
