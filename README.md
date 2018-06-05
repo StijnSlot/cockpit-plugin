@@ -1,19 +1,31 @@
 # Centaur
 Custom plugin for the Camunda BPM cockpit webapp.
 
+Centaur is a group of Computer science students working to create an advanced dashboard
+for the Information Systems Group. This dashboard will be supplied in the form of a plugin
+that builds upon the existing cockpit feature of the open-source Camunda BPM software.
+This research group is one of the participants of the overarching HORSE project.
+The HORSE project aims to bring a new industrial solution that involves a flexible model of
+smart factory involving the efficient collaboration of humans, robots and machinery. Using 
+existing technology and research in robotics and smart factories, the researchers and collab-
+orators participating in the project integrate this knowledge in a coherent framework.
 
-Project name: Your project’s name is the first thing people will see upon scrolling down to your README, and is included upon creation of your README file.
+The innovative approaches of HORSE are the integration of efficient human-robot interaction,
+intuitive human-machine interfaces and interaction between different robots and machines.
+On top of that, the reduction of health risks and safety of the human worker will contribute to
+an improved production process.
 
-Description: A description of your project follows. A good description is clear, short, and to the point. Describe the importance of your project, and what it does.
+The suitability of the resulting framework is driven and validated with manufacturing compa-
+nies. These end-users participate in both the development and validation of the framework.
 
-Table of Contents: Optionally, include a table of contents in order to allow other people to quickly navigate especially long or detailed READMEs.
-
-Installation: Installation is the next section in an effective README. Tell other users how to install your project locally. Optionally, include a gif to make the process even more clear for other people.
-
-Usage: The next section is usage, in which you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
-
-Contributing: Larger projects often have sections on contributing to their project, in which contribution instructions are outlined. Sometimes, this is a separate file. If you have specific contribution preferences, explain them so that other developers know how to best contribute to your work. To learn more about how to help others contribute, check out the guide for setting guidelines for repository contributors.
-
-Credits: Include a section for credits in order to highlight and link to the authors of your project.
-
-License: Finally, include a section for the license of your project. For more information on choosing a license, check out GitHub’s licensing guide!
+In the former stage, selected end-users will participate in so-called Pilot Experiments. In the
+latter stage, new end-users are recruited to validate the suitability.
+Centaur strives to make a tailor-made dashboard that has the right functionalities built in
+as needed for the proposed solution of the HORSE project. The aim of the dashboard is
+to provide operation managers an overview of all processes and their statuses in a smart
+factory. The visualisation of this information should happen in an intuitive way such that the
+right information can be attained with a quick glance. Besides that, the dashboard should
+be able to display important parameters such as process variables, KPI’s (Key Performance
+Indicators) and it should provide insight of the current status of activities in the process model.
+Finally, the usability should be on such a level that the experience of using this dashboard is
+pleasant and foolproof.
