@@ -59,14 +59,16 @@
 .variableTextSmall ul {
     list-style-type: none;
     padding: 0 0 0 0;
-    width: 100%;
+    width: 100%;;
+    margin-bottom: 5px;
 }
 
-.variableTextSmall > ul:not(:last-child)::after {
-    content: '';
+.variableTextSmall > ul:last-child {
+    margin-bottom: 0;
+    /*content: '';
     position: absolute;
     width: 60%;
-    height: 5px;
+    height: 5px;*/
 }
 
 .variableTextSmall li {
@@ -94,14 +96,16 @@
     list-style-type: none;
     margin-left: 5px;
     padding: 0 0 0 0;
+    margin-bottom: 5px;
     width: 100%;
 }
 
-.variableTextFull > ul:not(:last-child)::after {
-    content: '';
+.variableTextFull > ul:last-child {
+    margin-bottom: 0;
+    /*content: '';
     position: absolute;
     width: 60%;
-    height: 5px;
+    height: 5px;*/
 }
 
 .variableTextFull b {
