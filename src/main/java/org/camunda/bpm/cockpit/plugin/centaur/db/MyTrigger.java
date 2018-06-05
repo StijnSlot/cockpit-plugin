@@ -1,5 +1,4 @@
 package org.camunda.bpm.cockpit.plugin.centaur.db;
-import org.camunda.bpm.cockpit.plugin.centaur.resources.SingletonBroadcast;
 import org.h2.api.Trigger;
 import java.sql.*;
 
@@ -15,8 +14,6 @@ public class MyTrigger implements Trigger {
     public void fire(Connection conn,
                      Object[] oldRow, Object[] newRow)
             throws SQLException {
-        // broadcast to connected users
-        SingletonBroadcast.getInstance().broadcast();
 
         System.out.print("The trigger fires");
 
