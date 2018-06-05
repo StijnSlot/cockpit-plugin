@@ -36,10 +36,14 @@ define(['angular'], function(angular) {
         }
 
         function putButton() {
+            var div = document.createElement('DIV');
+            div.setAttribute("ng-app", "cockpit.plugin.centaur.processes");
+            //div.setAttribute("ng-controller", "")
             var button = document.createElement("BUTTON");
             button.className = "delete-process-button";
             button.innerText = "Delete";
-            $(".loader-state").append(button);
+            div.appendChild(button);
+            $(".loader-state").append(div);
         }
 
         $scope.processSelect = function(pd) {
