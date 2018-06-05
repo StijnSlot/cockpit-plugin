@@ -1,4 +1,12 @@
 define({
+    commonConversion: {},
+
+    commonOptions: {},
+
+    commonOverlays: {},
+
+    commonVariables: {},
+
     /**
      * variable containing all ids of overlays created here
      */
@@ -125,13 +133,13 @@ define({
         if (util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
 
             // clear any current overlays displayed
-            util.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, elementID);
             
-            var timeChoice = util.checkTimeUnit(maxDuration);
-            var minDuration = util.convertTimes(minDuration, timeChoice);
-            var avgDuration = util.convertTimes(avgDuration, timeChoice);
-            var maxDuration = util.convertTimes(maxDuration, timeChoice);
-            var curDuration = util.convertTimes(curDuration, timeChoice);
+            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration);
+            var minDuration = util.commonConversion.convertTimes(minDuration, timeChoice);
+            var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
+            var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
+            var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
             var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
             var newOverlayId = util.addHTMLToId(overlays, elementID, util.createHTML(util, $window, elementID), shape);
             util.overlayActivityIds[elementID].push(newOverlayId);
@@ -160,62 +168,6 @@ define({
             return true;
         } else {
             return false;
-        }
-    },
-
-    /**
-     * Decides which time unit to use.
-     *
-     * The database keeps track of the duration in milli seconds.
-     * Since a discision has to be made to show in the bulletgraph,
-     * this determines which time unit (seconds, minutes,
-     * hours, days, weeks) should be used.
-     *
-     * @param   Number  time      duration of process
-     * @return  String            time unit choice
-     */
-    checkTimeUnit: function (time) {
-        if (time > 1000 && time < 60001) {
-            return 'seconds';
-        } else if (time > 60000 && time < 3600001) {
-            return 'minutes';
-        } else if (time > 3600000 && time < 86400001) {
-            return 'hours';
-        } else if (time > 86400000 && time < 604800001) {
-            return 'days';
-        } else if (time > 604800000) {
-            return 'weeks';
-        } else {
-            return 'ms';
-        }
-    },
-
-    /**
-     * Convert the duration into the chosen time unit.
-     *
-     * The database keeps track of the duration in milli seconds.
-     * This is difficult to read in the diagram, so we convert the
-     * milli senconds into following intervals: seconds, minutes,
-     * hours, days, weeks to make it easier to read. The choice
-     * determines which time unit to use.
-     *
-     * @param   Number  duration      duration of process
-     * @param   String  choice        choice of time unit
-     * @return  Number                duration as Integer
-     */
-    convertTimes: function (duration, choice) {
-        if (choice == 'seconds') {
-            return (Math.round(duration / 1000 * 10) / 10);
-        } else if (choice == 'minutes') {
-            return (Math.round(duration / 60000 * 10) / 10);
-        } else if (choice == 'hours') {
-            return (Math.round(duration / 3600000 * 10) / 10);
-        } else if (choice == 'days') {
-            return (Math.round(duration / 86400000 * 10) / 10);
-        } else if (choice == 'weeks') {
-            return (Math.round(duration / 604800000 * 10) / 10);
-        } else {
-            return duration;
         }
     },
 
@@ -280,7 +232,7 @@ define({
      * @return  String              A string which represents an HTML line which will be added later
      */
     createHTML: function (util, $window, elementID) {
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Bulletgraph")) {
+        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Bulletgraph")) {
             return '<div class="bullet-duration-' + elementID + '"> </div>';
         } else { return '<div class="bullet-duration-' + elementID + ' bullet-hidden"> </div>' }
     },
@@ -347,31 +299,5 @@ define({
         } else {
             return curDuration;
         }
-    },
-
-    /**
-     * Removes all variables which are not selected by the user
-     *
-     * @param localStorage  contains user optionsTab
-     * @param item          used for getting localStorage item option
-     */
-    isSelectedVariable: function (localStorage, item) {
-        return localStorage.getItem(item) === 'true';
-    },
-
-    /**
-     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
-     *
-     * @param overlays              overlays object containing all diagram overlays
-     * @param overlayActivityIds    ids of overlays which should be removed
-     * @param id
-     */
-    clearOverlays: function (overlays, overlayActivityIds, id) {
-        if (overlayActivityIds[id] !== undefined) {
-            overlayActivityIds[id].forEach(function (element) {
-                overlays.remove(element);
-            });
-        }
-        overlayActivityIds[id] = [];
     }
 });
