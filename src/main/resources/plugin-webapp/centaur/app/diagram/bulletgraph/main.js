@@ -56,7 +56,6 @@ define(['require', 'angular', './bullet', './util'], function (require, angular)
             label: 'Runtime',
             overlay: overlay
         });
-      });
     }
   ]
 
