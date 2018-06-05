@@ -1,5 +1,78 @@
 define({
     /**
+     * variable containing all ids of overlays created here
+     */
+    overlayActivityIds: {},
+
+    /**
+     * contains process definition id
+     */
+    procDefId: "",
+
+    /**
+     * Main function of the bulletgraph module. In here the data will be loaded
+     * from the database by using promises. Also functions will be called
+     * to add information to the BPMN model.
+     *
+     * @param   util              object of this class, to call its functions and variables
+     * @param   $scope            object with corresponding properties and methods
+     * @param   $http             http client for GET request
+     * @param   $window           browser window containing localStorage
+     * @param   Uri               uniform resource identifier to create GET request
+     * @param   $q                a promise
+     * @param   elementRegistry   registry containing bpmn elements
+     * @param   processDiagram    diagram containing elements
+     * @param   overlays          collection of overlays to add to
+     */
+    bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
+        /*
+             * Angular http.get promises that wait for a JSON object of
+             * the process activity and the instance start time.
+             */
+        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + util.procDefId), {
+            catch: false
+        });
+        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
+            catch: false
+        });
+
+        /**
+         * Waits until data is received from http.get request and
+         * added to promises.
+         *
+         * Database quersies take a relative long time. So we have to
+         * wait until the data is retrieved before we can continue.
+         *
+         * @param   Object  data   minimal duration of process
+         */
+        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function (data) {
+            $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
+            $scope.instanceStartTime = data[1];
+
+            /**
+             * Extracts data from JSON objects and calls composeHTML()
+             * function to add the extracted to the diagram.
+             *
+             * @param   Object  shape   shape of element
+             */
+            elementRegistry.forEach(function (shape) {
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+                for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
+                    if ($scope.processActivityStatistics.data[i].id == element.id) {
+                        var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
+                        var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
+                        var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
+                        var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
+
+                        util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
+                        break;
+                    }
+                }
+            });
+        });
+    },
+
+    /**
      * Calculates the current duration of a instance of a process.
      *
      * The database only keeps track of the starting time of each
@@ -43,17 +116,25 @@ define({
      * @param   Number  curDuration   current duration of process
      * @param   String  elementID     ID of element
      * @param   Object  shape         Shape of the element
+     * @param   Object  $window       browser window containing localStorage
      */
-    combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, shape) {
+    combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
+
+            // clear any current overlays displayed
+            util.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            
             var timeChoice = util.checkTimeUnit(maxDuration);
             var minDuration = util.convertTimes(minDuration, timeChoice);
             var avgDuration = util.convertTimes(avgDuration, timeChoice);
             var maxDuration = util.convertTimes(maxDuration, timeChoice);
             var curDuration = util.convertTimes(curDuration, timeChoice);
             var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
-            util.addHTMLToId(overlays, elementID, util.createHTML(elementID), shape);
+            var newOverlayId = util.addHTMLToId(overlays, elementID, util.createHTML(util, $window, elementID), shape);
+            util.overlayActivityIds[elementID].push(newOverlayId);
+            console.log(util.overlayActivityIds);
             util.setGraphSettings(elementID, maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet);
+            
         }
     },
 
@@ -71,8 +152,8 @@ define({
      * @param   Number  curDuration   current duration of process
      * @return  Boolean               if condtions are satisfied or not
      */
-    checkConditions: function(minDuration, avgDuration, maxDuration, curDuration) {
-        if (avgDuration != null && minDuration != null && maxDuration != null  && curDuration != null && avgDuration != 0) {
+    checkConditions: function (minDuration, avgDuration, maxDuration, curDuration) {
+        if (avgDuration != null && minDuration != null && maxDuration != null && curDuration != null && avgDuration != 0) {
             return true;
         } else {
             return false;
@@ -141,6 +222,7 @@ define({
      * - Green: If the current duration is less or equal to the average and maximal duration
      * - Orange: If the current duration is less or equal to the maximal duration and greater than the average duration
      * - Red: If he current duration is greater than both the average durationa and the maximal duration
+     * 
      * @param   Number  avgDuration   average duration of process
      * @param   Number  maxDuration   maximal duration of process
      * @param   Number  curDuration   current duration of process
@@ -158,6 +240,7 @@ define({
 
     /**
      * Adds text to specified diagram element.
+     * 
      * @param   Overlay overlays    collection of overlays to add to
      * @param   String  elementId   ID of diagram element
      * @param   Number  text        The text to be displayed
@@ -171,7 +254,7 @@ define({
                     height: 'auto'
                 });
 
-        overlays.add(elementId, {
+        return overlays.add(elementId, {
             position: {
                 top: -40,
                 left: 30
@@ -185,12 +268,18 @@ define({
     },
 
     /**
-     * Creates an HTML line with has a class that includes the elementID
+     * Creates an HTML line with has a class that includes the elementID. If the bulletgraph
+     * is not selected to show it will add another class to the HTML to hide the bulletgraph
+     * 
+     * @param   Object  util            object of this class, to call its functions and variables
+     * @param   Object  $window         browser window containing localStorage
      * @param   String  elementID   Variable to be converted.
      * @return  String              A string which represents an HTML line which will be added later
      */
-    createHTML: function (elementID) {
-        return '<div class="bullet-duration-' + elementID + '"> </div>';
+    createHTML: function (util, $window, elementID) {
+        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Bulletgraph")) {
+            return '<div class="bullet-duration-' + elementID + '"> </div>';
+        } else { return '<div class="bullet-duration-' + elementID + ' bullet-hidden"> </div>' }
     },
 
     /**
@@ -255,7 +344,31 @@ define({
         } else {
             return curDuration;
         }
+    },
+
+    /**
+     * Removes all variables which are not selected by the user
+     *
+     * @param localStorage  contains user options
+     * @param item          used for getting localStorage item option
+     */
+    isSelectedVariable: function (localStorage, item) {
+        return localStorage.getItem(item) === 'true';
+    },
+
+    /**
+     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
+     *
+     * @param overlays              overlays object containing all diagram overlays
+     * @param overlayActivityIds    ids of overlays which should be removed
+     * @param id
+     */
+    clearOverlays: function (overlays, overlayActivityIds, id) {
+        if (overlayActivityIds[id] !== undefined) {
+            overlayActivityIds[id].forEach(function (element) {
+                overlays.remove(element);
+            });
+        }
+        overlayActivityIds[id] = [];
     }
-
-
 });

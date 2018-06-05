@@ -2,7 +2,7 @@
     <h4>Select KPI's to show</h4>
     <form data-ng-repeat="variable in KPI">
         <input type="checkbox" ng-checked="variable.checked"
-               ng-change="changeKPI(variable.id, checked)"  ng-model="checked"> {{ variable.name }}<br>
+               ng-change="changeKPI(variable.name, checked)"  ng-model="checked"> {{ variable.name }}<br>
     </form>
 </div>
 <div class="option-box">
