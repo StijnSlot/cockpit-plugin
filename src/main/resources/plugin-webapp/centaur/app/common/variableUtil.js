@@ -59,7 +59,6 @@ define({
         html.appendChild(util.createVariableUl(data));
         if(!i && html.childElementCount)
             util.finishElement(localStorage, html, overlays, elementId, util);
-
     },
 
     /**
@@ -109,6 +108,15 @@ define({
 
             variables.appendChild(variableHtml);
         }
+
+        // insert empty list item
+        if(!variables.childElementCount) {
+            var li = document.createElement('LI');
+            li.innerHTML = "<b>* no variables *</b>";
+            variables.appendChild(li);
+        }
+
+        variables.className = "   djs-draggable";
         return variables;
     },
 

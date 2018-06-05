@@ -24,6 +24,9 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
             // get overlay and elements from the diagram
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
+
+            console.log(viewer.get('canvas'));
+
             var elementRegistry = viewer.get('elementRegistry');
 
             // add the activity variable elements to the overlay

@@ -57,9 +57,16 @@
 }
 
 .variableTextSmall ul {
-    margin-top: 5px;
-    margin-left: -20px;
     list-style-type: none;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+
+.variableTextSmall > ul:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 5px;
 }
 
 .variableTextSmall li {
@@ -84,9 +91,17 @@
 }
 
 .variableTextFull ul {
-    margin-top: 5px;
     list-style-type: none;
-    margin-left: -20px;
+    margin-left: 5px;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+
+.variableTextFull > ul:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 5px;
 }
 
 .variableTextFull b {

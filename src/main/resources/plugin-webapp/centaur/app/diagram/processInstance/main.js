@@ -27,14 +27,14 @@ define(['require', 'angular', './util', '../../bottomTabs/options/util', '../../
             util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil);
 
             // subscribe to any broadcast variables options change
-            $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+            /*$rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
                 util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
             });
 
             // subscribe to any broadcast variable number changes
             $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
                 util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
-            });
+            });*/
         }
     ];
 
