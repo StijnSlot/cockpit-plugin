@@ -60,7 +60,7 @@ define(['require', 'angular'], function(require, angular) {
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
             id: 'history',
-            label: 'Finished process instances',
+            label: 'Finished Process Instances',
             url: 'plugin://centaur/static/app/bottomTabs/history/tab.html',
             controller: DashboardController,
 
