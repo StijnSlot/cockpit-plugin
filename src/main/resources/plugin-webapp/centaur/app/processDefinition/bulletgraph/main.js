@@ -58,7 +58,7 @@ define(['require', 'angular', './bullet', './util'], function (require, angular)
     });
   }];
 
-  var ngModule = angular.module('cockpit.plugin.centaur.diagram.bulletgraph', []);
+  var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.bulletgraph', []);
 
   ngModule.config(Configuration);
 

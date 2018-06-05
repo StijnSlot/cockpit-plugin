@@ -1,4 +1,4 @@
-define(['require', 'angular', './util', '../../common/variables'], function(require, angular) {
+define(['require', 'angular', './util', '../../common/options'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
@@ -8,7 +8,7 @@ define(['require', 'angular', './util', '../../common/variables'], function(requ
     /**
      * commonUtil containing variable data
      */
-    var commonUtil = require('../../common/variables');
+    var commonOptions = require('../../common/options');
 
     /**
      * Controller object containing all behavior
@@ -37,7 +37,7 @@ define(['require', 'angular', './util', '../../common/variables'], function(requ
         };
 
         $scope.setNumValue = function() {
-            $scope.numValue = commonUtil.getVariableNum($window.localStorage, procDefId + "_var_num");
+            $scope.numValue = commonOptions.getVariableNum($window.localStorage, procDefId + "_var_num");
         };
 
         // get all variable ids for this process
@@ -89,7 +89,7 @@ define(['require', 'angular', './util', '../../common/variables'], function(requ
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.bottomTabs.options', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.options', []);
 
     ngModule.config(Configuration);
 

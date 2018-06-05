@@ -5,13 +5,15 @@ define({
      * @param overlays      Collection of overlays to which can be added to
      * @param elementId     Id of element where we add overlay
      * @param html          DOM element of overlay
+     * @param x             the right offset
+     * @param y             the left offset
      * @returns {int}
      */
-    addTextElement: function (overlays, elementId, html) {
+    addTextElement: function (overlays, elementId, html, x, y) {
         return overlays.add(elementId, {
             position: {
-                bottom: 25,
-                left: -120
+                bottom: y,
+                left: x
             },
             show: {
                 minZoom: -Infinity,

@@ -11,5 +11,5 @@ define(function(require) {
   var counter = require('./counter/main');
   var variables = require('./variables/main');
   var optionsTab = require('./optionsTab/main');
-  return angular.module('cockpit.plugin.centaur.diagram', [color.name, counter.name, duration.name, variables.name, bulletgraph.name, optionsTab.name]);
+  return angular.module('cockpit.plugin.centaur.processDefinition', [color.name, counter.name, duration.name, variables.name, bulletgraph.name, optionsTab.name]);
 });

@@ -1,12 +1,14 @@
 'use strict';
 
-define(['require', 'angular', './util', '../../processDefinition/optionsTab/util', '../../common/variables'], function(require, angular) {
+define(['require', 'angular', './util', '../../common/options', '../../common/variables', '../../common/overlays'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
      */
     var util = require('./util');
-    var commonUtil = require('../../common/variables');
+    util.commonVariable = require('../../common/variables');
+    util.commonOverlays = require('../../common/overlays');
+    util.commonOptions = require('../../common/options');
 
     /**
      * Overlay object that contains the elements put on the diagram
@@ -15,16 +17,16 @@ define(['require', 'angular', './util', '../../processDefinition/optionsTab/util
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
-            commonUtil.procDefId = $scope.$parent.processDefinition.id;
-            commonUtil.procInstanceId = $scope.$parent.processInstance.id;
+            util.commonVariable.procDefId = $scope.$parent.processDefinition.id;
+            util.procDefId = $scope.$parent.processDefinition.id;
+            util.commonVariable.procInstanceId = $scope.$parent.processInstance.id;
+            util.procInstanceId = $scope.$parent.processInstance.id;
 
-            // get overlay and elements from the diagram
-            var viewer = control.getViewer();
-            var overlays = viewer.get('overlays');
-            var elementRegistry = viewer.get('elementRegistry');
 
             // add the activity variable elements to the overlay
-            util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil);
+            util.addActivityElements($window, $http, control, processDiagram, Uri, util);
+
+            console.log("hi");
 
             // subscribe to any broadcast variables options change
             /*$rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
@@ -50,7 +52,7 @@ define(['require', 'angular', './util', '../../processDefinition/optionsTab/util
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.diagram.processInstance', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processInstance.variables', []);
 
     ngModule.config(Configuration);
 

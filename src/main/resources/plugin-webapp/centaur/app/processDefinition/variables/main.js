@@ -1,16 +1,15 @@
 'use strict';
 
-define(['require', 'angular', './util', '../optionsTab/util', '../../common/variables'], function(require, angular) {
+define(['require', 'angular', './util', '../../common/overlays', '../../common/variables', '../../common/options'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
      */
     var util = require('./util');
 
-    /**
-     * common util file for showing variables
-     */
-    var commonUtil = require('../../common/variables');
+    util.commonVariable = require('../../common/variables');
+    util.commonOverlays = require('../../common/overlays');
+    util.commonOptions = require('../../common/options');
 
     /**
      * Overlay object that contains the elements put on the diagram
@@ -19,27 +18,20 @@ define(['require', 'angular', './util', '../optionsTab/util', '../../common/vari
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
-            commonUtil.procDefId = $scope.$parent.processDefinition.id;
-
-            // get overlay and elements from the diagram
-            var viewer = control.getViewer();
-            var overlays = viewer.get('overlays');
-
-            console.log(viewer.get('canvas'));
-
-            var elementRegistry = viewer.get('elementRegistry');
+            util.commonVariable.procDefId = $scope.$parent.processDefinition.id;
+            util.procDefId = $scope.$parent.processDefinition.id;
 
             // add the activity variable elements to the overlay
-            util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil);
+            util.addActivityElements($window, $http, control, processDiagram, Uri, util);
 
             // subscribe to any broadcast variables options change
             $rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
+                util.addActivityElements($window, $http, control, processDiagram, Uri, util)
             });
 
             // subscribe to any broadcast variable number changes
             $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
+                util.addActivityElements($window, $http, control, processDiagram, Uri, util)
             });
         }
     ];
@@ -56,7 +48,7 @@ define(['require', 'angular', './util', '../optionsTab/util', '../../common/vari
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.diagram.instanceVar', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.variables', []);
 
     ngModule.config(Configuration);
 

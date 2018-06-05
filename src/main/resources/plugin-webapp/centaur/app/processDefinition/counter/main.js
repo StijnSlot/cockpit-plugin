@@ -81,7 +81,7 @@ define(['require', 'angular', './util'], function(require, angular) {
     });
   }];
 
-  var ngModule = angular.module('cockpit.plugin.centaur.diagram.counter', []);
+  var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.counter', []);
 
   ngModule.config(Configuration);
 

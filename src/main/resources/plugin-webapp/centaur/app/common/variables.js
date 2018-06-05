@@ -20,6 +20,11 @@ define({
     procInstanceId: "",
 
     /**
+     * common overlay util
+     */
+    commonOverlays: "",
+
+    /**
      * Creates DOM element from data and options settings
      *
      * @param localStorage      used for getting offset data
@@ -73,8 +78,8 @@ define({
     finishElement: function(localStorage, html, overlays, elementId, util) {
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
-        util.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
-        var id = util.addTextElement(overlays, elementId, html);
+        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
+        var id = util.commonOverlays.addTextElement(overlays, elementId, html);
 
         if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
         util.overlayActivityIds[elementId].push(id);
@@ -203,18 +208,6 @@ define({
         });
     },
 
-    addDraggableFunctionality: function(localStorage, prefix, html) {
-        html.classList.add("djs-draggable");
-
-        $(html).draggable({
-            stop: function() {
-                // store settings in localStorage
-                localStorage.setItem(prefix + "top", $(this).css("top"));
-                localStorage.setItem(prefix + "left", $(this).css("left"));
-            }
-        });
-    },
-
     /**
      * Removes all variables which are not selected by the user
      *
@@ -230,60 +223,5 @@ define({
             }
         }
         return out;
-    },
-
-    /**
-     * Adds html string of variable data to the bpmn element and return its id
-     *
-     * @param overlays      Collection of overlays to which can be added to
-     * @param elementId     Id of element where we add overlay
-     * @param html          DOM element of overlay
-     * @returns {int}
-     */
-    addTextElement: function (overlays, elementId, html) {
-        return overlays.add(elementId, {
-            position: {
-                bottom: 25,
-                left: -120
-            },
-            show: {
-                minZoom: -Infinity,
-                maxZoom: +Infinity
-            },
-            html: html
-        });
-    },
-
-    /**
-     * Gets num value from localStorage, or sets it as default value
-     *
-     * @param localStorage  contains user options
-     * @param id            used for getting the options from localStorage
-     * @returns {number}
-     */
-    getVariableNum: function(localStorage, id) {
-        var get = localStorage.getItem(id);
-        if(get === null) {
-            localStorage.setItem(id, 5);
-            return 5;
-        } else {
-            return parseInt(get);
-        }
-    },
-
-    /**
-     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
-     *
-     * @param overlays              overlays object containing all diagram overlays
-     * @param overlayActivityIds    ids of overlays which should be removed
-     * @param id
-     */
-    clearOverlays: function (overlays, overlayActivityIds, id) {
-        if(overlayActivityIds[id] !== undefined) {
-            overlayActivityIds[id].forEach(function (element) {
-                overlays.remove(element);
-            });
-        }
-        overlayActivityIds[id] = [];
     }
 });

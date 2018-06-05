@@ -60,15 +60,18 @@ describe('Common variables tests', function() {
     });
 
     describe('finishElement tests', function() {
-        var sandbox, stub;
+        var sandbox, stub1, stub2, spy;
 
         beforeEach(function() {
-            util.overlayActivityIds['3'] = [];
             sandbox = sinon.createSandbox();
-            stub = sandbox.stub(util);
-            stub.addTextElement.returns(4);
-            stub.finishElement.restore();
-            util.finishElement({}, {}, {}, '3', stub);
+            stub1 = sandbox.stub(util);
+            stub2 = sandbox.stub();
+            stub2.returns(4);
+            spy = sandbox.spy();
+            util.overlayActivityIds['3'] = [];
+            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy};
+            util.finishElement.restore();
+            util.finishElement({}, {}, {}, '3', util);
         });
 
         afterEach(function() {
@@ -76,25 +79,27 @@ describe('Common variables tests', function() {
         });
 
         it('should create id in overlayActivityId', function() {
-            expect(stub.overlayActivityIds['3']).to.have.lengthOf(1);
-            expect(stub.overlayActivityIds['3']).to.have.members([4]);
+            expect(stub1.overlayActivityIds['3']).to.have.lengthOf(1);
+            expect(stub1.overlayActivityIds['3']).to.have.members([4]);
         });
 
         it('should call addDots', function() {
-            expect(stub.addDots.callCount).to.eql(1);
+            expect(stub1.addDots.callCount).to.eql(1);
         });
 
         it('should call addHoverFunctionality', function() {
-            expect(stub.addHoverFunctionality.callCount).to.eql(1);
-        });
-
-        it('should call addDraggableFunctionality', function() {
-            expect(stub.addDraggableFunctionality.callCount).to.eql(1);
+            expect(stub1.addHoverFunctionality.callCount).to.eql(1);
         });
 
         it('should call addTextElement', function() {
-            expect(stub.addTextElement.callCount).to.eql(1);
+            expect(stub2.callCount).to.eql(1);
         });
+
+        it('should call addDraggableFunctionality', function() {
+            expect(spy.callCount).to.eql(1);
+        });
+
+
     });
 
     describe('createVariableUl tests', function() {
@@ -193,102 +198,6 @@ describe('Common variables tests', function() {
         it('should return (number) spa', function() {
             expect(out.children).to.have.length(number);
             expect(out.children[0].className).to.eql('dot');
-        });
-    });
-
-
-    describe('addTextElement tests', function() {
-        var stub, overlays;
-        var elementId = 1;
-        var html = document.createElement('ul');
-        var out;
-
-        beforeEach(function() {
-            stub = sinon.stub().returns(2);
-            overlays = {add: stub};
-
-            out = util.addTextElement(overlays, elementId, html);
-        });
-
-        it('should add element with corresponding id and object', function() {
-            expect(stub.calledWith(elementId)).to.eql(true);
-            expect(stub.firstCall.args[1]).to.be.an('object');
-            expect(stub.firstCall.args[1].html).to.eql(html);
-        });
-
-        it('should return id of 2', function() {
-            expect(out).to.eql(2);
-        });
-    });
-
-    describe('clearOverlays tests', function() {
-        var spy, overlays;
-        var overlayIds = {'a': [1], 'b': [-2], 'c': [3]};
-
-        beforeEach(function() {
-            spy = sinon.spy();
-            overlays = {remove: spy};
-
-            util.clearOverlays(overlays, overlayIds, 'a');
-            util.clearOverlays(overlays, overlayIds, 'b');
-        });
-
-        it('should call remove for all ids', function() {
-            expect(spy.calledWith(1)).to.eql(true);
-            expect(spy.calledWith(-2)).to.eql(true);
-        });
-
-        it('should return overlayIds empty', function() {
-            expect(overlayIds['a']).to.be.empty;
-            expect(overlayIds['b']).to.be.empty;
-            expect(overlayIds['c']).to.be.not.empty;
-        });
-    });
-
-    describe('getVariableNum tests', function() {
-        var stub, localStorage, id = 2, out;
-
-        describe('not in localStorage', function() {
-            var spy;
-
-            beforeEach(function() {
-                stub = sinon.stub();
-                stub.returns(null);
-                spy = sinon.spy();
-                localStorage = {getItem: stub, setItem: spy};
-                out = util.getVariableNum(localStorage, id);
-            });
-
-            it('should call getItem at least once', function() {
-                expect(stub.calledOnce).to.eql(true);
-            });
-
-            it('should return default value 5', function() {
-                expect(out).to.eql(5);
-            });
-
-            it('should setItem in localStorage with value and default 5', function() {
-                expect(spy.calledWith(id, 5)).to.eql(true);
-            });
-        });
-
-        describe('in localStorage', function() {
-            var stored = 2;
-
-            beforeEach(function() {
-                stub = sinon.stub();
-                stub.returns(stored);
-                localStorage = {getItem: stub};
-                out = util.getVariableNum(localStorage, id);
-            });
-
-            it('should return stored', function() {
-                expect(out).to.eql(stored);
-            });
-
-            it('should call getItem at least once', function() {
-                expect(stub.calledOnce).to.eql(true);
-            });
         });
     });
 });

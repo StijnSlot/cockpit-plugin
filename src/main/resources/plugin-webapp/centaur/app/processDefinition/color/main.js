@@ -80,7 +80,7 @@ define(['angular'], function(angular) {
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.diagram.color', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.color', []);
 
     ngModule.config(Configuration);
 
