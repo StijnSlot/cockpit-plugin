@@ -10,5 +10,6 @@ define(function(require) {
   var bulletgraph = require('./bulletgraph/main');
   var counter = require('./counter/main');
   var instanceVar = require('./instanceVar/main')
-  return angular.module('cockpit.plugin.centaur.diagram', [color.name, counter.name, duration.name, instanceVar.name, bulletgraph.name]);
+  var processInstance = require('./processInstance/main')
+  return angular.module('cockpit.plugin.centaur.diagram', [color.name, counter.name, duration.name, instanceVar.name, processInstance.name, bulletgraph.name]);
 });

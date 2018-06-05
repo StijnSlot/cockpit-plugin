@@ -8,17 +8,17 @@ requirejs.config({
     baseUrl: '.'
 });
 
-describe('instance variables tests', function() {
+describe('Execution variables tests', function() {
     var util;
 
-    before(function(done) {
-        requirejs(['main/resources/plugin-webapp/centaur/app/diagram/instanceVar/util'], function(utl) {
+    before(function (done) {
+        requirejs(['main/resources/plugin-webapp/centaur/app/diagram/processInstance/util'], function (utl) {
             util = utl;
             done();
         });
     });
 
-    it('should find util for instanceVar', function() {
+    it('should find util for instanceVar', function () {
         expect(util).to.exist;
     });
 
@@ -46,17 +46,17 @@ describe('instance variables tests', function() {
             stub1.filterVariables.returns([{}]);
             stub1.createVariableList.returns(document.createElement('div'));
             stub1.createVariableUl.returns(document.createElement('ul'));
-            stub1.procDefId = "asdf1234";
+            stub1.procInstanceId = "tamskdl123";
+
             stub2 = sandbox.stub().returns({success: function(x) {
-                var instances = [{}, {}];
-                x(instances);}
+                    var instances = [{}, {}];
+                    x(instances);}
             });
             http = {get: stub2};
             uri = {appUri: spy};
 
             stub3 = sinon.stub().returns(null);
             var window = {localStorage: {getItem: stub3}};
-
 
             util.addActivityElements(window, http, [{businessObject: {id: 1}}],
                 {bpmnElements: [{}, {}, {id: 2}]}, {}, uri, stub1);
@@ -71,8 +71,8 @@ describe('instance variables tests', function() {
             expect(spy.callCount).to.eql(3);
         });
 
-        it('should do a http request with process definition', function() {
-            expect(spy.args[0][0]).to.contain(stub1.procDefId);
+        it('should do a http request with process instance id', function() {
+            expect(spy.args[0][0]).to.contain(stub1.procInstanceId);
         });
 
         it('should call createVariableList', function() {
@@ -83,7 +83,7 @@ describe('instance variables tests', function() {
             expect(stub1.clearOverlays.callCount).to.eql(1);
         });
 
-        it('should call handleData', function() {
+        it('should call handleVariableData', function() {
             expect(stub1.handleVariableData.callCount).to.eql(2);
         });
     });

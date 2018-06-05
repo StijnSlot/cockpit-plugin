@@ -1,9 +1,14 @@
-define(['require', 'angular', './util'], function(require, angular) {
+define(['require', 'angular', './util', '../../common/variableUtil'], function(require, angular) {
 
     /**
      * retrieve the util file containing functions
      */
     var util = require('./util');
+
+    /**
+     * commonUtil containing variable data
+     */
+    var commonUtil = require('../../common/variableUtil');
 
     /**
      * Controller object containing all behavior
@@ -32,7 +37,7 @@ define(['require', 'angular', './util'], function(require, angular) {
         };
 
         $scope.setNumValue = function() {
-            $scope.numValue = util.getNumValue($window.localStorage, procDefId + "_var_num");
+            $scope.numValue = commonUtil.getVariableNum($window.localStorage, procDefId + "_var_num");
         };
 
         // get all variable ids for this process
@@ -75,7 +80,7 @@ define(['require', 'angular', './util'], function(require, angular) {
      */
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
-            id: 'options',
+            id: 'processDefinition-options',
             label: 'Options',
             url: 'plugin://centaur/static/app/bottomTabs/options/tab.html',
             controller: DashboardController,

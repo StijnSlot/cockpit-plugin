@@ -54,15 +54,28 @@
 
 .variableTextSmall {
     font-size: 7px;
-    width: 150px;
+    width: 130px;
     display: flex;
     flex-direction: column;
-    list-style-type: none;
     border: 1px solid transparent;
 }
 
+.variableTextSmall ul {
+    list-style-type: none;
+    padding: 0 0 0 0;
+    width: 100%;;
+    margin-bottom: 5px;
+}
+
+.variableTextSmall > ul:last-child {
+    margin-bottom: 0;
+    /*content: '';
+    position: absolute;
+    width: 60%;
+    height: 5px;*/
+}
+
 .variableTextSmall li {
-    margin-left: -20px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -75,17 +88,28 @@
 .variableTextFull {
     font-size: 7px;
     width: 150px;
-    height: 150px;
+    max-height: 150px;
     display: flex;
     flex-direction: column;
-    list-style-type: none;
     border: 1px solid black;
     overflow-y: scroll;
     background-color: white;
 }
 
-.variableTextFull li {
-    margin-left: -20px;
+.variableTextFull ul {
+    list-style-type: none;
+    margin-left: 5px;
+    padding: 0 0 0 0;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.variableTextFull > ul:last-child {
+    margin-bottom: 0;
+    /*content: '';
+    position: absolute;
+    width: 60%;
+    height: 5px;*/
 }
 
 .variableTextFull b {

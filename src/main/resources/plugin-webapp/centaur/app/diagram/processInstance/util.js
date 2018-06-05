@@ -8,9 +8,12 @@ define({
      * @param processDiagram    diagram containing elements
      * @param overlays          collection of overlays to add to
      * @param Uri               uniform resource identifier to create GET request
-     * @param util              object of this class, to call its functions and variables
+     * @param util          object of this class, to call its functions and variables
      */
     addActivityElements: function($window, $http, elementRegistry, processDiagram, overlays, Uri, util) {
+
+        // get number of instance variables to show
+        util.variableNum = util.getVariableNum($window.localStorage, util.procDefId + "_var_num");
 
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
@@ -20,26 +23,24 @@ define({
 
             var html = util.createVariableList($window.localStorage, util.procDefId + "_" + element.id + "_offset_");
 
-            // get number of instance variables to show
-            util.variableNum = util.getVariableNum($window.localStorage, util.procDefId + "_var_num");
+            $http.get(Uri.appUri("engine://engine/:engine/execution" +
+                "?processInstanceId=" + util.procInstanceId +
+                "&activityId=" + element.id))
+                .success(function(executions) {
 
-            $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
-                "?processDefinitionId=" + util.procDefId +
-                "&activityIdIn=" + element.id))
-                .success(function(instances) {
                     util.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
-                    var i = instances.length - 1;
-                    instances.forEach(function(instance) {
-
-                        $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
-                            instance.id + "/variables"))
+                    var i = executions.length - 1;
+                    executions.forEach(function(execution) {
+                        $http.get(Uri.appUri("engine://engine/:engine/execution/" +
+                            execution.id + "/localVariables"))
                             .success(function(data) {
                                 util.handleVariableData(data, $window.localStorage, html, overlays, element.id, util, i);
                                 i--;
                             });
                     });
                 });
+
         });
     }
 });

@@ -20,23 +20,6 @@ define({
     },
 
     /**
-     * Gets num value from localStorage, or sets it as default value
-     *
-     * @param localStorage  contains user options
-     * @param id            used for getting the options from locaLStorage
-     * @returns {number}
-     */
-    getNumValue: function(localStorage, id) {
-        var get = localStorage.getItem(id);
-        if(get === null) {
-            localStorage.setItem(id, 5);
-            return 5;
-        } else {
-            return parseInt(get);
-        }
-    },
-
-    /**
      * Changes variable options in localStorage and broadcasts this change
      *
      * @param localStorage  contains user options
