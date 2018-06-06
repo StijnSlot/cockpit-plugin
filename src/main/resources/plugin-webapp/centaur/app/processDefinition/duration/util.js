@@ -156,9 +156,9 @@ define({
             var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.checkIfCurValid(util, curDuration);
-            
-            var htmlText = util.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, htmlText, 120, -40);
+
+            var html = util.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
             util.overlayActivityIds[elementID].push(newOverlayId);
         }
     },
@@ -181,8 +181,8 @@ define({
     },
 
     /**
-     * Creates an HTML line with has which will show different part depending on which KPI is
-     * selected to be shown.
+     * Creates an the HTML needed to display the duration. This function also checks if something is 
+     * selected in the options tab.
      * 
      * @param   Object  util            object of this class, to call its functions and variables
      * @param   Object  $window         browser window containing localStorage
@@ -192,16 +192,22 @@ define({
      * @return  String                  string which represents an HTML line which will be added later to the document
      */
     createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
+        var data = {};
         if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
-            curDurationHTML = 'Cur: ' + curDurationHTML;
-        } else { curDurationHTML = '' }
+            data['cur'] = {value: curDurationHTML};
+        }
         if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
-            avgDurationHTML = ' <br> Avg: ' + avgDurationHTML;
-        } else { avgDurationHTML = '' }
+            data['avg'] = {value: avgDurationHTML};
+        }
         if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
-            maxDurationHTML = ' <br> Max: ' + maxDurationHTML;
-        } else { maxDurationHTML = '' }
-        return '<div class="durationText"> ' + curDurationHTML + avgDurationHTML + maxDurationHTML + '</div>';
+            data['max'] = {value: maxDurationHTML};
+        }
+
+        var html = document.createElement('div');
+        html.className = "durationText";
+        html.appendChild(util.commonVariables.createVariableUl(data));
+
+        return html;
     },
 
     /**

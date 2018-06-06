@@ -25,8 +25,16 @@
     vertical-align: top;
 }
 
+/* --Duration stuff-- */
+
 .durationText {
     font-size: 9px;
+    width: 70px;
+}
+
+.durationText ul {
+    list-style-type: none;
+    padding: 0 0 0 0;
 }
 
 
@@ -51,6 +59,8 @@
     font-weight: bold;
     font-size: 10px;
 }
+
+/* -- Variables stuff -- */
 
 .variableTextSmall {
     font-size: 7px;

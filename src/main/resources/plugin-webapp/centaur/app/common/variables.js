@@ -61,7 +61,12 @@ define({
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
         data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
 
+        console.log('Stijn Data:');
+        console.log(data);
+
         html.appendChild(util.createVariableUl(data));
+        console.log('Stijn HTML:');
+        console.log(html);
         if(!i && html.childElementCount)
             util.finishElement(localStorage, html, overlays, elementId, util);
     },
