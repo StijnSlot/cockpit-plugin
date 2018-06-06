@@ -32,7 +32,6 @@ define({
     createVariableDiv: function() {
         var html = document.createElement('div');
         html.className = "variableTextSmall";
-
         return html;
     },
 
@@ -49,13 +48,7 @@ define({
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
         data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
-
-        console.log('Stijn Data:');
-        console.log(data);
-
-        html.appendChild(util.createVariableUl(data));
-        console.log('Stijn HTML:');
-        console.log(html);
+        html.appendChild(util.createVariableUl(data));;
         if(!i && html.childElementCount)
             return util.finishElement(localStorage, html, overlays, elementId, util);
     },
