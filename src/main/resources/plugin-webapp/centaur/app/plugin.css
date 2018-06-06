@@ -40,11 +40,6 @@
 
 
 /*  --Bulletgraph--  */
-
-.bullet-hidden {
-    display: none;
-}
-
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 1.5px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }

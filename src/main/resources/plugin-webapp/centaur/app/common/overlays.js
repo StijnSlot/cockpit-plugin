@@ -5,8 +5,8 @@ define({
      * @param overlays      Collection of overlays to which can be added to
      * @param elementId     Id of element where we add overlay
      * @param html          DOM element of overlay
-     * @param x             the right offset
-     * @param y             the left offset
+     * @param bottom        the right offset
+     * @param left          the left offset
      * @returns {int}
      */
     addTextElement: function (overlays, elementId, html, bottom, left) {
@@ -23,14 +23,46 @@ define({
         });
     },
 
-    addDraggableFunctionality: function(localStorage, prefix, html) {
+    /**
+     * Get the offset from localStorage and add to html DOM element
+     *
+     * @param html              Dom element
+     * @param localStorage      Localstorage containing offset
+     * @param prefix            prefix for localStorage item
+     */
+    setOffset: function(html, localStorage, prefix) {
+        var offsetTop = localStorage.getItem(prefix + "_offset_top");
+        if(offsetTop !== null) {
+            $(html).css("top", offsetTop);
+        }
+        var offsetLeft = localStorage.getItem(prefix + "_offset_left");
+        if(offsetLeft !== null) {
+            $(html).css("left", offsetLeft);
+        }
+    },
+
+    /**
+     * Makes html draggable and sets it in localStorage
+     *
+     * @param localStorage      used for storing offset
+     * @param prefix            used for setting offset in localStorage
+     * @param elementID         used for making element selected
+     * @param html              Dom element which should drag
+     */
+    addDraggableFunctionality: function(localStorage, prefix, elementID, html) {
         html.classList.add("djs-draggable");
 
         $(html).draggable({
+            start: function() {
+               /* $("g[data-element-id=\'" + elementID + "\']").addClass("highlight");
+                console.log($("g[data-element-id=\'" + elementID + "\']"));*/
+            },
             stop: function() {
+                //$("g[data-element-id=\'" + elementID + "\']").removeClass("highlight");
+
                 // store settings in localStorage
-                localStorage.setItem(prefix + "top", $(this).css("top"));
-                localStorage.setItem(prefix + "left", $(this).css("left"));
+                localStorage.setItem(prefix + "_offset_top", $(this).css("top"));
+                localStorage.setItem(prefix + "_offset_left", $(this).css("left"));
             }
         });
     },
