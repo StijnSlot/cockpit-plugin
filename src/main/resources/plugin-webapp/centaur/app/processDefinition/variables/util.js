@@ -41,7 +41,7 @@ define({
         var overlays = viewer.get('overlays');
         var elementRegistry = viewer.get('elementRegistry');
 
-        // get number of instance variables to show
+        // set variables for commonVariable
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
         util.commonVariable.procDefId = util.procDefId;
         util.commonVariable.commonOverlays = util.commonOverlays;

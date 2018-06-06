@@ -1,10 +1,5 @@
 define({
     /**
-     * variable containing all ids of overlays created here
-     */
-    overlayActivityIds: {},
-
-    /**
      * contains user options for number of variables to show
      */
     variableNum: 5,
@@ -25,7 +20,7 @@ define({
     commonOverlays: "",
 
     /**
-     * Creates DOM element from data and options settings
+     * Creates DOM element for variables
      *
      * @returns {object}
      */
@@ -107,7 +102,7 @@ define({
             variables.appendChild(li);
         }
 
-        variables.className = "   djs-draggable";
+        variables.className = "djs-draggable";
         return variables;
     },
 

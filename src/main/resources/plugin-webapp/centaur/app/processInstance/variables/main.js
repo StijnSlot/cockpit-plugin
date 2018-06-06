@@ -24,8 +24,6 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
             // add the activity variable elements to the overlay
             util.addActivityElements($window, $http, control, processDiagram, Uri, util);
 
-            console.log("hi");
-
             // subscribe to any broadcast variables options change
             /*$rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
                 util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)

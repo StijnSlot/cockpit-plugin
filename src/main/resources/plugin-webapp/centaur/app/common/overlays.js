@@ -40,6 +40,13 @@ define({
             $(html.parentNode).css("left", offsetLeft);
         }
     },
+            $(html).css("top", offsetTop);
+        }
+        var offsetLeft = localStorage.getItem(prefix + "_offset_left");
+        if(offsetLeft !== null) {
+            $(html).css("left", offsetLeft);
+        }
+    },
 
     /**
      * Makes html draggable and sets it in localStorage
