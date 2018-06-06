@@ -35,11 +35,7 @@ define({
 
         // get number of instance variables to show
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
-<<<<<<< Updated upstream
-
-=======
         util.commonVariable.procDefId = util.procDefId;
->>>>>>> Stashed changes
         util.commonVariable.commonOverlays = util.commonOverlays;
 
         // loop over all elements in the diagram
@@ -50,7 +46,7 @@ define({
 
             var html = util.commonVariable.createVariableDiv();
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + element.id + "_variables");
-            
+
             if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
 
             $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
