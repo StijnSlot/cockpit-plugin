@@ -59,7 +59,6 @@ define({
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
             var html = util.commonVariable.createVariableDiv();
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + element.id + "_variables");
 
             if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
 

@@ -120,10 +120,11 @@ define({
 
             var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
 
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
+
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
             util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration", elementID, html);
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
             util.overlayActivityIds[elementID].push(newOverlayId);
         }
     }

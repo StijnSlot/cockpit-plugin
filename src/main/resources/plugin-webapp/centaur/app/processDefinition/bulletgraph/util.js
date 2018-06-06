@@ -128,10 +128,11 @@ define({
             var colorBullet = util.commonBulletgraph.determineColor(avgDuration, maxDuration, curDuration);
 
             var html = util.commonBulletgraph.createHTML(util, $window.localStorage, elementID);
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
             util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet);

@@ -51,7 +51,7 @@ describe('Common variables tests', function() {
             stub2.returns(4);
             spy = sandbox.spy();
             util.overlayActivityIds['3'] = [];
-            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy};
+            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy, setOffset: sinon.spy()};
             util.finishElement.restore();
             util.finishElement({}, {}, {}, '3', util);
         });

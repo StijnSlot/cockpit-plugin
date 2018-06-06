@@ -33,11 +33,11 @@ define({
     setOffset: function(html, localStorage, prefix) {
         var offsetTop = localStorage.getItem(prefix + "_offset_top");
         if(offsetTop !== null) {
-            $(html).css("top", offsetTop);
+            $(html.parentNode).css("top", offsetTop);
         }
         var offsetLeft = localStorage.getItem(prefix + "_offset_left");
         if(offsetLeft !== null) {
-            $(html).css("left", offsetLeft);
+            $(html.parentNode).css("left", offsetLeft);
         }
     },
 
@@ -50,9 +50,11 @@ define({
      * @param html              Dom element which should drag
      */
     addDraggableFunctionality: function(localStorage, prefix, elementID, html) {
-        html.classList.add("djs-draggable");
+        html.parentNode.classList.add("djs-draggable");
+        $(html.parentNode).css("position", "relative");
 
-        $(html).draggable({
+        $(html.parentNode).draggable({
+            stack: ".djs-overlay",
             start: function() {
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
             },
@@ -60,8 +62,8 @@ define({
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
 
                 // store settings in localStorage
-                localStorage.setItem(prefix + "_offset_top", $(this).css("top"));
-                localStorage.setItem(prefix + "_offset_left", $(this).css("left"));
+                localStorage.setItem(prefix + "_offset_top", $(html.parentNode).css("top"));
+                localStorage.setItem(prefix + "_offset_left", $(html.parentNode).css("left"));
             }
         });
     },
