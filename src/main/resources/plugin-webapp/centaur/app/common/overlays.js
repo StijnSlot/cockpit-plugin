@@ -23,6 +23,31 @@ define({
         });
     },
 
+    /**
+     * Get the offset from localStorage and add to html DOM element
+     *
+     * @param html              Dom element
+     * @param localStorage      Localstorage containing offset
+     * @param prefix            prefix for localStorage item
+     */
+    setOffset: function(html, localStorage, prefix) {
+        var offsetTop = localStorage.getItem(prefix + "_offset_top");
+        if(offsetTop !== null) {
+            $(html).css("top", offsetTop);
+        }
+        var offsetLeft = localStorage.getItem(prefix + "_offset_left");
+        if(offsetLeft !== null) {
+            $(html).css("left", offsetLeft);
+        }
+    },
+
+    /**
+     * Makes html draggable and sets it in localStorage
+     *
+     * @param localStorage      used for storing offset
+     * @param prefix            used for setting offset in localStorage
+     * @param html              Dom element which should drag
+     */
     addDraggableFunctionality: function(localStorage, prefix, html) {
         html.classList.add("djs-draggable");
 

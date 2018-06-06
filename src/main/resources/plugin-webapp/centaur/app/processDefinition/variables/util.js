@@ -1,4 +1,12 @@
 define({
+    /**
+     * variable containing all ids of overlays created here
+     */
+    overlayActivityIds: {},
+
+    /**
+     * process definition id
+     */
     procDefId: "",
 
     /**
@@ -33,9 +41,9 @@ define({
         var overlays = viewer.get('overlays');
         var elementRegistry = viewer.get('elementRegistry');
 
-        // get number of instance variables to show
+        // set variables for commonVariable
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
-
+        util.commonVariable.procDefId = $scope.$parent.processDefinition.id;
         util.commonVariable.commonOverlays = util.commonOverlays;
 
         // loop over all elements in the diagram
@@ -44,13 +52,14 @@ define({
             // get corresponding element from processDiagram
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
-            var html = util.commonVariable.createVariableList($window.localStorage, util.procDefId + "_" + element.id + "_offset_");
+            var html = util.commonVariable.createVariableDiv();
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + element.id);
 
             $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
                 "?processDefinitionId=" + util.procDefId +
                 "&activityIdIn=" + element.id))
                 .success(function(instances) {
-                    util.commonOverlays.clearOverlays(overlays, util.commonVariable.overlayActivityIds, element.id);
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
                     var i = instances.length - 1;
                     instances.forEach(function(instance) {
@@ -58,7 +67,10 @@ define({
                         $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
                             instance.id + "/variables"))
                             .success(function(data) {
-                                util.commonVariable.handleVariableData(data, $window.localStorage, html, overlays, element.id, util.commonVariable, i);
+                                var id = util.commonVariable.handleVariableData(data, $window.localStorage, html,
+                                    overlays, element.id, util.commonVariable, i);
+                                if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
+                                util.overlayActivityIds[element.id].push(id);
                                 i--;
                             });
                     });

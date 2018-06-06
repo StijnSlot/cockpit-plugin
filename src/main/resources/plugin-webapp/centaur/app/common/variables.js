@@ -1,10 +1,5 @@
 define({
     /**
-     * variable containing all ids of overlays created here
-     */
-    overlayActivityIds: {},
-
-    /**
      * contains user options for number of variables to show
      */
     variableNum: 5,
@@ -25,25 +20,13 @@ define({
     commonOverlays: "",
 
     /**
-     * Creates DOM element from data and options settings
+     * Creates DOM element for variables
      *
-     * @param localStorage      used for getting offset data
-     * @param prefix            prefix used in localStorage items
      * @returns {object}
      */
-    createVariableList: function(localStorage, prefix) {
+    createVariableDiv: function() {
         var html = document.createElement('div');
         html.className = "variableTextSmall";
-
-        var offsetTop = localStorage.getItem(prefix + "top");
-        if(offsetTop !== null) {
-            $(html).css("top", offsetTop);
-        }
-        var offsetLeft = localStorage.getItem(prefix + "left");
-        if(offsetLeft !== null) {
-            $(html).css("left", offsetLeft);
-        }
-
         return html;
     },
 
@@ -79,10 +62,7 @@ define({
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
         util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
-        var id = util.commonOverlays.addTextElement(overlays, elementId, html);
-
-        if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
-        util.overlayActivityIds[elementId].push(id);
+        return util.commonOverlays.addTextElement(overlays, elementId, html);
     },
 
     /**
@@ -121,7 +101,7 @@ define({
             variables.appendChild(li);
         }
 
-        variables.className = "   djs-draggable";
+        variables.className = "djs-draggable";
         return variables;
     },
 

@@ -25,11 +25,11 @@ describe('Common variables tests', function() {
         expect(util).to.exist;
     });
 
-    describe('createVariableList tests', function() {
+    describe('createVariableDiv tests', function() {
         var out;
 
         beforeEach(function() {
-            out = util.createVariableList({getItem: function(){}}, "");
+            out = util.createVariableDiv({getItem: function(){}}, "");
         });
 
         it('should be a div item', function() {
@@ -46,7 +46,7 @@ describe('Common variables tests', function() {
                 stub = sinon.stub();
                 stub.withArgs("left").returns("1px");
                 stub.withArgs("top").returns("-5px");
-                out = util.createVariableList({getItem: stub}, "");
+                out = util.createVariableDiv({getItem: stub}, "");
             });
 
             it('should return left position 1px', function() {
