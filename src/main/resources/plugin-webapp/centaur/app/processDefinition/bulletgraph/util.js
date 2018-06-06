@@ -69,13 +69,13 @@ define({
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                    if ($scope.processActivityStatistics.data[i].id == element.id) {
+                    if ($scope.processActivityStatistics.data[i].id === element.id) {
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
                         var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                         var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
 
-                        util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
+                        util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;
                     }
                 }
@@ -94,12 +94,10 @@ define({
      */
     calculateCurDuration: function (instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
+            if (instance[j].activityId === elementID) {
                 var startTime = Date.parse(instance[j].startTime);
                 var computerTime = new Date().getTime();
-                var timeDifference = computerTime - startTime;
-                return timeDifference;
-                break;
+                return computerTime - startTime;
             }
         }
         return null;
@@ -129,7 +127,7 @@ define({
      * @param   Object  shape         Shape of the element
      * @param   Object  $window       browser window containing localStorage
      */
-    combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
+    combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, $window) {
         if (util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
 
             // clear any current overlays displayed
@@ -141,11 +139,15 @@ define({
             var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
             var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
             var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, util.createHTML(util, $window, elementID), 120, 30);
+
+            var html = util.createHTML(util, $window.localStorage, elementID);
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html);
+
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+
             util.overlayActivityIds[elementID].push(newOverlayId);
-            console.log(util.overlayActivityIds);
             util.setGraphSettings(elementID, maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet);
-            
         }
     },
 
@@ -164,11 +166,7 @@ define({
      * @return  Boolean               if conditions are satisfied or not
      */
     checkConditions: function (minDuration, avgDuration, maxDuration, curDuration) {
-        if (avgDuration != null && minDuration != null && maxDuration != null && curDuration != null && avgDuration != 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return avgDuration != null && minDuration != null && maxDuration != null && curDuration != null && avgDuration !== 0;
     },
 
     /**
@@ -195,17 +193,20 @@ define({
 
     /**
      * Creates an HTML line with has a class that includes the elementID. If the bulletgraph
-     * is not selected to show it will add another class to the HTML to hide the bulletgraph
+     * is not selected to show it will hide the bulletgraph
      * 
      * @param   Object  util            object of this class, to call its functions and variables
-     * @param   Object  $window         browser window containing localStorage
-     * @param   String  elementID   Variable to be converted.
-     * @return  String              A string which represents an HTML line which will be added later
+     * @param   Object  localStorage    contains
+     * @param   String  elementID       Variable to be converted.
+     * @return  {object}                A string which represents an HTML line which will be added later
      */
-    createHTML: function (util, $window, elementID) {
-        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Bulletgraph")) {
-            return '<div class="bullet-duration-' + elementID + '"> </div>';
-        } else { return '<div class="bullet-duration-' + elementID + ' bullet-hidden"> </div>' }
+    createHTML: function (util, localStorage, elementID) {
+        var graph = document.createElement('DIV');
+        graph.className = "bullet-duration-" + elementID;
+        if (!util.commonOptions.isSelectedVariable(localStorage, util.procDefId + "_KPI_Bulletgraph")) {
+            $(graph).hide();
+        }
+        return graph;
     },
 
     /**
@@ -265,10 +266,6 @@ define({
      * @return  Number                either current duration or maximal duration
      */
     checkIfCurBiggerMax: function (curDuration, maxDuration) {
-        if (curDuration >= maxDuration) {
-            return maxDuration;
-        } else {
-            return curDuration;
-        }
+        return (curDuration >= maxDuration ? maxDuration : curDuration);
     }
 });

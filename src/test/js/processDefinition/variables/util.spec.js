@@ -49,7 +49,7 @@ describe('instance variables tests', function() {
             util.procDefId = stub1.procDefId = "asdf1234";
             util.commonVariable = stub1;
             util.commonOptions = {getVariableNum: sinon.spy()};
-            util.commonOverlays = {clearOverlays: spy2};
+            util.commonOverlays = {clearOverlays: spy2, setOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {
                 var instances = [{}, {}];

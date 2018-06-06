@@ -68,7 +68,7 @@ define({
         console.log('Stijn HTML:');
         console.log(html);
         if(!i && html.childElementCount)
-            util.finishElement(localStorage, html, overlays, elementId, util);
+            return util.finishElement(localStorage, html, overlays, elementId, util);
     },
 
     /**
@@ -83,11 +83,8 @@ define({
     finishElement: function(localStorage, html, overlays, elementId, util) {
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
-        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
-        var id = util.commonOverlays.addTextElement(overlays, elementId, html);
-
-        if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
-        util.overlayActivityIds[elementId].push(id);
+        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables", elementId, html);
+        return util.commonOverlays.addTextElement(overlays, elementId, html, -50, -50);
     },
 
     /**
@@ -174,7 +171,6 @@ define({
      * @param html      div element with variable data
      */
     addHoverFunctionality: function(html) {
-
         // initialize removing dots
         var dots = false;
         // hide children with index higher than numValue

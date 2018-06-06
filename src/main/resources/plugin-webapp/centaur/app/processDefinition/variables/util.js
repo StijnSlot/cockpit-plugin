@@ -35,7 +35,11 @@ define({
 
         // get number of instance variables to show
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
+<<<<<<< Updated upstream
 
+=======
+        util.commonVariable.procDefId = util.procDefId;
+>>>>>>> Stashed changes
         util.commonVariable.commonOverlays = util.commonOverlays;
 
         // loop over all elements in the diagram
@@ -44,7 +48,10 @@ define({
             // get corresponding element from processDiagram
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
-            var html = util.commonVariable.createVariableList($window.localStorage, util.procDefId + "_" + element.id + "_offset_");
+            var html = util.commonVariable.createVariableDiv();
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + element.id + "_variables");
+            
+            if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
 
             $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
                 "?processDefinitionId=" + util.procDefId +
@@ -58,7 +65,9 @@ define({
                         $http.get(Uri.appUri("engine://engine/:engine/process-instance/" +
                             instance.id + "/variables"))
                             .success(function(data) {
-                                util.commonVariable.handleVariableData(data, $window.localStorage, html, overlays, element.id, util.commonVariable, i);
+                                var id = util.commonVariable.handleVariableData(data, $window.localStorage, html,
+                                    overlays, element.id, util.commonVariable, i);
+                                if(id !== undefined) util.overlayActivityIds[element.id].push(id);
                                 i--;
                             });
                     });
