@@ -54,11 +54,11 @@ define({
 
         $(html).draggable({
             start: function() {
-               $("g[data-element-id=\'" + elementID + "\']").addClass("highlight");
-                console.log($("g[data-element-id=\'" + elementID + "\']"));
+                $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                console.log($("g[data-element-id=\'" + elementID + "\']")[0]);
             },
             stop: function() {
-                $("g[data-element-id=\'" + elementID + "\']").removeClass("highlight");
+                $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
 
                 // store settings in localStorage
                 localStorage.setItem(prefix + "_offset_top", $(this).css("top"));

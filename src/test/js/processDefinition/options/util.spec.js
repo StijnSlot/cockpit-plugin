@@ -36,14 +36,14 @@ describe('setChecked tests', function() {
             util.setChecked(localStorage, prefix, data);
         });
 
-        it('should set checked false', function() {
-            expect(data[0].checked).to.eql(false);
-            expect(data[1].checked).to.eql(false);
+        it('should set checked true', function() {
+            expect(data[0].checked).to.eql(true);
+            expect(data[1].checked).to.eql(true);
         });
 
-        it('should call setItem false for each data point', function() {
-            expect(spy.calledWith(prefix + data[0].name, 'false')).to.eql(true);
-            expect(spy.calledWith(prefix + data[1].name, 'false')).to.eql(true);
+        it('should call setItem true for each data point', function() {
+            expect(spy.calledWith(prefix + data[0].name, 'true')).to.eql(true);
+            expect(spy.calledWith(prefix + data[1].name, 'true')).to.eql(true);
         });
     });
 

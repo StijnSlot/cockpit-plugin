@@ -26,7 +26,7 @@ define({
 
     /**
      * Creates DOM element from data and options settings
-     * 
+     *
      * @returns {object}
      */
     createVariableDiv: function() {
@@ -73,7 +73,7 @@ define({
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
         util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables", elementId, html);
-        return util.commonOverlays.addTextElement(overlays, elementId, html, -50, -50);
+        return util.commonOverlays.addTextElement(overlays, elementId, html, -10, -120);
     },
 
     /**
