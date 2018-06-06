@@ -149,7 +149,7 @@ define({
         if (util.checkConditions(avgDuration, maxDuration)) {
 
             // clear any current overlays displayed
-            util.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, elementID);
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
@@ -193,13 +193,13 @@ define({
      */
     createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
         var data = {};
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
+        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
             data['cur'] = {value: curDurationHTML};
         }
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
+        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
             data['avg'] = {value: avgDurationHTML};
         }
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
+        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
             data['max'] = {value: maxDurationHTML};
         }
 
@@ -208,33 +208,5 @@ define({
         html.appendChild(util.commonVariables.createVariableUl(data));
 
         return html;
-    },
-
-    /**
-     * Removes all variables which are not selected by the user
-     *
-     * @param localStorage  contains user options
-     * @param item          used for getting localStorage item option
-     */
-    isSelectedVariable: function (localStorage, item) {
-        return localStorage.getItem(item) === 'true';
-    },
-
-    /**
-     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
-     *
-     * @param overlays              overlays object containing all diagram overlays
-     * @param overlayActivityIds    ids of overlays which should be removed
-     * @param id
-     */
-    clearOverlays: function (overlays, overlayActivityIds, id) {
-        if (overlayActivityIds[id] !== undefined) {
-            overlayActivityIds[id].forEach(function (element) {
-                overlays.remove(element);
-            });
-        }
-        overlayActivityIds[id] = [];
     }
-
-
 });
