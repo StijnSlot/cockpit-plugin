@@ -32,19 +32,12 @@ define({
      */
     setOffset: function(html, localStorage, prefix) {
         var offsetTop = localStorage.getItem(prefix + "_offset_top");
-        if(offsetTop !== null) {
+        if (offsetTop !== null) {
             $(html.parentNode).css("top", offsetTop);
         }
         var offsetLeft = localStorage.getItem(prefix + "_offset_left");
-        if(offsetLeft !== null) {
+        if (offsetLeft !== null) {
             $(html.parentNode).css("left", offsetLeft);
-        }
-    },
-            $(html).css("top", offsetTop);
-        }
-        var offsetLeft = localStorage.getItem(prefix + "_offset_left");
-        if(offsetLeft !== null) {
-            $(html).css("left", offsetLeft);
         }
     },
 

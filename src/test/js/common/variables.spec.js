@@ -50,7 +50,6 @@ describe('Common variables tests', function() {
             stub2 = sandbox.stub();
             stub2.returns(4);
             spy = sandbox.spy();
-            util.overlayActivityIds['3'] = [];
             util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy, setOffset: sinon.spy()};
             util.finishElement.restore();
             util.finishElement({}, {}, {}, '3', util);
@@ -59,11 +58,6 @@ describe('Common variables tests', function() {
         afterEach(function() {
             sandbox.restore();
         });
-
-        /*it('should create id in overlayActivityId', function() {
-            expect(stub1.overlayActivityIds['3']).to.have.lengthOf(1);
-            expect(stub1.overlayActivityIds['3']).to.have.members([4]);
-        });*/
 
         it('should call addDots', function() {
             expect(stub1.addDots.callCount).to.eql(1);
