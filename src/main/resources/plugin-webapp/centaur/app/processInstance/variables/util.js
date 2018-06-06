@@ -48,8 +48,8 @@ define({
 
         // get number of instance variables to show
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
-        util.commonVariable.procDefId = $scope.$parent.processDefinition.id;
-        util.commonVariable.procInstanceId = $scope.$parent.processInstance.id;
+        util.commonVariable.procDefId = util.procDefId;
+        util.commonVariable.procInstanceId = util.procInstanceId;
         util.commonVariable.commonOverlays = util.commonOverlays;
 
         // loop over all elements in the diagram
@@ -58,7 +58,9 @@ define({
             // get corresponding element from processDiagram
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
-            var html = util.commonVariable.createVariableDiv($window.localStorage, util.procDefId + "_" + element.id + "_offset_");
+            var html = util.commonVariable.createVariableDiv();
+
+            if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
 
             $http.get(Uri.appUri("engine://engine/:engine/execution" +
                 "?processInstanceId=" + util.procInstanceId +
@@ -74,8 +76,7 @@ define({
                             .success(function(data) {
                                 var id = util.commonVariable.handleVariableData(data, $window.localStorage, html,
                                     overlays, element.id, util.commonVariable, i);
-                                if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
-                                util.overlayActivityIds[element.id].push(id);
+                                if(id !== undefined) util.overlayActivityIds[element.id].push(id);
                                 i--;
                             });
                     });

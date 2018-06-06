@@ -43,10 +43,9 @@ define({
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
         data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
-
         html.appendChild(util.createVariableUl(data));
         if(!i && html.childElementCount)
-            util.finishElement(localStorage, html, overlays, elementId, util);
+            return util.finishElement(localStorage, html, overlays, elementId, util);
     },
 
     /**
@@ -61,8 +60,10 @@ define({
     finishElement: function(localStorage, html, overlays, elementId, util) {
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
-        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
-        return util.commonOverlays.addTextElement(overlays, elementId, html);
+        var id = util.commonOverlays.addTextElement(overlays, elementId, html, -10, -120);
+        util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementId + "_variables");
+        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables", elementId, html);
+        return id;
     },
 
     /**
@@ -149,7 +150,6 @@ define({
      * @param html      div element with variable data
      */
     addHoverFunctionality: function(html) {
-
         // initialize removing dots
         var dots = false;
         // hide children with index higher than numValue

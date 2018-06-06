@@ -5,8 +5,8 @@ define({
      * @param overlays      Collection of overlays to which can be added to
      * @param elementId     Id of element where we add overlay
      * @param html          DOM element of overlay
-     * @param x             the right offset
-     * @param y             the left offset
+     * @param bottom        the right offset
+     * @param left          the left offset
      * @returns {int}
      */
     addTextElement: function (overlays, elementId, html, bottom, left) {
@@ -32,12 +32,12 @@ define({
      */
     setOffset: function(html, localStorage, prefix) {
         var offsetTop = localStorage.getItem(prefix + "_offset_top");
-        if(offsetTop !== null) {
-            $(html).css("top", offsetTop);
+        if (offsetTop !== null) {
+            $(html.parentNode).css("top", offsetTop);
         }
         var offsetLeft = localStorage.getItem(prefix + "_offset_left");
-        if(offsetLeft !== null) {
-            $(html).css("left", offsetLeft);
+        if (offsetLeft !== null) {
+            $(html.parentNode).css("left", offsetLeft);
         }
     },
 
@@ -46,16 +46,24 @@ define({
      *
      * @param localStorage      used for storing offset
      * @param prefix            used for setting offset in localStorage
+     * @param elementID         used for making element selected
      * @param html              Dom element which should drag
      */
-    addDraggableFunctionality: function(localStorage, prefix, html) {
-        html.classList.add("djs-draggable");
+    addDraggableFunctionality: function(localStorage, prefix, elementID, html) {
+        html.parentNode.classList.add("djs-draggable");
+        $(html.parentNode).css("position", "relative");
 
-        $(html).draggable({
+        $(html.parentNode).draggable({
+            stack: ".djs-overlay",
+            start: function() {
+                $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+            },
             stop: function() {
+                $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+
                 // store settings in localStorage
-                localStorage.setItem(prefix + "top", $(this).css("top"));
-                localStorage.setItem(prefix + "left", $(this).css("left"));
+                localStorage.setItem(prefix + "_offset_top", $(html.parentNode).css("top"));
+                localStorage.setItem(prefix + "_offset_left", $(html.parentNode).css("left"));
             }
         });
     },

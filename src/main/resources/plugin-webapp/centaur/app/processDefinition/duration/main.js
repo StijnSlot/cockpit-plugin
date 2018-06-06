@@ -11,7 +11,7 @@
 'use strict';
 
 
-define(['require', 'angular', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables'], function (require, angular) {
+define(['require', 'angular', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/duration'], function (require, angular) {
 
     /**
      * retrieve the util file containing functions
@@ -37,6 +37,11 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
      * retrieve the common file containing variables functions
      */
     util.commonVariables = require('../../common/variables');
+
+    /**
+     * retrieve the common file containing duration functions
+     */
+    util.commonDuration = require('../../common/duration');
 
     var Configuration = ['ViewsProvider', function (ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {

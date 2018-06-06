@@ -21,20 +21,19 @@ it('should find counter util file', function() {
   expect(util).to.not.be.undefined;
 });
 
-describe('check createHTML', function () {
-    var executionSequenceCounter, returnValue;
+describe('check counter util', function () {
+    var executionSequenceCounter, html;
 
     describe('check create HTML', function () {
         beforeEach(function () {
             executionSequenceCounter = '6000';
-
-            returnValue = util.createHTML(executionSequenceCounter);
+            html = util.createHTML(executionSequenceCounter);
         });
-        it('check if returns correct values', function () {
-            expect(returnValue).to.eql('<div class="counterText"> Counter: 6000</div>');
+        it('should return a div', function () {
+            expect(html.nodeName).to.eql('DIV');
         });
-
+        it('should contain executionSequenceCounter', function() {
+            expect(html.children[0].innerText).to.contain(executionSequenceCounter);
+        });
     });
-
-
 });

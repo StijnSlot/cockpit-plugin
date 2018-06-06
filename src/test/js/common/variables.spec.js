@@ -39,24 +39,6 @@ describe('Common variables tests', function() {
         it('should return a variableTextSmall', function() {
             expect(out.className).to.eql("variableTextSmall");
         });
-
-        describe('position stored in local', function() {
-            var stub;
-            beforeEach(function() {
-                stub = sinon.stub();
-                stub.withArgs("left").returns("1px");
-                stub.withArgs("top").returns("-5px");
-                out = util.createVariableDiv({getItem: stub}, "");
-            });
-
-            it('should return left position 1px', function() {
-                expect(out.getAttribute("style")).to.contain("left: 1px");
-            });
-
-            it('should return top position -5px', function() {
-
-            });
-        });
     });
 
     describe('finishElement tests', function() {
@@ -68,19 +50,13 @@ describe('Common variables tests', function() {
             stub2 = sandbox.stub();
             stub2.returns(4);
             spy = sandbox.spy();
-            util.overlayActivityIds['3'] = [];
-            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy};
+            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy, setOffset: sinon.spy()};
             util.finishElement.restore();
             util.finishElement({}, {}, {}, '3', util);
         });
 
         afterEach(function() {
             sandbox.restore();
-        });
-
-        it('should create id in overlayActivityId', function() {
-            expect(stub1.overlayActivityIds['3']).to.have.lengthOf(1);
-            expect(stub1.overlayActivityIds['3']).to.have.members([4]);
         });
 
         it('should call addDots', function() {

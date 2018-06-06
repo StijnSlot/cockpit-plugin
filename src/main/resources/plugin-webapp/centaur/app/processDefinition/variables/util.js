@@ -43,7 +43,7 @@ define({
 
         // set variables for commonVariable
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
-        util.commonVariable.procDefId = $scope.$parent.processDefinition.id;
+        util.commonVariable.procDefId = util.procDefId;
         util.commonVariable.commonOverlays = util.commonOverlays;
 
         // loop over all elements in the diagram
@@ -53,7 +53,9 @@ define({
             var element = processDiagram.bpmnElements[shape.businessObject.id];
 
             var html = util.commonVariable.createVariableDiv();
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + element.id);
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + element.id + "_variables");
+
+            if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
 
             $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
                 "?processDefinitionId=" + util.procDefId +
@@ -69,8 +71,9 @@ define({
                             .success(function(data) {
                                 var id = util.commonVariable.handleVariableData(data, $window.localStorage, html,
                                     overlays, element.id, util.commonVariable, i);
-                                if(util.overlayActivityIds[element.id] === undefined) util.overlayActivityIds[element.id] = [];
-                                util.overlayActivityIds[element.id].push(id);
+                                if(id !== undefined) {
+                                    util.overlayActivityIds[element.id].push(id);
+                                }
                                 i--;
                             });
                     });
