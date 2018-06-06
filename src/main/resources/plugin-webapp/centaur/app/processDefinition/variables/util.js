@@ -61,7 +61,7 @@ define({
                 "?processDefinitionId=" + util.procDefId +
                 "&activityIdIn=" + element.id))
                 .success(function(instances) {
-                    util.commonOverlays.clearOverlays(overlays, util.commonVariable.overlayActivityIds, element.id);
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
                     var i = instances.length - 1;
                     instances.forEach(function(instance) {
@@ -71,7 +71,9 @@ define({
                             .success(function(data) {
                                 var id = util.commonVariable.handleVariableData(data, $window.localStorage, html,
                                     overlays, element.id, util.commonVariable, i);
-                                if(id !== undefined) util.overlayActivityIds[element.id].push(id);
+                                if(id !== undefined) {
+                                    util.overlayActivityIds[element.id].push(id);
+                                }
                                 i--;
                             });
                     });

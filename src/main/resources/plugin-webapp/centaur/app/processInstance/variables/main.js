@@ -17,9 +17,7 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
-            util.commonVariable.procDefId = $scope.$parent.processDefinition.id;
             util.procDefId = $scope.$parent.processDefinition.id;
-            util.commonVariable.procInstanceId = $scope.$parent.processInstance.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 
 

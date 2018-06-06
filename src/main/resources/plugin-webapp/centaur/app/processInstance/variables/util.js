@@ -68,7 +68,7 @@ define({
                 "&activityId=" + element.id))
                 .success(function(executions) {
 
-                    util.commonOverlays.clearOverlays(overlays, util.commonVariable.overlayActivityIds, element.id);
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
 
                     var i = executions.length - 1;
                     executions.forEach(function(execution) {

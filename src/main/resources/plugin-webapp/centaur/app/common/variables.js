@@ -48,7 +48,7 @@ define({
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
         data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
-        html.appendChild(util.createVariableUl(data));;
+        html.appendChild(util.createVariableUl(data));
         if(!i && html.childElementCount)
             return util.finishElement(localStorage, html, overlays, elementId, util);
     },
