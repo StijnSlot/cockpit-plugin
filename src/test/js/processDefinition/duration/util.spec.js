@@ -36,13 +36,8 @@ describe('calculate current duration test', function(){
             elementID = 16;
             expect(util.calculateCurDuration(instance, elementID)).to.be.null;
         });
-
     });
-    
-
-
 });
-
 
 describe('check Conditions', function () {
     var avgDuration, maxDuration;
@@ -73,16 +68,19 @@ describe('check Conditions', function () {
             avgDuration = '0';
             expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
         });
-
     });
-
-
 });
 
 describe('check checkIfCurValid', function () {
     var curDuration;
     var returnValue;
     describe('check if curDuration has the right value', function () {
+        before(function(done) {
+            requirejs(['main/resources/plugin-webapp/centaur/app/common/conversion'], function(utl) {
+                util.commonConversion = utl;
+                done();
+            });
+        });
         beforeEach(function () {
             curDuration = 6000;
             returnValue = util.checkIfCurValid(util, curDuration);
@@ -94,10 +92,7 @@ describe('check checkIfCurValid', function () {
             curDuration = null;
            expect(util.checkIfCurValid(util, curDuration)).to.eql('-');
         });
-
     });
-
-
 });
 
 // describe('check createHTML', function () {
