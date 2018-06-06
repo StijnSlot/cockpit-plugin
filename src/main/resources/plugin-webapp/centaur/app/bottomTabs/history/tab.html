@@ -18,15 +18,15 @@
     <b>Total number of results:</b>
     {{ processInstances.length }}
 </div>
-<table class="table table-bordered table-hover table-condensed">
+<table class="table-hover cam-table">
     <thead>
     <tr>
         <th>Id</th>
         <th>Start activity</th>
         <th>Start user ID</th>
-        <th>Start time <a ng-click="setData('startTime', 'asc')">^</a> <a ng-click="setData('startTime', 'desc')">v</a></th>
-        <th>End time <a ng-click="setData('endTime', 'asc')">^</a> <a ng-click="setData('endTime', 'desc')">v</a></th>
-        <th>Duration <a ng-click="setData('duration', 'asc')">^</a> <a ng-click="setData('duration', 'desc')">v</a></th>
+        <th ng-click="setData('startTime')">Start time      <i class="sortingArrows" id="startTime"></i></th>
+        <th ng-click="setData('endTime')">End time      <i class="sortingArrows" id="endTime"></i></th>
+        <th ng-click="setData('duration')">Duration      <i class="sortingArrows" id="duration"></i></th>
     </tr>
     </thead>
     <tbody>

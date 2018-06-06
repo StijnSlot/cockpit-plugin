@@ -9,10 +9,37 @@ define(['require', 'angular'], function(require, angular) {
          * get process definition id from parent
          */
         var procDefId = $scope.$parent.processDefinition.id;
+        var order = {
+            "endTime" : "desc",
+            "startTime" : "desc",
+            "duration" : "desc",
+        };
 
-        // get all variable ids for this process
-        $scope.setData = function(sortByProperty, sortOrderProperty) {
+        function flip(sortByProperty, by) {
 
+            $(".sortingArrows").removeClass("glyphicon-menu-down");
+            $(".sortingArrows").removeClass("glyphicon-menu-up");
+
+            if(by == "desc") {
+                $("#"+sortByProperty).addClass("glyphicon glyphicon-menu-up");
+            } else {
+                $("#"+sortByProperty).addClass("glyphicon glyphicon-menu-down");
+            }
+        }
+
+        // get all sorted variable ids for this process
+        $scope.setData = function(sortByProperty) {
+            sortOrderProperty = order[sortByProperty];
+            if (sortOrderProperty == "desc") {
+                sortOrderProperty = "asc";
+                order[sortByProperty] = sortOrderProperty;
+                flip(sortByProperty,"desc");
+            } else {
+                sortOrderProperty = "desc"
+                order[sortByProperty] = sortOrderProperty;
+                flip(sortByProperty,"asc");
+            }
+            
             console.log("got data: " + sortByProperty + ", " + sortOrderProperty);
             $http.get(Uri.appUri("engine://engine/:engine/history/process-instance" +
                 "?processDefinitionId=" + procDefId +
@@ -21,13 +48,15 @@ define(['require', 'angular'], function(require, angular) {
                 ($scope.startedAfter !== undefined ? "&startedAfter=\"" + $scope.startedAfter + ":00.000Z\"" : "") +
                 ($scope.finishedBefore !== undefined ? "&finishedBefore=\"" + $scope.finishedBefore + ":00.000Z\"" : "") +
                 ($scope.finishedAfter !== undefined ? "&finishedAfter=\"" + $scope.finishedAfter + ":00.000Z\"" : "") +*/
-                "&sortBy=" + sortByProperty+
+                "&sortBy=" + sortByProperty +
                 "&sortOrder=" + sortOrderProperty))
                 .success(function (data) {
                     $scope.processInstances = data;
                 });
         };
-        $scope.setData("endTime", "desc");
+
+        //defaults to descending ordering by endtime
+        $scope.setData("endTime");
 
         $scope.checkTimes = function (duration) {
             var durationString;
