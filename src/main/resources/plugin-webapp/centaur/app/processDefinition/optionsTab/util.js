@@ -11,8 +11,9 @@ define({
         data.forEach(function (variable) {
             var get = localStorage.getItem(prefix + variable.name);
             if (get === null) {
-                localStorage.setItem(prefix + variable.name, 'false');
-                variable.checked = false;
+                // set default value
+                localStorage.setItem(prefix + variable.name, 'true');
+                variable.checked = true;
             } else {
                 variable.checked = get === 'true';
             }
