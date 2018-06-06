@@ -11,7 +11,9 @@ define(['require', 'angular'], function(require, angular) {
         var procDefId = $scope.$parent.processDefinition.id;
 
         // get all variable ids for this process
-        //$scope.setData = function() {
+        $scope.setData = function(sortByProperty, sortOrderProperty) {
+
+            console.log("got data: " + sortByProperty + ", " + sortOrderProperty);
             $http.get(Uri.appUri("engine://engine/:engine/history/process-instance" +
                 "?processDefinitionId=" + procDefId +
                 "&finished=true" +
@@ -19,13 +21,13 @@ define(['require', 'angular'], function(require, angular) {
                 ($scope.startedAfter !== undefined ? "&startedAfter=\"" + $scope.startedAfter + ":00.000Z\"" : "") +
                 ($scope.finishedBefore !== undefined ? "&finishedBefore=\"" + $scope.finishedBefore + ":00.000Z\"" : "") +
                 ($scope.finishedAfter !== undefined ? "&finishedAfter=\"" + $scope.finishedAfter + ":00.000Z\"" : "") +*/
-                "&sortBy=endTime" +
-                "&sortOrder=desc"))
+                "&sortBy=" + sortByProperty+
+                "&sortOrder=" + sortOrderProperty))
                 .success(function (data) {
                     $scope.processInstances = data;
                 });
-        //};
-        //$scope.setData();
+        };
+        $scope.setData("endTime", "desc");
 
         $scope.checkTimes = function (duration) {
             var durationString;
@@ -52,6 +54,7 @@ define(['require', 'angular'], function(require, angular) {
             // output with milliseconds and "Z" removed
             return date.substr(0, date.length - 5);
         }
+
     }];
 
     /**
