@@ -31,7 +31,7 @@ define({
      * @param prefix            prefix used in localStorage items
      * @returns {object}
      */
-    createVariableList: function(localStorage, prefix) {
+    createVariableDiv: function(localStorage, prefix) {
         var html = document.createElement('div');
         html.className = "variableTextSmall";
 

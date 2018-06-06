@@ -44,7 +44,7 @@ describe('instance variables tests', function() {
             spy1 = sandbox.spy(); spy2 = sandbox.spy();
             stub1 = sandbox.stub(comUtil);
             stub1.filterVariables.returns([{}]);
-            stub1.createVariableList.returns(document.createElement('div'));
+            stub1.createVariableDiv.returns(document.createElement('div'));
             stub1.createVariableUl.returns(document.createElement('ul'));
             util.procDefId = stub1.procDefId = "asdf1234";
             util.commonVariable = stub1;
@@ -83,8 +83,8 @@ describe('instance variables tests', function() {
             expect(spy1.args[0][0]).to.contain(stub1.procDefId);
         });
 
-        it('should call createVariableList', function() {
-            expect(stub1.createVariableList.callCount).to.eql(1);
+        it('should call createVariableDiv', function() {
+            expect(stub1.createVariableDiv.callCount).to.eql(1);
         });
 
         it('should call clearOverlays', function() {

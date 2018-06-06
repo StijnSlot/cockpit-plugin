@@ -1,4 +1,12 @@
 define({
+    /**
+     * variable containing all ids of overlays created here
+     */
+    overlayActivityIds: {},
+
+    /**
+     * process definition id
+     */
     procDefId: "",
 
     /**

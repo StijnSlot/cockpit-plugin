@@ -25,11 +25,11 @@ describe('Common variables tests', function() {
         expect(util).to.exist;
     });
 
-    describe('createVariableList tests', function() {
+    describe('createVariableDiv tests', function() {
         var out;
 
         beforeEach(function() {
-            out = util.createVariableList({getItem: function(){}}, "");
+            out = util.createVariableDiv({getItem: function(){}}, "");
         });
 
         it('should be a div item', function() {
@@ -38,24 +38,6 @@ describe('Common variables tests', function() {
 
         it('should return a variableTextSmall', function() {
             expect(out.className).to.eql("variableTextSmall");
-        });
-
-        describe('position stored in local', function() {
-            var stub;
-            beforeEach(function() {
-                stub = sinon.stub();
-                stub.withArgs("left").returns("1px");
-                stub.withArgs("top").returns("-5px");
-                out = util.createVariableList({getItem: stub}, "");
-            });
-
-            it('should return left position 1px', function() {
-                expect(out.getAttribute("style")).to.contain("left: 1px");
-            });
-
-            it('should return top position -5px', function() {
-
-            });
         });
     });
 
@@ -78,10 +60,10 @@ describe('Common variables tests', function() {
             sandbox.restore();
         });
 
-        it('should create id in overlayActivityId', function() {
+        /*it('should create id in overlayActivityId', function() {
             expect(stub1.overlayActivityIds['3']).to.have.lengthOf(1);
             expect(stub1.overlayActivityIds['3']).to.have.members([4]);
-        });
+        });*/
 
         it('should call addDots', function() {
             expect(stub1.addDots.callCount).to.eql(1);
