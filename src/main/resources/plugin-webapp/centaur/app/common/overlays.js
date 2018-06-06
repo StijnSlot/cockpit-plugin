@@ -55,7 +55,6 @@ define({
         $(html).draggable({
             start: function() {
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
-                console.log($("g[data-element-id=\'" + elementID + "\']")[0]);
             },
             stop: function() {
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");

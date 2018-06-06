@@ -15,10 +15,9 @@ define({
    *
    * @param   (Object}  localStorage              contains offset settings
    * @param   {Object}  util                      object of this class, to call its functions and variables
-   * @param   {Overlay} overlays                  collection of overlays to add to
+   * @param   {Object}  overlays                  collection of overlays to add to
    * @param   {Number}  executionSequenceCounter  number of processes called
    * @param   {Number}  elementID                 ID of element
-   * @param   {Object}  shape                     Shape of the element
    */
   composeHTML: function(localStorage, util, overlays, executionSequenceCounter, elementID) {
     var html = util.createHTML (executionSequenceCounter);
@@ -30,15 +29,17 @@ define({
 
   /**
    * Creates an HTML line with has a class that includes the elementID
-   * @param   String  elementID   Variable to be converted.
-   * @return  String              A string which represents an HTML line which will be added later
+   *
+   * @param   {String}  executionSequenceCounter   Variable to be converted.
+   * @return  {Object}                             A string which represents an HTML line which will be added later
    */
   createHTML: function (executionSequenceCounter) {
     var html = document.createElement('DIV');
     html.className = "counterText";
-    html.innerText = "Counter: " + executionSequenceCounter;
-    return html
+    var text = document.createElement('P');
+    text.innerText = "Counter: " + executionSequenceCounter;
+    html.appendChild(text);
+
+    return html;
   }
-
-
 });
