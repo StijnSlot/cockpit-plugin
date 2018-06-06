@@ -27,23 +27,11 @@ define({
     /**
      * Creates DOM element from data and options settings
      *
-     * @param localStorage      used for getting offset data
-     * @param prefix            prefix used in localStorage items
      * @returns {object}
      */
-    createVariableDiv: function(localStorage, prefix) {
+    createVariableDiv: function() {
         var html = document.createElement('div');
         html.className = "variableTextSmall";
-
-        var offsetTop = localStorage.getItem(prefix + "top");
-        if(offsetTop !== null) {
-            $(html).css("top", offsetTop);
-        }
-        var offsetLeft = localStorage.getItem(prefix + "left");
-        if(offsetLeft !== null) {
-            $(html).css("left", offsetLeft);
-        }
-
         return html;
     },
 
@@ -60,13 +48,7 @@ define({
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
         data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
-
-        console.log('Stijn Data:');
-        console.log(data);
-
-        html.appendChild(util.createVariableUl(data));
-        console.log('Stijn HTML:');
-        console.log(html);
+        html.appendChild(util.createVariableUl(data));;
         if(!i && html.childElementCount)
             return util.finishElement(localStorage, html, overlays, elementId, util);
     },
