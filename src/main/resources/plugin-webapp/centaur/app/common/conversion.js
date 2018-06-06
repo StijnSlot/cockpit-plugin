@@ -53,5 +53,72 @@ define({
         } else {
             return 'ms';
         }
+    },
+
+    /**
+     * Calculates the current duration of a instance of a process.
+     *
+     * The database only keeps track of the starting time of each
+     * process. So we calculate the current duration of each process.
+     *
+     * @param   Number  instance    Instance of a process
+     * @param   Number  elementId   ID of diagram element that represents instance
+     */
+    calculateCurDuration: function (instance, elementID) {
+        for (var j = 0; j < instance.length; j++) {
+            if (instance[j].activityId == elementID) {
+                var startTime = Date.parse(instance[j].startTime);
+                var computerTime = new Date().getTime();
+                var timeDifference = computerTime - startTime;
+                return timeDifference;
+                break;
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Calculates the average current duration of all instances with the same ID of a process.
+     *
+     * The database only keeps track of the starting time of each
+     * process. So we have to calculate the current duration of each process.
+     * @param   Object  util        object of this class, to call its functions and variables
+     * @param   Number  instance    Instance of a process
+     * @param   String  elementId   ID of diagram element that represents instance
+     * @return  Number              If no starttime is present in the database: 0,
+     *                              else the current time 
+     */
+    calculateAvgCurDuration: function (util, instance, elementID) {
+        if (util.averageDuration[elementID] == undefined) {
+            util.averageDuration[elementID] = [];
+        }
+
+        for (var j = 0; j < instance.length; j++) {
+            if (instance[j].activityId == elementID) {
+                var timeDifference = util.commonConversion.calculateTimeDifference(Date.parse(instance[j].startTime));
+                util.averageDuration[elementID].push(timeDifference);
+            }
+        }
+
+        if (util.averageDuration[elementID] !== undefined && util.averageDuration[elementID].length != 0) {
+            var total = 0;
+            for (var j = 0; j < util.averageDuration[elementID].length; j++) {
+                total = total + util.averageDuration[elementID][j];
+            }
+            return (total / util.averageDuration[elementID].length);
+        }
+
+        return 0;
+    },
+
+    /**
+     * Calculates the difference between a given start time and the current computer time.
+     * 
+     * @param   Number startTime    start time in ms
+     * @return  Number              time difference between given time and computer time.
+     */
+    calculateTimeDifference: function (startTime) {
+        var computerTime = new Date().getTime();
+        return computerTime - startTime;
     }
 });

@@ -72,36 +72,13 @@ define({
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
                         var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                        var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
+                        var getCurDuration = util.commonConversion.calculateCurDuration($scope.instanceStartTime.data, element.id);
                         util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         break;
                     }
                 }
             });
         });
-    },
-
-
-    /**
-     * Calculates the current duration of a instance of a process.
-     *
-     * The database only keeps track of the starting time of each
-     * process. So we calculate the current duration of each process.
-     *
-     * @param   Number  instance    Instance of a process
-     * @param   Number  elementId   ID of diagram element that represents instance
-     */
-    calculateCurDuration: function (instance, elementID) {
-        for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
-                var startTime = Date.parse(instance[j].startTime);
-                var computerTime = new Date().getTime();
-                var timeDifference = computerTime - startTime;
-                return timeDifference;
-                break;
-            }
-        }
-        return null;
     },
 
     /**
