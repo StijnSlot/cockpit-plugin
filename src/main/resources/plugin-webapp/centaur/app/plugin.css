@@ -138,3 +138,13 @@
     display: inline-block;
     margin-right: 4px;
 }
+
+.datetime-box {
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.total-count-box {
+    display: inline-block;
+}
