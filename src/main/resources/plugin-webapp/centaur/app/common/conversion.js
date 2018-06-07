@@ -112,6 +112,30 @@ define({
     },
 
     /**
+     * Calculates the current duration of a specific instance of a process.
+     *
+     * The database only keeps track of the starting time of each
+     * process. So we calculate the current duration of each process.
+     *
+     * @param   Number  instance    Instance of a process
+     * @param   Number  instanceID  ID of diagram instance element that represents instance
+     */
+    calculateCurDurationOfSpecInstance: function (instance, elementID, instanceID) {
+        for (var j = 0; j < instance.length; j++) {
+            if (instance[j].activityId == elementID) {
+                if (instance[j].instanceId == instanceID) {
+                    var startTime = Date.parse(instance[j].startTime);
+                    var computerTime = new Date().getTime();
+                    var timeDifference = computerTime - startTime;
+                    return timeDifference;
+                    break;
+                }
+            }
+        }
+        return null;
+    },
+
+    /**
      * Calculates the difference between a given start time and the current computer time.
      * 
      * @param   Number startTime    start time in ms
