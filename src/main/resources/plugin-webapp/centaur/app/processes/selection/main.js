@@ -1,54 +1,28 @@
 'use strict';
 
-define(['angular'], function(angular) {
+define(['require', 'angular',  './util'], function(require, angular) {
 
-    var controller = ["$scope", "$http", "Uri", function($scope, $http, Uri) {
+    var util = require('./util');
+
+    var controller = ["$scope", "$http", "$q", "Uri", function($scope, $http, $q, Uri) {
+
+        // wait until the process definition list exists
         var checkExist = setInterval(function() {
-            if ($(".process-definitions-list > thead > tr").length) {
-                putCheckboxes();
-                putButton();
+            if ($(".process-definitions-list").length) {
+                // stop the interval
                 clearInterval(checkExist);
+                
+                util.putCheckboxes();
+                var deleteButton = util.putDeleteButton();
+
+                $(deleteButton).click(function() {
+                    var ids = util.getSelectedIds();
+                    if(ids.length && confirm("Are you sure you want to delete the selected processes")) {
+                        util.deleteProcessDefinition($http, $q, Uri, ids);
+                    }
+                });
             }
         }, 100);
-
-        $scope.test = "hi";
-
-        function putCheckboxes() {
-
-            // create title
-            var th = document.createElement('TH');
-            th.className = "ng-binding";
-            th.innerHTML = "Selection";
-            $(".process-definitions-list > thead > tr").append(th);
-
-            // create checkboxes
-            $(".process-definitions-list > tbody > tr").each(function(i) {
-                //var name = $(this).children(".name").text();
-                var td = document.createElement('TD');
-                var box = document.createElement('INPUT');
-                box.type = "checkbox";
-                box.id = "processSelect" + i;
-                box.setAttribute("ng-model", "pd.checked");
-                box.setAttribute("ng-change", "processSelect(pd)");
-                td.appendChild(box);
-                $(this).append(td);
-            });
-        }
-
-        function putButton() {
-            var div = document.createElement('DIV');
-            div.setAttribute("ng-app", "cockpit.plugin.centaur.processes");
-            //div.setAttribute("ng-controller", "")
-            var button = document.createElement("BUTTON");
-            button.className = "delete-process-button";
-            button.innerText = "Delete";
-            div.appendChild(button);
-            $(".loader-state").append(div);
-        }
-
-        $scope.processSelect = function(pd) {
-            console.log(pd);
-        }
     }];
 
     /**

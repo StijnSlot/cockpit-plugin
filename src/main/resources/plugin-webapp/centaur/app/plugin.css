@@ -140,10 +140,8 @@
 }
 
 .delete-process-button {
-    border-radius: 5px;
-    border-color: red;
-    float: right;
-    background-color: red;
-    margin-right: 20px;
-    margin-top: -20px;
+    color: #fff;
+    background-color: #b5152b;
+    border-color: #9e1226;
+    /*float: right;*/
 }
