@@ -83,7 +83,7 @@ define({
      * The database only keeps track of the starting time of each
      * process. So we have to calculate the current duration of each process.
      * @param   Object  util        object of this class, to call its functions and variables
-     * @param   Number  instance    Instance of a process
+     * @param   Object  instance    Instance of a process
      * @param   String  elementId   ID of diagram element that represents instance
      * @return  Number              If no starttime is present in the database: 0,
      *                              else the current time 
@@ -118,6 +118,7 @@ define({
      * process. So we calculate the current duration of each process.
      *
      * @param   Number  instance    Instance of a process
+     * @param   String  elementId   ID of diagram element that represents instance
      * @param   Number  instanceID  ID of diagram instance element that represents instance
      */
     calculateCurDurationOfSpecInstance: function (instance, elementID, instanceID) {
