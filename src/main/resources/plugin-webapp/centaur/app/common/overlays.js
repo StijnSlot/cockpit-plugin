@@ -51,14 +51,34 @@ define({
      */
     addDraggableFunctionality: function(localStorage, prefix, elementID, html) {
         html.parentNode.classList.add("djs-draggable");
-        $(html.parentNode).css("position", "relative");
+        var click = {x: 0, y: 0};
 
         $(html.parentNode).draggable({
             stack: ".djs-overlay",
-            start: function() {
+            start: function(event) {
+                // add highlight to activity
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+
+                // remember click position for dragging speed
+                click.x = event.clientX;
+                click.y = event.clientY;
+            },
+            drag: function(event, ui) {
+                // get zoom level from the transport attribute from the viewport
+                // on drag, since the user could drag while zooming
+                var zoom = parseFloat($(".viewport").css("transform").split(',')[3]);
+
+                // original position of draggable
+                var original = ui.originalPosition;
+
+                // edit the position based on mouse position and zoom level
+                ui.position = {
+                    left: (event.clientX - click.x + original.left) / zoom,
+                    top:  (event.clientY - click.y + original.top ) / zoom
+                };
             },
             stop: function() {
+                // remove highlight from the activity
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
 
                 // store settings in localStorage
