@@ -1,4 +1,9 @@
+'use strict',
+
 define({
+
+    commonConversion: {},
+    
     /**
      * Convert the duration into the chosen time unit.
      *
@@ -64,14 +69,10 @@ define({
      * @param   Number  instance    Instance of a process
      * @param   Number  elementId   ID of diagram element that represents instance
      */
-    calculateCurDuration: function (instance, elementID) {
+    calculateCurDuration: function (util, instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
-                var startTime = Date.parse(instance[j].startTime);
-                var computerTime = new Date().getTime();
-                var timeDifference = computerTime - startTime;
-                return timeDifference;
-                break;
+                return util.calculateTimeDifference(Date.parse(instance[j].startTime));
             }
         }
         return null;
@@ -95,7 +96,7 @@ define({
 
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
-                var timeDifference = util.commonConversion.calculateTimeDifference(Date.parse(instance[j].startTime));
+                var timeDifference = util.calculateTimeDifference(Date.parse(instance[j].startTime));
                 util.averageDuration[elementID].push(timeDifference);
             }
         }
