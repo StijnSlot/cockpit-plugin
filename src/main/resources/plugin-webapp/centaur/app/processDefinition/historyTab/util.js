@@ -25,8 +25,6 @@ define({
         // set the new sort order
         util.order[sortByProperty] = sortOrder;
 
-        console.log(sortOrder + " " + sortByProperty);
-
         // flip the sorting arrows
         util.setSortingArrows(sortByProperty, sortOrder);
 
