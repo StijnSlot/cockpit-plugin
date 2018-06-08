@@ -6,21 +6,15 @@ define({
     putCheckboxes: function() {
         // create title
         var th = document.createElement('TH');
-        th.className = "ng-binding";
         th.innerHTML = "";
         $(".process-definitions-list > thead > tr").append(th);
 
         // create checkboxes
         $(".process-definitions-list > tbody > tr").each(function(i) {
-            //var name = $(this).children(".name").text();
             var td = document.createElement('TD');
-            //td.setAttribute("ng-app", "cockpit.plugin.centaur.processes.selection");
-            //td.setAttribute("ng-controller", "cockpit.plugin.centaur.processes.selection.controller");
             var box = document.createElement('INPUT');
             box.type = "checkbox";
             box.id = "processSelect" + i;
-            //box.setAttribute("ng-model", "pd.checked");
-            //box.setAttribute("ng-change", "processSelect(pd)");
             td.appendChild(box);
             $(this).append(td);
         });
@@ -54,9 +48,10 @@ define({
         $(".process-definitions-list > tbody > tr").each(function() {
             if($(this).find('input').is(':checked')) {
                 var link = $(this).find('.name > a').prop("href");
-                var id = link.split('/').pop();
-                console.log(id);
-                if(id !== undefined) out.push(id);
+                if(link !== undefined) {
+                    var id = link.split('/').pop();
+                    out.push(id);
+                }
             }
         });
 
@@ -64,7 +59,7 @@ define({
     },
 
     /**
-     * delete the process definition ids in the camunda database
+     * delete the process definition ids in the camunda database and reload page
      *
      * @param {Object}  $http   http object to make requests
      * @param {Object}  $q      angular object for making promises
