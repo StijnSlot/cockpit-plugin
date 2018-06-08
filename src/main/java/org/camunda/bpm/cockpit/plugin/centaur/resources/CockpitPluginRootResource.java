@@ -59,4 +59,11 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
           @PathParam("engineName") String engineName) {
     return subResource(new ExecutionSequenceCounterResource(engineName), engineName);
   }
+
+  @Path("{engineName}/refresh")
+  public RefreshResource getRefreshResource(
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new RefreshResource(engineName, procDefId), engineName);
+  }
 }

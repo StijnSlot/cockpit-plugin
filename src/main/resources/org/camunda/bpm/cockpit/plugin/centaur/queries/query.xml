@@ -102,6 +102,13 @@
           AND a.IS_ACTIVE_ = TRUE
   </select>
 
+  <select id="selectActiveInstances" resultMap="processVariables" parameterType="String">
+    SELECT ACT_INST_ID_
+    FROM ACT_RU_EXECUTION
+    WHERE PROC_DEF_ID_ = #{parameter}
+    AND IS_ACTIVE_ = TRUE
+  </select>
+
   <select id="createMyTrigger">
     CREATE TRIGGER aTrigger
     AFTER INSERT
