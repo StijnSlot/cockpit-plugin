@@ -83,7 +83,7 @@ define({
                         var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                         var getCurDuration = util.commonConversion.calculateCurDurationOfSpecInstance($scope.instanceStartTime.data, element.id, util.procInstanceId);
-                        if (util.isSelectedInstance($scope.instanceStartTime.data, element.id, util.procInstanceId)) {
+                        if (util.commonOptions.isSelectedInstance($scope.instanceStartTime.data, element.id, util.procInstanceId)) {
                             util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         }
                         break;
@@ -91,25 +91,6 @@ define({
                 }
             });
         });
-    },
-
-    /**
-     * This function looks for each element if the instance is currently
-     * on that element. When it is, it returns true, else false.
-     * 
-     * @param   Object  instance    Instance of a process
-     * @param   String  elementId   ID of diagram element that represents instance
-     * @param   Number  instanceID  ID of diagram instance element that represents instance
-     */
-    isSelectedInstance: function (instance, elementID, instanceID) {
-        for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
-                if (instance[j].instanceId == instanceID) {
-                    return true;   
-                }
-            }
-        }
-        return false;
     },
 
     /**
