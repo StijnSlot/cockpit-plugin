@@ -26,7 +26,6 @@ describe('processes selection tests', function() {
     });
 
     describe('putCheckboxes tests', function() {
-        var out;
         var tr1, tr2;
 
         beforeEach(function() {
@@ -45,7 +44,7 @@ describe('processes selection tests', function() {
             table.appendChild(tbody);
             document.body.append(table);
 
-            out = util.putCheckboxes();
+            util.putCheckboxes();
         });
         it('should add title to thead', function() {
             expect(tr1.childElementCount).to.eql(1);
