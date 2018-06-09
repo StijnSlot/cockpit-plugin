@@ -6,17 +6,17 @@
   <resultMap id="processStatisticsMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessStatisticsDto">
     <result property="id" column="ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
-    <result property="instanceCount" column="INSTANCES_" jdbcType="INTEGER" />
-    <result property="maxDuration" column="MAXDURATION_" jdbcType="INTEGER" />
-    <result property="maxFrequency" column="FREQUENCY_" jdbcType="INTEGER" />
+    <result property="instanceCount" column="INSTANCES_" jdbcType="BIGINT" />
+    <result property="maxDuration" column="MAXDURATION_" jdbcType="BIGINT" />
+    <result property="maxFrequency" column="FREQUENCY_" jdbcType="BIGINT" />
   </resultMap>
 
   <resultMap id="processActivityStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessActivityDto">
     <result property="id" column="ACT_ID_" jdbcType="VARCHAR" />
-    <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="INTEGER" />
-    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="INTEGER" />
-    <result property="minDuration" column="MIN(DURATION_)" jdbcType="INTEGER" />
-    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="INTEGER" />
+    <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="BIGINT" />
+    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT" />
+    <result property="minDuration" column="MIN(DURATION_)" jdbcType="BIGINT" />
+    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT" />
   </resultMap>
 
   <resultMap id="instanceVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceVariablesDto">

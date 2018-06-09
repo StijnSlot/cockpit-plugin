@@ -8,7 +8,7 @@
 
 'use strict';
 
-define(['require', 'angular', './bullet', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables'], function (require, angular) {
+define(['require', 'angular', './bullet', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/bulletgraph'], function (require, angular) {
 
     /**
      * retrieve the bullet file containe the D3 library and functions which are needed for the bullet graphs
@@ -41,6 +41,11 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
      * retrieve the common file containing variables functions
      */
     util.commonVariables = require('../../common/variables');
+
+    /**
+     * retrieve the common file containing variables functions
+     */
+    util.commonBulletgraph = require('../../common/bulletgraph');
 
     /**
      * Overlay object that contains the elements put on the diagram

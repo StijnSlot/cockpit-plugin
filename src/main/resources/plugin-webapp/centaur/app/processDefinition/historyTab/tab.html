@@ -1,0 +1,42 @@
+<!--<div class="datetime-box">
+    <b>Started before:</b><br>
+    <input type="datetime-local" value="1970-01-01T00:00" ng-model="startedBefore" ng-change="setData()"/>
+</div>
+<div class="datetime-box">
+    <b>Started after:</b><br>
+<input type="datetime-local" value="1970-01-01T00:00" ng-model="startedAfter" ng-change="setData()"/>
+</div>
+<div class="datetime-box">
+    <b>Finished before:</b><br>
+    <input type="datetime-local" value="1970-01-01T00:00" ng-model="finishedBefore" ng-change="setData()"/>
+</div>
+<div class="datetime-box">
+    <b>Finished after:</b><br>
+    <input type="datetime-local" value="1970-01-01T00:00" ng-model="finishedAfter" ng-change="setData()"/>
+</div>!-->
+<div class="total-count-box">
+    <b>Total number of results:</b>
+    {{ processInstances.length }}
+</div>
+<table class="table-hover cam-table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Start activity</th>
+        <th>Start user ID</th>
+        <th ng-click="setData('startTime')">Start time      <i class="sortingArrows" id="startTime"></i></th>
+        <th ng-click="setData('endTime')">End time      <i class="sortingArrows" id="endTime"></i></th>
+        <th ng-click="setData('duration')">Duration      <i class="sortingArrows" id="duration"></i></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-ng-repeat="instance in processInstances">
+        <td>{{ instance.id }}</td>
+        <td>{{ instance.startActivityId }}</td>
+        <td>{{ instance.startUserId }}</td>
+        <td>{{ toTruncatedUTC(instance.startTime) }}</td>
+        <td>{{ toTruncatedUTC(instance.endTime) }}</td>
+        <td>{{ checkTimes(instance.durationInMillis) }}</td>
+    </tr>
+    </tbody>
+</table>

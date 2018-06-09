@@ -46,6 +46,12 @@
       <version>${jersey.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxrs</artifactId>
+      <version>3.5.1.Final</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet</artifactId>
       <version>${jersey.version}</version>

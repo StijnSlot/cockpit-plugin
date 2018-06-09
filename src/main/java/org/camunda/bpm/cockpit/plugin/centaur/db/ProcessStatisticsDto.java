@@ -6,11 +6,11 @@ public class ProcessStatisticsDto {
 
   private String name;
 
-  private Integer instanceCount;
+  private Long instanceCount;
 
-  private Integer maxDuration;
+  private Long maxDuration;
 
-  private Integer maxFrequency;
+  private Long maxFrequency;
 
   public String getId() {
     return id;
@@ -20,11 +20,11 @@ public class ProcessStatisticsDto {
     this.id = id;
   }
 
-  public Integer getInstanceCount() {
+  public Long getInstanceCount() {
     return instanceCount;
   }
 
-  public void setInstanceCount(Integer instanceCount) {
+  public void setInstanceCount(Long instanceCount) {
     this.instanceCount = instanceCount;
   }
 
@@ -36,19 +36,19 @@ public class ProcessStatisticsDto {
     this.name = name;
   }
 
-  public Integer getMaxDuration() {
+  public Long getMaxDuration() {
     return maxDuration;
   }
 
-  public void setMaxDuration(Integer maxDuration) {
+  public void setMaxDuration(Long maxDuration) {
     this.maxDuration = maxDuration;
   }
 
-  public Integer getMaxFrequency() {
+  public Long getMaxFrequency() {
     return maxFrequency;
   }
 
-  public void setMaxFrequency(Integer maxFrequency) {
+  public void setMaxFrequency(Long maxFrequency) {
     this.maxFrequency = maxFrequency;
   }
 }

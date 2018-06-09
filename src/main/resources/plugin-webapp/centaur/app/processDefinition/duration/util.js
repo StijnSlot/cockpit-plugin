@@ -8,6 +8,8 @@ define({
 
     commonVariables: {},
 
+    commonDuration: {},
+
 
     /**
      * variable containing all ids of overlays created here
@@ -72,54 +74,13 @@ define({
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
                         var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                        var getCurDuration = util.calculateCurDuration($scope.instanceStartTime.data, element.id);
+                        var getCurDuration = util.commonConversion.calculateCurDuration($scope.instanceStartTime.data, element.id);
                         util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         break;
                     }
                 }
             });
         });
-    },
-
-
-    /**
-     * Calculates the current duration of a instance of a process.
-     *
-     * The database only keeps track of the starting time of each
-     * process. So we calculate the current duration of each process.
-     *
-     * @param   Number  instance    Instance of a process
-     * @param   Number  elementId   ID of diagram element that represents instance
-     */
-    calculateCurDuration: function (instance, elementID) {
-        for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
-                var startTime = Date.parse(instance[j].startTime);
-                var computerTime = new Date().getTime();
-                var timeDifference = computerTime - startTime;
-                return timeDifference;
-                break;
-            }
-        }
-        return null;
-    },
-
-    /**
-     * This function will check if the conditions to show the durations are
-     * satisfied.
-     *
-     * The conditions to show the bulletgraph are satisfied if:
-     * - Average and maximu, duration variables are not equal to NULL
-     * - The average duration is not equal to '0'.
-     *
-     * @param   Number  minDuration   minimal duration of process
-     * @param   Number  avgDuration   average duration of process
-     * @param   Number  maxDuration   maximal duration of process
-     * @param   Number  curDuration   current duration of process
-     * @return  Boolean               if condtions are satisfied or not
-     */
-    checkConditions: function (avgDuration, maxDuration) {
-        return avgDuration != null && maxDuration != null && avgDuration != '0';
     },
 
     /**
@@ -146,89 +107,25 @@ define({
      * @param   Object  $window       browser window containing localStorage
      */
     composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
-        if (util.checkConditions(avgDuration, maxDuration)) {
+        if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
             // clear any current overlays displayed
-            util.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, elementID);
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
             var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-            var curDurationHTML = util.checkIfCurValid(util, curDuration);
-            
-            var htmlText = util.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, htmlText, 120, -40);
+            var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
+
+            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
+
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
+
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration", elementID, html);
+
             util.overlayActivityIds[elementID].push(newOverlayId);
         }
-    },
-
-    /**
-     * This function checks if the current duration is not equal to null. 
-     * If the durrent duration is equal to null it should display a '-'.
-     * 
-     * @param   Object  util          object of this class, to call its functions and variables
-     * @param   Number  curDuration   current duration of process
-     * @return  String                either current duration or '-'
-     */
-    checkIfCurValid: function (util, curDuration) {
-        if (curDuration != null) {
-            var curDurationUnit = util.commonConversion.checkTimeUnit(curDuration);
-            return util.commonConversion.convertTimes(curDuration, curDurationUnit).toString() + ' ' + curDurationUnit;
-        } else {
-            return '-';
-        }
-    },
-
-    /**
-     * Creates an HTML line with has which will show different part depending on which KPI is
-     * selected to be shown.
-     * 
-     * @param   Object  util            object of this class, to call its functions and variables
-     * @param   Object  $window         browser window containing localStorage
-     * @param   String  curDurationHTML string to display with the current duration
-     * @param   String  avgDurationHTML string to display with the average duration
-     * @param   String  maxDurationHTML string to display with the maximum duration
-     * @return  String                  string which represents an HTML line which will be added later to the document
-     */
-    createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
-            curDurationHTML = 'Cur: ' + curDurationHTML;
-        } else { curDurationHTML = '' }
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
-            avgDurationHTML = ' <br> Avg: ' + avgDurationHTML;
-        } else { avgDurationHTML = '' }
-        if (util.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
-            maxDurationHTML = ' <br> Max: ' + maxDurationHTML;
-        } else { maxDurationHTML = '' }
-        return '<div class="durationText"> ' + curDurationHTML + avgDurationHTML + maxDurationHTML + '</div>';
-    },
-
-    /**
-     * Removes all variables which are not selected by the user
-     *
-     * @param localStorage  contains user options
-     * @param item          used for getting localStorage item option
-     */
-    isSelectedVariable: function (localStorage, item) {
-        return localStorage.getItem(item) === 'true';
-    },
-
-    /**
-     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
-     *
-     * @param overlays              overlays object containing all diagram overlays
-     * @param overlayActivityIds    ids of overlays which should be removed
-     * @param id
-     */
-    clearOverlays: function (overlays, overlayActivityIds, id) {
-        if (overlayActivityIds[id] !== undefined) {
-            overlayActivityIds[id].forEach(function (element) {
-                overlays.remove(element);
-            });
-        }
-        overlayActivityIds[id] = [];
     }
-
-
 });

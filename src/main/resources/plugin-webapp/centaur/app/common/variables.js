@@ -1,10 +1,5 @@
 define({
     /**
-     * variable containing all ids of overlays created here
-     */
-    overlayActivityIds: {},
-
-    /**
      * contains user options for number of variables to show
      */
     variableNum: 5,
@@ -25,25 +20,13 @@ define({
     commonOverlays: "",
 
     /**
-     * Creates DOM element from data and options settings
+     * Creates DOM element for variables
      *
-     * @param localStorage      used for getting offset data
-     * @param prefix            prefix used in localStorage items
      * @returns {object}
      */
-    createVariableList: function(localStorage, prefix) {
+    createVariableDiv: function() {
         var html = document.createElement('div');
         html.className = "variableTextSmall";
-
-        var offsetTop = localStorage.getItem(prefix + "top");
-        if(offsetTop !== null) {
-            $(html).css("top", offsetTop);
-        }
-        var offsetLeft = localStorage.getItem(prefix + "left");
-        if(offsetLeft !== null) {
-            $(html).css("left", offsetLeft);
-        }
-
         return html;
     },
 
@@ -60,10 +43,9 @@ define({
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
         data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
-
         html.appendChild(util.createVariableUl(data));
         if(!i && html.childElementCount)
-            util.finishElement(localStorage, html, overlays, elementId, util);
+            return util.finishElement(localStorage, html, overlays, elementId, util);
     },
 
     /**
@@ -78,11 +60,10 @@ define({
     finishElement: function(localStorage, html, overlays, elementId, util) {
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
-        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_offset_", html);
-        var id = util.commonOverlays.addTextElement(overlays, elementId, html);
-
-        if(util.overlayActivityIds[elementId] === undefined) util.overlayActivityIds[elementId] = [];
-        util.overlayActivityIds[elementId].push(id);
+        var id = util.commonOverlays.addTextElement(overlays, elementId, html, -10, -120);
+        util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementId + "_variables");
+        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables", elementId, html);
+        return id;
     },
 
     /**
@@ -121,7 +102,7 @@ define({
             variables.appendChild(li);
         }
 
-        variables.className = "   djs-draggable";
+        variables.className = "djs-draggable";
         return variables;
     },
 
@@ -169,7 +150,6 @@ define({
      * @param html      div element with variable data
      */
     addHoverFunctionality: function(html) {
-
         // initialize removing dots
         var dots = false;
         // hide children with index higher than numValue

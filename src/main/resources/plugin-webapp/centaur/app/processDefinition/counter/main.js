@@ -13,19 +13,20 @@
 
 'use strict';
 
-define(['require', 'angular', './util'], function(require, angular) {
+define(['require', 'angular', './util', '../../common/overlays'], function(require, angular) {
 
   var util = require('./util');
 
+  util.commonOverlays = require('../../common/overlays');
+
   var overlay = [
-    '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
-    function($scope, $http, Uri, control, processData, pageData, $q, processDiagram) {
+    '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram', '$window',
+    function($scope, $http, Uri, control, processData, pageData, $q, processDiagram, $window) {
       var viewer = control.getViewer();
       var overlays = viewer.get('overlays');
       var elementRegistry = viewer.get('elementRegistry');
-      var overlaysNodes = {};
 
-      var procDefId = $scope.$parent.processDefinition.id;
+      util.procDefId = $scope.$parent.processDefinition.id;
 
       /*
        * Angular http.get promise that waits for a JSON object of
@@ -57,17 +58,17 @@ define(['require', 'angular', './util'], function(require, angular) {
         elementRegistry.forEach(function(shape) {
           var element = processDiagram.bpmnElements[shape.businessObject.id];
           for (var i = 0; i < $scope.executionSequenceCounter.data.length; i++) {
-            if ($scope.executionSequenceCounter.data[i].activityId == element.id &&
-              element.$type == 'bpmn:CallActivity' && $scope.executionSequenceCounter.data[i].long_ > 0) {
+            if ($scope.executionSequenceCounter.data[i].activityId === element.id &&
+              element.$type === 'bpmn:CallActivity' && $scope.executionSequenceCounter.data[i].long_ > 0) {
               var executionSequenceCounter = $scope.executionSequenceCounter.data[i].long_;
-              util.composeHTML(util, overlays, executionSequenceCounter, element.id, shape);
+              util.composeHTML($window.localStorage, util, overlays, executionSequenceCounter, element.id);
               break;
             }
           }
         });
       });
     }
-  ]
+  ];
 
   /**
    * Configuration object that places plugin
