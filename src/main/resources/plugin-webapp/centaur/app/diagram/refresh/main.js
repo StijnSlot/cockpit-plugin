@@ -15,8 +15,8 @@ define(['require', 'angular', '../../common/options'], function(require, angular
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = ['$scope', '$timeout', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
-        function($scope, $timeout, $http, $window, $rootScope, Uri, control, processDiagram) {
+    var overlay = ['$scope', '$timeout', '$http', '$window', '$rootScope', 'Uri',
+        function($scope, $timeout, $http, $window, $rootScope, Uri) {
 
             /**
              * set process definition id from parent
