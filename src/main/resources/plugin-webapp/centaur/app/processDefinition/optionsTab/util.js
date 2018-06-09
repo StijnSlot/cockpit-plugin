@@ -57,5 +57,18 @@ define({
     changeVarNum: function(localStorage, $rootScope, id, value) {
         localStorage.setItem(id, value);
         $rootScope.$broadcast("cockpit.plugin.centaur:options:var-num-change");
+    },
+
+    /**
+     * Changes variable refresh rate in localStorage and broadcast
+     *
+     * @param localStorage  contains user options
+     * @param $rootScope    used for broadcasting change
+     * @param id            used for retrieving correct item
+     * @param value         new item value
+     */
+    changeVarRefreshRate: function(localStorage, $rootScope, id, value) {
+        localStorage.setItem(id, value);
+        $rootScope.$broadcast("cockpit.plugin.centaur:options:var-refresh-change");
     }
 });

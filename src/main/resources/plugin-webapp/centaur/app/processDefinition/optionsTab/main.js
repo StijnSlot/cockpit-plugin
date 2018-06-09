@@ -40,6 +40,14 @@ define(['require', 'angular', './util', '../../common/options'], function(requir
             $scope.numValue = commonOptions.getVariableNum($window.localStorage, procDefId + "_var_num");
         };
 
+        /**
+         * TODO: Write comments
+         * @param value
+         */
+        $scope.setRefreshRate = function() {
+            $scope.refreshRate = commonOptions.getRefreshRate($window.localStorage, procDefId + "_var_refresh");
+        };
+
         // get all variable ids for this process
         $http.get(Uri.appUri("plugin://centaur/:engine/process-variables" +
             "?procDefId=" + procDefId))
@@ -72,6 +80,14 @@ define(['require', 'angular', './util', '../../common/options'], function(requir
 
         $scope.changeVarNum = function(value) {
             util.changeVarNum($window.localStorage, $rootScope, procDefId + "_var_num", value);
+        }
+
+        /**
+         * TODO: Write comments
+         * @param value
+         */
+        $scope.changeVarRefreshRate = function(value) {
+            util.changeVarRefreshRate($window.localStorage, $rootScope, procDefId + "_var_refresh", value);
         }
     }];
 

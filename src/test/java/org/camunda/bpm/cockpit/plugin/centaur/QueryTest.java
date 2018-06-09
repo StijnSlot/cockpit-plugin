@@ -75,4 +75,15 @@ public class QueryTest extends AbstractCockpitPluginTest {
 
         Assert.assertEquals(0, result.size());
     }
+
+    @Test
+    public void testRefreshResource() {
+        List<ProcessVariablesDto> result =
+                getQueryService()
+                        .executeQuery(
+                                "cockpit.query.selectActiveInstances",
+                                new QueryParameters<>());
+
+        Assert.assertEquals(0, result.size());
+    }
 }
