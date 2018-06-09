@@ -1,6 +1,7 @@
 'use strict';
 
 define(['require', 'angular'], function(require, angular) {
+    var previousInstances = null;
 
     /**
      * Overlay object that contains the elements put on the diagram
@@ -9,22 +10,20 @@ define(['require', 'angular'], function(require, angular) {
         function($scope, $timeout, $http, $window, $rootScope, Uri, control, processDiagram) {
             var poll = function() {
                 $timeout(function() {
-                    console.log("Hello");
                     /**
-                    * set process definition id from parent
-                    */
+                     * set process definition id from parent
+                     */
                     var procDefId = $scope.$parent.processDefinition.id;
-                    
-                    $http.get(Uri.appUri("plugin://centaur/:engine/process-variables" +
-                            "?procDefId=" + procDefId))
-                            .success(function(data) {
-                                if (data == ) {
-
-                                }
-
-                                // retrieve localStorage info on variables and set checkboxes
-                                util.setChecked($window.localStorage, procDefId + "_var_", $scope.processVariables);
-                            });
+                    $http.get(Uri.appUri("plugin://centaur/:engine/refresh" +
+                        "?procDefId=" + procDefId))
+                        .success(function(data) {
+                            if (previousInstances == null) {
+                                previousInstances = data;
+                            }
+                            if (!angular.equals(previousInstances, data)) {
+                                window.location.reload(true);
+                            }
+                        });
                     poll();
                 }, 1000);
             };     
