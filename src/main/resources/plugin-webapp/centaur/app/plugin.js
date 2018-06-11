@@ -8,7 +8,8 @@ define(function (require) {
     var processModule = require('./processes/main');
     var processDefinition = require('./processDefinition/main');
     var processInstance = require('./processInstance/main');
-    return angular.module('cockpit.plugin.centaur', [processModule.name, processDefinition.name, processInstance.name]);
+    var diagramRefresh = require('./diagram/refresh/main');
+    return angular.module('cockpit.plugin.centaur', [processModule.name, processDefinition.name, processInstance.name, diagramRefresh.name]);
 });
 
 //git hook test

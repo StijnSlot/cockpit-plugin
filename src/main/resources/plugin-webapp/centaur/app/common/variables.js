@@ -5,6 +5,11 @@ define({
     variableNum: 5,
 
     /**
+     * contains user options for seconds between refresh check
+     */
+    variableRefresh: 1,
+
+    /**
      * contains process definition id
      */
     procDefId: "",

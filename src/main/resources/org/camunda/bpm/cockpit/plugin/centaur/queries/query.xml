@@ -47,6 +47,10 @@
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
   </resultMap>
 
+  <resultMap id="activeInstances" type="org.camunda.bpm.cockpit.plugin.centaur.db.ActiveInstancesDto">
+    <result property="instanceId" column="ACT_INST_ID_" jdbcType="VARCHAR" />
+  </resultMap>
+
   <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
     SELECT DISTINCT a.ID_, a.ACT_ID_, b.NAME_, b.LONG_
     FROM ACT_RU_VARIABLE b
@@ -102,17 +106,11 @@
           AND a.IS_ACTIVE_ = TRUE
   </select>
 
-  <select id="createMyTrigger">
-    CREATE TRIGGER aTrigger
-    AFTER INSERT
-    ON ACT_RU_EXECUTION
-    FOR EACH ROW
-    CALL "org.camunda.bpm.cockpit.plugin.centaur.db.MyTrigger"
-  </select>
-
-  <select id="makeChangesInTheTable">
-    INSERT INTO ACT_RU_EXECUTION (ID_)
-    VALUES ('5')
+  <select id="selectActiveInstances" resultMap="activeInstances" parameterType="String">
+    SELECT ACT_INST_ID_
+    FROM ACT_RU_EXECUTION
+    WHERE PROC_DEF_ID_ = #{parameter}
+    AND IS_ACTIVE_ = TRUE
   </select>
 
 </mapper>
