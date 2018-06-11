@@ -3,6 +3,8 @@
 define({
 
     commonConversion: {},
+
+    averageDuration: {},
     
     /**
      * Convert the duration into the chosen time unit.
