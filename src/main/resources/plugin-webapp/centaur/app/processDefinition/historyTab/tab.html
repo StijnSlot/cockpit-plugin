@@ -1,0 +1,27 @@
+<div class="total-count-box">
+    <b>Total number of results:</b>
+    {{ processInstances.length }}
+</div>
+<table class="table-hover cam-table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Start activity</th>
+        <th>Start user ID</th>
+        <th ng-click="setData('startTime')">Start time      <i class="sortingArrows" id="startTime"></i></th>
+        <th ng-click="setData('endTime')">End time      <i class="sortingArrows" id="endTime"></i></th>
+        <th ng-click="setData('duration')">Duration      <i class="sortingArrows" id="duration"></i></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-ng-repeat="instance in processInstances">
+        <td>{{ instance.id }}</td>
+        <td>{{ instance.startActivityId }}</td>
+        <td>{{ instance.startUserId }}</td>
+        <td>{{ toTruncatedUTC(instance.startTime) }}</td>
+        <td>{{ toTruncatedUTC(instance.endTime) }}</td>
+        <td>{{ convertTimes(instance.durationInMillis, checkTimeUnit(instance.durationInMillis)) +
+            " " + checkTimeUnit(instance.durationInMillis) }}</td>
+    </tr>
+    </tbody>
+</table>

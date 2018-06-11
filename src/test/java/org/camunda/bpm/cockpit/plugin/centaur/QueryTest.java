@@ -77,17 +77,13 @@ public class QueryTest extends AbstractCockpitPluginTest {
     }
 
     @Test
-    public void testTrigger(){
+    public void testRefreshResource() {
+        List<ProcessVariablesDto> result =
+                getQueryService()
+                        .executeQuery(
+                                "cockpit.query.selectActiveInstances",
+                                new QueryParameters<>());
 
-        getQueryService().executeQuery("createMyTrigger", new QueryParameters<Object>());
-
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        getQueryService().executeQuery("makeChangesInTheTable", new QueryParameters<Object>());
-
-        Assert.assertEquals("The trigger fires", outContent.toString());
-
-
+        Assert.assertEquals(0, result.size());
     }
 }

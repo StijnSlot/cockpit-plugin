@@ -13,9 +13,9 @@ define({
      * hours, days, weeks to make it easier to read. The choice
      * determines which time unit to use.
      *
-     * @param   Number  duration      duration of process
-     * @param   String  choice        choice of time unit
-     * @return  Number                duration as Integer
+     * @param   {Number}  duration      duration of process
+     * @param   {String}  choice        choice of time unit
+     * @return  {Number}                duration as Integer
      */
     convertTimes: function (duration, choice) {
         if (choice === 'seconds') {
@@ -41,8 +41,8 @@ define({
      * this determines which time unit (seconds, minutes,
      * hours, days, weeks) should be used.
      *
-     * @param   Number  time      duration of process
-     * @return  String            time unit choice
+     * @param   {Number}  time      duration of process
+     * @return  {String}            time unit choice
      */
     checkTimeUnit: function (time) {
         if (time > 1000 && time < 60001) {
@@ -66,8 +66,8 @@ define({
      * The database only keeps track of the starting time of each
      * process. So we calculate the current duration of each process.
      *
-     * @param   Number  instance    Instance of a process
-     * @param   Number  elementId   ID of diagram element that represents instance
+     * @param   {Number}  instance    Instance of a process
+     * @param   {Number}  elementId   ID of diagram element that represents instance
      */
     calculateCurDuration: function (util, instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
@@ -140,11 +140,25 @@ define({
     /**
      * Calculates the difference between a given start time and the current computer time.
      * 
-     * @param   Number startTime    start time in ms
-     * @return  Number              time difference between given time and computer time.
+     * @param   {Number} startTime    start time in ms
+     * @return  {Number}              time difference between given time and computer time.
      */
     calculateTimeDifference: function (startTime) {
         var computerTime = new Date().getTime();
         return computerTime - startTime;
+    },
+
+    /**
+     * Changes date to UTC timezone and truncates to remove milliseconds
+     *
+     * @param date          date in local timezone
+     * @returns {string}    data string
+     */
+    toTruncatedUTC: function(date) {
+        // convert to utc time
+        var newDate = new Date(date).toISOString();
+
+        // output with milliseconds and "Z" removed
+        return newDate.substr(0, newDate.length - 5);
     }
 });
