@@ -109,7 +109,7 @@ define({
             return (total / util.averageDuration[elementID].length);
         }
 
-        return 0;
+        return null;
     },
 
     /**
