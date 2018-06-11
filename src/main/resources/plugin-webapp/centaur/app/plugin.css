@@ -139,6 +139,13 @@
     margin-right: 4px;
 }
 
+.delete-process-button {
+    color: #fff;
+    background-color: #b5152b;
+    border-color: #9e1226;
+    /*float: right;*/
+}
+
 .datetime-box {
     display: inline-block;
     margin-left: 10px;
@@ -147,4 +154,5 @@
 
 .total-count-box {
     display: inline-block;
+
 }
