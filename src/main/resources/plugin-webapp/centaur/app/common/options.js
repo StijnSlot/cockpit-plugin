@@ -1,5 +1,70 @@
 define({
     /**
+     * Binds scope functions to corresponding util
+     *
+     * @param $scope        scope which needs functions set
+     * @param $window       contains localStorage
+     * @param $rootScope    for sending broadcasts
+     * @param util          util file containing functions
+     */
+    setScopeFunctions: function($scope, $window, $rootScope, util) {
+        /**
+         * sets variables in list to checked according to localStorage
+         */
+        $scope.setVariableChecked = function() {
+            util.setChecked($window.localStorage, $scope.procDefId + "_KPI_", $scope.KPI);
+        };
+
+        /**
+         * sets num value of variables in scope to value in localStorage
+         */
+        $scope.setNumValue = function() {
+            $scope.numValue = util.getVariableNum($window.localStorage, $scope.procDefId + "_var_num");
+        };
+
+        /**
+         * sets refresh rate in $scope and gets it from localStorage
+         */
+        $scope.setRefreshRate = function() {
+            $scope.refreshRate = util.getRefreshRate($window.localStorage, $scope.procDefId + "_var_refresh");
+        };
+
+        /**
+         * Function that reacts to changes in variables. Calls util function
+         * @param id            id of variable where change occurred
+         * @param checked       value of change, either true or false
+         */
+        $scope.changeVar = function(id, checked) {
+            util.changeVar($window.localStorage, $rootScope, $scope.procDefId + '_var_' + id, checked);
+        };
+
+        /**
+         * Function that reacts to changes in KPI. Calls util function
+         * @param id            id of KPI where change occurred
+         * @param checked       value of change, either true or false
+         */
+        $scope.changeKPI = function(id, checked) {
+            util.changeKPI($window.localStorage, $rootScope, $scope.procDefId + '_KPI_' + id, checked);
+        };
+
+        /**
+         * Reacts to changes in variable number and stores in localStorage
+         * @param value         value of new var number
+         */
+        $scope.changeVarNum = function(value) {
+            util.changeVarNum($window.localStorage, $rootScope, $scope.procDefId + "_var_num", value);
+        };
+
+        /**
+         * Reacts to changes in refresh rate and stores in lcoalStorage
+         * @param value
+         */
+        $scope.changeVarRefreshRate = function(value) {
+            util.changeVarRefreshRate($window.localStorage, $rootScope, $scope.procDefId + "_var_refresh", value);
+        };
+    },
+
+    /**
      * Sets checked attribute in variables in data according to localStorage
      * If nothing is found localStorage, puts false there and sets checked to false
      *

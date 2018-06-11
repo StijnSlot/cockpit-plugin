@@ -76,7 +76,7 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
   var Configuration = ['ViewsProvider', function(ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.processInstance.diagram.plugin', {
       id: 'runtime',
-      priority: 20,
+      priority: 30,
       label: 'Process Instances',
       overlay: overlay
     });
