@@ -125,14 +125,12 @@ describe('Common conversion tests', function () {
     describe('calculate average current duration tests', function() {
         var instance;
         var elementID;
-        var out;
 
         describe('average duration', function() {
 
             beforeEach(function() {
                 instance = [{activityId: 'An activity', startTime: 0}, {activityId: 'An activity2', startTime: 0}];
                 elementID = 'An activity';
-                out = util.calculateCurDuration(util, instance, elementID);
             });
 
             it('check if it returns a number', function() {
