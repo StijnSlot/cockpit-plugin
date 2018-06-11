@@ -25,6 +25,34 @@ define({
     commonOverlays: "",
 
     /**
+     * Register for broadcast changes to variable options and call
+     *
+     * @param $scope            scope that can be destroyed
+     * @param $rootScope        rootScope that gives broadcasts
+     * @param callback          callback functions that needs to be called on change
+     */
+    register: function($scope, $rootScope, callback) {
+        var subscriptions = [];
+
+        // subscribe to any broadcast variables options change
+        subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+            callback();
+        }));
+
+        // subscribe to any broadcast variable number changes
+        subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
+            callback();
+        }));
+
+        // deregister every subscription when destroyed
+        $scope.$on("$destroy", function() {
+            subscriptions.forEach(function(sub) {
+                sub();
+            })
+        });
+    },
+
+    /**
      * Creates DOM element for variables
      *
      * @returns {object}

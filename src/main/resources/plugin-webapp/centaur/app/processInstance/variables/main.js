@@ -15,12 +15,6 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
     util.commonOptions = require('../../common/options');
 
     /**
-     * store listeners of rootscope broadcast
-     * @type {Array}
-     */
-    var subscriptions = [];
-
-    /**
      * Overlay object that contains the elements put on the diagram
      */
     var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
@@ -35,22 +29,7 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
             // add the activity variable elements to the overlay
             util.addActivityElements($window, $http, control, processDiagram, Uri, util);
 
-            // subscribe to any broadcast variables options change
-            subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
-                util.addActivityElements($window, $http, control, processDiagram, Uri, util);
-            }));
-
-            // subscribe to any broadcast variable number changes
-            subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
-                util.addActivityElements($window, $http, control, processDiagram, Uri, util);
-            }));
-
-            // deregister every subscription
-            $scope.$on("$destroy", function() {
-                subscriptions.forEach(function(sub) {
-                    sub();
-                })
-            });
+            util.commonVariable.register($scope, $rootScope, util.addActivityElements($window, $http, control, processDiagram, Uri, util));
         }
     ];
 
