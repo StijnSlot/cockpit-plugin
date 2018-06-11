@@ -163,7 +163,7 @@ describe('Common options tests', function() {
         var spy1, spy2;
         var id = 'a', check = 'true';
 
-        beforeEach(function() {
+        beforeEach(function () {
             spy1 = sinon.spy();
             spy2 = sinon.spy();
             var localStorage = {setItem: spy1};
@@ -172,14 +172,14 @@ describe('Common options tests', function() {
             util.changeVarNum(localStorage, rootScope, id, check);
         });
 
-        it('should call setItem with arguments a and true', function() {
+        it('should call setItem with arguments a and true', function () {
             expect(spy1.calledWith(id, check)).to.eql(true);
         });
 
-        it('should call broadcast exactly once', function() {
+        it('should call broadcast exactly once', function () {
             expect(spy2.calledOnce).to.eql(true);
-        )};
-     )};
+        });
+    });
              
     describe('is selected instance tests', function() {
         var instance;
