@@ -159,12 +159,12 @@ describe('Common conversion tests', function () {
 
             it('check if it returns a number', function() {
                 var computerTime = new Date().getTime();
-                expect(computerTime - util.calculateAvgDuration(util, instance, elementID)).to.be.a('number');
+                expect(computerTime - util.calculateAvgCurDuration(util, instance, elementID)).to.be.a('number');
             });
 
             it('check if it returns null', function() {
                 elementID = 'Another not existing activity';
-                expect(util.calculateAvgDuration(util, instance, elementID)).to.be.null;
+                expect(util.calculateAvgCurDuration(util, instance, elementID)).to.be.null;
             });
         });
     });
