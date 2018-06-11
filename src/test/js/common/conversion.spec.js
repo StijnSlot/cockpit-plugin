@@ -127,14 +127,12 @@ describe('Common conversion tests', function () {
     describe('calculate current duration tests', function() {
         var instance;
         var elementID;
-        var out;
 
-        describe('is present in database', function() {
+        describe('current duration', function() {
 
             beforeEach(function() {
                 instance = [{activityId: 'An activity', startTime: 0}, {activityId: 'An activity2', startTime: 0}];
                 elementID = 'An activity';
-                out = util.calculateCurDuration(util, instance, elementID);
             });
 
             it('check if it returns a number', function() {
