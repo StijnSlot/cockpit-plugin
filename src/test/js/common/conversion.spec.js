@@ -122,5 +122,47 @@ describe('Common conversion tests', function () {
     
     });
 
+    describe('calculate average current duration tests', function() {
+        var instance;
+        var elementID;
+        var out;
+
+        describe('average duration', function() {
+
+            beforeEach(function() {
+                instance = [{activityId: 'An activity', startTime: 0}, {activityId: 'An activity2', startTime: 0}];
+                elementID = 'An activity';
+                out = util.calculateCurDuration(util, instance, elementID);
+            });
+
+            it('check if it returns a number', function() {
+                var computerTime = new Date().getTime();
+                expect(computerTime - util.calculateCurDuration(util, instance, elementID)).to.be.a('number');
+            });
+
+            it('check if it returns null', function() {
+                elementID = 'Another not existing activity';
+                expect(util.calculateCurDuration(util, instance, elementID)).to.be.null;
+            });
+        });
+    });
+
+    describe('check calculate time difference test', function () {
+
+        var startTime;
+    
+        describe('test if the current time is returned correctly', function(){
+            it('test for startTime to be within a  100ms range', function () {
+                startTime = 0;
+                var computerTime = new Date().getTime();
+                expect(computerTime - util.calculateTimeDifference(startTime)).to.be.lessThan(10);
+    
+            });
+    
+        })
+    
+    
+    });
+
 });
 

@@ -114,25 +114,6 @@ describe('Common bulletgraph tests', function () {
     
         });
     
-        // describe('check createHTML', function () {
-        //     var elementID;
-        //     var returnValue;
-    
-        //     describe('check create HTML', function () {
-        //         beforeEach(function () {
-        //             elementID = 'thisIsAnElement'
-    
-        //             returnValue = util.createHTML(elementID);
-        //         });
-        //         it('check if returns correct values', function () {
-        //             expect(returnValue).to.eql('<div class="bullet-duration-thisIsAnElement"> </div>');
-        //         });
-    
-        //     });
-    
-    
-        // });
-    
     });
     
     describe('check if current duration is bigger or equal to the maximum duration', function () {
