@@ -17,14 +17,14 @@ define({
     overlayActivityIds: {},
 
     /**
-     * variable containing all current duration of the bulletgraph
-     */
-    averageDuration: {},
-
-    /**
      * contains process definition id
      */
     procDefId: "",
+
+    /**
+     * contains process instance id
+     */
+    procInstanceId: "",
 
     /**
      * Main function of the duration module. In here the data will be loaded
@@ -66,6 +66,9 @@ define({
             $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.instanceStartTime = data[1];
 
+            console.log($scope.processActivityStatistics);
+            console.log($scope.instanceStartTime);
+
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
@@ -77,10 +80,11 @@ define({
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
                     if ($scope.processActivityStatistics.data[i].id == element.id) {
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                        var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                        var getCurDuration = util.commonConversion.calculateAvgCurDuration(util, $scope.instanceStartTime.data, element.id);
-                        util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
+                        var getCurDuration = util.commonConversion.calculateCurDurationOfSpecInstance($scope.instanceStartTime.data, element.id, util.procInstanceId);
+                        if (util.commonOptions.isSelectedInstance($scope.instanceStartTime.data, element.id, util.procInstanceId)) {
+                            util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
+                        }
                         break;
                     }
                 }

@@ -11,7 +11,7 @@ requirejs.config({
 var util;
 
 before(function(done) {
-    requirejs(['main/resources/plugin-webapp/centaur/app/processDefinition/duration/util'], function(utl) {
+    requirejs(['main/resources/plugin-webapp/centaur/app/processInstance/duration/util'], function(utl) {
         util = utl;
         done();
     });
@@ -20,6 +20,4 @@ before(function(done) {
 it('should find duration util file', function() {
     expect(util).to.not.be.undefined;
 });
-
-
 

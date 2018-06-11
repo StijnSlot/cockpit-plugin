@@ -13,10 +13,12 @@ global.$ = require('jquery');
 
 describe('Common conversion tests', function () {
     var util;
+    var commonConversion;
 
     before(function (done) {
         requirejs(['main/resources/plugin-webapp/centaur/app/common/conversion'], function (utl) {
             util = utl;
+            util.commonConversion - utl;
             done();
         });
     });
@@ -121,14 +123,13 @@ describe('Common conversion tests', function () {
         });
     
     });
-
-    describe('calculate average current duration tests', function() {
+  
+    describe('calculate current duration tests', function() {
         var instance;
         var elementID;
 
-        describe('average duration', function() {
-
-            beforeEach(function() {
+        describe('current duration', function() {
+          beforeEach(function() {
                 instance = [{activityId: 'An activity', startTime: 0}, {activityId: 'An activity2', startTime: 0}];
                 elementID = 'An activity';
             });
@@ -144,7 +145,30 @@ describe('Common conversion tests', function () {
             });
         });
     });
+          
+    describe('calculate average current duration tests', function() {
+        var instance;
+        var elementID;
 
+        describe('average duration', function() {
+
+            beforeEach(function() {
+                instance = [{activityId: 'An activity', startTime: 0}, {activityId: 'An activity2', startTime: 0}];
+                elementID = 'An activity';
+            });
+
+            it('check if it returns a number', function() {
+                var computerTime = new Date().getTime();
+                expect(computerTime - util.calculateAvgCurDuration(util, instance, elementID)).to.be.a('number');
+            });
+
+            it('check if it returns null', function() {
+                elementID = 'Another not existing activity';
+                expect(util.calculateAvgCurDuration(util, instance, elementID)).to.be.null;
+            });
+        });
+    });
+          
     describe('check calculate time difference test', function () {
 
         var startTime;
@@ -161,6 +185,5 @@ describe('Common conversion tests', function () {
     
     
     });
-
 });
 

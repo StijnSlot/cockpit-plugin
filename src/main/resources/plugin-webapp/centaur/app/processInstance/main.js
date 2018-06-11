@@ -6,5 +6,7 @@
 define(function(require) {
     var angular = require('angular');
     var variables = require('./variables/main');
-    return angular.module('cockpit.plugin.centaur.processInstance', [variables.name]);
+    var bulletgraph = require('./bulletgraph/main');
+    var duration = require('./duration/main');
+    return angular.module('cockpit.plugin.centaur.processInstance', [variables.name, bulletgraph.name, duration.name]);
 });
