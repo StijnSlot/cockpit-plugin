@@ -68,7 +68,7 @@
     GROUP BY ACT_NAME_
   </select>
 
-  <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">
+  <select id="selectProcessVariables" resultMap="processVariables" parameterType="Map">
     SELECT DISTINCT a.NAME_
     FROM ACT_RU_VARIABLE a
       JOIN ACT_RU_EXECUTION b
