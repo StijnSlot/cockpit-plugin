@@ -65,7 +65,7 @@ describe('instance variables tests', function() {
                     if(x === 'elementRegistry') return [{businessObject: {id: 1}}];
                     else return {};
                 }};
-            var control = {getViewer: function() {return viewer}};
+            var control = {isLoaded: function() {return true;}, getViewer: function() {return viewer}};
             util.addActivityElements(window, http, control,
                 {bpmnElements: [{}, {}, {id: 2}]}, uri, util);
         });

@@ -101,10 +101,10 @@ define(['require', 'angular', '../../common/options'], function(require, angular
         ViewsProvider.registerDefaultView('cockpit.processInstance.runtime.tab', {
             id: 'processInstance-options',
             label: 'Options',
-            url: 'plugin://centaur/static/app/processDefinition/optionsTab/tab.html',
+            url: 'plugin://centaur/static/app/processInstance/optionsTab/tab.html',
             controller: DashboardController,
 
-            priority: 1
+            priority: 0
         });
     }];
 

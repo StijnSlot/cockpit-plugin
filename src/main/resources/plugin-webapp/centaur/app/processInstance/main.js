@@ -6,6 +6,6 @@
 define(function(require) {
     var angular = require('angular');
     var variables = require('./variables/main');
-    var options = require('./options/main');
+    var options = require('./optionsTab/main');
     return angular.module('cockpit.plugin.centaur.processInstance', [variables.name, options.name]);
 });

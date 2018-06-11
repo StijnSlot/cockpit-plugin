@@ -6,9 +6,19 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
      * retrieve the util file containing functions
      */
     var util = require('./util');
+
+    /**
+     * get common util functionality
+     */
     util.commonVariable = require('../../common/variables');
     util.commonOverlays = require('../../common/overlays');
     util.commonOptions = require('../../common/options');
+
+    /**
+     * store listeners of rootscope broadcast
+     * @type {Array}
+     */
+    var subscriptions = [];
 
     /**
      * Overlay object that contains the elements put on the diagram
@@ -20,20 +30,25 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
             util.procDefId = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 
-            console.log(util.procDefId + " " + util.procInstanceId);
-
             // add the activity variable elements to the overlay
             util.addActivityElements($window, $http, control, processDiagram, Uri, util);
 
             // subscribe to any broadcast variables options change
-            /*$rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
-            });
+            subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
+                util.addActivityElements($window, $http, control, processDiagram, Uri, util);
+            }));
 
             // subscribe to any broadcast variable number changes
-            $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
-            });*/
+            subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
+                util.addActivityElements($window, $http, control, processDiagram, Uri, util);
+            }));
+
+            // deregister every subscription
+            $scope.$on("$destroy", function() {
+                subscriptions.forEach(function(sub) {
+                    sub();
+                })
+            });
         }
     ];
 
