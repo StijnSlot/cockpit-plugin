@@ -20,6 +20,7 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
             util.procDefId = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 
+            console.log(util.procDefId + " " + util.procInstanceId);
 
             // add the activity variable elements to the overlay
             util.addActivityElements($window, $http, control, processDiagram, Uri, util);
