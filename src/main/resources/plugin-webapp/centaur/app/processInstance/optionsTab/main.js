@@ -1,9 +1,11 @@
-define(['require', 'angular', '../../common/options'], function(require, angular) {
+define(['require', 'angular', '../../common/options', "../../common/KPI"], function(require, angular) {
 
     /**
      * commonUtil containing variable data
      */
     var util = require('../../common/options');
+
+    var KPI = require("../../common/KPI");
 
     /**
      * Controller object containing all behavior
@@ -20,18 +22,10 @@ define(['require', 'angular', '../../common/options'], function(require, angular
          */
         var procDefId = $scope.$parent.$parent.processInstance.definitionId;
 
-        console.log(procDefId + " " + procInstanceId);
-
         /**
          * array containing all defined KPI's
-         * TODO put these in a separate place (file)
          */
-        $scope.KPI = [
-            {id: "act_cur_duration", name: "Activity current duration"},
-            {id: "act_avg_duration", name: "Activity average duration"},
-            {id: "act_max_duration", name: "Activity maximum duration"},
-            {id: "bulletgraph", name: "Bulletgraph"}
-        ];
+        $scope.KPI = KPI.list;
 
         // retrieve localStorage info on KPI's and set checkboxes
         $scope.setVariableChecked = function() {
