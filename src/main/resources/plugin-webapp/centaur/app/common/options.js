@@ -191,8 +191,8 @@ define({
      */
     isSelectedInstance: function (instance, elementID, instanceID) {
         for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
-                if (instance[j].instanceId == instanceID) {
+            if (instance[j].activityId === elementID) {
+                if (instance[j].instanceId === instanceID) {
                     return true;   
                 }
             }

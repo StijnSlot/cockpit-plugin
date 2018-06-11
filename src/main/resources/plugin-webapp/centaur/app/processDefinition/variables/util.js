@@ -29,7 +29,7 @@ define({
      *
      * @param $window           browser window containing localStorage
      * @param $http             http client for GET request
-     * @param control           contains overlays and elementregistry
+     * @param control           contains overlays and elementRegistry
      * @param processDiagram    diagram containing elements
      * @param Uri               uniform resource identifier to create GET request
      * @param util              object of this class, to call its functions and variables
@@ -40,6 +40,19 @@ define({
         var viewer = control.getViewer();
         var overlays = viewer.get('overlays');
         var elementRegistry = viewer.get('elementRegistry');
+
+        // if not selected variables
+        if(!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Variables")) {
+
+            // loop over all elements in the diagram to clear them
+            elementRegistry.forEach(function (shape) {
+                // get corresponding element from processDiagram
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
+            });
+            return;
+        }
 
         // set variables for commonVariable
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");

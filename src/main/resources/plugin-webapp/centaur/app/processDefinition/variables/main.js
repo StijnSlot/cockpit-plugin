@@ -20,10 +20,12 @@ define(['require', 'angular', './util', '../../common/overlays', '../../common/v
             // process definition id is set (HARDCODED nr. of parents)
             util.procDefId = $scope.$parent.processDefinition.id;
 
-            // add the activity variable elements to the overlay
-            util.addActivityElements($window, $http, control, processDiagram, Uri, util);
+            var addVariables = function() {
+                util.addActivityElements($window, $http, control, processDiagram, Uri, util)
+            };
+            addVariables();
 
-            util.commonVariable.register($scope, $rootScope, util.addActivityElements($window, $http, control, processDiagram, Uri, util));
+            util.commonVariable.register($scope, $rootScope, addVariables);
         }
     ];
 

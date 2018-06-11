@@ -44,6 +44,11 @@ define({
             callback();
         }));
 
+        // subscribe to any broadcast variable number changes
+        subscriptions.push($rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function() {
+            callback();
+        }));
+
         // deregister every subscription when destroyed
         $scope.$on("$destroy", function() {
             subscriptions.forEach(function(sub) {

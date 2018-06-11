@@ -46,6 +46,19 @@ define({
         var overlays = viewer.get('overlays');
         var elementRegistry = viewer.get('elementRegistry');
 
+        // if not selected variables
+        if(!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Variables")) {
+
+            // loop over all elements in the diagram to clear them
+            elementRegistry.forEach(function (shape) {
+                // get corresponding element from processDiagram
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
+            });
+            return;
+        }
+
         // get number of instance variables to show
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
         util.commonVariable.procDefId = util.procDefId;
