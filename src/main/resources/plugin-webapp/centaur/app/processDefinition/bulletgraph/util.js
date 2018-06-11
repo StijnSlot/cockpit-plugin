@@ -64,9 +64,6 @@ define({
             $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.instanceStartTime = data[1];
 
-            console.log($scope.processActivityStatistics);
-            console.log($scope.instanceStartTime);
-
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.
@@ -80,7 +77,7 @@ define({
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
                         var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                        var getCurDuration = util.commonConversion.calculateAvgCurDuration(util, $scope.instanceStartTime.data, element.id);
+                        var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
 
                         util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;

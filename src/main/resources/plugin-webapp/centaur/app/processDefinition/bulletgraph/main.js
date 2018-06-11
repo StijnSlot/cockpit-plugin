@@ -15,7 +15,7 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
      * these functions from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
      * and D3 library: https://d3js.org/ (accessed 30-5-2018).
      */
-    var bullet = require('./bullet');
+    require('./bullet');
 
     /**
      * retrieve the util file containing functions
@@ -58,8 +58,7 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
             var elementRegistry = viewer.get('elementRegistry');
             var overlaysNodes = {};
 
-            var procDefId = $scope.$parent.processDefinition.id;
-            util.procDefId = procDefId;
+            util.procDefId  = $scope.$parent.processDefinition.id;
 
             util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
 
