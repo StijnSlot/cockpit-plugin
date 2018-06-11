@@ -34,7 +34,7 @@ define({
      * @param Uri               uniform resource identifier to create GET request
      * @param util              object of this class, to call its functions and variables
      */
-    addActivityElements: function($window, $http, control, processDiagram, Uri, util) {
+    addProcessVariables: function($window, $http, control, processDiagram, Uri, util) {
 
         // get overlay and elements from the diagram
         var viewer = control.getViewer();
@@ -49,7 +49,7 @@ define({
                 // get corresponding element from processDiagram
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
 
-                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
             });
             return;
         }
@@ -74,7 +74,7 @@ define({
                 "?processDefinitionId=" + util.procDefId +
                 "&activityIdIn=" + element.id))
                 .success(function(instances) {
-                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
 
                     var i = instances.length - 1;
                     instances.forEach(function(instance) {

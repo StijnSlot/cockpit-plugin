@@ -56,20 +56,15 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
-            var overlaysNodes = {};
 
             util.procDefId  = $scope.$parent.processDefinition.id;
 
-            util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-
-            // subscribe to any broadcast KPI optionsTab change
-            var listener = $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
+            var putBulletGraph = function() {
                 util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-            });
+            };
+            putBulletGraph();
 
-            $scope.$on("$destroy", function() {
-                listener();
-            })
+            util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
         }
     ];
 

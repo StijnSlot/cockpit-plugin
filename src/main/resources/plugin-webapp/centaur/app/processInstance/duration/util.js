@@ -118,8 +118,12 @@ define({
     composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
+            // initialize the overlayActivityId array
+            if(util.overlayActivityIds[elementID] === undefined)
+                util.overlayActivityIds[elementID] = [];
+
             // clear any current overlays displayed
-            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);

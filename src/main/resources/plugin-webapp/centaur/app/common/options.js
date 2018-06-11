@@ -198,5 +198,31 @@ define({
             }
         }
         return false;
+    },
+
+    /**
+     * Register for broadcast changes to variable options and call
+     *
+     * @param $scope            scope that can be destroyed
+     * @param $rootScope        rootScope that gives broadcasts
+     * @param subscriptions     array of strings with broadcast messages
+     * @param callback          callback functions that needs to be called on change
+     */
+    register: function($scope, $rootScope, subscriptions, callback) {
+        var deregisters = [];
+
+        subscriptions.forEach(function(el) {
+            // subscribe to any broadcast variables options change
+            deregisters.push($rootScope.$on(el, function() {
+                callback();
+            }));
+        });
+
+        // deregister every subscription when destroyed
+        $scope.$on("$destroy", function() {
+            deregisters.forEach(function(sub) {
+                sub();
+            })
+        });
     }
 });

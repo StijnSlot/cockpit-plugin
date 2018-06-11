@@ -22,7 +22,7 @@ describe('Execution variables tests', function() {
         expect(util).to.exist;
     });
 
-    describe('addActivityElements tests', function() {
+    describe('addInstanceVariables tests', function() {
         var sandbox = sinon.createSandbox();
         var stub1, stub2, stub3;
         var spy1, spy2;
@@ -66,7 +66,7 @@ describe('Execution variables tests', function() {
                     else return {};
                 }};
             var control = {getViewer: function() {return viewer}};
-            util.addActivityElements(window, http, control,
+            util.addInstanceVariables(window, http, control,
                 {bpmnElements: [{}, {}, {id: 2}]}, uri, util);
         });
 

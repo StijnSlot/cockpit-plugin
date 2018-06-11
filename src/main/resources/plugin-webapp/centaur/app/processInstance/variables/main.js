@@ -26,12 +26,16 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
             util.procDefId = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 
-            var addVariables = function() {
-                util.addActivityElements($window, $http, control, processDiagram, Uri, util)
+            var addInstanceVar = function() {
+                util.addInstanceVariables($window, $http, control, processDiagram, Uri, util)
             };
-            addVariables();
+            addInstanceVar();
 
-            util.commonVariable.register($scope, $rootScope, addVariables);
+            var subscriptions =
+                ["cockpit.plugin.centaur:options:variable-change",
+                    "cockpit.plugin.centaur:options:var-num-change",
+                    "cockpit.plugin.centaur:options:KPI-change"];
+            util.commonOptions.register($scope, $rootScope, subscriptions, addInstanceVar);
         }
     ];
 

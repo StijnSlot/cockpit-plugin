@@ -20,12 +20,16 @@ define(['require', 'angular', './util', '../../common/overlays', '../../common/v
             // process definition id is set (HARDCODED nr. of parents)
             util.procDefId = $scope.$parent.processDefinition.id;
 
-            var addVariables = function() {
-                util.addActivityElements($window, $http, control, processDiagram, Uri, util)
+            var addProcessVar = function() {
+                util.addProcessVariables($window, $http, control, processDiagram, Uri, util)
             };
-            addVariables();
+            addProcessVar();
 
-            util.commonVariable.register($scope, $rootScope, addVariables);
+            var subscriptions =
+                ["cockpit.plugin.centaur:options:variable-change",
+                 "cockpit.plugin.centaur:options:var-num-change",
+                  "cockpit.plugin.centaur:options:KPI-change"];
+            util.commonOptions.register($scope, $rootScope, subscriptions, addProcessVar);
         }
     ];
 
