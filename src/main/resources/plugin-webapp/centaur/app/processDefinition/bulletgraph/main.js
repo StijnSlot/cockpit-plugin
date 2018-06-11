@@ -63,11 +63,14 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
 
             util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
 
-                    // subscribe to any broadcast KPI optionsTab change
-                    $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
-                        util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-                    });
-            
+            // subscribe to any broadcast KPI optionsTab change
+            var listener = $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
+                util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+            });
+
+            $scope.$on("$destroy", function() {
+                listener();
+            })
         }
     ];
 
