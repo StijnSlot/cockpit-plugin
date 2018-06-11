@@ -80,7 +80,6 @@ define({
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
                     if ($scope.processActivityStatistics.data[i].id == element.id) {
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                        var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                         var getCurDuration = util.commonConversion.calculateCurDurationOfSpecInstance($scope.instanceStartTime.data, element.id, util.procInstanceId);
                         if (util.commonOptions.isSelectedInstance($scope.instanceStartTime.data, element.id, util.procInstanceId)) {

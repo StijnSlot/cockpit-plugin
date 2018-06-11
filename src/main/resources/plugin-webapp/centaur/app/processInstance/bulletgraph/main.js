@@ -56,7 +56,6 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
-            var overlaysNodes = {};
 
             util.procDefId = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;

@@ -144,7 +144,6 @@ describe('Common conversion tests', function () {
 
             it('check if it returns null', function() {
                 elementID = 'Another not existing activity';
-                var computerTime = new Date().getTime();
                 expect(util.calculateCurDuration(util, instance, elementID)).to.be.null;
             });
         });
