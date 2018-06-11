@@ -1,4 +1,11 @@
+'use strict',
+
 define({
+
+    commonConversion: {},
+
+    averageDuration: {},
+    
     /**
      * Convert the duration into the chosen time unit.
      *
@@ -8,9 +15,9 @@ define({
      * hours, days, weeks to make it easier to read. The choice
      * determines which time unit to use.
      *
-     * @param   Number  duration      duration of process
-     * @param   String  choice        choice of time unit
-     * @return  Number                duration as Integer
+     * @param   {Number}  duration      duration of process
+     * @param   {String}  choice        choice of time unit
+     * @return  {Number}                duration as Integer
      */
     convertTimes: function (duration, choice) {
         if (choice === 'seconds') {
@@ -36,8 +43,8 @@ define({
      * this determines which time unit (seconds, minutes,
      * hours, days, weeks) should be used.
      *
-     * @param   Number  time      duration of process
-     * @return  String            time unit choice
+     * @param   {Number}  time      duration of process
+     * @return  {String}            time unit choice
      */
     checkTimeUnit: function (time) {
         if (time > 1000 && time < 60001) {
@@ -61,17 +68,13 @@ define({
      * The database only keeps track of the starting time of each
      * process. So we calculate the current duration of each process.
      *
-     * @param   Number  instance    Instance of a process
-     * @param   Number  elementId   ID of diagram element that represents instance
+     * @param   {Number}  instance    Instance of a process
+     * @param   {Number}  elementId   ID of diagram element that represents instance
      */
-    calculateCurDuration: function (instance, elementID) {
+    calculateCurDuration: function (util, instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
-                var startTime = Date.parse(instance[j].startTime);
-                var computerTime = new Date().getTime();
-                var timeDifference = computerTime - startTime;
-                return timeDifference;
-                break;
+                return util.calculateTimeDifference(Date.parse(instance[j].startTime));
             }
         }
         return null;
@@ -83,7 +86,7 @@ define({
      * The database only keeps track of the starting time of each
      * process. So we have to calculate the current duration of each process.
      * @param   Object  util        object of this class, to call its functions and variables
-     * @param   Number  instance    Instance of a process
+     * @param   Object  instance    Instance of a process
      * @param   String  elementId   ID of diagram element that represents instance
      * @return  Number              If no starttime is present in the database: 0,
      *                              else the current time 
@@ -95,7 +98,7 @@ define({
 
         for (var j = 0; j < instance.length; j++) {
             if (instance[j].activityId == elementID) {
-                var timeDifference = util.commonConversion.calculateTimeDifference(Date.parse(instance[j].startTime));
+                var timeDifference = util.calculateTimeDifference(Date.parse(instance[j].startTime));
                 util.averageDuration[elementID].push(timeDifference);
             }
         }
@@ -108,17 +111,56 @@ define({
             return (total / util.averageDuration[elementID].length);
         }
 
-        return 0;
+        return null;
+    },
+
+    /**
+     * Calculates the current duration of a specific instance of a process.
+     *
+     * The database only keeps track of the starting time of each
+     * process. So we calculate the current duration of each process.
+     *
+     * @param   Number  instance    Instance of a process
+     * @param   String  elementId   ID of diagram element that represents instance
+     * @param   Number  instanceID  ID of diagram instance element that represents instance
+     */
+    calculateCurDurationOfSpecInstance: function (instance, elementID, instanceID) {
+        for (var j = 0; j < instance.length; j++) {
+            if (instance[j].activityId == elementID) {
+                if (instance[j].instanceId == instanceID) {
+                    var startTime = Date.parse(instance[j].startTime);
+                    var computerTime = new Date().getTime();
+                    var timeDifference = computerTime - startTime;
+                    return timeDifference;
+                    break;
+                }
+            }
+        }
+        return null;
     },
 
     /**
      * Calculates the difference between a given start time and the current computer time.
      * 
-     * @param   Number startTime    start time in ms
-     * @return  Number              time difference between given time and computer time.
+     * @param   {Number} startTime    start time in ms
+     * @return  {Number}              time difference between given time and computer time.
      */
     calculateTimeDifference: function (startTime) {
         var computerTime = new Date().getTime();
         return computerTime - startTime;
+    },
+
+    /**
+     * Changes date to UTC timezone and truncates to remove milliseconds
+     *
+     * @param date          date in local timezone
+     * @returns {string}    data string
+     */
+    toTruncatedUTC: function(date) {
+        // convert to utc time
+        var newDate = new Date(date).toISOString();
+
+        // output with milliseconds and "Z" removed
+        return newDate.substr(0, newDate.length - 5);
     }
 });

@@ -178,6 +178,33 @@ describe('Common options tests', function() {
 
         it('should call broadcast exactly once', function() {
             expect(spy2.calledOnce).to.eql(true);
+        )};
+     )};
+             
+    describe('is selected instance tests', function() {
+        var instance;
+        var elementID;
+        var instanceID;
+        var out;
+
+        describe('is selected', function() {
+
+            beforeEach(function() {
+                instance = [{activityId: 'An activity', instanceId: 123}, {activityId: 'An activity', instanceId: 124}];
+                elementID = 'An activity';
+                instanceID = 123;
+                out = util.isSelectedInstance(instance, elementID, instanceID);
+            });
+
+            it('check if it returns true', function() {
+                expect(out).to.eql(true);
+            });
+
+            it('check if it returns false', function() {
+                instanceID = 125;
+                out = util.isSelectedInstance(instance, elementID, instanceID);
+                expect(out).to.eql(false);
+            });            
         });
     });
 });

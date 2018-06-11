@@ -17,7 +17,9 @@ define(['require', 'angular',  './util'], function(require, angular) {
 
                 $(deleteButton).click(function() {
                     var ids = util.getSelectedIds();
-                    if(ids.length && confirm("Are you sure you want to delete the selected processes?")) {
+                    if(!ids.length) {
+                        alert("No process is selected.");
+                    } else if(confirm("Are you sure you want to delete the selected processes?")) {
                         util.deleteProcessDefinition($http, $q, Uri, ids);
                     }
                 });
