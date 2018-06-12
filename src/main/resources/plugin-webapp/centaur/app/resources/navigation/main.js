@@ -1,7 +1,8 @@
 'use strict';
 
 define(['require', 'angular'], function(require, angular) {
-    var controller = ["$scope", "$http", "Uri", "Views", function($scope, $http, Uri, Views) {
+    var controller = ["$scope", "Views", function($scope, Views) {
+        console.log("hi");
         $scope.viewProvider = Views.getProviders({
             component: 'cockpit.resources'
         });
@@ -15,7 +16,7 @@ define(['require', 'angular'], function(require, angular) {
         ViewsProvider.registerDefaultView('cockpit.navigation', {
             id: 'resources',
             label: 'Resources',
-            pagePath: '#/resources',
+            pagePath: '#/processes',
             controller: controller,
             weight: 10
         });

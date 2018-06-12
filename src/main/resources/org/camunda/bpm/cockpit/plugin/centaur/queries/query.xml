@@ -51,6 +51,13 @@
     <result property="instanceId" column="ACT_INST_ID_" jdbcType="VARCHAR" />
   </resultMap>
 
+  <resultMap id="users" type="org.camunda.bpm.cockpit.plugin.centaur.db.UserDto">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="firstName" column="FIRST_" jdbcType="VARCHAR" />
+    <result property="lastName" column="LAST_" jdbcType="VARCHAR" />
+    <result property="active" column="IS_ACTIVE_" jdbcType="BOOLEAN" />
+  </resultMap>
+
   <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
     SELECT DISTINCT a.ID_, a.ACT_ID_, b.NAME_, b.LONG_
     FROM ACT_RU_VARIABLE b
@@ -112,5 +119,23 @@
     WHERE PROC_DEF_ID_ = #{parameter}
     AND IS_ACTIVE_ = TRUE
   </select>
+
+  <insert id="addColumnIsActive">
+    ALTER TABLE ACT_ID_USER
+      ADD IF NOT EXISTS
+      IS_ACTIVE_ BOOLEAN(1)
+        DEFAULT FALSE
+  </insert>
+
+  <select id="selectUsers" resultMap="users">
+    SELECT ID_, FIRST_, LAST_, IS_ACTIVE_
+    FROM ACT_ID_USER
+  </select>
+
+  <update id="updateActive" parameterType="Map">
+    UPDATE ACT_ID_USER SET
+      IS_ACTIVE_ = #{parameter.active}
+    WHERE ID_ = #{parameter.id}
+  </update>
 
 </mapper>

@@ -66,4 +66,10 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
           @QueryParam("procDefId") String procDefId) {
     return subResource(new RefreshResource(engineName, procDefId), engineName);
   }
+
+  @Path("{engineName}/users")
+  public UsersResource getUsers(
+          @PathParam("engineName") String engineName) {
+    return subResource(new UsersResource(engineName), engineName);
+  }
 }
