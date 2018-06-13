@@ -35,6 +35,8 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
         getQueryService().executeQuery("cockpit.query.createTable", queryParameters);
         getQueryService().executeQuery("cockpit.query.addIds", queryParameters);
+
+        setAssigned();
     }
 
     @Path("set-active")

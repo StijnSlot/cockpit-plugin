@@ -177,7 +177,7 @@
     WHERE ID_ = #{parameter.id}
   </update>
 
-  <select id="selectAssigned">
+  <select id="selectAssigned" resultMap="assignees">
     SELECT a.ID_, a.IS_ACTIVE_, a.IS_ASSIGNED_,
       (SELECT COUNT(*)
       FROM ACT_RU_TASK b
@@ -187,12 +187,12 @@
 
   <update id="updateAssigned" parameterType="Map">
     UPDATE ACT_RU_RESOURCE SET
-      IS_ASSIGNED_ = #{parameter.assigned}
+      IS_ASSIGNED_ = #{parameter.assigned},
 
-      <if test="parameter.get('active') == 'false'">
+      <if test="parameter.get('active') == 'true'">
         TIME_ACTIVE_ = TIME_ACTIVE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
         <if test="parameter.get('prevAssigned') == 'false'">
-          TIME_IDLE_ = TIME_IDLE + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
+          TIME_IDLE_ = TIME_IDLE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
         </if>
       </if>
 

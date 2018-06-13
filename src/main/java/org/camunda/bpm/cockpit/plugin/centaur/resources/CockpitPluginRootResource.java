@@ -9,15 +9,21 @@ import org.camunda.bpm.cockpit.plugin.centaur.CockpitPlugin;
 @Path("plugin/" + CockpitPlugin.ID)
 public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource {
 
+  private static boolean tableCreated = false;
 
   public CockpitPluginRootResource() {
     super(CockpitPlugin.ID);
 
-    // create table
-    (new UsersResource("default")).createTable();
+    if(!tableCreated) {
+      System.out.println("created");
 
-    // add trigger
-    //(new UsersResource("default")).setTrigger();
+      // create table
+      (new UsersResource("default")).createTable();
+
+      // add trigger
+      //(new UsersResource("default")).setTrigger();
+      tableCreated = true;
+    }
   }
 
   @GET
