@@ -75,9 +75,9 @@ define({
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                    if ($scope.processActivityStatistics.data[i].id == element.id) {
+                    if ($scope.processActivityStatistics.data[i].id === element.id) {
                         var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                        var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
+                        //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                         var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
                         util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
@@ -114,8 +114,12 @@ define({
     composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
+            // initialize the overlayActivityId array
+            if(util.overlayActivityIds[elementID] === undefined)
+                util.overlayActivityIds[elementID] = [];
+
             // clear any current overlays displayed
-            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);

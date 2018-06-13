@@ -33,19 +33,12 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
     return subResource(new ProcessActivityResource(engineName, procDefId), engineName);
   }
 
-  @Path("{engineName}/instance-variables")
-  public InstanceVariablesResource getInstanceVariableResource(
-          @PathParam("engineName") String engineName,
-          @QueryParam("procDefId") String procDefId,
-          @QueryParam("actId") String actId) {
-    return subResource(new InstanceVariablesResource(engineName, procDefId, actId), engineName);
-  }
-
   @Path("{engineName}/process-variables")
   public ProcessVariablesResource getProcessVariableResource(
           @PathParam("engineName") String engineName,
-          @QueryParam("procDefId") String procDefId) {
-    return subResource(new ProcessVariablesResource(engineName, procDefId), engineName);
+          @QueryParam("procDefId") String procDefId,
+          @QueryParam("procInstanceId") String procInstId) {
+    return subResource(new ProcessVariablesResource(engineName, procDefId, procInstId), engineName);
   }
 
   @Path("{engineName}/instance-start-time")

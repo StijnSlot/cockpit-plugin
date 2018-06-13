@@ -15,7 +15,7 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
      * these functions from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
      * and D3 library: https://d3js.org/ (accessed 30-5-2018).
      */
-    var bullet = require('./bullet');
+    require('./bullet');
 
     /**
      * retrieve the util file containing functions
@@ -56,18 +56,15 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
-            var overlaysNodes = {};
 
-            var procDefId = $scope.$parent.processDefinition.id;
-            util.procDefId = procDefId;
+            util.procDefId  = $scope.$parent.processDefinition.id;
 
-            util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+            var putBulletGraph = function() {
+                util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+            };
+            putBulletGraph();
 
-                    // subscribe to any broadcast KPI optionsTab change
-                    $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
-                        util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-                    });
-            
+            util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
         }
     ];
 
@@ -77,7 +74,7 @@ define(['require', 'angular', './bullet', './util', '../../common/conversion', '
   var Configuration = ['ViewsProvider', function(ViewsProvider) {
     ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
       id: 'runtime',
-      priority: 20,
+      priority: 30,
       label: 'Runtime',
       overlay: overlay
     });

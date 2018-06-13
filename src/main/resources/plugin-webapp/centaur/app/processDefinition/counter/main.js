@@ -13,60 +13,25 @@
 
 'use strict';
 
-define(['require', 'angular', './util', '../../common/overlays'], function(require, angular) {
+define(['require', 'angular', './util', '../../common/overlays', '../../common/options'], function(require, angular) {
 
   var util = require('./util');
 
   util.commonOverlays = require('../../common/overlays');
 
-  var overlay = [
-    '$scope', '$http', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram', '$window',
-    function($scope, $http, Uri, control, processData, pageData, $q, processDiagram, $window) {
-      var viewer = control.getViewer();
-      var overlays = viewer.get('overlays');
-      var elementRegistry = viewer.get('elementRegistry');
+  util.commonOptions = require('../../common/options');
 
+  var overlay = [
+    '$scope', '$rootScope', '$http', 'Uri', 'control', '$q', 'processDiagram', '$window',
+    function($scope, $rootScope, $http, Uri, control, $q, processDiagram, $window) {
       util.procDefId = $scope.$parent.processDefinition.id;
 
-      /*
-       * Angular http.get promise that waits for a JSON object of
-       * the executionSequenceCounter.
-       */
-      $scope.executionSequenceCounter_temp = $http.get(Uri.appUri(
-        "plugin://centaur/:engine/execution-sequence-counter"), {
-        catch: false
-      });
+      var setCounter = function() {
+        util.setCounters($scope, $window, $q, $http, Uri, control, processDiagram, util);
+      };
+      setCounter();
 
-      /**
-       * Waits until data is received from http.get request and
-       * added to promises.
-       *
-       * Database quersies take a relative long time. So we have to
-       * wait until the data is retrieved before we can continue.
-       *
-       * @param   {Object}  data   minimal duration of process
-       */
-      $q.all([$scope.executionSequenceCounter_temp]).then(function(data) {
-        $scope.executionSequenceCounter = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-        // console.log($scope.executionSequenceCounter);
-        /**
-         * Extracts data from JSON objects and calls composeHTML()
-         * function to add the extracted to the diagram.
-         *
-         * @param   {Object}  shape   shape of element
-         */
-        elementRegistry.forEach(function(shape) {
-          var element = processDiagram.bpmnElements[shape.businessObject.id];
-          for (var i = 0; i < $scope.executionSequenceCounter.data.length; i++) {
-            if ($scope.executionSequenceCounter.data[i].activityId === element.id &&
-              element.$type === 'bpmn:CallActivity' && $scope.executionSequenceCounter.data[i].long_ > 0) {
-              var executionSequenceCounter = $scope.executionSequenceCounter.data[i].long_;
-              util.composeHTML($window.localStorage, util, overlays, executionSequenceCounter, element.id);
-              break;
-            }
-          }
-        });
-      });
+      util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setCounter);
     }
   ];
 

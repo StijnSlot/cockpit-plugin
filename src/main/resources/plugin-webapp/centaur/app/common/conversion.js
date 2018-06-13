@@ -1,5 +1,3 @@
-'use strict',
-
 define({
 
     commonConversion: {},
@@ -73,7 +71,7 @@ define({
      */
     calculateCurDuration: function (util, instance, elementID) {
         for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
+            if (instance[j].activityId === elementID) {
                 return util.calculateTimeDifference(Date.parse(instance[j].startTime));
             }
         }
@@ -92,18 +90,18 @@ define({
      *                              else the current time 
      */
     calculateAvgCurDuration: function (util, instance, elementID) {
-        if (util.averageDuration[elementID] == undefined) {
+        if (util.averageDuration[elementID] === undefined) {
             util.averageDuration[elementID] = [];
         }
 
         for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
+            if (instance[j].activityId === elementID) {
                 var timeDifference = util.calculateTimeDifference(Date.parse(instance[j].startTime));
                 util.averageDuration[elementID].push(timeDifference);
             }
         }
 
-        if (util.averageDuration[elementID] !== undefined && util.averageDuration[elementID].length != 0) {
+        if (util.averageDuration[elementID] !== undefined && util.averageDuration[elementID].length !== 0) {
             var total = 0;
             for (var j = 0; j < util.averageDuration[elementID].length; j++) {
                 total = total + util.averageDuration[elementID][j];
@@ -126,13 +124,11 @@ define({
      */
     calculateCurDurationOfSpecInstance: function (instance, elementID, instanceID) {
         for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId == elementID) {
-                if (instance[j].instanceId == instanceID) {
+            if (instance[j].activityId === elementID) {
+                if (instance[j].instanceId === instanceID) {
                     var startTime = Date.parse(instance[j].startTime);
                     var computerTime = new Date().getTime();
-                    var timeDifference = computerTime - startTime;
-                    return timeDifference;
-                    break;
+                    return computerTime - startTime;
                 }
             }
         }

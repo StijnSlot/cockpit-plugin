@@ -89,18 +89,17 @@ define({
     },
 
     /**
-     * Clears all overlays whose id is stored in overlayIds and clears overlayIds
+     * Clears all overlays whose id is stored in overlayIds
      *
-     * @param overlays              overlays object containing all processDefinition overlays
-     * @param overlayActivityIds    ids of overlays which should be removed
-     * @param elementId             id of activity element
+     * @param overlays          overlays object containing all processDefinition overlays
+     * @param overlayIds        ids of overlays which should be removed
      */
-    clearOverlays: function (overlays, overlayActivityIds, elementId) {
-        if(overlayActivityIds[elementId] !== undefined) {
-            overlayActivityIds[elementId].forEach(function (element) {
-                overlays.remove(element);
-            });
-        }
-        overlayActivityIds[elementId] = [];
+    clearOverlays: function (overlays, overlayIds) {
+        if(overlays === undefined || overlayIds === undefined) return;
+
+        overlayIds.forEach(function (element) {
+            overlays.remove(element);
+        });
+        overlayIds.length = 0;
     }
 });

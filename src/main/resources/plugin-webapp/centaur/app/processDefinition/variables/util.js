@@ -29,17 +29,30 @@ define({
      *
      * @param $window           browser window containing localStorage
      * @param $http             http client for GET request
-     * @param control           contains overlays and elementregistry
+     * @param control           contains overlays and elementRegistry
      * @param processDiagram    diagram containing elements
      * @param Uri               uniform resource identifier to create GET request
      * @param util              object of this class, to call its functions and variables
      */
-    addActivityElements: function($window, $http, control, processDiagram, Uri, util) {
+    addProcessVariables: function($window, $http, control, processDiagram, Uri, util) {
 
         // get overlay and elements from the diagram
         var viewer = control.getViewer();
         var overlays = viewer.get('overlays');
         var elementRegistry = viewer.get('elementRegistry');
+
+        // if not selected variables
+        if(!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Variables")) {
+
+            // loop over all elements in the diagram to clear them
+            elementRegistry.forEach(function (shape) {
+                // get corresponding element from processDiagram
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
+            });
+            return;
+        }
 
         // set variables for commonVariable
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
@@ -61,7 +74,7 @@ define({
                 "?processDefinitionId=" + util.procDefId +
                 "&activityIdIn=" + element.id))
                 .success(function(instances) {
-                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
 
                     var i = instances.length - 1;
                     instances.forEach(function(instance) {

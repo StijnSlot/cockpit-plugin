@@ -38,23 +38,6 @@ public class QueryTest extends AbstractCockpitPluginTest {
     }
 
     @Test
-    public void testInstanceVariablesQueryWorks() {
-        QueryParameters<InstanceVariablesDto> parameters = new QueryParameters<>();
-        HashMap<String, String> param = new HashMap<>();
-        param.put("procDefId", "");
-        param.put("actId", "");
-        parameters.setParameter(param);
-
-        List<InstanceVariablesDto> result =
-            getQueryService()
-                .executeQuery(
-                    "cockpit.query.selectInstanceVariables",
-                    parameters);
-
-        Assert.assertEquals(0, result.size());
-    }
-
-    @Test
     public void testInstanceStartTimeQueryWorks() {
         List<InstanceStartTimeDto> result =
             getQueryService()

@@ -32,8 +32,12 @@ define(['require', 'angular', '../../common/options'], function(require, angular
             /**
              * subscribe to any broadcast variable refresh changes
              */
-            $rootScope.$on("cockpit.plugin.centaur:options:var-refresh-change", function() {
+            var listener = $rootScope.$on("cockpit.plugin.centaur:options:var-refresh-change", function() {
                 refresh = commonOptions.getRefreshRate($window.localStorage, procDefId + "_var_refresh")*1000;
+            });
+
+            $scope.$on("$destroy", function() {
+                listener();
             });
 
             /**

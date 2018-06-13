@@ -57,8 +57,8 @@ describe('Common overlay tests', function() {
             spy = sinon.spy();
             overlays = {remove: spy};
 
-            util.clearOverlays(overlays, overlayIds, 'a');
-            util.clearOverlays(overlays, overlayIds, 'b');
+            util.clearOverlays(overlays, overlayIds['a']);
+            util.clearOverlays(overlays, overlayIds['b']);
         });
 
         it('should call remove for all ids', function() {
