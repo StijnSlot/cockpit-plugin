@@ -29,21 +29,16 @@ public class UsersResource extends AbstractCockpitPluginResource {
     /*@Path("create-table")
     @POST*/
     public void createTable() {
-        QueryParameters<Object> queryParameters = new QueryParameters<>();
-
-        configureTenantCheck(queryParameters);
-
-        getQueryService().executeQuery("cockpit.query.createTable", queryParameters);
-        getQueryService().executeQuery("cockpit.query.addIds", queryParameters);
-
-        setAssigned();
+        getQueryService().executeQuery("cockpit.query.createTable", new QueryParameters<>());
+        getQueryService().executeQuery("cockpit.query.addIds", new QueryParameters<>());
     }
 
     @Path("set-active")
     @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void setActive(
-            @QueryParam("active") String active,
-            @QueryParam("id") String id) {
+            @FormParam("active") String active,
+            @FormParam("id") String id) {
         QueryParameters<Object> queryParameters = new QueryParameters<>();
 
         HashMap<String, String> param = new HashMap<>();
@@ -59,15 +54,22 @@ public class UsersResource extends AbstractCockpitPluginResource {
     public void setAssigned() {
         List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.selectAssigned", new QueryParameters<>());
         for(AssigneeDto element : result) {
+            boolean assigned = element.getCount() > 0;
+            boolean prevAssigned = element.getPrevAssigned();
+
+            // if prev assigned is same as current assigned, do nothing
+            if(assigned == prevAssigned) continue;
+
             QueryParameters<Object> queryParameters = new QueryParameters<>();
 
             HashMap<String, String> param = new HashMap<>();
             param.put("id", element.getId());
             param.put("active", String.valueOf(element.getActive()));
-            param.put("assigned", element.getCount() > 0 ? "true" : "false");
-            param.put("prevAssigned", String.valueOf(element.getPrevAssigned()));
-
+            param.put("assigned", String.valueOf(assigned));
+            param.put("prevAssigned", String.valueOf(prevAssigned));
             queryParameters.setParameter(param);
+
+            configureTenantCheck(queryParameters);
 
             getQueryService().executeQuery("cockpit.query.updateAssigned", queryParameters);
         }

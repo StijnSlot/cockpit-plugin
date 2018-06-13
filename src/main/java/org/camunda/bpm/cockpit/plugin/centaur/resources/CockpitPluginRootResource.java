@@ -16,7 +16,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
 
     if(!tableCreated) {
       // create table
-      (new UsersResource("default")).createTable();
+      UsersResource res = new UsersResource("default");
+      res.createTable();
+      res.setAssigned();
 
       // add trigger
       //(new UsersResource("default")).setTrigger();
