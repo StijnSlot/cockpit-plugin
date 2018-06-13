@@ -56,8 +56,8 @@
     <result property="firstName" column="FIRST_" jdbcType="VARCHAR" />
     <result property="lastName" column="LAST_" jdbcType="VARCHAR" />
     <result property="active" column="IS_ACTIVE_" jdbcType="BOOLEAN" />
-    <result property="assigned" column="IS_ASSIGNED" jdbcType="BOOLEAN" />
-    <result property="lastChange" column="LAST_CHANGE" jdbcType="TIMESTAMP" />
+    <result property="assigned" column="IS_ASSIGNED_" jdbcType="BOOLEAN" />
+    <result property="lastChange" column="LAST_CHANGE_" jdbcType="TIMESTAMP" />
     <result property="timeActive" column="TIME_ACTIVE_" jdbcType="BIGINT" />
     <result property="timeIdle" column="TIME_IDLE_" jdbcType="BIGINT" />
   </resultMap>
@@ -140,13 +140,8 @@
   </insert>
 
   <insert id="createTable">
-    CREATE TABLE IF NOT EXISTS ACT_RU_RESOURCE AS
-      (SELECT ID_ FROM ACT_ID_USER)
-  </insert>
-
-  <insert id="addColumns">
-    ALTER TABLE ACT_RU_RESOURCE
-      ADD (
+    CREATE TABLE IF NOT EXISTS ACT_RU_RESOURCE (
+      ID_ VARCHAR(64) PRIMARY KEY,
       IS_ACTIVE_ BOOLEAN(1) NOT NULL DEFAULT FALSE,
       IS_ASSIGNED_ BOOLEAN(1) NOT NULL DEFAULT FALSE,
       LAST_CHANGE_ TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
@@ -155,8 +150,16 @@
       )
   </insert>
 
+  <insert id="addIds">
+    INSERT INTO ACT_RU_RESOURCE(ID_)
+      (SELECT ID_
+       FROM ACT_ID_USER
+       WHERE ID_ NOT IN
+             (SELECT ID_ FROM ACT_RU_RESOURCE))
+  </insert>
+
   <select id="selectUsers" resultMap="users">
-    SELECT a.ID_, a.FIRST_, a.LAST_, b.IS_ACTIVE_, b.IS_ASSIGNED_, b.LAST_CHANGE_, b.TIME_ACTIVE_, b.TIME_IDLE
+    SELECT a.ID_, a.FIRST_, a.LAST_, b.IS_ACTIVE_, b.IS_ASSIGNED_, b.LAST_CHANGE_, b.TIME_ACTIVE_, b.TIME_IDLE_
     FROM ACT_ID_USER a
       JOIN ACT_RU_RESOURCE b
         ON a.ID_ = b.ID_

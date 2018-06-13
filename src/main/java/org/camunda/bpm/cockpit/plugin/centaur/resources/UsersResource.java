@@ -7,7 +7,6 @@ import org.camunda.bpm.cockpit.plugin.centaur.db.UserDto;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,17 +26,15 @@ public class UsersResource extends AbstractCockpitPluginResource {
         return getQueryService().executeQuery("cockpit.query.selectUsers", queryParameters);
     }
 
-    @Path("create-table")
-    @POST
-    public void createTabel() {
+    /*@Path("create-table")
+    @POST*/
+    public void createTable() {
         QueryParameters<Object> queryParameters = new QueryParameters<>();
 
         configureTenantCheck(queryParameters);
 
         getQueryService().executeQuery("cockpit.query.createTable", queryParameters);
-        try {
-            getQueryService().executeQuery("cockpit.query.addColumns", queryParameters);
-        } catch(Exception e) {e.printStackTrace();}
+        getQueryService().executeQuery("cockpit.query.addIds", queryParameters);
     }
 
     @Path("set-active")

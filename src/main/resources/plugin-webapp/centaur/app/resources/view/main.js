@@ -1,17 +1,14 @@
 'use strict';
 
 define(['require', 'angular'], function(require, angular) {
-    var controller = ["$rootScope", "$scope", "$http", "Uri", "$q", function($rootScope, $scope, $http, Uri, $q) {
+    var controller = ["$rootScope", "$scope", "$http", "Uri", function($rootScope, $scope, $http, Uri) {
         $scope.userId = $rootScope.authentication.name;
 
-        // add column active and duration to table if not exist
-        var first = $http.post(Uri.appUri("plugin://centaur/:engine/users/create-table"));
-        var second = $http.get(Uri.appUri("plugin://centaur/:engine/users"));
-
-        $q.all([first, second]).then(function(data) {
-            console.log(data);
-            $scope.users = data[1].data;
-        });
+        $http.get(Uri.appUri("plugin://centaur/:engine/users"))
+            .success(function(data) {
+                console.log(data);
+                $scope.users = data;
+            });
 
         $scope.setActive = function(active, id) {
             $scope.users.find(function(user) {return user.id === id}).active = active

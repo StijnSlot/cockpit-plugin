@@ -1,8 +1,7 @@
 package org.camunda.bpm.cockpit.plugin.centaur.db;
 import org.camunda.bpm.cockpit.plugin.centaur.resources.UsersResource;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MyTrigger implements org.h2.api.Trigger {
     @Override
