@@ -1,11 +1,13 @@
 package org.camunda.bpm.cockpit.plugin.centaur.resources;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
+import org.camunda.bpm.cockpit.plugin.centaur.db.AssigneeDto;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 import org.camunda.bpm.cockpit.plugin.centaur.db.UserDto;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,14 +27,17 @@ public class UsersResource extends AbstractCockpitPluginResource {
         return getQueryService().executeQuery("cockpit.query.selectUsers", queryParameters);
     }
 
-    @Path("add-columns")
+    @Path("create-table")
     @POST
-    public void addColumns() {
+    public void createTabel() {
         QueryParameters<Object> queryParameters = new QueryParameters<>();
 
         configureTenantCheck(queryParameters);
 
-        getQueryService().executeQuery("cockpit.query.addColumnIsActive", queryParameters);
+        getQueryService().executeQuery("cockpit.query.createTable", queryParameters);
+        try {
+            getQueryService().executeQuery("cockpit.query.addColumns", queryParameters);
+        } catch(Exception e) {e.printStackTrace();}
     }
 
     @Path("set-active")
@@ -49,8 +54,27 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
         configureTenantCheck(queryParameters);
 
-        System.out.println(active + " " + id);
-
         getQueryService().executeQuery("cockpit.query.updateActive", queryParameters);
+    }
+
+    public void setAssigned() {
+        List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.selectAssigned", new QueryParameters<>());
+        for(AssigneeDto element : result) {
+            QueryParameters<Object> queryParameters = new QueryParameters<>();
+
+            HashMap<String, String> param = new HashMap<>();
+            param.put("id", element.getId());
+            param.put("active", String.valueOf(element.getActive()));
+            param.put("assigned", element.getCount() > 0 ? "true" : "false");
+            param.put("prevAssigned", String.valueOf(element.getPrevAssigned()));
+
+            queryParameters.setParameter(param);
+
+            getQueryService().executeQuery("cockpit.query.updateAssigned", queryParameters);
+        }
+    }
+
+    void setTrigger() {
+        getQueryService().executeQuery("cockpit.query.createTrigger", new QueryParameters<>());
     }
 }

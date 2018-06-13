@@ -1,5 +1,7 @@
 package org.camunda.bpm.cockpit.plugin.centaur.db;
 
+import java.sql.Timestamp;
+
 public class UserDto {
     private String id;
 
@@ -8,6 +10,14 @@ public class UserDto {
     private String lastName;
 
     private Boolean active;
+
+    private Boolean assigned;
+
+    private Timestamp lastChange;
+
+    private Long timeActive;
+
+    private Long timeIdle;
 
     public String getId() {
         return id;
@@ -39,5 +49,37 @@ public class UserDto {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(Boolean assigned) {
+        this.assigned = assigned;
+    }
+
+    public Timestamp getLastChange() {
+        return lastChange;
+    }
+
+    public void setLastChange(Timestamp lastChange) {
+        this.lastChange = lastChange;
+    }
+
+    public Long getTimeActive() {
+        return timeActive;
+    }
+
+    public void setTimeActive(Long timeActive) {
+        this.timeActive = timeActive;
+    }
+
+    public Long getTimeIdle() {
+        return timeIdle;
+    }
+
+    public void setTimeIdle(Long timeIdle) {
+        this.timeIdle = timeIdle;
     }
 }

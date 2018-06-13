@@ -5,16 +5,15 @@ define(['require', 'angular'], function(require, angular) {
         $scope.userId = $rootScope.authentication.name;
 
         // add column active and duration to table if not exist
-        var first = $http.post(Uri.appUri("plugin://centaur/:engine/users/add-columns"));
+        var first = $http.post(Uri.appUri("plugin://centaur/:engine/users/create-table"));
         var second = $http.get(Uri.appUri("plugin://centaur/:engine/users"));
 
         $q.all([first, second]).then(function(data) {
-            console.log(data[1].data);
+            console.log(data);
             $scope.users = data[1].data;
         });
 
         $scope.setActive = function(active, id) {
-            console.log(active + " " + id);
             $scope.users.find(function(user) {return user.id === id}).active = active
             $http.post(Uri.appUri("plugin://centaur/:engine/users/set-active" +
                 "?active=" + String(active) +

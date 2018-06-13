@@ -3,7 +3,9 @@ package org.camunda.bpm.cockpit.plugin.centaur.resources;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import org.camunda.bpm.cockpit.db.QueryParameters;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
+import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 import org.camunda.bpm.cockpit.plugin.centaur.CockpitPlugin;
 
 @Path("plugin/" + CockpitPlugin.ID)
@@ -12,6 +14,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
 
   public CockpitPluginRootResource() {
     super(CockpitPlugin.ID);
+
+    // add trigger
+    (new UsersResource("default")).setTrigger();
   }
 
   @GET
