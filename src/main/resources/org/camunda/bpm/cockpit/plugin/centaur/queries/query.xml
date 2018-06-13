@@ -133,7 +133,7 @@
 
   <insert id="createTrigger">
     CREATE TRIGGER IF NOT EXISTS my_trigger
-      BEFORE UPDATE
+      AFTER UPDATE
       ON ACT_RU_TASK
       FOR EACH ROW
     CALL "org.camunda.bpm.cockpit.plugin.centaur.db.MyTrigger"
@@ -171,6 +171,7 @@
 
       <if test="parameter.get('active') == 'false'">
         TIME_ACTIVE_ = TIME_ACTIVE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
+        TIME_IDLE_ = (CASE IS_ASSIGNED_ WHEN TRUE THEN TIME_IDLE_ ELSE TIME_IDLE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP) END),
       </if>
 
       LAST_CHANGE_ = CURRENT_TIMESTAMP

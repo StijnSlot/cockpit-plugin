@@ -15,13 +15,12 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
     super(CockpitPlugin.ID);
 
     if(!tableCreated) {
-      System.out.println("created");
-
       // create table
       (new UsersResource("default")).createTable();
 
       // add trigger
       //(new UsersResource("default")).setTrigger();
+
       tableCreated = true;
     }
   }
