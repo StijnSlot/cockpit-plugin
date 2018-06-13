@@ -163,6 +163,7 @@
     FROM ACT_ID_USER a
       JOIN ACT_RU_RESOURCE b
         ON a.ID_ = b.ID_
+    ORDER BY a.ID_
   </select>
 
   <update id="updateActive" parameterType="Map">

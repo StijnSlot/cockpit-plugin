@@ -19,18 +19,21 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
         var checkExist = setInterval(function() {
             getRequest();
         }, 10000);
-        /*$http.get(Uri.appUri("plugin://centaur/:engine/users"))
-            .success(function(data) {
-                console.log(data);
-                $scope.users = data;
-            });*/
 
         $scope.setActive = function(active, id) {
             $scope.users.find(function(user) {return user.id === id}).active = active;
-            $http.post(Uri.appUri("plugin://centaur/:engine/users/set-active" +
-                "?active=" + String(active) +
-                "&id=" + id));
-            //getRequest();
+
+            var data = $.param({
+                active: String(active),
+                id: id
+            });
+            var config = {
+                headers : {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                }
+            };
+            $http.post(Uri.appUri("plugin://centaur/:engine/users/set-active"), data, config)
+              .success(getRequest);
         };
 
         $scope.calcUtilPerc = function(user) {
