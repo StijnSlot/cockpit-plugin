@@ -69,41 +69,29 @@ describe('processes selection tests', function() {
 
     });
 
-    /*describe('getSelectedIds tests', function() {
+    describe('getSelectedIds tests', function() {
         var out;
 
         beforeEach(function() {
             // create html
-            var table = document.createElement('TABLE');
-            table.className = "process-definitions-list";
-            var tbody = document.createElement('TBODY');
-            var tr = document.createElement('TR');
-            var td1 = document.createElement('TD');
-            td1.className = "name";
-            var link = document.createElement('A');
-            link.setAttribute("href", "#/test/test_process:1");
-            var td2 = document.createElement('TD');
-            var input = document.createElement('INPUT');
-            input.setAttribute("checked", "true");
+            var tr1 = document.createElement('TR');
+            var td = document.createElement('TD');
+            td.className = "name";
+            var a = document.createElement('A');
+            a.href = "#/test/process:123";
 
-            // append html
-            td1.appendChild(link);
-            td2.appendChild(input);
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            tbody.appendChild(tr);
-            table.appendChild(tbody);
-            document.body.append(table);
+            td.appendChild(a);
+            tr1.appendChild(td);
 
-            out = util.getSelectedIds();
+            out = util.getSelectedIds($(tr1));
         });
         it('should return array of size 1', function() {
             expect(out).to.have.lengthOf(1);
         });
         it('should return test_process:1', function() {
-            expect(out[0]).to.eql("test_process:1");
+            expect(out[0]).to.eql("process:123");
         });
-    });*/
+    });
 
     describe('deleteProcessDefinition tests', function() {
         var http, Uri, q, ids = ["asad", "hello"];

@@ -9,7 +9,6 @@ define({
         var out = [];
 
         $(selector).each(function() {
-            console.log("hi");
             if($(this).find('input').is(':checked')) {
                 out.push($(this));
             }
