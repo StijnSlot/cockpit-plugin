@@ -12,11 +12,14 @@ import java.util.TimerTask;
 @Path("plugin/" + CockpitPlugin.ID)
 public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource {
 
+  private static final Object lock = new Object();
   private static Boolean init = false;
 
   public CockpitPluginRootResource() {
     super(CockpitPlugin.ID);
-    synchronized (init) {
+
+    // synchronized since it would otherwise create 2 copies somehow
+    synchronized (lock) {
       if(!init) {
         init = true;
         UsersResource res = new UsersResource("default");
