@@ -43,8 +43,16 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
 
   @Path("{engineName}/instance-start-time")
   public InstanceStartTimeResource getInstanceStartTimeResource(
-          @PathParam("engineName") String engineName) {
-    return subResource(new InstanceStartTimeResource(engineName), engineName);
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new InstanceStartTimeResource(engineName, procDefId), engineName);
+  }
+
+  @Path("{engineName}/order-statistics")
+  public OrderStatisticsResource getOrderStatistics(
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new OrderStatisticsResource(engineName, procDefId), engineName);
   }
 
   @Path("{engineName}/execution-sequence-counter")
