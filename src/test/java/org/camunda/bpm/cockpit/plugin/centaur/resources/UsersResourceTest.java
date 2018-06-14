@@ -64,10 +64,4 @@ public class UsersResourceTest extends AbstractCockpitPluginTest {
     public void setAssignedTest() {
         (new UsersResource("test")).setAssigned();
     }
-
-    @Test
-    public void setTriggerTest() {
-        (new UsersResource("test")).setTrigger();
-    }
-
 }

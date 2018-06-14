@@ -26,8 +26,6 @@ public class UsersResource extends AbstractCockpitPluginResource {
         return getQueryService().executeQuery("cockpit.query.selectUsers", queryParameters);
     }
 
-    /*@Path("create-table")
-    @POST*/
     public void createTable() {
         getQueryService().executeQuery("cockpit.query.createTable", new QueryParameters<>());
         getQueryService().executeQuery("cockpit.query.addIds", new QueryParameters<>());
@@ -51,8 +49,8 @@ public class UsersResource extends AbstractCockpitPluginResource {
         getQueryService().executeQuery("cockpit.query.updateActive", queryParameters);
     }
 
-    @Path("set-assigned")
-    @GET
+    /*@Path("set-assigned")
+    @POST*/
     public void setAssigned() {
         List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.selectAssigned", new QueryParameters<>());
         for(AssigneeDto element : result) {
@@ -75,9 +73,5 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
             getQueryService().executeQuery("cockpit.query.updateAssigned", queryParameters);
         }
-    }
-
-    void setTrigger() {
-        getQueryService().executeQuery("cockpit.query.createTrigger", new QueryParameters<>());
     }
 }

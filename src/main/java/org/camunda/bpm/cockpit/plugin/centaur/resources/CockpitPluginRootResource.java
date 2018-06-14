@@ -6,25 +6,34 @@ import javax.ws.rs.core.MediaType;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.centaur.CockpitPlugin;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 @Path("plugin/" + CockpitPlugin.ID)
 public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource {
 
-  private static boolean tableCreated = false;
+  private static Boolean init = false;
 
   public CockpitPluginRootResource() {
     super(CockpitPlugin.ID);
+    synchronized (init) {
+      if(!init) {
+        init = true;
+        UsersResource res = new UsersResource("default");
+        res.createTable();
+        res.setAssigned();
 
-    if(!tableCreated) {
-      // create table
-      UsersResource res = new UsersResource("default");
-      res.createTable();
-      res.setAssigned();
-
-      // add trigger
-      //(new UsersResource("default")).setTrigger();
-
-      tableCreated = true;
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+          @Override
+          public void run() {
+            System.out.println("run");
+            new UsersResource("default").setAssigned();
+          }
+        }, 0, 10000);
+      }
     }
+
   }
 
   @GET

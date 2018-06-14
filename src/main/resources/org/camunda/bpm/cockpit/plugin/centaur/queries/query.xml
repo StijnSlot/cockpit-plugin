@@ -131,14 +131,6 @@
     AND IS_ACTIVE_ = TRUE
   </select>
 
-  <insert id="createTrigger">
-    CREATE TRIGGER IF NOT EXISTS my_trigger
-      AFTER UPDATE
-      ON ACT_RU_TASK
-      FOR EACH ROW
-    CALL "org.camunda.bpm.cockpit.plugin.centaur.db.MyTrigger"
-  </insert>
-
   <insert id="createTable">
     CREATE TABLE IF NOT EXISTS ACT_RU_RESOURCE (
       ID_ VARCHAR(64) PRIMARY KEY,

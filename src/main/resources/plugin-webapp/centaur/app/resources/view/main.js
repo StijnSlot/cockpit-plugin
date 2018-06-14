@@ -4,14 +4,16 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
 
     var conversion = require('../../common/conversion');
 
+    var config = {
+        headers : {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+        }
+    };
+
     var controller = ["$rootScope", "$scope", "$http", "Uri", function($rootScope, $scope, $http, Uri) {
         $scope.userId = $rootScope.authentication.name;
 
         var getRequests = function() {
-            $http.get(Uri.appUri("plugin://centaur/:engine/users/set-assigned"))
-                .success(function() {
-
-                });
             $http.get(Uri.appUri("plugin://centaur/:engine/users"))
                 .success(function(data) {
                     $scope.users = data;
@@ -20,8 +22,7 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
         };
         getRequests();
 
-        // wait until the process definition list exists
-        var checkExist = setInterval(function() {
+        setInterval(function() {
             getRequests();
         }, 10000);
 
@@ -32,11 +33,6 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
                 active: String(active),
                 id: id
             });
-            var config = {
-                headers : {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-                }
-            };
             $http.post(Uri.appUri("plugin://centaur/:engine/users/set-active"), data, config)
               .success(getRequests);
         };

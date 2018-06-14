@@ -1,9 +1,6 @@
 package org.camunda.bpm.cockpit.plugin.centaur;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.camunda.bpm.cockpit.plugin.centaur.resources.CockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.spi.impl.AbstractCockpitPlugin;

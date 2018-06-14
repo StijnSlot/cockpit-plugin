@@ -88,14 +88,6 @@ public class QueryTest extends AbstractCockpitPluginTest {
     }
 
     @Test
-    public void testCreateTrigger() {
-        getQueryService()
-            .executeQuery(
-                "cockpit.query.createTrigger",
-                new QueryParameters<>());
-    }
-
-    @Test
     public void testCreateTable() {
         getQueryService()
             .executeQuery(
