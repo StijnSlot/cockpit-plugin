@@ -69,7 +69,7 @@ describe('processes selection tests', function() {
 
     });
 
-    describe('getSelectedIds tests', function() {
+    /*describe('getSelectedIds tests', function() {
         var out;
 
         beforeEach(function() {
@@ -103,7 +103,7 @@ describe('processes selection tests', function() {
         it('should return test_process:1', function() {
             expect(out[0]).to.eql("test_process:1");
         });
-    });
+    });*/
 
     describe('deleteProcessDefinition tests', function() {
         var http, Uri, q, ids = ["asad", "hello"];

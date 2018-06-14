@@ -47,7 +47,7 @@ define(['require', 'angular', './util', '../../common/conversion'], function(req
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.bottomTabs.history', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.history', []);
 
     ngModule.config(Configuration);
 
