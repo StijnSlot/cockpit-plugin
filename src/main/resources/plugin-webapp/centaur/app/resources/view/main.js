@@ -7,17 +7,22 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
     var controller = ["$rootScope", "$scope", "$http", "Uri", function($rootScope, $scope, $http, Uri) {
         $scope.userId = $rootScope.authentication.name;
 
-        var getRequest = function() {
+        var getRequests = function() {
+            $http.get(Uri.appUri("plugin://centaur/:engine/users/set-assigned"))
+                .success(function() {
+
+                });
             $http.get(Uri.appUri("plugin://centaur/:engine/users"))
                 .success(function(data) {
                     $scope.users = data;
                 });
+
         };
-        getRequest();
+        getRequests();
 
         // wait until the process definition list exists
         var checkExist = setInterval(function() {
-            getRequest();
+            getRequests();
         }, 10000);
 
         $scope.setActive = function(active, id) {
@@ -33,7 +38,7 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
                 }
             };
             $http.post(Uri.appUri("plugin://centaur/:engine/users/set-active"), data, config)
-              .success(getRequest);
+              .success(getRequests);
         };
 
         $scope.calcUtilPerc = function(user) {

@@ -51,6 +51,8 @@ public class UsersResource extends AbstractCockpitPluginResource {
         getQueryService().executeQuery("cockpit.query.updateActive", queryParameters);
     }
 
+    @Path("set-assigned")
+    @GET
     public void setAssigned() {
         List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.selectAssigned", new QueryParameters<>());
         for(AssigneeDto element : result) {
