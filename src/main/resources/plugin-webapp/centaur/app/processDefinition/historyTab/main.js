@@ -39,7 +39,7 @@ define(['require', 'angular', './util', '../../common/conversion'], function(req
     var Configuration = [ 'ViewsProvider', function(ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.runtime.tab', {
             id: 'history',
-            label: 'Finished Process Instances',
+            label: 'History',
             url: 'plugin://centaur/static/app/processDefinition/historyTab/tab.html',
             controller: DashboardController,
 
