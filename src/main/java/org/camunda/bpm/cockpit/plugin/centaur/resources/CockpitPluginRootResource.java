@@ -48,9 +48,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   }
 
   @Path("{engineName}/execution-sequence-counter")
-  public ExecutionSequenceCounterResource getExecutionSequenceCounter(
+  public SequenceCounterResource getExecutionSequenceCounter(
           @PathParam("engineName") String engineName) {
-    return subResource(new ExecutionSequenceCounterResource(engineName), engineName);
+    return subResource(new SequenceCounterResource(engineName), engineName);
   }
 
   @Path("{engineName}/refresh")

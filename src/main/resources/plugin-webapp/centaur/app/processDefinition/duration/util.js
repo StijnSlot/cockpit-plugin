@@ -80,7 +80,7 @@ define({
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                         var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
-                        util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
+                        util.addOverlay(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         break;
                     }
                 }
@@ -111,7 +111,7 @@ define({
      * @param   Object  shape         Shape of the element
      * @param   Object  $window       browser window containing localStorage
      */
-    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
+    addOverlay: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
             // initialize the overlayActivityId array

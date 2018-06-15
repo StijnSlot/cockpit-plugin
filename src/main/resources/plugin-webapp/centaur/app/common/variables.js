@@ -31,7 +31,7 @@ define({
      */
     createVariableDiv: function() {
         var html = document.createElement('div');
-        html.className = "variableTextSmall";
+        html.classList.add("custom-overlay", "variableTextSmall");
         return html;
     },
 

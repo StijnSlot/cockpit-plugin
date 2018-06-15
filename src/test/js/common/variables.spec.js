@@ -29,7 +29,7 @@ describe('Common variables tests', function() {
         var out;
 
         beforeEach(function() {
-            out = util.createVariableDiv({getItem: function(){}}, "");
+            out = util.createVariableDiv();
         });
 
         it('should be a div item', function() {
@@ -37,7 +37,7 @@ describe('Common variables tests', function() {
         });
 
         it('should return a variableTextSmall', function() {
-            expect(out.className).to.eql("variableTextSmall");
+            expect(out.classList.contains("variableTextSmall")).to.eql(true);
         });
     });
 
@@ -93,8 +93,8 @@ describe('Common variables tests', function() {
 
         it('should have two list items as children', function() {
             expect(out.childElementCount).to.eql(2);
-            expect(out.children[0].nodeName).to.eql("LI")
-            expect(out.children[1].nodeName).to.eql("LI")
+            expect(out.children[0].nodeName).to.eql("LI");
+            expect(out.children[1].nodeName).to.eql("LI");
         });
 
         it('should contain the name of variables', function() {

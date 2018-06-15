@@ -21,7 +21,7 @@ it('should find counter util file', function() {
   expect(util).to.not.be.undefined;
 });
 
-describe('check counter util', function () {
+/*describe('check counter util', function () {
     var executionSequenceCounter, html;
 
     describe('check create HTML', function () {
@@ -36,4 +36,4 @@ describe('check counter util', function () {
             expect(html.children[0].innerText).to.contain(executionSequenceCounter);
         });
     });
-});
+});*/
