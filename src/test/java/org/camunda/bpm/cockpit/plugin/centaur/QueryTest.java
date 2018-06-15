@@ -49,6 +49,19 @@ public class QueryTest extends AbstractCockpitPluginTest {
     }
 
     @Test
+    public void testOrderStatisticQueryWorks() {
+        QueryParameters<OrderStatisticsDto> param = new QueryParameters<>();
+        param.setParameter("test");
+        List<OrderStatisticsDto> result =
+                getQueryService()
+                        .executeQuery(
+                                "cockpit.query.selectOrderStatistics",
+                                param);
+
+        Assert.assertEquals(1, result.size());
+    }
+
+    @Test
     public void testProcessVariables() {
         List<ProcessVariablesDto> result =
             getQueryService()
