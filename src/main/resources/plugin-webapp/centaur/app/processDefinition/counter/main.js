@@ -26,7 +26,7 @@ define(['require', 'angular', './util', '../../common/overlays', '../../common/o
             util.procDefId = $scope.$parent.processDefinition.id;
 
             var setCounter = function() {
-                util.setCounters($window.localStorage, $http, Uri, control, processDiagram, util);
+                util.getCounterData($window.localStorage, $http, Uri, control, processDiagram, util);
             };
             setCounter();
 

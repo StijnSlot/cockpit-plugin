@@ -29,7 +29,7 @@ define({
      * @param {Object}  processDiagram      BPMN diagram with elements
      * @param {Object}  util                this file containing util functions
      */
-    setCounters: function(localStorage, $http, Uri, control, processDiagram, util) {
+    getCounterData: function(localStorage, $http, Uri, control, processDiagram, util) {
         var viewer = control.getViewer();
         var overlays = viewer.get('overlays');
         var elementRegistry = viewer.get('elementRegistry');
@@ -45,7 +45,10 @@ define({
                 elementRegistry.forEach(function(shape) {
                     var element = processDiagram.bpmnElements[shape.businessObject.id];
                     if(element.$type !== 'bpmn:CallActivity') return;
-                    util.setCounter(data, element, localStorage, overlays, util);
+
+                    util.setCounter(data, element, function(obj) {
+                        util.addOverlay(localStorage, util, overlays, obj, element.id);
+                    });
                 });
             });
     },
@@ -53,13 +56,11 @@ define({
     /**
      * Sets counter for one specific call activity element
      *
-     * @param {Array}   data            contains elements with activityId and counter
-     * @param {Object}  element         process diagram element
-     * @param {Object}  localStorage    for setting offset
-     * @param {Object}  overlays        to add counter overlay
-     * @param {Object}  util            util object with functions
+     * @param {Array}       data            contains elements with activityId and counter
+     * @param {Object}      element         process diagram element
+     * @param {Function}    callback        funtion to call afterwards
      */
-    setCounter(data, element, localStorage, overlays, util) {
+    setCounter(data, element, callback) {
         var obj = {};
 
         data.forEach(function(el) {
@@ -73,7 +74,7 @@ define({
         });
 
         if(Object.keys(obj).length) {
-            util.addOverlay(localStorage, util, overlays, obj, element.id);
+            callback(obj);
         }
     },
 
@@ -84,7 +85,7 @@ define({
     * @param   {Object}  localStorage              contains offset settings
     * @param   {Object}  util                      object of this class, to call its functions and variables
     * @param   {Object}  overlays                  collection of overlays to add to
-    * @param   {Number}  counters                  number of processes called
+    * @param   {Object}  counters                  object with keys: sequenceCounter and competedCounter
     * @param   {Number}  elementID                 ID of element
     */
     addOverlay: function(localStorage, util, overlays, counters, elementID) {
@@ -98,7 +99,7 @@ define({
     /**
     * Creates an HTML line with has a class that includes the elementID
     *
-    * @param   {Object}  counters       o
+    * @param   {Object}  counters       object with keys: sequenceCounter and competedCounter
     * @return  {Object}                 A string which represents an HTML line which will be added later
     */
     createHTML: function (counters) {
