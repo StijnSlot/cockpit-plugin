@@ -91,9 +91,8 @@ define({
                         var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
-                        //var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
+                        var getCurDuration = util.commonConversion.calculateAvgCurDurationOfAllInstances(util.commonConversion, $scope.instanceStartTime.data);
                         var getMinDuration = 12;
-                        var getCurDuration = 14;
 
                         util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;

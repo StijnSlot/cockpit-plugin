@@ -84,8 +84,7 @@ define({
                         var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
-                        //var var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
-                        var getCurDuration = 14;
+                        var getCurDuration = util.commonConversion.calculateAvgCurDurationOfAllInstances(util.commonConversion, $scope.instanceStartTime.data);
 
                         util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         break;

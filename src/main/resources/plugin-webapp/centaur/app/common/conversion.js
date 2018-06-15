@@ -113,6 +113,37 @@ define({
     },
 
     /**
+     * Calculates the average current duration of all instances with the same ID of a process.
+     *
+     * The database only keeps track of the starting time of each
+     * process. So we have to calculate the current duration of each process.
+     * @param   Object  util        object of this class, to call its functions and variables
+     * @param   Object  instance    Instance of a process
+     * @param   String  elementId   ID of diagram element that represents instance
+     * @return  Number              If no starttime is present in the database: 0,
+     *                              else the current time 
+     */
+    calculateAvgCurDurationOfAllInstances: function (util, instance) {
+        var counter = 0;
+        var totalTime = 0;
+
+        // Add all current durations to the array.
+        for (var j = 0; j < instance.length; j++) {
+            if (instance[j].startTime !== undefined) {
+                var timeDifference = util.calculateTimeDifference(Date.parse(instance[j].startTime));
+                totalTime = totalTime + timeDifference;
+                counter++;
+            }
+        }
+
+        if (counter > 0) {
+            return (totalTime / counter);
+        } else {
+            return null;
+        }
+    },
+
+    /**
      * Calculates the current duration of a specific instance of a process.
      *
      * The database only keeps track of the starting time of each
