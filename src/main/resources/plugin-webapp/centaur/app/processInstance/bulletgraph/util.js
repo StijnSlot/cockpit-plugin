@@ -127,6 +127,8 @@ define({
     combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, $window) {
         if (util.commonBulletgraph.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
 
+            var cssClass = "bullet-duration-" + elementID;
+
             // initialize the overlayActivityId array
             if(util.overlayActivityIds[elementID] === undefined)
                 util.overlayActivityIds[elementID] = [];
@@ -141,7 +143,7 @@ define({
             var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
             var colorBullet = util.commonBulletgraph.determineColor(avgDuration, maxDuration, curDuration);
 
-            var html = util.commonBulletgraph.createHTML(util, $window.localStorage, elementID);
+            var html = util.commonBulletgraph.createHTML(cssClass);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
@@ -149,7 +151,7 @@ define({
             util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
-            util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet);
+            util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
         }
     }
 });

@@ -52,6 +52,9 @@ define({
         $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
             catch: false
         });
+        $scope.orderStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?" + "procDefId=" + util.procDefId), {
+            catch: false
+        });
 
         /**
          * Waits until data is received from http.get request and
@@ -62,9 +65,10 @@ define({
          *
          * @param   {Object}  data   minimal duration of process
          */
-        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function (data) {
+        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp, $scope.orderStatistics_temp]).then(function (data) {
             $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.instanceStartTime = data[1];
+            $scope.orderStatistics = data[2];
 
             /**
              * Extracts data from JSON objects and calls composeHTML()
@@ -75,11 +79,14 @@ define({
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                    if ($scope.processActivityStatistics.data[i].id === element.id) {
-                        var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
+                    console.log($scope.processActivityStatistics.data[0]);
+                    if ($scope.processActivityStatistics.data[0].id === element.id) {
+                        var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                        var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                        var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
+                        var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
+                        //var var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
+                        var getCurDuration = 14;
+
                         util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         break;
                     }
@@ -114,6 +121,8 @@ define({
     composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
+            var cssClass = "overviewDurationText";
+
             // initialize the overlayActivityId array
             if(util.overlayActivityIds[elementID] === undefined)
                 util.overlayActivityIds[elementID] = [];
@@ -127,7 +136,7 @@ define({
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
+            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 

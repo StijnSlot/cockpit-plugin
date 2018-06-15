@@ -13,6 +13,7 @@ define(function(require) {
   var optionsTab = require('./optionsTab/main');
   var historyTab = require('./historyTab/main');
   var overviewBulletgraph = require('./overview/bulletgraph/main');
+  var overviewDuration = require('./overview/duration/main');
   return angular.module('cockpit.plugin.centaur.processDefinition', [color.name, counter.name, duration.name, variables.name,
-      bulletgraph.name, optionsTab.name, historyTab.name, overviewBulletgraph.name]);
+      bulletgraph.name, optionsTab.name, historyTab.name, overviewBulletgraph.name, overviewDuration.name]);
 });

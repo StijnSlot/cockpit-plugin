@@ -45,7 +45,7 @@ define({
      * @param   String  maxDurationHTML string to display with the maximum duration
      * @return  String                  string which represents an HTML line which will be added later to the document
      */
-    createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
+    createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass) {
         var data = {};
         if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
             data['cur'] = {value: curDurationHTML};
@@ -58,7 +58,7 @@ define({
         }
 
         var html = document.createElement('div');
-        html.className = "durationText";
+        html.className = cssClass;
         html.appendChild(util.commonVariables.createVariableUl(data));
 
         return html;

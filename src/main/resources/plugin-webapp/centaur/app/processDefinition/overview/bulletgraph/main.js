@@ -65,6 +65,8 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
             putBulletGraph();
 
             util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
+
+            console.log('Bullet graph overview loaded');
         }
     ];
 
@@ -80,7 +82,7 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
     });
   }];
 
-  var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.bulletgraph', []);
+  var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.overview.bulletgraph', []);
 
   ngModule.config(Configuration);
 

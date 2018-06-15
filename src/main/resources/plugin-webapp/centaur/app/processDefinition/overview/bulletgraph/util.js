@@ -58,6 +58,9 @@ define({
         $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
             catch: false
         });
+        $scope.orderStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?" + "procDefId=" + util.procDefId), {
+            catch: false
+        });
 
         /**
          * Waits until data is received from http.get request and
@@ -68,9 +71,10 @@ define({
          *
          * @param   Object  data   minimal duration of process
          */
-        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp]).then(function (data) {
+        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp, $scope.orderStatistics_temp]).then(function (data) {
             $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.instanceStartTime = data[1];
+            $scope.orderStatistics = data[2];
 
             /**
              * Extracts data from JSON objects and calls composeHTML()
@@ -79,13 +83,17 @@ define({
              * @param   Object  shape   shape of element
              */
             elementRegistry.forEach(function (shape) {
+                console.log(processDiagram.bpmnElements[shape.businessObject.id]);
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                    if ($scope.processActivityStatistics.data[i].id === element.id) {
-                        var getAvgDuration = $scope.processActivityStatistics.data[i].avgDuration;
-                        var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                        var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
-                        var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
+                    console.log($scope.processActivityStatistics.data[0]);
+                    if ($scope.processActivityStatistics.data[0].id === element.id) {
+                        var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
+                        //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
+                        var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
+                        //var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, $scope.instanceStartTime.data, element.id);
+                        var getMinDuration = 12;
+                        var getCurDuration = 14;
 
                         util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;
@@ -122,6 +130,8 @@ define({
     combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, $window) {
         if (util.commonBulletgraph.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
 
+            var cssClass = "bullet-duration-overview";
+
             // initialize the overlayActivityId array
             if(util.overlayActivityIds[elementID] === undefined)
                 util.overlayActivityIds[elementID] = [];
@@ -136,7 +146,7 @@ define({
             var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
             var colorBullet = util.commonBulletgraph.determineColor(avgDuration, maxDuration, curDuration);
 
-            var html = util.commonBulletgraph.createHTML(util, $window.localStorage, elementID);
+            var html = util.commonBulletgraph.createHTML(cssClass);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
@@ -144,7 +154,7 @@ define({
             util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
-            util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet);
+            util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
         }
     }
 });

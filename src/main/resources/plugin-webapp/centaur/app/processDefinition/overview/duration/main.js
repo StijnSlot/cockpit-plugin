@@ -11,7 +11,7 @@
 'use strict';
 
 
-define(['require', 'angular', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/duration'], function (require, angular) {
+define(['require', 'angular', './util', '../../../common/conversion', '../../../common/options', '../../../common/overlays', '../../../common/variables', '../../../common/duration'], function (require, angular) {
 
     /**
      * retrieve the util file containing functions
@@ -21,27 +21,27 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
     /**
      * retrieve the common file containing conversion functions
      */
-    util.commonConversion  = require('../../common/conversion');
+    util.commonConversion  = require('../../../common/conversion');
 
     /**
      * retrieve the common file containing option functions
      */
-    util.commonOptions  = require('../../common/options');
+    util.commonOptions  = require('../../../common/options');
 
     /**
      * retrieve the common file containing overlay functions
      */
-    util.commonOverlays = require('../../common/overlays');
+    util.commonOverlays = require('../../../common/overlays');
 
     /**
      * retrieve the common file containing variables functions
      */
-    util.commonVariables = require('../../common/variables');
+    util.commonVariables = require('../../../common/variables');
 
     /**
      * retrieve the common file containing duration functions
      */
-    util.commonDuration = require('../../common/duration');
+    util.commonDuration = require('../../../common/duration');
 
     var Configuration = ['ViewsProvider', function (ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
@@ -73,7 +73,7 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.duration', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.overview.duration', []);
 
     ngModule.config(Configuration);
 
