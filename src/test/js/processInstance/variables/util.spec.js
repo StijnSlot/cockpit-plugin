@@ -48,7 +48,7 @@ describe('Execution variables tests', function() {
             stub1.createVariableUl.returns(document.createElement('ul'));
             util.procDefId = stub1.procDefId = "asdf1234";
             util.commonVariable = stub1;
-            util.commonOptions = {isSelectedVariable: sinon.stub().returns(true), getVariableNum: sinon.spy()};
+            util.commonOptions = {isSelectedOption: sinon.stub().returns(true), getVariableNum: sinon.spy()};
             util.commonOverlays = {clearOverlays: spy2, setOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {

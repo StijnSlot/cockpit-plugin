@@ -20,7 +20,7 @@ define({
 
       util.commonOverlays.clearOverlays(overlays, util.overlayIds);
 
-      if(!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_Counter")) {
+      if(!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Counter")) {
           return;
       }
 
@@ -77,7 +77,7 @@ define({
    */
   composeHTML: function(localStorage, util, overlays, executionSequenceCounter, elementID) {
     var html = util.createHTML (executionSequenceCounter);
-    util.overlayIds.push(util.commonOverlays.addTextElement(overlays, elementID, html, -20, 50));
+    util.overlayIds.push(util.commonOverlays.addTextElement(overlays, elementID, html, -5, 50));
     util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementID + "_counter");
     util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementID + "_counter", elementID, html);
   },

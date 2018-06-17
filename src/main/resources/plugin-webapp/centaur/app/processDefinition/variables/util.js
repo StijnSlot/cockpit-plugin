@@ -42,7 +42,7 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
 
         // if not selected variables
-        if(!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Variables")) {
+        if(!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Variables")) {
 
             // loop over all elements in the diagram to clear them
             elementRegistry.forEach(function (shape) {
@@ -58,6 +58,7 @@ define({
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
         util.commonVariable.procDefId = util.procDefId;
         util.commonVariable.commonOverlays = util.commonOverlays;
+        util.commonVariable.commonOptions = util.commonOptions;
 
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {

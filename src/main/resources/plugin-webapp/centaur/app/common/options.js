@@ -172,13 +172,14 @@ define({
     },
 
     /**
-     * Removes all variables which are not selected by the user
+     * Removes all variables which are deselected by the user
+     * If undefined, assumes it is selected
      *
      * @param localStorage  contains user optionsTab
      * @param item          used for getting localStorage item option
      */
-    isSelectedVariable: function (localStorage, item) {
-        return localStorage.getItem(item) === 'true';
+    isSelectedOption: function (localStorage, item) {
+        return localStorage.getItem(item) !== 'false';
     },
 
     /**
@@ -209,18 +210,18 @@ define({
      * @param callback          callback functions that needs to be called on change
      */
     register: function($scope, $rootScope, subscriptions, callback) {
-        var deregisters = [];
+        var unregisters = [];
 
         subscriptions.forEach(function(el) {
             // subscribe to any broadcast variables options change
-            deregisters.push($rootScope.$on(el, function() {
+            unregisters.push($rootScope.$on(el, function() {
                 callback();
             }));
         });
 
         // deregister every subscription when destroyed
         $scope.$on("$destroy", function() {
-            deregisters.forEach(function(sub) {
+            unregisters.forEach(function(sub) {
                 sub();
             })
         });
