@@ -1,5 +1,10 @@
 define({
     /**
+     * diagram canvas, contains zoom level
+     */
+    canvas: {},
+
+    /**
      * Adds html string of variable data to the bpmn element and return its id
      *
      * @param overlays      Collection of overlays to which can be added to
@@ -48,8 +53,9 @@ define({
      * @param prefix            used for setting offset in localStorage
      * @param elementID         used for making element selected
      * @param html              Dom element which should drag
+     * @param canvas            contains zoom level
      */
-    addDraggableFunctionality: function(localStorage, prefix, elementID, html) {
+    addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas) {
         html.parentNode.classList.add("djs-draggable");
         var click = {x: 0, y: 0};
 
@@ -64,9 +70,8 @@ define({
                 click.y = event.clientY;
             },
             drag: function(event, ui) {
-                // get zoom level from the transport attribute from the viewport
-                // on drag, since the user could drag while zooming
-                var zoom = parseFloat($(".viewport").css("transform").split(',')[3]);
+                // get zoom level on drag, since the user could drag while zooming
+                var zoom = canvas.zoom();
 
                 // original position of draggable
                 var original = ui.originalPosition;
