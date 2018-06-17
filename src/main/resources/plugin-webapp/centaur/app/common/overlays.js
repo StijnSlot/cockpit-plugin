@@ -32,7 +32,7 @@ define({
      * Get the offset from localStorage and add to html DOM element
      *
      * @param html              Dom element
-     * @param localStorage      Localstorage containing offset
+     * @param localStorage      LocalStorage containing offset
      * @param prefix            prefix for localStorage item
      */
     setOffset: function(html, localStorage, prefix) {
@@ -57,7 +57,7 @@ define({
      */
     addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas) {
         html.parentNode.classList.add("djs-draggable");
-        var click = {x: 0, y: 0};
+        var click = {};
 
         $(html.parentNode).draggable({
             stack: ".djs-overlay",
@@ -87,8 +87,8 @@ define({
                 $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
 
                 // store settings in localStorage
-                localStorage.setItem(prefix + "_offset_top", $(html.parentNode).css("top"));
-                localStorage.setItem(prefix + "_offset_left", $(html.parentNode).css("left"));
+                localStorage.setItem(prefix + "_offset_top", html.parentNode.style.top);
+                localStorage.setItem(prefix + "_offset_left", html.parentNode.style.left);
             }
         });
     },
