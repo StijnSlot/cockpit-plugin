@@ -46,10 +46,10 @@ define({
         * Angular http.get promises that wait for a JSON object of
         * the process activity and the instance start time.
         */
-        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + util.procDefId), {
+        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
             catch: false
         });
-        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
+        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time?procDefId=" + util.procDefId), {
             catch: false
         });
 
