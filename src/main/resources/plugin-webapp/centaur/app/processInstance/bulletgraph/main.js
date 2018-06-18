@@ -8,14 +8,14 @@
 
 'use strict';
 
-define(['require', 'angular', './bullet', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/bulletgraph'], function (require, angular) {
+define(['require', 'angular', '../../common/bulletlibraries', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/bulletgraph'], function (require, angular) {
 
     /**
      * retrieve the bullet file containe the D3 library and functions which are needed for the bullet graphs
      * these functions from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
      * and D3 library: https://d3js.org/ (accessed 30-5-2018).
      */
-    require('./bullet');
+    require('../../common/bulletlibraries');
 
     /**
      * retrieve the util file containing functions
