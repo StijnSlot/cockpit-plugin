@@ -36,7 +36,7 @@ define({
 
         util.commonOverlays.clearOverlays(overlays, util.overlayIds);
 
-        if(!util.commonOptions.isSelectedVariable(localStorage, util.procDefId + "_KPI_Counter")) {
+        if(!util.commonOptions.isSelectedOption(localStorage, util.procDefId + "_KPI_Counter")) {
           return;
         }
 

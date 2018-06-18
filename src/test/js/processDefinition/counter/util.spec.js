@@ -33,7 +33,7 @@ describe('check counter util', function () {
         beforeEach(function() {
             spy = sandbox.spy();
             stub1 = sandbox.stub(util, "setCounter");
-            util.commonOptions = {isSelectedVariable: sinon.stub().returns(true)};
+            util.commonOptions = {isSelectedOption: sinon.stub().returns(true)};
             util.commonOverlays = {clearOverlays: spy};
 
             stub2 = sandbox.stub().returns({success: function(x) {
