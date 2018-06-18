@@ -25,13 +25,18 @@ define({
     commonOverlays: "",
 
     /**
+     * common options util
+     */
+    commonOptions: "",
+
+    /**
      * Creates DOM element for variables
      *
      * @returns {object}
      */
     createVariableDiv: function() {
         var html = document.createElement('div');
-        html.className = "variableTextSmall";
+        html.classList.add("custom-overlay", "variableTextSmall");
         return html;
     },
 
@@ -47,7 +52,7 @@ define({
      * @param i                 number of variable elements still to go
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
-        data = util.filterVariables(localStorage, data, util.procDefId + "_var_");
+        data = util.filterVariables(data, localStorage, util.procDefId + "_var_", util.commonOptions);
         html.appendChild(util.createVariableUl(data));
         if(!i && html.childElementCount)
             return util.finishElement(localStorage, html, overlays, elementId, util);
@@ -65,9 +70,10 @@ define({
     finishElement: function(localStorage, html, overlays, elementId, util) {
         util.addDots(html, util);
         util.addHoverFunctionality(html, util.variableNum);
-        var id = util.commonOverlays.addTextElement(overlays, elementId, html, -10, -120);
+        var id = util.commonOverlays.addTextElement(overlays, elementId, html, -5, -80);
         util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementId + "_variables");
-        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables", elementId, html);
+        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables",
+            elementId, html, util.commonOverlays.canvas);
         return id;
     },
 
@@ -196,14 +202,15 @@ define({
     /**
      * Removes all variables which are not selected by the user
      *
-     * @param localStorage  contains user options
      * @param data          variables to filter
+     * @param localStorage  contains user options
      * @param prefix        prefix before variable name, for localStorage
+     * @param util          contains isSelectedOption
      */
-    filterVariables: function(localStorage, data, prefix) {
+    filterVariables: function(data, localStorage, prefix, util) {
         var out = {};
         for(var variable in data) {
-            if(localStorage.getItem(prefix + variable) === 'true') {
+            if(util.isSelectedOption(localStorage, prefix + variable)) {
                 out[variable] = data[variable];
             }
         }

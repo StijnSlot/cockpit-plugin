@@ -20,7 +20,7 @@ define(['require', 'angular', './util', '../../common/conversion'], function(req
         $scope.setData = async function(sortByProperty) {
             var sortOrder = util.flipSortOrder(sortByProperty, util);
 
-            $scope.processInstances = await util.getData($http, Uri, sortByProperty, sortOrder, procDefId)
+            $scope.processInstances = await util.getData($http, Uri, sortByProperty, sortOrder, procDefId);
             $scope.$apply();
         };
 
@@ -47,7 +47,7 @@ define(['require', 'angular', './util', '../../common/conversion'], function(req
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.bottomTabs.history', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.processDefinition.history', []);
 
     ngModule.config(Configuration);
 

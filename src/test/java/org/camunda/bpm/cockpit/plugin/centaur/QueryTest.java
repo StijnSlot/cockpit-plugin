@@ -26,7 +26,7 @@ public class QueryTest extends AbstractCockpitPluginTest {
     @Test
     public void testProcessInstanceActivityQueryWorks() {
         QueryParameters<ProcessActivityDto> parameters = new QueryParameters<>();
-        parameters.setParameter("");
+        parameters.setParameter("test");
 
         List<ProcessActivityDto> result =
             getQueryService()
@@ -62,10 +62,10 @@ public class QueryTest extends AbstractCockpitPluginTest {
     @Test
     public void testRefreshResource() {
         List<ProcessVariablesDto> result =
-                getQueryService()
-                        .executeQuery(
-                                "cockpit.query.selectActiveInstances",
-                                new QueryParameters<>());
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectActiveInstances",
+                    new QueryParameters<>());
 
         Assert.assertEquals(0, result.size());
     }

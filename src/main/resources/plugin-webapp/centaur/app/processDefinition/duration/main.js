@@ -52,6 +52,7 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
                 '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
                 function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
                     var viewer = control.getViewer();
+                    util.commonOverlays.canvas = viewer.get('canvas');
                     var overlays = viewer.get('overlays');
 
                     var elementRegistry = viewer.get('elementRegistry');
