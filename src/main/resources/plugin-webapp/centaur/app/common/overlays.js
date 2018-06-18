@@ -49,7 +49,7 @@ define({
      * @param elementID         used for making element selected
      * @param html              Dom element which should drag
      */
-    addDraggableFunctionality: function(localStorage, prefix, elementID, html) {
+    addDraggableFunctionality: function(localStorage, prefix, elementID, html, highlight) {
         html.parentNode.classList.add("djs-draggable");
         var click = {x: 0, y: 0};
 
@@ -57,7 +57,9 @@ define({
             stack: ".djs-overlay",
             start: function(event) {
                 // add highlight to activity
-                $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                if (highlight) {
+                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                }
 
                 // remember click position for dragging speed
                 click.x = event.clientX;
@@ -79,7 +81,9 @@ define({
             },
             stop: function() {
                 // remove highlight from the activity
-                $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+                if (highlight) {
+                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+                }
 
                 // store settings in localStorage
                 localStorage.setItem(prefix + "_offset_top", $(html.parentNode).css("top"));

@@ -150,7 +150,7 @@ define({
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html);
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html, false);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
             util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);

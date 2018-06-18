@@ -79,7 +79,7 @@ define({
     var html = util.createHTML (executionSequenceCounter);
     util.overlayIds.push(util.commonOverlays.addTextElement(overlays, elementID, html, -20, 50));
     util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementID + "_counter");
-    util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementID + "_counter", elementID, html);
+    util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementID + "_counter", elementID, html, true);
   },
 
 
