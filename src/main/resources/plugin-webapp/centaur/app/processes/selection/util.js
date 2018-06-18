@@ -7,7 +7,7 @@ define({
         // create title
         var th = document.createElement('TH');
         th.innerHTML = "";
-        $(".process-definitions-list > thead > tr").append(th);
+        $(".process-definitions-list > thead > tr").prepend(th);
 
         // create checkboxes
         $(".process-definitions-list > tbody > tr").each(function(i) {
@@ -16,7 +16,7 @@ define({
             box.type = "checkbox";
             box.id = "processSelect" + i;
             td.appendChild(box);
-            $(this).append(td);
+            $(this).prepend(td);
         });
     },
 

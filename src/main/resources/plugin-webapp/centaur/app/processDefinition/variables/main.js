@@ -16,7 +16,6 @@ define(['require', 'angular', './util', '../../common/overlays', '../../common/v
      */
     var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
-
             // process definition id is set (HARDCODED nr. of parents)
             util.procDefId = $scope.$parent.processDefinition.id;
 
