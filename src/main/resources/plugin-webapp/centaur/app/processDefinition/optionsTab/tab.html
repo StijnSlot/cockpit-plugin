@@ -1,12 +1,10 @@
 <style>
-    /**
- * The switch widget!
- * Usage:
- *   <input type="checkbox" switch[="type"] id="toggleSwitch" />
- *   <label for="toggleSwitch" data-on-label="On" data-off-label="Off"></label>
- */
     input[switch] {
         display: none;
+    }
+    label {
+        margin-bottom: 0px;
+        margin-right: 5px;
     }
     input[switch] + label {
         font-size: 1em;
@@ -115,32 +113,53 @@
     }
 </style>
 <div class="option-box">
-    <h4>Select KPI's</h4>
-    <form data-ng-repeat="variable in KPI">
-            <input type="checkbox" ng-checked="variable.checked" id="kpi-{{ variable.name }}"
-                   ng-change="changeKPI(variable.name, checked)"  ng-model="checked" switch="bool">
-            <label for="kpi-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
-            {{ variable.name }}
-            <br>
-    </form>
+    <h4>KPI's</h4>
+    <table>
+        <tbody>
+            <tr data-ng-repeat="variable in KPI">
+                <form>
+                    <td>
+                        <input type="checkbox" ng-checked="variable.checked" id="kpi-{{ variable.name }}"
+                               ng-change="changeKPI(variable.name, checked)"  ng-model="checked" switch="bool">
+                        <label for="kpi-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
+                    </td>
+                    <td>
+                        {{ variable.name }}
+                    </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div class="option-box">
-    <h4>Select process-instance variables to show</h4>
-    <form data-ng-repeat="variable in processVariables" ng-init="setVariableChecked()">
-        <input type="checkbox" ng-checked="variable.checked" id="variable-{{ variable.name }}"
-               ng-change="changeVar(variable.name, checked)"  ng-model="checked" switch="bool">
-        <label for="variable-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
-        {{ variable.name }}
-        <br>
-    </form>
+    <h4>Process-instance variables</h4>
+    <table>
+        <tbody>
+        <tr data-ng-repeat="variable in processVariables">
+            <form ng-init="setVariableChecked()">
+                <td>
+                    <input type="checkbox" ng-checked="variable.checked" id="variable-{{ variable.name }}"
+                           ng-change="changeVar(variable.name, checked)"  ng-model="checked" switch="bool">
+                    <label for="variable-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
+                </td>
+                <td>
+                    {{ variable.name }}
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div class="option-box">
-    <div>
-        <h4>Select number of variables to show</h4>
-        <input type="number" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()" min="0"/>
+    <div class="form-group">
+        <label for="selectVariablesToShow">Number of variables to show</label>
+        <select class="form-control" id="selectVariablesToShow" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()">
+            <option>0</option>
+            <option data-ng-repeat="variable in processVariables">{{$index+1}}</option>
+        </select>
     </div>
-    <div>
-        <h4>Polling refresh rate</h4>
-        <input type="number" ng-change="changeVarRefreshRate(refreshRate)" ng-model="refreshRate" ng-init="setRefreshRate()" min="0"/>
+    <div class="form-group">
+        <label for="pollingRate">Polling refresh rate</label><br>
+        Every <input type="number" id="pollingRate" ng-change="changeVarRefreshRate(refreshRate)" ng-model="refreshRate" ng-init="setRefreshRate()" min="0"/> seconds.
     </div>
 </div>
