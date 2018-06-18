@@ -154,5 +154,8 @@
 
 .total-count-box {
     display: inline-block;
+}
 
+.active-btn {
+    width: 100px;
 }
