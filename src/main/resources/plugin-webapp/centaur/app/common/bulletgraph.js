@@ -48,7 +48,7 @@ define({
      * @param   {String}  elementID     Variable to be converted.
      * @return  {Object}                A string which represents an HTML line which will be added later.
      */
-    createHTML: function (util, localStorage, elementID) {
+    createHTML: function (elementID) {
         var graph = document.createElement('DIV');
         graph.className = "bullet-duration-" + elementID;
         return graph;
