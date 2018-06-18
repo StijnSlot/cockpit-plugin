@@ -85,10 +85,11 @@
        AND a.IS_ACTIVE_ = TRUE
   </select>
 
-  <select id="selectActiveInstances" resultMap="activeInstances" parameterType="String">
+  <select id="selectActiveInstances" resultMap="activeInstances" parameterType="Map">
     SELECT ACT_INST_ID_
     FROM ACT_RU_EXECUTION
-    WHERE PROC_DEF_ID_ = #{parameter}
+    WHERE (#{parameter.procDefId} IS NULL OR PROC_DEF_ID_ = #{parameter.procDefId})
+      AND (#{parameter.procInstId} IS NULL OR PROC_INST_ID_ = #{parameter.procInstId})
       AND IS_ACTIVE_ = TRUE
   </select>
 </mapper>

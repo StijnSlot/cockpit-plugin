@@ -7,6 +7,7 @@ import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.List;
 
 public class RefreshResource extends AbstractCockpitPluginResource {
@@ -17,14 +18,20 @@ public class RefreshResource extends AbstractCockpitPluginResource {
     private String procDefId;
 
     /**
+     * Stores the process instance id passed in the url
+     */
+    private String procInstId;
+
+    /**
      * Constructor for the resource
      * @param engineName is passed from the creation
      * @param procDefId is the process definition
      *                  we want the active instances of
      */
-    public RefreshResource(String engineName, String procDefId) {
+    public RefreshResource(String engineName, String procDefId, String procInstId) {
         super(engineName);
         this.procDefId = procDefId;
+        this.procInstId = procInstId;
     }
 
     /**
@@ -36,7 +43,11 @@ public class RefreshResource extends AbstractCockpitPluginResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<ActiveInstancesDto> checkRefresh() {
         QueryParameters<ActiveInstancesDto> queryParameters = new QueryParameters<>();
-        queryParameters.setParameter(this.procDefId);
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("procDefId", procDefId);
+        param.put("procInstId", procInstId);
+        queryParameters.setParameter(param);
 
         configureTenantCheck(queryParameters);
 
