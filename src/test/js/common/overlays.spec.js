@@ -9,7 +9,7 @@ requirejs.config({
 });
 
 global.window = window;
-global.$ = require('jquery');
+global.$ = global.jQuery = require('jquery');
 
 describe('Common overlay tests', function() {
     var util;
@@ -49,6 +49,55 @@ describe('Common overlay tests', function() {
         });
     });
 
+    describe('setOffset tests', function() {
+        var parent, html, prefix = "test";
+        var stub;
+
+        beforeEach(function() {
+            stub = sinon.stub();
+            stub.withArgs(prefix + "_offset_top").returns(5);
+            stub.onSecondCall(prefix + "_offset_left").returns(null);
+            parent = document.createElement('DIV');
+            html = document.createElement('DIV');
+            parent.appendChild(html);
+            var localStorage = {getItem: stub};
+            util.setOffset(html, localStorage, prefix);
+        });
+
+        it('should call localStorage getItem twice with prefix test', function() {
+            expect(stub.callCount).to.eql(2);
+            expect(stub.calledWith(prefix + "_offset_top")).to.eql(true);
+            expect(stub.calledWith(prefix + "_offset_left")).to.eql(true);
+        });
+        it('should set offset top of html  to 5', function() {
+            expect(parent.style.top).to.eql('5px');
+        });
+        it('should not set offset left', function() {
+            expect(parent.style.left).to.eql('');
+        });
+    });
+
+    describe('addDraggableFunctionality tests', function() {
+        var parent, html;
+        var spy;
+
+        beforeEach(function() {
+            spy = sinon.spy();
+            parent = document.createElement('DIV');
+            html = document.createElement('DIV');
+            parent.appendChild(html);
+            jQuery.fn.extend({draggable: spy});
+            util.addDraggableFunctionality({}, "", 1, html, {});
+        });
+
+        it('should set parent to djs-draggable', function() {
+            expect(parent.classList.contains("djs-draggable"));
+        });
+        it('should make parent draggable', function() {
+            expect(spy.called).to.eql(true);
+        });
+    });
+
     describe('clearOverlays tests', function() {
         var spy, overlays;
         var overlayIds = {'a': [1], 'b': [-2], 'c': [3]};
@@ -57,8 +106,8 @@ describe('Common overlay tests', function() {
             spy = sinon.spy();
             overlays = {remove: spy};
 
-            util.clearOverlays(overlays, overlayIds, 'a');
-            util.clearOverlays(overlays, overlayIds, 'b');
+            util.clearOverlays(overlays, overlayIds['a']);
+            util.clearOverlays(overlays, overlayIds['b']);
         });
 
         it('should call remove for all ids', function() {

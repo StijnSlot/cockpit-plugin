@@ -83,7 +83,7 @@ define({
                         var getMaxDuration = $scope.processActivityStatistics.data[i].maxDuration;
                         var getCurDuration = util.commonConversion.calculateCurDurationOfSpecInstance($scope.instanceStartTime.data, element.id, util.procInstanceId);
                         if (util.commonOptions.isSelectedInstance($scope.instanceStartTime.data, element.id, util.procInstanceId)) {
-                            util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
+                            util.addOverlay(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
                         }
                         break;
                     }
@@ -115,11 +115,15 @@ define({
      * @param   Object  shape         Shape of the element
      * @param   Object  $window       browser window containing localStorage
      */
-    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
+    addOverlay: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
+            // initialize the overlayActivityId array
+            if(util.overlayActivityIds[elementID] === undefined)
+                util.overlayActivityIds[elementID] = [];
+
             // clear any current overlays displayed
-            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, elementID);
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
@@ -132,7 +136,8 @@ define({
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration", elementID, html);
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration",
+                elementID, html, util.commonOverlays.canvas);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
         }

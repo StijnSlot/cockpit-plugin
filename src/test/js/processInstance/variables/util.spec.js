@@ -22,7 +22,7 @@ describe('Execution variables tests', function() {
         expect(util).to.exist;
     });
 
-    describe('addActivityElements tests', function() {
+    describe('addInstanceVariables tests', function() {
         var sandbox = sinon.createSandbox();
         var stub1, stub2, stub3;
         var spy1, spy2;
@@ -48,7 +48,7 @@ describe('Execution variables tests', function() {
             stub1.createVariableUl.returns(document.createElement('ul'));
             util.procDefId = stub1.procDefId = "asdf1234";
             util.commonVariable = stub1;
-            util.commonOptions = {getVariableNum: sinon.spy()};
+            util.commonOptions = {isSelectedOption: sinon.stub().returns(true), getVariableNum: sinon.spy()};
             util.commonOverlays = {clearOverlays: spy2, setOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {
@@ -66,7 +66,7 @@ describe('Execution variables tests', function() {
                     else return {};
                 }};
             var control = {getViewer: function() {return viewer}};
-            util.addActivityElements(window, http, control,
+            util.addInstanceVariables(window, http, control,
                 {bpmnElements: [{}, {}, {id: 2}]}, uri, util);
         });
 

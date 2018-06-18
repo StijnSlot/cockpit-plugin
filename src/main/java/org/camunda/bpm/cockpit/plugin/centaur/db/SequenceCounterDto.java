@@ -1,22 +1,11 @@
 package org.camunda.bpm.cockpit.plugin.centaur.db;
 
-public class ExecutionSequenceCounterDto {
-
-    private String instanceId;
-
+public class SequenceCounterDto {
     private String activityId;
 
     private String name;
 
-    private Long long_;
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
+    private Long counter;
 
     public String getActivityId() {
         return activityId;
@@ -34,11 +23,11 @@ public class ExecutionSequenceCounterDto {
         this.name = name;
     }
 
-    public Long getLong_() {
-        return long_;
+    public Long getCounter() {
+        return counter;
     }
 
-    public void setLong_(Long long_) {
-        this.long_ = long_;
+    public void setCounter(Long counter) {
+        this.counter = counter;
     }
 }

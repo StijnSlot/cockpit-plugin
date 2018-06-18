@@ -34,23 +34,38 @@ define({
      *
      * @param $window           browser window containing localStorage
      * @param $http             http client for GET request
-     * @param control           contains overlays and elementregistry
+     * @param control           contains overlays and elementRegistry
      * @param processDiagram    diagram containing elements
      * @param Uri               uniform resource identifier to create GET request
      * @param util              object of this class, to call its functions and variables
      */
-    addActivityElements: function($window, $http, control, processDiagram, Uri, util) {
+    addInstanceVariables: function($window, $http, control, processDiagram, Uri, util) {
 
         // get overlay and elements from the diagram
         var viewer = control.getViewer();
         var overlays = viewer.get('overlays');
+        util.commonOverlays.canvas = viewer.get('canvas');
         var elementRegistry = viewer.get('elementRegistry');
+
+        // if not selected variables
+        if(!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Variables")) {
+
+            // loop over all elements in the diagram to clear them
+            elementRegistry.forEach(function (shape) {
+                // get corresponding element from processDiagram
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
+            });
+            return;
+        }
 
         // get number of instance variables to show
         util.commonVariable.variableNum = util.commonOptions.getVariableNum($window.localStorage, util.procDefId + "_var_num");
         util.commonVariable.procDefId = util.procDefId;
         util.commonVariable.procInstanceId = util.procInstanceId;
         util.commonVariable.commonOverlays = util.commonOverlays;
+        util.commonVariable.commonOptions = util.commonOptions;
 
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
@@ -67,7 +82,7 @@ define({
                 "&activityId=" + element.id))
                 .success(function(executions) {
 
-                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds, element.id);
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
 
                     var i = executions.length - 1;
                     executions.forEach(function(execution) {

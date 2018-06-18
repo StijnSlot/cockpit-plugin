@@ -72,15 +72,6 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
         assertEquals(200, output.getStatus());
         assertNotNull(output.readEntity(List.class));
     }
-
-    @Test
-    public void instanceVariablesTest() {
-        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
-                getProcessEngine().getName() + "/instance-variables").request().get();
-        assertEquals(200, output.getStatus());
-        assertNotNull(output.readEntity(List.class));
-    }
-
     @Test
     public void instanceStartTimeTest() {
         Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +

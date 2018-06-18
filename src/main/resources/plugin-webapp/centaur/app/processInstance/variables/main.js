@@ -6,6 +6,10 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
      * retrieve the util file containing functions
      */
     var util = require('./util');
+
+    /**
+     * get common util functionality
+     */
     util.commonVariable = require('../../common/variables');
     util.commonOverlays = require('../../common/overlays');
     util.commonOptions = require('../../common/options');
@@ -16,25 +20,20 @@ define(['require', 'angular', './util', '../../common/options', '../../common/va
     var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
         function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
 
-            console.log('Overlay variables loaded');
-
             // process definition id is set (HARDCODED nr. of parents)
             util.procDefId = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 
+            var addInstanceVar = function() {
+                util.addInstanceVariables($window, $http, control, processDiagram, Uri, util)
+            };
+            addInstanceVar();
 
-            // add the activity variable elements to the overlay
-            util.addActivityElements($window, $http, control, processDiagram, Uri, util);
-
-            // subscribe to any broadcast variables options change
-            /*$rootScope.$on("cockpit.plugin.centaur:options:variable-change", function() {
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
-            });
-
-            // subscribe to any broadcast variable number changes
-            $rootScope.$on("cockpit.plugin.centaur:options:var-num-change", function() {
-                util.addActivityElements($window, $http, elementRegistry, processDiagram, overlays, Uri, commonUtil)
-            });*/
+            var subscriptions =
+                ["cockpit.plugin.centaur:options:variable-change",
+                    "cockpit.plugin.centaur:options:var-num-change",
+                    "cockpit.plugin.centaur:options:KPI-change"];
+            util.commonOptions.register($scope, $rootScope, subscriptions, addInstanceVar);
         }
     ];
 

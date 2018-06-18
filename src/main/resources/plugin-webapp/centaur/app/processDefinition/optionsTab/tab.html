@@ -13,10 +13,12 @@
     </form>
 </div>
 <div class="option-box">
-    <h4>Select number of variables to show</h4>
-    <input type="number" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()" min="0"/>
-</div>
-<div class="option-box">
-    <h4>Polling refresh rate</h4>
-    <input type="number" ng-change="changeVarRefreshRate(refreshRate)" ng-model="refreshRate" ng-init="setRefreshRate()" min="0"/>
+    <div>
+        <h4>Select number of variables to show</h4>
+        <input type="number" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()" min="0"/>
+    </div>
+    <div>
+        <h4>Polling refresh rate</h4>
+        <input type="number" ng-change="changeVarRefreshRate(refreshRate)" ng-model="refreshRate" ng-init="setRefreshRate()" min="0"/>
+    </div>
 </div>

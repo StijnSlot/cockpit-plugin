@@ -52,6 +52,7 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
                 '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
                 function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
                     var viewer = control.getViewer();
+                    util.commonOverlays.canvas = viewer.get('canvas');
                     var overlays = viewer.get('overlays');
 
                     var elementRegistry = viewer.get('elementRegistry');
@@ -61,12 +62,13 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
                     util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
 
                     // subscribe to any broadcast KPI options change
-                    $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
+                    var listener = $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
                         util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
                     });
 
-
-
+                    $scope.$on("$destroy", function() {
+                        listener();
+                    });
                 }
             ]
         });

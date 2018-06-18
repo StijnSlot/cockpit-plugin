@@ -57,19 +57,12 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
     return subResource(new ProcessActivityResource(engineName, procDefId), engineName);
   }
 
-  @Path("{engineName}/instance-variables")
-  public InstanceVariablesResource getInstanceVariableResource(
-          @PathParam("engineName") String engineName,
-          @QueryParam("procDefId") String procDefId,
-          @QueryParam("actId") String actId) {
-    return subResource(new InstanceVariablesResource(engineName, procDefId, actId), engineName);
-  }
-
   @Path("{engineName}/process-variables")
   public ProcessVariablesResource getProcessVariableResource(
           @PathParam("engineName") String engineName,
-          @QueryParam("procDefId") String procDefId) {
-    return subResource(new ProcessVariablesResource(engineName, procDefId), engineName);
+          @QueryParam("procDefId") String procDefId,
+          @QueryParam("procInstanceId") String procInstId) {
+    return subResource(new ProcessVariablesResource(engineName, procDefId, procInstId), engineName);
   }
 
   @Path("{engineName}/instance-start-time")
@@ -79,9 +72,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   }
 
   @Path("{engineName}/execution-sequence-counter")
-  public ExecutionSequenceCounterResource getExecutionSequenceCounter(
+  public SequenceCounterResource getExecutionSequenceCounter(
           @PathParam("engineName") String engineName) {
-    return subResource(new ExecutionSequenceCounterResource(engineName), engineName);
+    return subResource(new SequenceCounterResource(engineName), engineName);
   }
 
   @Path("{engineName}/refresh")

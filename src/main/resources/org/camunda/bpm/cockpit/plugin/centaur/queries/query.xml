@@ -19,28 +19,16 @@
     <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT" />
   </resultMap>
 
-  <resultMap id="instanceVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceVariablesDto">
-    <result property="act_id" column="ACT_ID_" jdbcType="VARCHAR" />
-    <result property="id" column="VAR_ID_" jdbcType="VARCHAR" />
-    <result property="name" column="NAME_" jdbcType="VARCHAR" />
-    <result property="type" column="TYPE_" jdbcType="VARCHAR" />
-    <result property="double_" column="DOUBLE_" jdbcType="DOUBLE" />
-    <result property="long_" column="LONG_" jdbcType="BIGINT" />
-    <result property="text" column="TEXT_" jdbcType="VARCHAR" />
-    <result property="text2" column="TEXT2_" jdbcType="VARCHAR" />
-  </resultMap>
-
   <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceStartTimeDto">
     <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
     <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
-  <resultMap id="ExecutionSequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.ExecutionSequenceCounterDto">
-    <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+  <resultMap id="SequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.SequenceCounterDto">
     <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
-    <result property="long_" column="LONG_" jdbcType="BIGINT" />
+    <result property="counter" column="LONG_" jdbcType="BIGINT" />
   </resultMap>
 
   <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessVariablesDto">
@@ -69,11 +57,11 @@
     <result property="count" column="COUNT_" jdbcType="INTEGER" />
   </resultMap>
 
-  <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
-    SELECT DISTINCT a.ID_, a.ACT_ID_, b.NAME_, b.LONG_
+  <select id="selectSequenceCounter" resultMap="SequenceCounterMap">
+    SELECT DISTINCT a.ACT_ID_, b.NAME_, b.LONG_
     FROM ACT_RU_VARIABLE b
       JOIN ACT_RU_EXECUTION a
-      WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
+    WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
   </select>
 
   <select id="selectProcessStatistics" resultMap="processStatisticsMap">
@@ -97,22 +85,13 @@
     GROUP BY ACT_NAME_
   </select>
 
-  <select id="selectInstanceVariables" resultMap="instanceVariables" parameterType="java.util.Map">
-    SELECT a.ID_ ACT_ID_, b.ID_ VAR_ID_, b.NAME_, b.TYPE_, b.DOUBLE_, b.LONG_, b.TEXT_, b.TEXT2_
-    FROM ACT_RU_EXECUTION a
-      JOIN ACT_RU_VARIABLE b
-        ON a.ID_ = b.EXECUTION_ID_
-    WHERE a.PROC_DEF_ID_ = #{parameter.procDefId}
-      AND a.ACT_ID_ = #{parameter.actId}
-    ORDER BY a.ID_
-  </select>
-
-  <select id="selectProcessVariables" resultMap="processVariables" parameterType="String">
+  <select id="selectProcessVariables" resultMap="processVariables" parameterType="Map">
     SELECT DISTINCT a.NAME_
     FROM ACT_RU_VARIABLE a
       JOIN ACT_RU_EXECUTION b
         ON a.EXECUTION_ID_ = b.ID_
-    WHERE b.PROC_DEF_ID_ = #{parameter}
+    WHERE b.PROC_DEF_ID_ = #{parameter.procDefId}
+      AND (#{parameter.procInstId} IS NULL OR #{parameter.procInstId} = b.PROC_INST_ID_)
   </select>
 
   <select id="selectInstanceStartTime" resultMap="instanceStartTime">
@@ -121,14 +100,14 @@
       JOIN ACT_HI_ACTINST b
         ON a.ID_ = b.EXECUTION_ID_
     WHERE b.END_TIME_ IS NULL
-          AND a.IS_ACTIVE_ = TRUE
+       AND a.IS_ACTIVE_ = TRUE
   </select>
 
   <select id="selectActiveInstances" resultMap="activeInstances" parameterType="String">
     SELECT ACT_INST_ID_
     FROM ACT_RU_EXECUTION
     WHERE PROC_DEF_ID_ = #{parameter}
-    AND IS_ACTIVE_ = TRUE
+      AND IS_ACTIVE_ = TRUE
   </select>
 
   <insert id="createTable">

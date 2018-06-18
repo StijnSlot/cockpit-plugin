@@ -47,18 +47,18 @@ define({
      */
     createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
         var data = {};
-        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
+        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
             data['cur'] = {value: curDurationHTML};
         }
-        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
+        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
             data['avg'] = {value: avgDurationHTML};
         }
-        if (util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
+        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
             data['max'] = {value: maxDurationHTML};
         }
 
         var html = document.createElement('div');
-        html.className = "durationText";
+        html.classList.add("custom-overlay", "durationText");
         html.appendChild(util.commonVariables.createVariableUl(data));
 
         return html;

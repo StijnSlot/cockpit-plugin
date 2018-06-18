@@ -29,7 +29,7 @@ describe('Common variables tests', function() {
         var out;
 
         beforeEach(function() {
-            out = util.createVariableDiv({getItem: function(){}}, "");
+            out = util.createVariableDiv();
         });
 
         it('should be a div item', function() {
@@ -37,7 +37,7 @@ describe('Common variables tests', function() {
         });
 
         it('should return a variableTextSmall', function() {
-            expect(out.className).to.eql("variableTextSmall");
+            expect(out.classList.contains("variableTextSmall")).to.eql(true);
         });
     });
 
@@ -93,8 +93,8 @@ describe('Common variables tests', function() {
 
         it('should have two list items as children', function() {
             expect(out.childElementCount).to.eql(2);
-            expect(out.children[0].nodeName).to.eql("LI")
-            expect(out.children[1].nodeName).to.eql("LI")
+            expect(out.children[0].nodeName).to.eql("LI");
+            expect(out.children[1].nodeName).to.eql("LI");
         });
 
         it('should contain the name of variables', function() {
@@ -109,16 +109,17 @@ describe('Common variables tests', function() {
         });
     });
 
-    describe('isSelectedVariable tests', function() {
+    describe('filterVariables tests', function() {
         var data = {'a': 'tmp', 'b': 5}, out;
-        var localStorage, prefix = "var_", stub;
+        var optionUtil, prefix = "var_", stub;
 
         beforeEach(function() {
             stub = sinon.stub();
-            stub.withArgs(prefix + 'a').returns('true');
-            stub.withArgs(prefix + 'b').returns('false');
-            localStorage = {getItem: stub};
-            out = util.filterVariables(localStorage, data, prefix);
+            var localStorage = {};
+            stub.withArgs(localStorage, prefix + 'a').returns(true);
+            stub.withArgs(localStorage, prefix + 'b').returns(false);
+            optionUtil = {isSelectedOption: stub};
+            out = util.filterVariables(data, localStorage, prefix, optionUtil);
         });
 
         it('should return out with only a', function() {

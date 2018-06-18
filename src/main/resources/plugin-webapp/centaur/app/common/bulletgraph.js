@@ -52,9 +52,6 @@ define({
     createHTML: function (util, localStorage, elementID) {
         var graph = document.createElement('DIV');
         graph.className = "bullet-duration-" + elementID;
-        if (!util.commonOptions.isSelectedVariable(localStorage, util.procDefId + "_KPI_Bulletgraph")) {
-            $(graph).hide();
-        }
         return graph;
     },
 
