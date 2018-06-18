@@ -12,6 +12,58 @@ describe('Common variables tests', function() {
         expect(util).to.exist;
     });
 
+    describe('addVariables tests', function() {
+        var sandbox = sinon.createSandbox();
+        var stub1, stub2;
+        var spy1, spy2;
+        var http;
+
+        beforeEach(function() {spy1 = sandbox.spy(); spy2 = sandbox.spy();
+            stub1 = sandbox.stub(util);
+            util.addVariables.restore();
+            util.handleVariableData.restore();
+            util.handleVariableData = function(data, localStorage, html) { html.appendChild(document.createElement('UL'))};
+            stub1.createVariableDiv.returns(document.createElement('DIV'));
+            util.procDefId = "asdf1234";
+            util.commonOptions = {isSelectedOption: sinon.stub().returns(true), getVariableNum: sinon.spy()};
+            util.commonOverlays = {clearOverlays: spy2, setOffset: sinon.spy()};
+
+            stub2 = sandbox.stub().returns({success: function(x) {
+                    var instances = [{id: "test"}, {id: "hello"}];
+                    x(instances);}
+            });
+            http = {get: stub2};
+            var request1 = function() {return "x"};
+            var request2 = function() {return "y"};
+
+            var $q = {all: function(x) { return {then: function(x) { x();}}}};
+
+            var viewer = {get: function(x) {
+                if(x === 'elementRegistry') return [{businessObject: {id: 1}}];
+                else return {};
+            }};
+            var control = {getViewer: function() {return viewer}};
+            util.addVariables({}, $q, http, control,
+                {bpmnElements: [{}, {}, {id: 2}]}, request1, request2, util);
+        });
+        afterEach(function () {
+            sandbox.restore();
+        });
+
+        it('should call htpp get three times', function() {
+            expect(stub2.callCount).to.eql(3);
+        });
+        it('should call createVariableDiv', function() {
+            expect(stub1.createVariableDiv.callCount).to.eql(1);
+        });
+        it('should call clearOverlays', function() {
+            expect(spy2.callCount).to.eql(1);
+        });
+        it('should call finishData', function() {
+            expect(stub1.finishElement.callCount).to.eql(1);
+        })
+    });
+
     describe('createVariableDiv tests', function() {
         var out;
 
@@ -22,7 +74,6 @@ describe('Common variables tests', function() {
         it('should be a div item', function() {
             expect(out.nodeName).to.eql("DIV");
         });
-
         it('should return a variableTextSmall', function() {
             expect(out.classList.contains("variableTextSmall")).to.eql(true);
         });
@@ -49,20 +100,15 @@ describe('Common variables tests', function() {
         it('should call addDots', function() {
             expect(stub1.addDots.callCount).to.eql(1);
         });
-
         it('should call addHoverFunctionality', function() {
             expect(stub1.addHoverFunctionality.callCount).to.eql(1);
         });
-
         it('should call addTextElement', function() {
             expect(stub2.callCount).to.eql(1);
         });
-
         it('should call addDraggableFunctionality', function() {
             expect(spy.callCount).to.eql(1);
         });
-
-
     });
 
     describe('createVariableUl tests', function() {
@@ -77,18 +123,15 @@ describe('Common variables tests', function() {
         it('should return a ul', function() {
             expect(out.nodeName).to.eql("UL");
         });
-
         it('should have two list items as children', function() {
             expect(out.childElementCount).to.eql(2);
             expect(out.children[0].nodeName).to.eql("LI");
             expect(out.children[1].nodeName).to.eql("LI");
         });
-
         it('should contain the name of variables', function() {
             expect(out.children[0].innerHTML).to.contain("a");
             expect(out.children[1].innerHTML).to.contain("b");
         });
-
         it('should contain the value or filename of variables', function() {
             expect(out.children[0].innerHTML).to.contain(1);
             expect(out.children[1].innerHTML).to.contain("tmp.pdf");
@@ -113,7 +156,6 @@ describe('Common variables tests', function() {
             expect(out).to.have.property('a');
             expect(out).to.not.have.property('b');
         });
-
         it('should call getItem twice', function() {
             expect(stub.calledTwice).to.eql(true);
         });
@@ -141,7 +183,6 @@ describe('Common variables tests', function() {
             expect(html.children[0].childElementCount).to.eql(4);
             expect(html.children[1].childElementCount).to.eql(0);
         });
-
         it('should have third item dots', function() {
             expect(html.children[0].children[2].className).to.eql("dots");
         });
@@ -158,7 +199,6 @@ describe('Common variables tests', function() {
             expect(out).to.be.an.instanceOf(window.Element);
             expect(out.nodeName).to.eql('LI');
         });
-
         it('should return (number) spa', function() {
             expect(out.children).to.have.length(number);
             expect(out.children[0].className).to.eql('dot');

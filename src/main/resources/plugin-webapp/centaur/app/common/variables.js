@@ -1,5 +1,10 @@
 define({
     /**
+     * variable containing all ids of overlays created here
+     */
+    overlayActivityIds: {},
+
+    /**
      * contains user options for number of variables to show
      */
     variableNum: 5,
@@ -30,6 +35,80 @@ define({
     commonOptions: "",
 
     /**
+     * Adds an element with variables to each activity
+     *
+     * @param localStorage      containing user options
+     * @param $q                for resolving promises
+     * @param $http             http client for GET request
+     * @param control           contains overlays and elementRegistry
+     * @param processDiagram    diagram containing elements
+     * @param request1          function taking activityId and giving a http get request
+     * @param request2          function taking elementId and giving a http get request
+     * @param util              object of this class, to call its functions and variables
+     */
+    addVariables: function(localStorage, $q, $http, control, processDiagram, request1, request2, util) {
+
+        // get overlay and elements from the diagram
+        var viewer = control.getViewer();
+        var overlays = viewer.get('overlays');
+        util.commonOverlays.canvas = viewer.get('canvas');
+        var elementRegistry = viewer.get('elementRegistry');
+
+        // if not selected variables
+        if(!util.commonOptions.isSelectedOption(localStorage, util.procDefId + "_KPI_" + "Variables")) {
+
+            // loop over all elements in the diagram to clear them
+            elementRegistry.forEach(function (shape) {
+                // get corresponding element from processDiagram
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
+            });
+            return;
+        }
+
+        // get number of instance variables to show
+        util.variableNum = util.commonOptions.getVariableNum(localStorage, util.procDefId + "_var_num");
+
+        // loop over all elements in the diagram
+        elementRegistry.forEach(function (shape) {
+
+            // get corresponding element from processDiagram
+            var element = processDiagram.bpmnElements[shape.businessObject.id];
+
+            var html = util.createVariableDiv();
+
+            if(util.overlayActivityIds[element.id] === undefined) {
+                util.overlayActivityIds[element.id] = [];
+            }
+
+            $http.get(request1(element)).success(function(instances) {
+
+                var promises = [];
+
+                instances.forEach(function(instance) {
+
+                    var promise = $http.get(request2(instance)).success(function(data) {
+                        util.handleVariableData(data, localStorage, html, overlays, element.id, util);
+                    });
+
+                    promises.push(promise);
+                });
+
+                $q.all(promises).then(function() {
+                    util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
+
+                    if(html.childElementCount) {
+                        var id = util.finishElement(localStorage, html, overlays, element.id, util);
+                        util.overlayActivityIds[element.id].push(id);
+                    }
+                });
+            });
+
+        });
+    },
+
+    /**
      * Creates DOM element for variables
      *
      * @returns {object}
@@ -49,13 +128,10 @@ define({
      * @param overlays          overlays object to which to add the overlay
      * @param elementId         element id to which to add the overlay
      * @param util              util object containing the functions
-     * @param i                 number of variable elements still to go
      */
-    handleVariableData: function(data, localStorage, html, overlays, elementId, util, i) {
+    handleVariableData: function(data, localStorage, html, overlays, elementId, util) {
         data = util.filterVariables(data, localStorage, util.procDefId + "_var_", util.commonOptions);
         html.appendChild(util.createVariableUl(data));
-        if(!i && html.childElementCount)
-            return util.finishElement(localStorage, html, overlays, elementId, util);
     },
 
     /**
