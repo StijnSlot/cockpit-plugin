@@ -142,13 +142,19 @@
       )
   </insert>
 
-  <insert id="addIds">
+  <insert id="addResourceIds">
     INSERT INTO ACT_RU_RESOURCE(ID_)
       (SELECT ID_
        FROM ACT_ID_USER
        WHERE ID_ NOT IN
              (SELECT ID_ FROM ACT_RU_RESOURCE))
   </insert>
+
+  <delete id="deleteResourceIds">
+    DELETE FROM ACT_RU_RESOURCE
+      WHERE ID_ NOT IN
+        (SELECT ID_ FROM ACT_ID_USER)
+  </delete>
 
   <select id="selectUsers" resultMap="users">
     SELECT a.ID_, a.FIRST_, a.LAST_, b.IS_ACTIVE_, b.IS_ASSIGNED_, b.LAST_CHANGE_, b.TIME_ACTIVE_, b.TIME_IDLE_

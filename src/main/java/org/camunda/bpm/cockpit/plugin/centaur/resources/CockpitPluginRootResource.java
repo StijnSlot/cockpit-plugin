@@ -3,6 +3,7 @@ package org.camunda.bpm.cockpit.plugin.centaur.resources;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import org.camunda.bpm.cockpit.Cockpit;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.centaur.CockpitPlugin;
 
@@ -13,25 +14,23 @@ import java.util.TimerTask;
 public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource {
 
   private static final Object lock = new Object();
-  private static Boolean init = false;
+  private static boolean init = false;
+  private static Timer t = new Timer();
 
   public CockpitPluginRootResource() {
     super(CockpitPlugin.ID);
 
-    // synchronized since it would otherwise create 2 copies somehow
+    // synchronized since it can sometimes create multiple copies somehow
     synchronized (lock) {
       if(!init) {
         init = true;
         UsersResource res = new UsersResource("default");
         res.createTable();
-        res.setAssigned();
 
-        Timer t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
           @Override
           public void run() {
-            System.out.println("run");
-            new UsersResource("default").setAssigned();
+            res.update();
           }
         }, 0, 10000);
       }

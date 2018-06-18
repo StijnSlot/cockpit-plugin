@@ -18,7 +18,7 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserDto> addActiveColumn() {
+    public List<UserDto> getUsers() {
         QueryParameters<UserDto> queryParameters = new QueryParameters<>();
 
         configureTenantCheck(queryParameters);
@@ -26,32 +26,23 @@ public class UsersResource extends AbstractCockpitPluginResource {
         return getQueryService().executeQuery("cockpit.query.selectUsers", queryParameters);
     }
 
-    public void createTable() {
+    void createTable() {
         getQueryService().executeQuery("cockpit.query.createTable", new QueryParameters<>());
-        getQueryService().executeQuery("cockpit.query.addIds", new QueryParameters<>());
+        setResources();
+        setAssigned();
     }
 
-    @Path("set-active")
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void setActive(
-            @FormParam("active") String active,
-            @FormParam("id") String id) {
-        QueryParameters<Object> queryParameters = new QueryParameters<>();
-
-        HashMap<String, String> param = new HashMap<>();
-        param.put("active", active);
-        param.put("id", id);
-        queryParameters.setParameter(param);
-
-        configureTenantCheck(queryParameters);
-
-        getQueryService().executeQuery("cockpit.query.updateActive", queryParameters);
+    void update() {
+        setResources();
+        setAssigned();
     }
 
-    /*@Path("set-assigned")
-    @POST*/
-    public void setAssigned() {
+    private void setResources() {
+        getQueryService().executeQuery("cockpit.query.deleteResourceIds", new QueryParameters<>());
+        getQueryService().executeQuery("cockpit.query.addResourceIds", new QueryParameters<>());
+    }
+
+    private void setAssigned() {
         List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.selectAssigned", new QueryParameters<>());
         for(AssigneeDto element : result) {
             boolean assigned = element.getCount() > 0;
@@ -73,5 +64,23 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
             getQueryService().executeQuery("cockpit.query.updateAssigned", queryParameters);
         }
+    }
+
+    @Path("set-active")
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void setActive(
+            @FormParam("active") String active,
+            @FormParam("id") String id) {
+        QueryParameters<Object> queryParameters = new QueryParameters<>();
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("active", active);
+        param.put("id", id);
+        queryParameters.setParameter(param);
+
+        configureTenantCheck(queryParameters);
+
+        getQueryService().executeQuery("cockpit.query.updateActive", queryParameters);
     }
 }

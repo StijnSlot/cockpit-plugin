@@ -96,10 +96,17 @@ public class QueryTest extends AbstractCockpitPluginTest {
     }
 
     @Test
-    public void testAddIds() {
+    public void testAddResourceIds() {
         getQueryService()
             .executeQuery(
-                "cockpit.query.addIds",
+                "cockpit.query.addResourceIds",
+                new QueryParameters<>());
+    }
+    @Test
+    public void testdeleteResourceIds() {
+        getQueryService()
+            .executeQuery(
+                "cockpit.query.deleteResourceIds",
                 new QueryParameters<>());
     }
 

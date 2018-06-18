@@ -8,10 +8,10 @@
             <th>Id</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Utilization Time</th>
-            <th>Idle Time</th>
-            <th>Total Time Active</th>
-            <th>Active</th>
+            <th>Up time</th>
+            <th>Utilization rate</th>
+            <th>Idle rate</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -25,9 +25,9 @@
             <td>{{ user.id }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
+            <td>{{ convertTimes(user.timeActive) }}</td>
             <td>{{ calcUtilPerc(user) | number : 2}}%</td>
             <td>{{ calcIdlePerc(user) | number : 2}}%</td>
-            <td>{{ convertTimes(user.timeActive) }}</td>
             <td>
                 <button class="btn" ng-show="user.id == userId && !user.active" ng-click="setActive(true, user.id)">Activate</button>
                 <button class="btn" ng-show="user.id == userId && user.active" ng-click="setActive(false, user.id)">Deactivate</button>

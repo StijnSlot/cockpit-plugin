@@ -2,11 +2,9 @@
 
 define(['require', 'angular'], function(require, angular) {
     var controller = ["$scope", "Views", function($scope, Views) {
-        console.log("hi");
         $scope.viewProvider = Views.getProviders({
             component: 'cockpit.resources'
         });
-        console.log($scope.viewProvider);
     }];
 
     /**
@@ -16,7 +14,7 @@ define(['require', 'angular'], function(require, angular) {
         ViewsProvider.registerDefaultView('cockpit.navigation', {
             id: 'resources',
             label: 'Resources',
-            pagePath: '#/processes',
+            pagePath: '#/reports',
             controller: controller,
             weight: 10
         });
