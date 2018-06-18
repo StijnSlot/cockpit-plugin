@@ -72,7 +72,8 @@ define({
         util.addHoverFunctionality(html, util.variableNum);
         var id = util.commonOverlays.addTextElement(overlays, elementId, html, -5, -80);
         util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementId + "_variables");
-        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables", elementId, html);
+        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables",
+            elementId, html, util.commonOverlays.canvas);
         return id;
     },
 

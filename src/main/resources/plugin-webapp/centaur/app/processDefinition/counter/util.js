@@ -17,6 +17,7 @@ define({
       var viewer = control.getViewer();
       var overlays = viewer.get('overlays');
       var elementRegistry = viewer.get('elementRegistry');
+      util.commonOverlays.canvas = viewer.get('canvas');
 
       util.commonOverlays.clearOverlays(overlays, util.overlayIds);
 
@@ -79,7 +80,8 @@ define({
     var html = util.createHTML (executionSequenceCounter);
     util.overlayIds.push(util.commonOverlays.addTextElement(overlays, elementID, html, -5, 50));
     util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementID + "_counter");
-    util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementID + "_counter", elementID, html);
+    util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementID + "_counter",
+        elementID, html, util.commonOverlays.canvas);
   },
 
 

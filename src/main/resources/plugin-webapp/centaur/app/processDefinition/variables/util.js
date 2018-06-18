@@ -39,6 +39,7 @@ define({
         // get overlay and elements from the diagram
         var viewer = control.getViewer();
         var overlays = viewer.get('overlays');
+        util.commonOverlays.canvas = viewer.get('canvas');
         var elementRegistry = viewer.get('elementRegistry');
 
         // if not selected variables
