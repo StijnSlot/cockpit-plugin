@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cockpit.query.resource">
+  <resultMap id="users" type="org.camunda.bpm.cockpit.plugin.centaur.db.UserDto">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="firstName" column="FIRST_" jdbcType="VARCHAR" />
+    <result property="lastName" column="LAST_" jdbcType="VARCHAR" />
+    <result property="active" column="IS_ACTIVE_" jdbcType="BOOLEAN" />
+    <result property="assigned" column="IS_ASSIGNED_" jdbcType="BOOLEAN" />
+    <result property="lastChange" column="LAST_CHANGE_" jdbcType="TIMESTAMP" />
+    <result property="timeActive" column="TIME_ACTIVE_" jdbcType="BIGINT" />
+    <result property="timeIdle" column="TIME_IDLE_" jdbcType="BIGINT" />
+  </resultMap>
+
+  <resultMap id="assignees" type="org.camunda.bpm.cockpit.plugin.centaur.db.AssigneeDto">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="active" column="IS_ACTIVE_" jdbcType="BOOLEAN" />
+    <result property="prevAssigned" column="IS_ASSIGNED_" jdbcType="BOOLEAN" />
+    <result property="count" column="COUNT_" jdbcType="INTEGER" />
+  </resultMap>
+
+  <insert id="createTable">
+    CREATE TABLE IF NOT EXISTS ACT_RU_RESOURCE (
+      ID_ VARCHAR(64) PRIMARY KEY,
+      IS_ACTIVE_ BOOLEAN(1) NOT NULL DEFAULT FALSE,
+      IS_ASSIGNED_ BOOLEAN(1) NOT NULL DEFAULT FALSE,
+      LAST_CHANGE_ TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+      TIME_ACTIVE_ LONG NOT NULL DEFAULT 0,
+      TIME_IDLE_ LONG NOT NULL DEFAULT 0
+      )
+  </insert>
+
+  <insert id="addResourceIds">
+    INSERT INTO ACT_RU_RESOURCE(ID_)
+      (SELECT ID_
+       FROM ACT_ID_USER
+       WHERE ID_ NOT IN
+             (SELECT ID_ FROM ACT_RU_RESOURCE))
+  </insert>
+
+  <delete id="deleteResourceIds">
+    DELETE FROM ACT_RU_RESOURCE
+      WHERE ID_ NOT IN
+        (SELECT ID_ FROM ACT_ID_USER)
+  </delete>
+
+  <select id="selectUsers" resultMap="users">
+    SELECT a.ID_, a.FIRST_, a.LAST_, b.IS_ACTIVE_, b.IS_ASSIGNED_, b.LAST_CHANGE_, b.TIME_ACTIVE_, b.TIME_IDLE_
+    FROM ACT_ID_USER a
+      JOIN ACT_RU_RESOURCE b
+        ON a.ID_ = b.ID_
+    ORDER BY a.ID_
+  </select>
+
+  <update id="updateActive" parameterType="Map">
+    UPDATE ACT_RU_RESOURCE SET
+      IS_ACTIVE_ = #{parameter.active},
+
+      <if test="parameter.get('active') == 'false'">
+        TIME_ACTIVE_ = TIME_ACTIVE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
+        TIME_IDLE_ = (CASE IS_ASSIGNED_ WHEN TRUE THEN TIME_IDLE_ ELSE TIME_IDLE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP) END),
+      </if>
+
+      LAST_CHANGE_ = CURRENT_TIMESTAMP
+    WHERE ID_ = #{parameter.id}
+  </update>
+
+  <select id="selectAssigned" resultMap="assignees">
+    SELECT a.ID_, a.IS_ACTIVE_, a.IS_ASSIGNED_,
+      (SELECT COUNT(*)
+      FROM ACT_RU_TASK b
+      WHERE a.ID_ = b.ASSIGNEE_) AS COUNT_
+    FROM ACT_RU_RESOURCE a
+  </select>
+
+  <update id="updateAssigned" parameterType="Map">
+    UPDATE ACT_RU_RESOURCE SET
+      IS_ASSIGNED_ = #{parameter.assigned},
+
+      <if test="parameter.get('active') == 'true'">
+        TIME_ACTIVE_ = TIME_ACTIVE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
+        <if test="parameter.get('prevAssigned') == 'false'">
+          TIME_IDLE_ = TIME_IDLE_ + TIMESTAMPDIFF('MS', LAST_CHANGE_, CURRENT_TIMESTAMP),
+        </if>
+      </if>
+
+      LAST_CHANGE_ = CURRENT_TIMESTAMP
+    WHERE ID_ = #{parameter.id}
+  </update>
+
+</mapper>

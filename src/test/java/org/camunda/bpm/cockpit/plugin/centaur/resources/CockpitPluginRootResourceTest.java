@@ -25,10 +25,12 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
     private HttpServer server;
     private WebTarget target;
 
-    private String BASE_URI = "http://localhost:8000";
+
 
     @Before
     public void setUp() {
+        String BASE_URI = "http://localhost:8000";
+
         final ResourceConfig rc = new ResourceConfig().packages("org.camunda.bpm.cockpit.plugin.centaur.resources");
 
         server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
@@ -79,10 +81,19 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
         assertEquals(200, output.getStatus());
         assertNotNull(output.readEntity(List.class));
     }
+
     @Test
     public void orderStatisticsTest() {
         Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
                 getProcessEngine().getName() + "/order-statistics").request().get();
+        assertEquals(200, output.getStatus());
+              assertNotNull(output.readEntity(List.class));
+          }
+
+    @Test
+    public void getUsersTest() {
+        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
+                getProcessEngine().getName() + "/users").request().get();
         assertEquals(200, output.getStatus());
         assertNotNull(output.readEntity(List.class));
     }

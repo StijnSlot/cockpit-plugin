@@ -1,8 +1,10 @@
 'use strict';
 
-define(['require', 'angular',  './util'], function(require, angular) {
+define(['require', 'angular',  './util', '../../common/deletion'], function(require, angular) {
 
     var util = require('./util');
+
+    var deletion = require('../../common/deletion');
 
     var controller = ["$scope", "$http", "$q", "Uri", function($scope, $http, $q, Uri) {
 
@@ -16,10 +18,12 @@ define(['require', 'angular',  './util'], function(require, angular) {
                 var deleteButton = util.putDeleteButton();
 
                 $(deleteButton).click(function() {
-                    var ids = util.getSelectedIds();
-                    if(!ids.length) {
+                    var rows = deletion.getSelectedRows(".process-definitions-list > tbody > tr");
+
+                    if(!rows.length) {
                         alert("No process is selected.");
                     } else if(confirm("Are you sure you want to delete the selected processes?")) {
+                        var ids = util.getSelectedIds(rows);
                         util.deleteProcessDefinition($http, $q, Uri, ids);
                     }
                 });

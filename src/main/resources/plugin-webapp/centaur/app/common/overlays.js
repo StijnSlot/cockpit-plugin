@@ -1,5 +1,10 @@
 define({
     /**
+     * diagram canvas, contains zoom level
+     */
+    canvas: {},
+
+    /**
      * Adds html string of variable data to the bpmn element and return its id
      *
      * @param overlays      Collection of overlays to which can be added to
@@ -27,7 +32,7 @@ define({
      * Get the offset from localStorage and add to html DOM element
      *
      * @param html              Dom element
-     * @param localStorage      Localstorage containing offset
+     * @param localStorage      LocalStorage containing offset
      * @param prefix            prefix for localStorage item
      */
     setOffset: function(html, localStorage, prefix) {
@@ -48,10 +53,11 @@ define({
      * @param prefix            used for setting offset in localStorage
      * @param elementID         used for making element selected
      * @param html              Dom element which should drag
+     * @param canvas            contains zoom level
      */
-    addDraggableFunctionality: function(localStorage, prefix, elementID, html, highlight) {
+    addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas, highlight) {
         html.parentNode.classList.add("djs-draggable");
-        var click = {x: 0, y: 0};
+        var click = {};
 
         $(html.parentNode).draggable({
             stack: ".djs-overlay",
@@ -66,9 +72,8 @@ define({
                 click.y = event.clientY;
             },
             drag: function(event, ui) {
-                // get zoom level from the transport attribute from the viewport
-                // on drag, since the user could drag while zooming
-                var zoom = parseFloat($(".viewport").css("transform").split(',')[3]);
+                // get zoom level on drag, since the user could drag while zooming
+                var zoom = canvas.zoom();
 
                 // original position of draggable
                 var original = ui.originalPosition;
@@ -86,8 +91,8 @@ define({
                 }
 
                 // store settings in localStorage
-                localStorage.setItem(prefix + "_offset_top", $(html.parentNode).css("top"));
-                localStorage.setItem(prefix + "_offset_left", $(html.parentNode).css("left"));
+                localStorage.setItem(prefix + "_offset_top", html.parentNode.style.top);
+                localStorage.setItem(prefix + "_offset_left", html.parentNode.style.left);
             }
         });
     },

@@ -1,0 +1,41 @@
+<table class="process-instances cam-table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>State</th>
+            <th>Instance Id</th>
+            <th>Definition id</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="instance in instances">
+            <td>
+                <input type="checkbox"/>
+            </td>
+            <td>
+                <a state-circle=""
+                   incidents="instance.incidents"
+                   ng-href="#/process-instance/{{instance.id}}?tab=incidents-tab"
+                   class="circle circle-green">
+                </a>
+                <span class="badge badge-warning badge-suspended ng-scope"
+                      ng-show="instance.suspended"
+                      tooltip="Currently suspended"
+                      tooltip-placement="left">
+                    <span class="glyphicon glyphicon-pause white"></span>
+                </span>
+            </td>
+            <td class="instance-id" cam-widget-clipboard="instance.id">
+                <a ng-href="#/process-instance/{{instance.id}}"
+                   title="28b7c039-6af6-11e8-9971-104a7d534b93">
+                {{ instance.id }}
+                </a>
+            </td>{{ instance.id }}</td>
+            <td>{{ instance.definitionId}}</td>
+        </tr>
+    </tbody>
+</table>
+<button class="delete-process-button btn"
+        ng-click="handleDelete()">
+    Delete
+</button>

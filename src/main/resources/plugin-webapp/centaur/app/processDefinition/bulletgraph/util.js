@@ -40,7 +40,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_Bullet graph")) {
+        if (!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Bullet graph")) {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -143,7 +143,9 @@ define({
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html, true);
+
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph",
+                elementID, html, util.commonOverlays.canvas, true);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
             util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);

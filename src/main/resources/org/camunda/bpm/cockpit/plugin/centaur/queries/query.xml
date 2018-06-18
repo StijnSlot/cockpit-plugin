@@ -30,11 +30,12 @@
     <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT" />
   </resultMap>
 
-  <resultMap id="ExecutionSequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.ExecutionSequenceCounterDto">
-    <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
+  
+  <resultMap id="SequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.SequenceCounterDto">
+
     <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
-    <result property="long_" column="LONG_" jdbcType="BIGINT" />
+    <result property="counter" column="LONG_" jdbcType="BIGINT" />
   </resultMap>
 
   <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessVariablesDto">
@@ -44,9 +45,9 @@
   <resultMap id="activeInstances" type="org.camunda.bpm.cockpit.plugin.centaur.db.ActiveInstancesDto">
     <result property="instanceId" column="ACT_INST_ID_" jdbcType="VARCHAR" />
   </resultMap>
-
-  <select id="selectExecutionSequenceCounter" resultMap="ExecutionSequenceCounterMap">
-    SELECT DISTINCT a.ID_, a.ACT_ID_, b.NAME_, b.LONG_
+  
+  <select id="selectSequenceCounter" resultMap="SequenceCounterMap">
+    SELECT DISTINCT a.ACT_ID_, b.NAME_, b.LONG_
     FROM ACT_RU_VARIABLE b
       JOIN ACT_RU_EXECUTION a
     WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
@@ -104,5 +105,4 @@
     WHERE PROC_DEF_ID_ = #{parameter}
       AND IS_ACTIVE_ = TRUE
   </select>
-
 </mapper>
