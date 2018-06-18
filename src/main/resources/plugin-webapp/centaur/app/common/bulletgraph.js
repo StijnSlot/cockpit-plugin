@@ -81,7 +81,7 @@ define({
                 "markers": [markerBullet]
             }
         ];
-        var container = d3.select(newCSSClass).node().getBoundingClientRect();
+        d3.select(newCSSClass).node().getBoundingClientRect();
         var margin = { top: 5, right: 5, bottom: 15, left: 5 },
             width = 100 - margin.left - margin.right,
             height = 40 - margin.top - margin.bottom;
@@ -90,7 +90,7 @@ define({
           .width(width)
           .height(height);
 
-        var svg = d3.select(newCSSClass).selectAll("svg")
+        d3.select(newCSSClass).selectAll("svg")
           .data(data)
           .enter().append("svg")
           .attr("class", "bullet")
@@ -100,7 +100,7 @@ define({
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
           .call(chart);
 
-        var coloring = d3.select(newCSSClass).selectAll("rect.measure.s1")
+        d3.select(newCSSClass).selectAll("rect.measure.s1")
                 .attr("fill", colorBullet)
     },
 
