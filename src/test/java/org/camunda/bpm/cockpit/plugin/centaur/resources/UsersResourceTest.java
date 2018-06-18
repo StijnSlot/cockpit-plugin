@@ -27,7 +27,6 @@ public class UsersResourceTest extends AbstractCockpitPluginTest {
     private WebTarget target;
 
     private final String BASE_URI = "http://localhost:8000";
-
     @Before
     public void setUp() {
         final ResourceConfig rc = new ResourceConfig().packages("org.camunda.bpm.cockpit.plugin.centaur.resources");

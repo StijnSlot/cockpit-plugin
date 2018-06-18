@@ -23,11 +23,11 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
         configureTenantCheck(queryParameters);
 
-        return getQueryService().executeQuery("cockpit.query.selectUsers", queryParameters);
+        return getQueryService().executeQuery("cockpit.query.resource.selectUsers", queryParameters);
     }
 
     void createTable() {
-        getQueryService().executeQuery("cockpit.query.createTable", new QueryParameters<>());
+        getQueryService().executeQuery("cockpit.query.resource.createTable", new QueryParameters<>());
         setResources();
         setAssigned();
     }
@@ -38,12 +38,12 @@ public class UsersResource extends AbstractCockpitPluginResource {
     }
 
     private void setResources() {
-        getQueryService().executeQuery("cockpit.query.deleteResourceIds", new QueryParameters<>());
-        getQueryService().executeQuery("cockpit.query.addResourceIds", new QueryParameters<>());
+        getQueryService().executeQuery("cockpit.query.resource.deleteResourceIds", new QueryParameters<>());
+        getQueryService().executeQuery("cockpit.query.resource.addResourceIds", new QueryParameters<>());
     }
 
     private void setAssigned() {
-        List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.selectAssigned", new QueryParameters<>());
+        List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.resource.selectAssigned", new QueryParameters<>());
         for(AssigneeDto element : result) {
             boolean assigned = element.getCount() > 0;
             boolean prevAssigned = element.getPrevAssigned();
@@ -62,7 +62,7 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
             configureTenantCheck(queryParameters);
 
-            getQueryService().executeQuery("cockpit.query.updateAssigned", queryParameters);
+            getQueryService().executeQuery("cockpit.query.resource.updateAssigned", queryParameters);
         }
     }
 
@@ -81,6 +81,6 @@ public class UsersResource extends AbstractCockpitPluginResource {
 
         configureTenantCheck(queryParameters);
 
-        getQueryService().executeQuery("cockpit.query.updateActive", queryParameters);
+        getQueryService().executeQuery("cockpit.query.resource.updateActive", queryParameters);
     }
 }
