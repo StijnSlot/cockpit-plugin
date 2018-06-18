@@ -28,7 +28,6 @@ describe('instance history tests', function() {
             spy = sinon.spy(util, "setSortingArrows");
             util.flipSortOrder("endTime", util);
             util.flipSortOrder("duration", util);
-            console.log(util.order["duration"]);
             util.flipSortOrder("endTime", util);
         });
         after(function() {

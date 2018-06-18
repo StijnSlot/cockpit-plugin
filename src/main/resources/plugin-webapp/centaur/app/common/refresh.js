@@ -15,7 +15,6 @@ define({
         }
 
         util.poll = setInterval(function() {
-            console.log("as");
             /**
              * HTTP request that retrieves the list of instances
              * for the specified process definition id
@@ -30,13 +29,11 @@ define({
                         util.prevData = data;
                     }
 
-                    console.log("gu");
                     callback(data, util.prevData);
                 });
         }, util.refresh);
 
         $scope.$on("$destroy", function() {
-            console.log("asd");
             clearInterval(util.poll);
         });
     }
