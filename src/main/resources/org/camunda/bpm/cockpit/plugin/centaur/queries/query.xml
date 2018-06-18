@@ -25,7 +25,14 @@
     <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <resultMap id="orderStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.OrderStatisticsDto">
+    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT" />
+    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT" />
+  </resultMap>
+
+  
   <resultMap id="SequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.SequenceCounterDto">
+
     <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="counter" column="LONG_" jdbcType="BIGINT" />
@@ -76,13 +83,20 @@
       AND (#{parameter.procInstId} IS NULL OR #{parameter.procInstId} = b.PROC_INST_ID_)
   </select>
 
-  <select id="selectInstanceStartTime" resultMap="instanceStartTime">
+  <select id="selectInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
     SELECT a.ID_, b.ACT_ID_, b.START_TIME_
     FROM ACT_RU_EXECUTION a
       JOIN ACT_HI_ACTINST b
         ON a.ID_ = b.EXECUTION_ID_
     WHERE b.END_TIME_ IS NULL
-       AND a.IS_ACTIVE_ = TRUE
+      AND a.IS_ACTIVE_ = TRUE
+      AND (#{parameter} IS NULL OR a.PROC_DEF_ID_ = #{parameter})
+  </select>
+
+  <select id="selectOrderStatistics" resultMap="orderStatistics" parameterType="String">
+    SELECT MAX(DURATION_), AVG(DURATION_)
+    FROM ACT_HI_ACTINST
+    WHERE (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
   </select>
 
   <select id="selectActiveInstances" resultMap="activeInstances" parameterType="Map">

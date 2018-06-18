@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.camunda.bpm.cockpit.plugin</groupId>
@@ -7,24 +7,24 @@
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-    <name>Centaur - a Camunda Cockpit plugin</name>
-    <description>This is a plugin developed for the Camunda cockpit to give additional process information</description>
+  <name>Centaur - a Camunda Cockpit plugin</name>
+  <description>This is a plugin developed for the Camunda cockpit to give additional process information</description>
 
-    <properties>
-        <camunda.version>7.8.0</camunda.version>
+  <properties>
+    <camunda.version>7.8.0</camunda.version>
 
-        <!-- This property must be present for the pom.xml to be recognized as a plugin -->
-        <camunda.plugin.category>Visualization</camunda.plugin.category>
+    <!-- This property must be present for the pom.xml to be recognized as a plugin -->
+    <camunda.plugin.category>Visualization</camunda.plugin.category>
 
-        <camunda.plugin.testedOnVersion>7.8.0</camunda.plugin.testedOnVersion>
-        <camunda.plugin.language>EN</camunda.plugin.language>
+    <camunda.plugin.testedOnVersion>7.8.0</camunda.plugin.testedOnVersion>
+    <camunda.plugin.language>EN</camunda.plugin.language>
 
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jersey.version>2.26</jersey.version>
-    </properties>
+    <jersey.version>2.26</jersey.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -61,7 +61,7 @@
       <artifactId>jersey-media-json-jackson</artifactId>
       <version>${jersey.version}</version>
     </dependency>
-    
+
     <!-- test dependencies -->
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
@@ -98,7 +98,7 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- redirect slf4j logging to jdk logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -106,11 +106,11 @@
       <version>1.7.12</version>
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-compiler-javac</artifactId>
-          <version>2.2</version>
-      </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-compiler-javac</artifactId>
+      <version>2.2</version>
+    </dependency>
     <dependency>
       <groupId>org.jboss.spec.javax.ws.rs</groupId>
       <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>

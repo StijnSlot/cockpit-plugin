@@ -115,6 +115,8 @@ define({
     addOverlay: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
+            var cssClass = "durationText";
+
             // initialize the overlayActivityId array
             if(util.overlayActivityIds[elementID] === undefined)
                 util.overlayActivityIds[elementID] = [];
@@ -128,13 +130,14 @@ define({
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
+            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
+
             util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration",
-                elementID, html, util.commonOverlays.canvas);
+                elementID, html, util.commonOverlays.canvas, true);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
         }
