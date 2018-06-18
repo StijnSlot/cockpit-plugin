@@ -78,9 +78,14 @@ define({
              */
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
+                var startEvent = "";
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-                    console.log($scope.processActivityStatistics.data[0]);
-                    if ($scope.processActivityStatistics.data[0].id === element.id) {
+
+                    if (shape.type === "bpmn:StartEvent") {
+                        startEvent = shape.businessObject.id;
+                    }
+
+                    if ($scope.processActivityStatistics.data[i].id === startEvent) {
                         var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
                         var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
@@ -137,7 +142,7 @@ define({
 
             var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass);
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 0);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
             util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration", elementID, html, false);
