@@ -18,15 +18,15 @@ define({
      * @return  {Number}                duration as Integer
      */
     convertTimes: function (duration, choice) {
-        if (choice === 'seconds') {
+        if (choice === 's') {
             return (Math.round(duration / 1000 * 10) / 10);
-        } else if (choice === 'minutes') {
+        } else if (choice === 'm') {
             return (Math.round(duration / 60000 * 10) / 10);
-        } else if (choice === 'hours') {
+        } else if (choice === 'h') {
             return (Math.round(duration / 3600000 * 10) / 10);
-        } else if (choice === 'days') {
+        } else if (choice === 'd') {
             return (Math.round(duration / 86400000 * 10) / 10);
-        } else if (choice === 'weeks') {
+        } else if (choice === 'w') {
             return (Math.round(duration / 604800000 * 10) / 10);
         } else {
             return duration;
@@ -46,15 +46,15 @@ define({
      */
     checkTimeUnit: function (time) {
         if (time > 1000 && time < 60001) {
-            return 'seconds';
+            return 's';
         } else if (time > 60000 && time < 3600001) {
-            return 'minutes';
+            return 'm';
         } else if (time > 3600000 && time < 86400001) {
-            return 'hours';
+            return 'h';
         } else if (time > 86400000 && time < 604800001) {
-            return 'days';
+            return 'd';
         } else if (time > 604800000) {
-            return 'weeks';
+            return 'w';
         } else {
             return 'ms';
         }
