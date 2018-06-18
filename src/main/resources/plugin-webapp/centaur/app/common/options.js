@@ -65,12 +65,12 @@ define({
     },
 
     /**
-     * Sets checked attribute in variables in data according to localStorage
-     * If nothing is found localStorage, puts false there and sets checked to false
+     * Sets 'checked' attribute in variables in data according to localStorage.
+     * If nothing is found in localStorage, puts false there and sets 'checked' to false.
      *
-     * @param localStorage  contains user options
-     * @param prefix        used for naming the item in localStorage
-     * @param data          contains variables with checked attribute
+     * @param {Object}          localStorage  Contains the user options.
+     * @param {String}          prefix        Used for naming the item in localStorage.
+     * @param {Array<Number>}   data          Contains variables with 'checked' attribute.
      */
     setChecked: function (localStorage, prefix, data) {
         data.forEach(function (variable) {
@@ -86,12 +86,12 @@ define({
     },
 
     /**
-     * Changes variable options in localStorage and broadcasts this change
+     * Changes variable options in localStorage and broadcasts this change.
      *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param id            used for retrieving correct item
-     * @param checked       new item value
+     * @param {Object}  localStorage  Contains user options.
+     * @param {Object}  $rootScope    Used for broadcasting change.
+     * @param {String}  id            Used for retrieving the correct item.
+     * @param {Boolean} checked       New item value.
      */
     changeVar:  function (localStorage, $rootScope, id, checked) {
         localStorage.setItem(id, checked);
@@ -99,12 +99,12 @@ define({
     },
 
     /**
-     * Changes KPI options in localStorage and broadcasts this change
+     * Changes KPI options in localStorage and broadcasts this change.
      *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param id            used for retrieving correct item
-     * @param checked       new item value
+     * @param {Object}  localStorage  Contains user options.
+     * @param {Object}  $rootScope    Used for broadcasting change.
+     * @param {String}  id            Used for retrieving correct item.
+     * @param {Boolean} checked       New item value.
      */
     changeKPI: function (localStorage, $rootScope, id, checked) {
         localStorage.setItem(id, checked);
@@ -112,12 +112,12 @@ define({
     },
 
     /**
-     * Changes variable number in localStorage and broadcasts
+     *  Changes the value of a variable in localStorage and broadcasts this change.
      *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param id            used for retrieving correct item
-     * @param value         new item value
+     * @param {Object}  localStorage  Contains user options.
+     * @param {Object}  $rootScope    Used for broadcasting change.
+     * @param {String}  id            Used for retrieving correct item.
+     * @param {Boolean} value         New item value.
      */
     changeVarNum: function(localStorage, $rootScope, id, value) {
         localStorage.setItem(id, value);
@@ -125,12 +125,12 @@ define({
     },
 
     /**
-     * Changes variable refresh rate in localStorage and broadcast
+     * Changes variable refresh rate in localStorage and broadcasts this change.
      *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param id            used for retrieving correct item
-     * @param value         new item value
+     * @param {Object}  localStorage  Contains user options.
+     * @param {Object}  $rootScope    Used for broadcasting change.
+     * @param {String}  id            Used for retrieving correct item.
+     * @param {Number}  value         New item value.
      */
     changeVarRefreshRate: function(localStorage, $rootScope, id, value) {
         localStorage.setItem(id, value);
@@ -138,11 +138,11 @@ define({
     },
 
     /**
-     * Gets num value from localStorage, or sets it as default value
+     * Gets num value from localStorage, or sets it as default value.
      *
-     * @param localStorage  contains user optionsTab
-     * @param id            used for getting the optionsTab from localStorage
-     * @returns {number}
+     * @param   {Object}  localStorage  Contains user options.
+     * @param   {String}  id            Used for getting the options from localStorage.
+     * @returns {Number}
      */
     getVariableNum: function(localStorage, id) {
         var get = localStorage.getItem(id);
@@ -155,11 +155,11 @@ define({
     },
 
     /**
-     * Gets refresh rate value from localStorage, or sets its default value
+     * Gets refresh rate value from localStorage, or sets its default value.
      *
-     * @param localStorage  contains user optionsTab
-     * @param id            used for getting the optionsTab from localStorage
-     * @returns {number}
+     * @param   {Object}    localStorage  Contains user options.
+     * @param   {String}    id            Used for getting the options from localStorage.
+     * @returns {Number}
      */
     getRefreshRate: function(localStorage, id) {
         var get = localStorage.getItem(id);
@@ -172,23 +172,27 @@ define({
     },
 
     /**
-     * Removes all variables which are deselected by the user
-     * If undefined, assumes it is selected
+     * Returns if the variable with id is selected.
+     * If it is undefined, assume it is selected
      *
-     * @param localStorage  contains user optionsTab
-     * @param item          used for getting localStorage item option
+     * @param   {Object}      localStorage Contains user options.
+     * @param   {String}      id           Used for getting the options from localStorage.
+     * @returns {Boolean}                  True if variable with id is selectedm,
+     *                                     else False,
      */
-    isSelectedOption: function (localStorage, item) {
-        return localStorage.getItem(item) !== 'false';
+    isSelectedOption: function (localStorage, id) {
+        return localStorage.getItem(id) !== 'false';
     },
 
     /**
      * This function looks for each element if the instance is currently
      * on that element. When it is, it returns true, else false.
      * 
-     * @param   Object  instance    Instance of a process
-     * @param   String  elementId   ID of diagram element that represents instance
-     * @param   Number  instanceID  ID of diagram instance element that represents instance
+     * @param   {Array<Object>} instance    Instance of a process.
+     * @param   {String}        elementID   ID of diagram element that represents instance.
+     * @param   {Number}        instanceID  ID of diagram instance element that represents instance.
+     * @returns {Boolean}                   True if the instance is selected,
+     *                                      else False.
      */
     isSelectedInstance: function (instance, elementID, instanceID) {
         for (var j = 0; j < instance.length; j++) {
@@ -202,12 +206,12 @@ define({
     },
 
     /**
-     * Register for broadcast changes to variable options and call
+     * Register for broadcast changes to variable options and call the callbacks.
      *
-     * @param $scope            scope that can be destroyed
-     * @param $rootScope        rootScope that gives broadcasts
-     * @param subscriptions     array of strings with broadcast messages
-     * @param callback          callback functions that needs to be called on change
+     * @param {Object}          $scope          Local destroyable application context. 
+     * @param {Object}          $rootScope      Global application context that gives broadcasts
+     * @param {Array<String>}   subscriptions   Broadcast messages.
+     * @param {Array<Function>} callback        Callback functions that needs to be called on change.
      */
     register: function($scope, $rootScope, subscriptions, callback) {
         var unregisters = [];

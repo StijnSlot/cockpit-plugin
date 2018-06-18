@@ -1,5 +1,5 @@
 /**
- * Displays the current, average and maximal duration of a process onto the
+ * Displays the current, average and maximum duration of a process onto the
  * process diagram of Camunda.
  *
  * TODO: Description.

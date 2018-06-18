@@ -1,17 +1,16 @@
 define({
+
     /**
      * This function will check if the conditions to show the durations are
      * satisfied.
      *
      * The conditions to show the bulletgraph are satisfied if:
-     * - Average and maximu, duration variables are not equal to NULL
+     * - Average and maximum, duration variables are not equal to NULL.
      * - The average duration is not equal to '0'.
      *
-     * @param   Number  minDuration   minimal duration of process
-     * @param   Number  avgDuration   average duration of process
-     * @param   Number  maxDuration   maximal duration of process
-     * @param   Number  curDuration   current duration of process
-     * @return  Boolean               if condtions are satisfied or not
+     * @param   {Number}  avgDuration   Average duration of process.
+     * @param   {Number}  maxDuration   Maximum duration of process.
+     * @return  {Boolean}               If conditions are satisfied or not.
      */
     checkConditions: function (avgDuration, maxDuration) {
         return avgDuration != null && maxDuration != null && avgDuration != '0';
@@ -19,11 +18,11 @@ define({
 
     /**
      * This function checks if the current duration is not equal to null. 
-     * If the durrent duration is equal to null it should display a '-'.
+     * If the current duration is equal to null it should display a '-'.
      * 
-     * @param   Object  util          object of this class, to call its functions and variables
-     * @param   Number  curDuration   current duration of process
-     * @return  String                either current duration or '-'
+     * @param   {Object}  util          Object of this class, to call its functions and variables.
+     * @param   {Number}  curDuration   Current duration of process.
+     * @return  {String}                Either the current duration or a '-'.
      */
     checkIfCurValid: function (util, curDuration) {
         if (curDuration != null) {
@@ -35,18 +34,19 @@ define({
     },
 
     /**
-     * Creates an the HTML needed to display the duration. This function also checks if something is 
+     * Creates an HTML element needed to display the duration. This function also checks if something is 
      * selected in the options tab.
      * 
-     * @param   Object  util            object of this class, to call its functions and variables
-     * @param   Object  $window         browser window containing localStorage
-     * @param   String  curDurationHTML string to display with the current duration
-     * @param   String  avgDurationHTML string to display with the average duration
-     * @param   String  maxDurationHTML string to display with the maximum duration
-     * @return  String                  string which represents an HTML line which will be added later to the document
+     * @param   {Object}  util            Object of this class, to call its functions and variables.
+     * @param   {Object}  $window         Browser window containing localStorage.
+     * @param   {String}  curDurationHTML String to containing the current duration.
+     * @param   {String}  avgDurationHTML String to containing the average duration.
+     * @param   {String}  maxDurationHTML String to containing the maximum duration.
+     * @return  {String}                  String which represents an HTML line which will later on be added to the document.
      */
     createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
         var data = {};
+        
         if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
             data['cur'] = {value: curDurationHTML};
         }

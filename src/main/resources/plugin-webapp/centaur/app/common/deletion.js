@@ -1,9 +1,10 @@
 define({
+
     /**
-     * Gets the selected ids from the process definitions list
+     * Gets the selected ids from the process definitions list.
      *
-     * @param   selector    a jquery selector string for finding the checkboxes
-     * @returns {Array}     of process definition ids that are selected
+     * @param   {String}        selector    A jQuery selector string for finding the checkboxes.
+     * @returns {Array<String>}             The process definition ids that are selected.
      */
     getSelectedRows: function(selector) {
         var out = [];

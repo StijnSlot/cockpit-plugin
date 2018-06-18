@@ -5,14 +5,14 @@ define({
     canvas: {},
 
     /**
-     * Adds html string of variable data to the bpmn element and return its id
+     * Adds HTML string of variable data to the BPMN element and return its id.
      *
-     * @param overlays      Collection of overlays to which can be added to
-     * @param elementId     Id of element where we add overlay
-     * @param html          DOM element of overlay
-     * @param bottom        the right offset
-     * @param left          the left offset
-     * @returns {int}
+     * @param   {Array<Object>} overlays      Collection of overlays which can be added to.
+     * @param   {String}        elementId     Id of element where we add overlay.
+     * @param   {Object}        html          DOM element of overlay.
+     * @param   {Number}        bottom        The vertical offset.
+     * @param   {Number}        left          The horizontal offset.
+     * @returns {Number}
      */
     addTextElement: function (overlays, elementId, html, bottom, left) {
         return overlays.add(elementId, {
