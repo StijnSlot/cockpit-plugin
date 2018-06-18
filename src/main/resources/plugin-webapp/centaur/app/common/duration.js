@@ -58,7 +58,7 @@ define({
         }
 
         var html = document.createElement('div');
-        html.className = "durationText";
+        html.classList.add("custom-overlay", "durationText");
         html.appendChild(util.commonVariables.createVariableUl(data));
 
         return html;

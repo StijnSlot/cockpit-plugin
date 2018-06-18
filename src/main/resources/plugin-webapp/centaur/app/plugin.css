@@ -1,3 +1,19 @@
+.custom-overlay {
+    font-size: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-overlay ul {
+    list-style-type: none;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+
+.custom-overlay b {
+    color: red;
+}
+
 .highlight-overlay-green {
     background-color: green; /* color elements as green */ 
     opacity: 0.4;
@@ -32,11 +48,6 @@
     width: 70px;
 }
 
-.durationText ul {
-    list-style-type: none;
-    padding: 0 0 0 0;
-}
-
 
 
 /*  --Bulletgraph--  */
@@ -60,24 +71,15 @@
 .variableTextSmall {
     font-size: 7px;
     width: 130px;
-    display: flex;
-    flex-direction: column;
     border: 1px solid transparent;
 }
 
 .variableTextSmall ul {
-    list-style-type: none;
-    padding: 0 0 0 0;
-    width: 100%;;
     margin-bottom: 5px;
 }
 
 .variableTextSmall > ul:last-child {
     margin-bottom: 0;
-    /*content: '';
-    position: absolute;
-    width: 60%;
-    height: 5px;*/
 }
 
 .variableTextSmall li {
@@ -86,39 +88,21 @@
     text-overflow: ellipsis;
 }
 
-.variableTextSmall b {
-    color: red;
-}
-
 .variableTextFull {
-    font-size: 7px;
     width: 150px;
     max-height: 150px;
-    display: flex;
-    flex-direction: column;
     border: 1px solid black;
     overflow-y: scroll;
     background-color: white;
 }
 
 .variableTextFull ul {
-    list-style-type: none;
     margin-left: 5px;
-    padding: 0 0 0 0;
     margin-bottom: 5px;
-    width: 100%;
 }
 
 .variableTextFull > ul:last-child {
     margin-bottom: 0;
-    /*content: '';
-    position: absolute;
-    width: 60%;
-    height: 5px;*/
-}
-
-.variableTextFull b {
-    color: red;
 }
 
 .variableTextFull .dots {
@@ -154,5 +138,8 @@
 
 .total-count-box {
     display: inline-block;
+}
 
+.counter-text {
+    width: 60px;
 }
