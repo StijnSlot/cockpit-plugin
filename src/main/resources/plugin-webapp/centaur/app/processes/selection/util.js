@@ -38,27 +38,6 @@ define({
     },
 
     /**
-     * Gets the selected ids from the process definitions list
-     *
-     * @returns {Array}     of process definition ids that are selected
-     */
-    getSelectedIds: function() {
-        var out = [];
-
-        $(".process-definitions-list > tbody > tr").each(function() {
-            if($(this).find('input').is(':checked')) {
-                var link = $(this).find('.name > a').prop("href");
-                if(link !== undefined) {
-                    var id = link.split('/').pop();
-                    out.push(id);
-                }
-            }
-        });
-
-        return out;
-    },
-
-    /**
      * delete the process definition ids in the camunda database and reload page
      *
      * @param {Object}  $http   http object to make requests
@@ -75,5 +54,25 @@ define({
         $q.all(requestArr).then(function() {
             window.location.reload();
         });
+    },
+
+    /**
+     * Gets ids from jquery rows
+     *
+     * @param rows      jquery object containing multiple html rows
+     * @return {Array}
+     */
+    getSelectedIds: function(rows) {
+        var out = [];
+
+        $(rows).each(function() {
+            var link = $(this).find('.name > a').prop("href");
+            if(link !== undefined) {
+                var id = link.split('/').pop();
+                out.push(id);
+            }
+        });
+
+        return out;
     }
 });

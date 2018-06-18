@@ -13,12 +13,10 @@ global.$ = require('jquery');
 
 describe('Common conversion tests', function () {
     var util;
-    var commonConversion;
 
     before(function (done) {
         requirejs(['main/resources/plugin-webapp/centaur/app/common/conversion'], function (utl) {
             util = utl;
-            util.commonConversion - utl;
             done();
         });
     });
