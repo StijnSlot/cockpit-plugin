@@ -140,6 +140,10 @@
     display: inline-block;
 }
 
+.active-btn {
+    width: 100px;
+}
+
 .counter-text {
     width: 60px;
 }

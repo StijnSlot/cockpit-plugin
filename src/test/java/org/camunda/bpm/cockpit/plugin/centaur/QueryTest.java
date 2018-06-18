@@ -62,11 +62,85 @@ public class QueryTest extends AbstractCockpitPluginTest {
     @Test
     public void testRefreshResource() {
         List<ProcessVariablesDto> result =
-                getQueryService()
-                        .executeQuery(
-                                "cockpit.query.selectActiveInstances",
-                                new QueryParameters<>());
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectActiveInstances",
+                    new QueryParameters<>());
 
         Assert.assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testCreateTable() {
+        getQueryService()
+            .executeQuery(
+                "cockpit.query.createTable",
+                new QueryParameters<>());
+    }
+
+    @Test
+    public void testAddResourceIds() {
+        getQueryService()
+            .executeQuery(
+                "cockpit.query.addResourceIds",
+                new QueryParameters<>());
+    }
+    @Test
+    public void testdeleteResourceIds() {
+        getQueryService()
+            .executeQuery(
+                "cockpit.query.deleteResourceIds",
+                new QueryParameters<>());
+    }
+
+    @Test
+    public void testSelectUsers() {
+        List<UserDto> result =
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectUsers",
+                    new QueryParameters<>());
+
+        Assert.assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testUpdateActive() {
+        QueryParameters<Object> parameters = new QueryParameters<>();
+        HashMap<String, String> param = new HashMap<>();
+        param.put("id", "test");
+        param.put("active", "false");
+        parameters.setParameter(param);
+
+        getQueryService()
+            .executeQuery(
+                "cockpit.query.updateActive",
+                parameters);
+    }
+
+    @Test
+    public void testSelectAssigned() {
+        List<AssigneeDto> result =
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectAssigned",
+                    new QueryParameters<>());
+
+        Assert.assertEquals(0, result.size());
+    }
+
+    @Test
+    public void testUpdateAssigned() {
+        QueryParameters<Object> parameters = new QueryParameters<>();
+        HashMap<String, String> param = new HashMap<>();
+        param.put("id", "test");
+        param.put("active", "true");
+        param.put("prevAssigned", "false");
+        parameters.setParameter(param);
+
+        getQueryService()
+            .executeQuery(
+                "cockpit.query.updateAssigned",
+                    parameters);
     }
 }

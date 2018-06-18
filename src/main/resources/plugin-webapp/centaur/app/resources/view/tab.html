@@ -1,0 +1,38 @@
+<div>
+    <h4>Resources</h4>
+    <table class="cam-table">
+        <thead>
+        <tr>
+            <th>Active</th>
+            <th>Assigned</th>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Up time</th>
+            <th>Utilization rate</th>
+            <th>Idle rate</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="user in users">
+            <td>
+                <div state-circle class="circle circle-green" ng-show="user.active"></div>
+            </td>
+            <td>
+                <div state-circle class="circle circle-green" ng-show="user.assigned"></div>
+            </td>
+            <td>{{ user.id }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ convertTimes(user.timeActive) }}</td>
+            <td>{{ calcUtilPerc(user) | number : 2}}%</td>
+            <td>{{ calcIdlePerc(user) | number : 2}}%</td>
+            <td>
+                <button class="btn active-btn" ng-show="user.id == userId && !user.active" ng-click="setActive(true, user.id)">Activate</button>
+                <button class="btn active-btn" ng-show="user.id == userId && user.active" ng-click="setActive(false, user.id)">Deactivate</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

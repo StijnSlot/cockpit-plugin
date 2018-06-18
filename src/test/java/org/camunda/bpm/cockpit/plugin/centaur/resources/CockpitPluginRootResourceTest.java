@@ -79,4 +79,12 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
         assertEquals(200, output.getStatus());
         assertNotNull(output.readEntity(List.class));
     }
+
+    @Test
+    public void getUsersTest() {
+        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
+                getProcessEngine().getName() + "/users").request().get();
+        assertEquals(200, output.getStatus());
+        assertNotNull(output.readEntity(List.class));
+    }
 }
