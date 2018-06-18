@@ -32,46 +32,38 @@ define(['require', 'angular', '../../common/options'], function(require, angular
             /**
              * subscribe to any broadcast variable refresh changes
              */
-            var listener = $rootScope.$on("cockpit.plugin.centaur:options:var-refresh-change", function() {
+            commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:var-refresh-change"], function(){
                 refresh = commonOptions.getRefreshRate($window.localStorage, procDefId + "_var_refresh")*1000;
-            });
-
-            $scope.$on("$destroy", function() {
-                listener();
             });
 
             /**
              * Polling function that gets called every set seconds
              */
-            var poll = function() {
-                $timeout(function() {
-                    /**
-                     * HTTP request that retrieves the list of instances
-                     * for the specified process definition id
-                     */
-                    $http.get(Uri.appUri("plugin://centaur/:engine/refresh" +
-                        "?procDefId=" + procDefId))
-                        .success(function(data) {
+            var poll = setInterval(function() {
+                $scope.$on("$destroy", function() {
+                    clearInterval(poll);
+                });
 
-                            // check if we have a set reference instance list
-                            if (previousInstances == null) {
-                                previousInstances = data;
-                            }
+                /**
+                 * HTTP request that retrieves the list of instances
+                 * for the specified process definition id
+                 */
+                $http.get(Uri.appUri("plugin://centaur/:engine/refresh" +
+                    "?procDefId=" + procDefId))
+                    .success(function(data) {
 
-                            /**
-                             * refresh if the stored reference list does not equal
-                             * the retrieved list
-                             */
-                            if (!angular.equals(previousInstances, data)) {
-                                window.location.reload(true);
-                            }
-                        });
-                    // call poll again
-                    poll();
+                        // check if we have a set reference instance list
+                        if (previousInstances == null) {
+                            previousInstances = data;
+                            return;
+                        }
+
+                        //refresh if the stored reference list does not equal the retrieved list
+                        if (!angular.equals(previousInstances, data)) {
+                            window.location.reload(true);
+                        }
+                    });
                 }, refresh);
-            };
-            // initial call to poll function
-            poll();
         }
     ];
 
