@@ -15,7 +15,8 @@ public class CockpitPlugin extends AbstractCockpitPlugin {
 
 	@Override
 	public List<String> getMappingFiles() {
-	    return Arrays.asList("org/camunda/bpm/cockpit/plugin/centaur/queries/query.xml");
+	    return Arrays.asList("org/camunda/bpm/cockpit/plugin/centaur/queries/query.xml",
+			"org/camunda/bpm/cockpit/plugin/centaur/queries/resourceQuery.xml");
 	}
 
 	@Override
