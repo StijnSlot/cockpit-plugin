@@ -15,10 +15,11 @@ describe('Common variables tests', function() {
     describe('addVariables tests', function() {
         var sandbox = sinon.createSandbox();
         var stub1, stub2;
-        var spy1, spy2;
+        var spy1;
         var http;
 
-        beforeEach(function() {spy1 = sandbox.spy(); spy2 = sandbox.spy();
+        beforeEach(function() {
+            spy1 = sandbox.spy();
             stub1 = sandbox.stub(util);
             util.addVariables.restore();
             util.handleVariableData.restore();
@@ -26,7 +27,7 @@ describe('Common variables tests', function() {
             stub1.createVariableDiv.returns(document.createElement('DIV'));
             util.procDefId = "asdf1234";
             util.commonOptions = {isSelectedOption: sinon.stub().returns(true), getVariableNum: sinon.spy()};
-            util.commonOverlays = {clearOverlays: spy2, setOffset: sinon.spy()};
+            util.commonOverlays = {clearOverlays: spy1, setOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {
                     var instances = [{id: "test"}, {id: "hello"}];
@@ -36,7 +37,7 @@ describe('Common variables tests', function() {
             var request1 = function() {return "x"};
             var request2 = function() {return "y"};
 
-            var $q = {all: function(x) { return {then: function(x) { x();}}}};
+            var $q = {all: function() { return {then: function(x) { x();}}}};
 
             var viewer = {get: function(x) {
                 if(x === 'elementRegistry') return [{businessObject: {id: 1}}];
@@ -57,7 +58,7 @@ describe('Common variables tests', function() {
             expect(stub1.createVariableDiv.callCount).to.eql(1);
         });
         it('should call clearOverlays', function() {
-            expect(spy2.callCount).to.eql(1);
+            expect(spy1.callCount).to.eql(1);
         });
         it('should call finishData', function() {
             expect(stub1.finishElement.callCount).to.eql(1);

@@ -26,16 +26,15 @@ define(['require', 'angular', '../../common/overlays', '../../common/variables',
                     instance.id + "/variables")
             };
 
-            var addInstanceVar = function() {
+            var addProcessVariables = function() {
                 commonVariable.addVariables($window.localStorage, $q, $http, control, processDiagram, request1, request2, commonVariable)
             };
-            addInstanceVar();
+            addProcessVariables();
 
-            var subscriptions =
-                ["cockpit.plugin.centaur:options:variable-change",
-                    "cockpit.plugin.centaur:options:var-num-change",
+            // add subscriptions to changes in the options
+            var subscriptions = ["cockpit.plugin.centaur:options:variable-change", "cockpit.plugin.centaur:options:var-num-change",
                     "cockpit.plugin.centaur:options:KPI-change"];
-            commonOptions.register($scope, $rootScope, subscriptions, addInstanceVar);
+            commonOptions.register($scope, $rootScope, subscriptions, addProcessVariables);
         }
     ];
 
