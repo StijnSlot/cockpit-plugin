@@ -1,5 +1,5 @@
 /**
- * Displays a bulletgraph which contains the current, average and maximal duration
+ * Displays a bulletgraph which contains the current, average and maximum duration
  * of a process onto the process diagram of Camunda.
  *
  * @author Lukas Ant.
@@ -51,8 +51,8 @@ define(['require', 'angular', '../../common/bulletlibraries', './util', '../../c
      * Overlay object that contains the elements put on the diagram
      */
     var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
-        function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
+        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+        function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             var elementRegistry = viewer.get('elementRegistry');
@@ -66,7 +66,7 @@ define(['require', 'angular', '../../common/bulletlibraries', './util', '../../c
             };
             putBulletGraph();
 
-            util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
+            util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
         }
     ];
 

@@ -37,7 +37,7 @@ define({
 
         util.commonOverlays.clearOverlays(overlays, util.overlayIds);
 
-        if(!util.commonOptions.isSelectedOption(localStorage, util.procDefId + "_KPI_Counter")) {
+        if(util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "counter") === "false") {
           return;
         }
 

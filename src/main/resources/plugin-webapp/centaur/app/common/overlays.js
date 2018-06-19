@@ -1,18 +1,18 @@
 define({
     /**
-     * diagram canvas, contains zoom level
+     * Diagram canvas, contains the zoom level.
      */
     canvas: {},
 
     /**
-     * Adds html string of variable data to the bpmn element and return its id
+     * Adds HTML string of variable data to the BPMN element and return its id.
      *
-     * @param overlays      Collection of overlays to which can be added to
-     * @param elementId     Id of element where we add overlay
-     * @param html          DOM element of overlay
-     * @param bottom        the right offset
-     * @param left          the left offset
-     * @returns {int}
+     * @param   {Array<Object>} overlays      Collection of overlays which can be added to.
+     * @param   {String}        elementId     Id of element where we add overlay.
+     * @param   {Object}        html          DOM element of overlay.
+     * @param   {Number}        bottom        The vertical offset.
+     * @param   {Number}        left          The horizontal offset.
+     * @returns {Number}
      */
     addTextElement: function (overlays, elementId, html, bottom, left) {
         return overlays.add(elementId, {
@@ -29,11 +29,11 @@ define({
     },
 
     /**
-     * Get the offset from localStorage and add to html DOM element
+     * Get the offset from localStorage and add to HTML DOM element.
      *
-     * @param html              Dom element
-     * @param localStorage      LocalStorage containing offset
-     * @param prefix            prefix for localStorage item
+     * @param {Object}  html              DOM element.
+     * @param {Object}  localStorage      LocalStorage containing offset.
+     * @param {String}  prefix            Prefix for localStorage item.
      */
     setOffset: function(html, localStorage, prefix) {
         var offsetTop = localStorage.getItem(prefix + "_offset_top");
@@ -47,13 +47,13 @@ define({
     },
 
     /**
-     * Makes html draggable and sets it in localStorage
+     * Makes HTML draggable and sets it in localStorage.
      *
-     * @param localStorage      used for storing offset
-     * @param prefix            used for setting offset in localStorage
-     * @param elementID         used for making element selected
-     * @param html              Dom element which should drag
-     * @param canvas            contains zoom level
+     * @param {Object}  localStorage      Used for storing offset.
+     * @param {String}  prefix            Used for setting offset in localStorage.
+     * @param {String}  elementID         Used for making element selected.
+     * @param {Object}  html              DOM element which should drag.
+     * @param {Object}  canvas            Contains zoom level.
      */
     addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas, highlight) {
         html.parentNode.classList.add("djs-draggable");
@@ -101,17 +101,17 @@ define({
     },
 
     /**
-     * Clears all overlays whose id is stored in overlayIds
+     * Clears all overlays whose ID is stored in overlayIDs.
      *
-     * @param overlays          overlays object containing all processDefinition overlays
-     * @param overlayIds        ids of overlays which should be removed
+     * @param {Object}          overlays          Overlays object containing all processDefinition overlays.
+     * @param {Array<String>}   overlayIDs        ID's of overlays which should be removed.
      */
-    clearOverlays: function (overlays, overlayIds) {
-        if(overlays === undefined || overlayIds === undefined) return;
+    clearOverlays: function (overlays, overlayIDs) {
+        if(overlays === undefined || overlayIDs === undefined) return;
 
-        overlayIds.forEach(function (element) {
+        overlayIDs.forEach(function (element) {
             overlays.remove(element);
         });
-        overlayIds.length = 0;
+        overlayIDs.length = 0;
     }
 });
