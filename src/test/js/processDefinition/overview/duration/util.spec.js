@@ -1,8 +1,8 @@
-describe('bulletGraph process instance tests', function() {
+describe('duration process definition tests', function() {
     var util;
 
     before(function(done) {
-        requirejs(['main/resources/plugin-webapp/centaur/app/processInstance/bulletgraph/util'], function(utl) {
+        requirejs(['main/resources/plugin-webapp/centaur/app/processDefinition/overview/duration/util'], function(utl) {
             util = utl;
             done();
         });
@@ -12,3 +12,7 @@ describe('bulletGraph process instance tests', function() {
         expect(util).to.exist;
     });
 });
+
+
+
+

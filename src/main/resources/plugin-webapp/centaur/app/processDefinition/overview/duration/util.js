@@ -134,20 +134,20 @@ define({
             // clear any current overlays displayed
             util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
-            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
-            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
+            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration, false);
+            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration, false);
             var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass);
+            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass, "order");
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 0);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -80);
 
-            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "duration");
+            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "overview_duration");
 
             var setOffset = function(top, left) {
-                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "duration", top, left);
+                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "overview_duration", top, left);
             };
             util.commonOverlays.addDraggableFunctionality(html, elementID, util.commonOverlays.canvas, false, setOffset);
 

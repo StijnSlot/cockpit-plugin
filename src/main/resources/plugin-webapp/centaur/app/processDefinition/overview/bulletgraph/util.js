@@ -40,7 +40,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "bulletGraph") === "false") {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "order_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -143,7 +143,7 @@ define({
             // clear any current overlays displayed
             util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
             
-            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration);
+            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
             var minDuration = util.commonConversion.convertTimes(minDuration, timeChoice);
             var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
             var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
@@ -152,12 +152,12 @@ define({
 
             var html = util.commonBulletgraph.createHTML(cssClass);
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 70);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "bulletGraph");
+            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "overview_bulletgraph");
 
             var setOffset = function(top, left) {
-                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "bulletGraph", top, left);
+                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "overview_bulletgraph", top, left);
             };
             util.commonOverlays.addDraggableFunctionality(elementID, html, util.commonOverlays.canvas, false, setOffset);
 
