@@ -40,7 +40,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "bulletGraph") === "false") {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "order_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -152,10 +152,10 @@ define({
 
             var html = util.commonBulletgraph.createHTML(cssClass);
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 70);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph",
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_overview_bulletgraph");
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_overview_bulletgraph",
                 elementID, html, util.commonOverlays.canvas, false);
 
             util.overlayActivityIds[elementID].push(newOverlayId);

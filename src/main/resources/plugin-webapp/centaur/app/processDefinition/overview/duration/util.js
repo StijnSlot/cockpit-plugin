@@ -140,12 +140,12 @@ define({
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass);
+            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass, "order");
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 0);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -80);
 
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration",
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_overview_duration");
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_overview_duration",
                 elementID, html, util.commonOverlays.canvas, false);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
