@@ -123,8 +123,8 @@ define({
             // clear any current overlays displayed
             util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
-            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
-            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
+            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration, false);
+            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration, false);
             var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);

@@ -48,7 +48,7 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
         };
 
         $scope.convertTimes = function(millis) {
-            var unit = conversion.checkTimeUnit(millis);
+            var unit = conversion.checkTimeUnit(millis, true);
             var time = conversion.convertTimes(millis, unit);
 
             return time + " " + unit;

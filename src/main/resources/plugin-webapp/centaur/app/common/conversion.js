@@ -42,6 +42,7 @@ define({
      * hours, days, weeks) should be used.
      *
      * @param   {Number}  time      duration of process
+     * @param   {Boolean} longUnit  if long version of the unit should be shown
      * @return  {String}            time unit choice
      */
     checkTimeUnit: function (time, longUnit) {
