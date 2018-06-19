@@ -40,7 +40,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (!util.commonOptions.isSelectedVariable($window.localStorage, util.procDefId + "_KPI_Bullet graph")) {
+        if (!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Bullet graph")) {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -83,7 +83,6 @@ define({
              * @param   Object  shape   shape of element
              */
             elementRegistry.forEach(function (shape) {
-                console.log(shape);
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 var startEvent = "";
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
@@ -99,10 +98,6 @@ define({
                         var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
                         var getCurDuration = util.commonConversion.calculateAvgCurDurationOfAllInstances(util.commonConversion, $scope.instanceStartTime.data);
                         var getMinDuration = 12;
-
-                        console.log(getMaxDuration);
-                        console.log(getCurDuration);
-                        console.log(getAvgDuration);
 
                         util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;
@@ -160,7 +155,8 @@ define({
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 70);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph", elementID, html, false);
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph",
+                elementID, html, util.commonOverlays.canvas, false);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
             util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);

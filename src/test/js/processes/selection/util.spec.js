@@ -1,16 +1,3 @@
-'use strict';
-
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs  = require('requirejs');
-requirejs.config({
-    baseUrl: '.'
-});
-
-global.window = window;
-global.$ = require('jquery');
-
 describe('processes selection tests', function() {
     var util;
 

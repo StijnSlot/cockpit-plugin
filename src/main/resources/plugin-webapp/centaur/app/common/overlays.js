@@ -58,6 +58,7 @@ define({
     addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas, highlight) {
         html.parentNode.classList.add("djs-draggable");
         var click = {};
+        var zoom = 1;
 
         $(html.parentNode).draggable({
             stack: ".djs-overlay",
@@ -73,7 +74,9 @@ define({
             },
             drag: function(event, ui) {
                 // get zoom level on drag, since the user could drag while zooming
-                var zoom = canvas.zoom();
+                if(canvas !== undefined) {
+                    zoom = canvas.zoom();
+                }
 
                 // original position of draggable
                 var original = ui.originalPosition;

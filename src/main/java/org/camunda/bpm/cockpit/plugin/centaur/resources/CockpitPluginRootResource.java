@@ -35,19 +35,6 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
         }, 0, 10000);
       }
     }
-
-  }
-
-  @GET
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getIt() {
-    return "Got it!";
-  }
-
-  @Path("{engineName}/process-instance")
-  public ProcessStatisticsResource getProcessInstanceResource(
-          @PathParam("engineName") String engineName) {
-    return subResource(new ProcessStatisticsResource(engineName), engineName);
   }
 
   @Path("{engineName}/process-activity")

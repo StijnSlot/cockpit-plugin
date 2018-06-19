@@ -145,7 +145,8 @@ define({
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 0);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration", elementID, html, false);
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration",
+                elementID, html, util.commonOverlays.canvas, false);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
         }

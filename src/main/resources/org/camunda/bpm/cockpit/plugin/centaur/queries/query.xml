@@ -3,14 +3,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cockpit.query">
-  <resultMap id="processStatisticsMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessStatisticsDto">
-    <result property="id" column="ID_" jdbcType="VARCHAR" />
-    <result property="name" column="NAME_" jdbcType="VARCHAR" />
-    <result property="instanceCount" column="INSTANCES_" jdbcType="BIGINT" />
-    <result property="maxDuration" column="MAXDURATION_" jdbcType="BIGINT" />
-    <result property="maxFrequency" column="FREQUENCY_" jdbcType="BIGINT" />
-  </resultMap>
-
   <resultMap id="processActivityStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessActivityDto">
     <result property="id" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="BIGINT" />
@@ -53,24 +45,12 @@
     WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
   </select>
 
-  <select id="selectProcessStatistics" resultMap="processStatisticsMap">
-    SELECT d.ID_, d.NAME_, COUNT(e.PROC_INST_ID_) INSTANCES_,
-        (SELECT MAX(f.DURATION_) FROM ACT_HI_ACTINST f WHERE f.PROC_DEF_ID_ = d.ID_)
-      MAXDURATION_,
-        (SELECT MAX(tmp) FROM
-          (SELECT PROC_DEF_ID_, COUNT(ACT_ID_) tmp FROM ACT_HI_ACTINST GROUP BY PROC_DEF_ID_, ACT_ID_) f
-        WHERE f.PROC_DEF_ID_ = d.ID_)
-      FREQUENCY_
-    FROM ACT_RU_EXECUTION e
-      JOIN ACT_RE_PROCDEF d
-        ON e.PROC_DEF_ID_ = d.ID_
-    GROUP BY d.ID_
-  </select>
-
   <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
     SELECT ACT_ID_, COUNT(ACT_NAME_), AVG(DURATION_), MIN(DURATION_), MAX(DURATION_)
     FROM ACT_HI_ACTINST
-    WHERE PROC_DEF_ID_ = #{parameter}
+    WHERE ACT_TYPE_ NOT LIKE '%Event%'
+      AND ACT_TYPE_ NOT LIKE '%Gateway%'
+      AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
     GROUP BY ACT_NAME_
   </select>
 
@@ -79,7 +59,7 @@
     FROM ACT_RU_VARIABLE a
       JOIN ACT_RU_EXECUTION b
         ON a.EXECUTION_ID_ = b.ID_
-    WHERE b.PROC_DEF_ID_ = #{parameter.procDefId}
+    WHERE (#{parameter.procDefId} IS NULL OR b.PROC_DEF_ID_ = #{parameter.procDefId})
       AND (#{parameter.procInstId} IS NULL OR #{parameter.procInstId} = b.PROC_INST_ID_)
   </select>
 
@@ -102,8 +82,8 @@
   <select id="selectActiveInstances" resultMap="activeInstances" parameterType="Map">
     SELECT ACT_INST_ID_
     FROM ACT_RU_EXECUTION
-    WHERE (#{parameter.procDefId} IS NULL OR PROC_DEF_ID_ = #{parameter.procDefId})
+    WHERE IS_ACTIVE_ = TRUE
+      AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
       AND (#{parameter.procInstId} IS NULL OR PROC_INST_ID_ = #{parameter.procInstId})
-      AND IS_ACTIVE_ = TRUE
   </select>
 </mapper>

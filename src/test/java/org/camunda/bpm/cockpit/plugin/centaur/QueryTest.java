@@ -11,18 +11,6 @@ import java.util.List;
 import java.io.*;
 
 public class QueryTest extends AbstractCockpitPluginTest {
-
-    @Test
-    public void testProcessStatisticsQueryWorks() {
-        List<ProcessStatisticsDto> result =
-            getQueryService()
-            .executeQuery(
-                "cockpit.query.selectProcessStatistics",
-                new QueryParameters<>());
-
-        Assert.assertEquals(0, result.size());
-    }
-
     @Test
     public void testProcessInstanceActivityQueryWorks() {
         QueryParameters<ProcessActivityDto> parameters = new QueryParameters<>();
