@@ -94,7 +94,7 @@ define({
     },
 
     /**
-     * Clears all overlays whose id is stored in overlayIds
+     * Clears all overlays whose ID is stored in overlayIDs
      *
      * @param {Object}          overlays          Overlays object containing all processDefinition overlays.
      * @param {Array<String>}   overlayIDs        ID's of overlays which should be removed.
