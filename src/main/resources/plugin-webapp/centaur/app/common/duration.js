@@ -26,7 +26,7 @@ define({
      */
     checkIfCurValid: function (util, curDuration) {
         if (curDuration != null) {
-            var curDurationUnit = util.commonConversion.checkTimeUnit(curDuration);
+            var curDurationUnit = util.commonConversion.checkTimeUnit(curDuration, false);
             return util.commonConversion.convertTimes(curDuration, curDurationUnit).toString() + ' ' + curDurationUnit;
         } else {
             return '-';
@@ -42,17 +42,18 @@ define({
      * @param   {String}  curDurationString String to containing the current duration.
      * @param   {String}  avgDurationString String to containing the average duration.
      * @param   {String}  maxDurationString String to containing the maximum duration.
+     * @param   {String}  KPI               String which determine which KPI is used (for example activity and order)
      * @return  {String}                    String which represents an HTML line which will later on be added to the document.
      */
-    createHTML: function (util, $window, curDurationString, avgDurationString, maxDurationString, cssClass) {
+    createHTML: function (util, $window, curDurationString, avgDurationString, maxDurationString, cssClass, KPI) {
         var data = {};
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_cur_duration") !== "false") {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", KPI + "_cur_duration") !== "false") {
             data['cur'] = {value: curDurationString};
         }
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_avg_duration") !== "false") {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", KPI + "_avg_duration") !== "false") {
             data['avg'] = {value: avgDurationString};
         }
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_max_duration") !== "false") {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", KPI + "_max_duration") !== "false") {
             data['max'] = {value: maxDurationString};
         }
 

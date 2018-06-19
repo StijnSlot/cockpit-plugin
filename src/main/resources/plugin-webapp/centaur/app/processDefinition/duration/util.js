@@ -123,13 +123,13 @@ define({
             // clear any current overlays displayed
             util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
-            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
-            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
+            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration, false);
+            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration, false);
             var avgDurationString = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
             var maxDurationString = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationString = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationString, avgDurationString, maxDurationString, cssClass);
+            var html = util.commonDuration.createHTML(util, $window, curDurationString, avgDurationString, maxDurationString, cssClass, "act");
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 
