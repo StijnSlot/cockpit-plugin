@@ -1,14 +1,4 @@
-'use strict';
-
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs  = require('requirejs');
-requirejs.config({
-    baseUrl: '.'
-});
-
-describe('Common overlay tests', function() {
+describe('Common refresh tests', function() {
     var util;
 
     before(function(done) {

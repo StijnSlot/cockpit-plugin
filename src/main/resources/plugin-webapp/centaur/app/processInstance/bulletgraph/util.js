@@ -45,7 +45,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Bullet graph")) {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);

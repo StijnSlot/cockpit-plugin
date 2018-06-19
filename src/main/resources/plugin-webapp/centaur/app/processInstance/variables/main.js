@@ -12,8 +12,8 @@ define(['require', 'angular', '../../common/options', '../../common/variables', 
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = ['$scope', '$q', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
-        function($scope, $q, $http, $window, $rootScope, Uri, control, processDiagram) {
+    var overlay = ['$scope', '$q', '$http', '$window', 'Uri', 'control', 'processDiagram',
+        function($scope, $q, $http, $window, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
             commonVariable.procDefId = $scope.$parent.processDefinition.id;
@@ -38,7 +38,7 @@ define(['require', 'angular', '../../common/options', '../../common/variables', 
             // add subscriptions to changes in the options
             var subscriptions = ["cockpit.plugin.centaur:options:variable-change", "cockpit.plugin.centaur:options:var-num-change",
                     "cockpit.plugin.centaur:options:KPI-change"];
-            commonOptions.register($scope, $rootScope, subscriptions, addInstanceVar);
+            commonOptions.register($scope, subscriptions, addInstanceVar);
         }
     ];
 

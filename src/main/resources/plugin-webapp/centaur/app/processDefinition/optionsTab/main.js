@@ -22,7 +22,7 @@ define(['require', 'angular', '../../common/options', "../../common/KPI"], funct
          */
         $scope.KPI = KPI.list;
 
-        util.setScopeFunctions($scope, $window, $rootScope, util);
+        util.setScopeFunctions($scope, $window.localStorage, $rootScope, util);
 
         // get all variable ids for this process
         $http.get(Uri.appUri("plugin://centaur/:engine/process-variables" +
@@ -31,7 +31,7 @@ define(['require', 'angular', '../../common/options', "../../common/KPI"], funct
                 $scope.processVariables = data;
 
                 // retrieve localStorage info on variables and set checkboxes
-                util.setChecked($window.localStorage, $scope.procDefId + "_var_", $scope.processVariables);
+                util.setChecked($window.localStorage, $scope.procDefId, "variables", $scope.processVariables, util);
             });
     }];
 

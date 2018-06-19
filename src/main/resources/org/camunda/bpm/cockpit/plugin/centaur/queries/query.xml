@@ -60,7 +60,7 @@
       JOIN ACT_RU_EXECUTION b
         ON a.EXECUTION_ID_ = b.ID_
     WHERE (#{parameter.procDefId} IS NULL OR b.PROC_DEF_ID_ = #{parameter.procDefId})
-      AND (#{parameter.procInstId} IS NULL OR #{parameter.procInstId} = b.PROC_INST_ID_)
+      AND (#{parameter.procInstId} IS NULL OR  b.PROC_INST_ID_ = #{parameter.procInstId})
   </select>
 
   <select id="selectInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
@@ -83,7 +83,7 @@
     SELECT ACT_INST_ID_
     FROM ACT_RU_EXECUTION
     WHERE IS_ACTIVE_ = TRUE
-      AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
+      AND (#{parameter.procDefId} IS NULL OR PROC_DEF_ID_ = #{parameter.procDefId})
       AND (#{parameter.procInstId} IS NULL OR PROC_INST_ID_ = #{parameter.procInstId})
   </select>
 </mapper>

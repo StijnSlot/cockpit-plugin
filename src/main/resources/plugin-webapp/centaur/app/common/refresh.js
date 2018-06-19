@@ -28,7 +28,6 @@ define({
                     if (util.prevData == null) {
                         util.prevData = data;
                     }
-
                     callback(data, util.prevData);
                 });
         }, util.refresh);
