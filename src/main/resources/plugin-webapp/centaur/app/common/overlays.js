@@ -29,11 +29,11 @@ define({
     },
 
     /**
-     * Get the offset from localStorage and add to html DOM element
+     * Get the offset from localStorage and add to html DOM element.
      *
-     * @param html              Dom element
-     * @param localStorage      LocalStorage containing offset
-     * @param prefix            prefix for localStorage item
+     * @param {Object}  html              Dom element.
+     * @param {Object}  localStorage      LocalStorage containing offset.
+     * @param {String}  prefix            Prefix for localStorage item.
      */
     setOffset: function(html, localStorage, prefix) {
         var offsetTop = localStorage.getItem(prefix + "_offset_top");
@@ -47,13 +47,13 @@ define({
     },
 
     /**
-     * Makes html draggable and sets it in localStorage
+     * Makes html draggable and sets it in localStorage.
      *
-     * @param localStorage      used for storing offset
-     * @param prefix            used for setting offset in localStorage
-     * @param elementID         used for making element selected
-     * @param html              Dom element which should drag
-     * @param canvas            contains zoom level
+     * @param {Object}  localStorage      Used for storing offset.
+     * @param {String}  prefix            Used for setting offset in localStorage.
+     * @param {String}  elementID         Used for making element selected.
+     * @param {Object}  html              DOM element which should drag.
+     * @param {Object}  canvas            Contains zoom level.
      */
     addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas) {
         html.parentNode.classList.add("djs-draggable");
@@ -96,15 +96,15 @@ define({
     /**
      * Clears all overlays whose id is stored in overlayIds
      *
-     * @param overlays          overlays object containing all processDefinition overlays
-     * @param overlayIds        ids of overlays which should be removed
+     * @param {Object}          overlays          Overlays object containing all processDefinition overlays.
+     * @param {Array<String>}   overlayIDs        ID's of overlays which should be removed.
      */
-    clearOverlays: function (overlays, overlayIds) {
-        if(overlays === undefined || overlayIds === undefined) return;
+    clearOverlays: function (overlays, overlayIDs) {
+        if(overlays === undefined || overlayIDs === undefined) return;
 
-        overlayIds.forEach(function (element) {
+        overlayIDs.forEach(function (element) {
             overlays.remove(element);
         });
-        overlayIds.length = 0;
+        overlayIDs.length = 0;
     }
 });

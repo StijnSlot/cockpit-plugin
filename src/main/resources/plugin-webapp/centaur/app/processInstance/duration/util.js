@@ -127,11 +127,11 @@ define({
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration);
-            var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
-            var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-            var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
+            var avgDurationString = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
+            var maxDurationString = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
+            var curDurationString = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML);
+            var html = util.commonDuration.createHTML(util, $window, curDurationString, avgDurationString, maxDurationString);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 

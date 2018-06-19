@@ -33,28 +33,28 @@ define({
         }
     },
 
-    /**
+    /**3
      * Creates an HTML element needed to display the duration. This function also checks if something is 
      * selected in the options tab.
      * 
-     * @param   {Object}  util            Object of this class, to call its functions and variables.
-     * @param   {Object}  $window         Browser window containing localStorage.
-     * @param   {String}  curDurationHTML String to containing the current duration.
-     * @param   {String}  avgDurationHTML String to containing the average duration.
-     * @param   {String}  maxDurationHTML String to containing the maximum duration.
-     * @return  {String}                  String which represents an HTML line which will later on be added to the document.
+     * @param   {Object}  util              Object of this class, to call its functions and variables.
+     * @param   {Object}  $window           Browser window containing localStorage.
+     * @param   {String}  curDurationString String to containing the current duration.
+     * @param   {String}  avgDurationString String to containing the average duration.
+     * @param   {String}  maxDurationString String to containing the maximum duration.
+     * @return  {String}                    String which represents an HTML line which will later on be added to the document.
      */
-    createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML) {
+    createHTML: function (util, $window, curDurationString, avgDurationString, maxDurationString) {
         var data = {};
         
         if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
-            data['cur'] = {value: curDurationHTML};
+            data['cur'] = {value: curDurationString};
         }
         if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
-            data['avg'] = {value: avgDurationHTML};
+            data['avg'] = {value: avgDurationString};
         }
         if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
-            data['max'] = {value: maxDurationHTML};
+            data['max'] = {value: maxDurationString};
         }
 
         var html = document.createElement('div');
