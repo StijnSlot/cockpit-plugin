@@ -1,5 +1,5 @@
 /**
- * Displays a bulletgraph which contains the current, average and maximal duration
+ * Displays a bulletgraph which contains the current, average and maximum duration
  * of a process onto the process diagram of Camunda.
  *
  * @author Lukas Ant.
