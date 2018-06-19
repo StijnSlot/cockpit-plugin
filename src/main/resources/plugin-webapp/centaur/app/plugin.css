@@ -14,27 +14,6 @@
     color: red;
 }
 
-.highlight-overlay-green {
-    background-color: green; /* color elements as green */ 
-    opacity: 0.4;
-    pointer-events: none; /* no pointer events, allows clicking through onto the element */
-    border-radius: 10px;
-}
-
-.highlight-overlay-red {
-    background-color: red; /* color elements as green */ 
-    opacity: 0.4;
-    pointer-events: none; /* no pointer events, allows clicking through onto the element */
-    border-radius: 10px;
-}
-
-.highlight-overlay-orange {
-    background-color: orange; /* color elements as green */ 
-    opacity: 0.4;
-    pointer-events: none; /* no pointer events, allows clicking through onto the element */
-    border-radius: 10px;
-}
-
 .option-box {
     display:inline-block;
     width:32%;

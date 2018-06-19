@@ -48,8 +48,7 @@
   <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
     SELECT ACT_ID_, COUNT(ACT_NAME_), AVG(DURATION_), MIN(DURATION_), MAX(DURATION_)
     FROM ACT_HI_ACTINST
-    WHERE ACT_TYPE_ NOT LIKE '%Event%'
-      AND ACT_TYPE_ NOT LIKE '%Gateway%'
+    WHERE ACT_TYPE_ NOT LIKE '%Gateway%'
       AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
     GROUP BY ACT_NAME_
   </select>

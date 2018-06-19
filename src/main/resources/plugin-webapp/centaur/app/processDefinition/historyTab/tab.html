@@ -20,8 +20,8 @@
         <td>{{ instance.startUserId }}</td>
         <td>{{ toTruncatedUTC(instance.startTime) }}</td>
         <td>{{ toTruncatedUTC(instance.endTime) }}</td>
-        <td>{{ convertTimes(instance.durationInMillis, checkTimeUnit(instance.durationInMillis)) +
-            " " + checkTimeUnit(instance.durationInMillis) }}</td>
+        <td>{{ convertTimes(instance.durationInMillis, checkTimeUnit(instance.durationInMillis, true)) +
+            " " + checkTimeUnit(instance.durationInMillis, true) }}</td>
     </tr>
     </tbody>
 </table>

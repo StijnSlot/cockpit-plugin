@@ -136,7 +136,7 @@ define({
             // clear any current overlays displayed
             util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
             
-            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration);
+            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
             var minDuration = util.commonConversion.convertTimes(minDuration, timeChoice);
             var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
             var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);

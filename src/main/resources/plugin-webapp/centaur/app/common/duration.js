@@ -26,7 +26,7 @@ define({
      */
     checkIfCurValid: function (util, curDuration) {
         if (curDuration != null) {
-            var curDurationUnit = util.commonConversion.checkTimeUnit(curDuration);
+            var curDurationUnit = util.commonConversion.checkTimeUnit(curDuration, false);
             return util.commonConversion.convertTimes(curDuration, curDurationUnit).toString() + ' ' + curDurationUnit;
         } else {
             return '-';
