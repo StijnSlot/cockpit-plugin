@@ -51,7 +51,7 @@ define(['require', 'angular', '../../common/options', "../../common/KPI"], funct
             url: 'plugin://centaur/static/app/processDefinition/optionsTab/tab.html',
             controller: DashboardController,
 
-            priority: 0
+            priority: -1
         });
     }];
 

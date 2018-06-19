@@ -1,16 +1,3 @@
-'use strict';
-
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs = require('requirejs');
-requirejs.config({
-    baseUrl: '.'
-});
-
-global.window = window;
-global.$ = require('jquery');
-
 describe('Common conversion tests', function () {
     var util;
 
@@ -19,6 +6,10 @@ describe('Common conversion tests', function () {
             util = utl;
             done();
         });
+    });
+
+    it('should find common conversion util', function() {
+        expect(util).to.exist;
     });
 
     describe('check Time Unit', function () {

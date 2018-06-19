@@ -48,9 +48,9 @@ define({
      * @param   {String}  elementID     Variable to be converted.
      * @return  {Object}                A string which represents an HTML line which will be added later.
      */
-    createHTML: function (elementID) {
+    createHTML: function (cssClass) {
         var graph = document.createElement('DIV');
-        graph.className = "bullet-duration-" + elementID;
+        graph.className = cssClass;
         return graph;
     },
 
@@ -71,8 +71,8 @@ define({
      * @param   {Number}  markerBullet  Marker value of bulletgraph.
      * @param   {Number}  colorBullet   Color of bulletgraph.
      */
-    setGraphSettings: function (elementID, rangeBullet, currentBullet, markerBullet, colorBullet) {
-        var cssClass = '.bullet-duration-' + elementID;
+    setGraphSettings: function (elementID, rangeBullet, currentBullet, markerBullet, colorBullet, cssClass) {
+        var newCSSClass = '.' + cssClass;
         var data = [
             {
                 "ranges": [rangeBullet],
@@ -80,7 +80,7 @@ define({
                 "markers": [markerBullet]
             }
         ];
-        var container = d3.select(cssClass).node().getBoundingClientRect();
+        d3.select(newCSSClass).node().getBoundingClientRect();
         var margin = { top: 5, right: 5, bottom: 15, left: 5 },
             width = 100 - margin.left - margin.right,
             height = 40 - margin.top - margin.bottom;
@@ -89,7 +89,7 @@ define({
           .width(width)
           .height(height);
 
-        var svg = d3.select(cssClass).selectAll("svg")
+        d3.select(newCSSClass).selectAll("svg")
           .data(data)
           .enter().append("svg")
           .attr("class", "bullet")
@@ -99,7 +99,7 @@ define({
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
           .call(chart);
 
-        var coloring = d3.select(cssClass).selectAll("rect.measure.s1")
+        d3.select(newCSSClass).selectAll("rect.measure.s1")
                 .attr("fill", colorBullet)
     },
 

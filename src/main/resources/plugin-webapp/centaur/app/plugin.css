@@ -48,9 +48,34 @@
     width: 70px;
 }
 
+.durationText ul {
+    list-style-type: none;
+    padding: 0 0 0 0;
+}
+
+.overviewDurationText {
+    width: 80px;
+    font-size: 9px;
+    border-style: groove;
+    border-radius: 1px;
+    padding: 5px;
+    text-align: center;
+}
+
+.overviewDurationText ul {
+    list-style-type: none;
+    padding: 0 0 0 0;
+}
 
 
 /*  --Bulletgraph--  */
+.bullet-duration-overview {
+    border-style: groove;
+    border-radius: 1px;
+    padding: 5px;
+}
+
+
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 1.5px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }

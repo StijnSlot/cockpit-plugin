@@ -35,19 +35,6 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
         }, 0, 10000);
       }
     }
-
-  }
-
-  @GET
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getIt() {
-    return "Got it!";
-  }
-
-  @Path("{engineName}/process-instance")
-  public ProcessStatisticsResource getProcessInstanceResource(
-          @PathParam("engineName") String engineName) {
-    return subResource(new ProcessStatisticsResource(engineName), engineName);
   }
 
   @Path("{engineName}/process-activity")
@@ -67,8 +54,16 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
 
   @Path("{engineName}/instance-start-time")
   public InstanceStartTimeResource getInstanceStartTimeResource(
-          @PathParam("engineName") String engineName) {
-    return subResource(new InstanceStartTimeResource(engineName), engineName);
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new InstanceStartTimeResource(engineName, procDefId), engineName);
+  }
+
+  @Path("{engineName}/order-statistics")
+  public OrderStatisticsResource getOrderStatistics(
+          @PathParam("engineName") String engineName,
+          @QueryParam("procDefId") String procDefId) {
+    return subResource(new OrderStatisticsResource(engineName, procDefId), engineName);
   }
 
   @Path("{engineName}/execution-sequence-counter")
@@ -80,8 +75,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   @Path("{engineName}/refresh")
   public RefreshResource getRefreshResource(
           @PathParam("engineName") String engineName,
-          @QueryParam("procDefId") String procDefId) {
-    return subResource(new RefreshResource(engineName, procDefId), engineName);
+          @QueryParam("procDefId") String procDefId,
+          @QueryParam("procInstId") String procInstId) {
+    return subResource(new RefreshResource(engineName, procDefId, procInstId), engineName);
   }
 
   @Path("{engineName}/users")

@@ -55,15 +55,18 @@ define({
      * @param {Object}  html              DOM element which should drag.
      * @param {Object}  canvas            Contains zoom level.
      */
-    addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas) {
+    addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas, highlight) {
         html.parentNode.classList.add("djs-draggable");
         var click = {};
+        var zoom = 1;
 
         $(html.parentNode).draggable({
             stack: ".djs-overlay",
             start: function(event) {
                 // add highlight to activity
-                $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                if (highlight) {
+                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                }
 
                 // remember click position for dragging speed
                 click.x = event.clientX;
@@ -71,7 +74,9 @@ define({
             },
             drag: function(event, ui) {
                 // get zoom level on drag, since the user could drag while zooming
-                var zoom = canvas.zoom();
+                if(canvas !== undefined) {
+                    zoom = canvas.zoom();
+                }
 
                 // original position of draggable
                 var original = ui.originalPosition;
@@ -84,7 +89,9 @@ define({
             },
             stop: function() {
                 // remove highlight from the activity
-                $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+                if (highlight) {
+                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+                }
 
                 // store settings in localStorage
                 localStorage.setItem(prefix + "_offset_top", html.parentNode.style.top);

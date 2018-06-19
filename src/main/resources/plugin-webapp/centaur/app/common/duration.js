@@ -44,7 +44,7 @@ define({
      * @param   {String}  maxDurationString String to containing the maximum duration.
      * @return  {String}                    String which represents an HTML line which will later on be added to the document.
      */
-    createHTML: function (util, $window, curDurationString, avgDurationString, maxDurationString) {
+    createHTML: function (util, $window, curDurationString, avgDurationString, maxDurationString, cssClass) {
         var data = {};
         
         if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
@@ -58,7 +58,9 @@ define({
         }
 
         var html = document.createElement('div');
-        html.classList.add("custom-overlay", "durationText");
+      
+        html.classList.add("custom-overlay", cssClass);
+
         html.appendChild(util.commonVariables.createVariableUl(data));
 
         return html;

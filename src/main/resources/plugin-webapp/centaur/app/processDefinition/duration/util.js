@@ -46,10 +46,10 @@ define({
         * Angular http.get promises that wait for a JSON object of
         * the process activity and the instance start time.
         */
-        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + util.procDefId), {
+        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
             catch: false
         });
-        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
+        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time?procDefId=" + util.procDefId), {
             catch: false
         });
 
@@ -114,6 +114,8 @@ define({
     addOverlay: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
+            var cssClass = "durationText";
+
             // initialize the overlayActivityId array
             if(util.overlayActivityIds[elementID] === undefined)
                 util.overlayActivityIds[elementID] = [];
@@ -127,13 +129,14 @@ define({
             var maxDurationString = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationString = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationString, avgDurationString, maxDurationString);
+            var html = util.commonDuration.createHTML(util, $window, curDurationString, avgDurationString, maxDurationString, cssClass);
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 
             util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_duration");
+
             util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_duration",
-                elementID, html, util.commonOverlays.canvas);
+                elementID, html, util.commonOverlays.canvas, true);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
         }

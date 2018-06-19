@@ -15,4 +15,4 @@ matrix:
       - npm install -g mocha sinon chai jsdom jsdom-global
       - npm install
       - cd src
-      script: mocha --recursive -r jsdom-global/register
+      script: mocha --recursive -r jsdom-global/register -r ./test/js/init.js
