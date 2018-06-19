@@ -49,7 +49,7 @@ define({
 
         var offset = processOptions[activityId][overlayName];
 
-        if (offset !== null) {
+        if (offset !== undefined) {
             $(html.parentNode).css("top", offset["top"]);
             $(html.parentNode).css("left", offset["left"]);
         }

@@ -12,8 +12,78 @@ describe('Common options tests', function() {
         expect(util).to.exist;
     });
 
-    /*describe('getVariableNum tests', function() {
-        var stub, localStorage, id = 2, out;
+    describe('setScopeFunctions tests', function() {
+        var scope;
+        beforeEach(function() {
+            scope = {};
+            util.setScopeFunctions(scope, {}, {}, util);
+        });
+
+        it('should set all scope functions', function() {
+            var functions = ["setVariableChecked", "setKPIChecked", "setNumValue", "setRefreshRate", "setRefreshRate",
+                "changeVar", "changeKPI", "changeVarNum", "changeVarRefreshRate"];
+            functions.forEach(function(el) {
+                expect(scope[el]).to.exist;
+            });
+        });
+    });
+
+    describe('changeOption tests', function() {
+        var procDefId = "test", id = "a", value = "b", broadcast = "hello";
+        var stub;
+        var spy1, spy2;
+
+        describe('no subItem', function() {
+            beforeEach(function () {
+                stub = sinon.stub().returns('{}');
+                spy1 = sinon.spy();
+                spy2 = sinon.spy();
+                var localStorage = {getItem: stub, setItem: spy1};
+                var rootScope = {$broadcast: spy2};
+                util.changeOption(localStorage, rootScope, broadcast, procDefId, value, id, undefined);
+            });
+
+            it('should set id with value for procDefId', function () {
+                expect(spy1.callCount).to.eql(1);
+                expect(spy1.args[0][0]).to.eql(procDefId);
+                var out = JSON.parse(spy1.args[0][1]);
+                expect(out[id]).to.eql(value);
+            });
+            it('should give one broadcast message with hello', function () {
+                expect(spy2.callCount).to.eql(1);
+                expect(spy2.args[0][0]).to.contain(broadcast);
+            });
+        });
+
+        describe('with subItem', function() {
+            var subItem = 'c';
+
+            beforeEach(function () {
+                stub = sinon.stub().returns('{}');
+                spy1 = sinon.spy();
+                spy2 = sinon.spy();
+                var localStorage = {getItem: stub, setItem: spy1};
+                var rootScope = {$broadcast: spy2};
+                util.changeOption(localStorage, rootScope, broadcast, procDefId, value, id, subItem);
+            });
+
+            it('should set id with value for procDefId', function () {
+                expect(spy1.callCount).to.eql(1);
+                expect(spy1.args[0][0]).to.eql(procDefId);
+                var out = JSON.parse(spy1.args[0][1]);
+                expect(out[id][subItem]).to.eql(value);
+            });
+            it('should give one broadcast message with hello', function () {
+                expect(spy2.callCount).to.eql(1);
+                expect(spy2.args[0][0]).to.contain(broadcast);
+            });
+        });
+    });
+
+    describe('getOption tests', function() {
+        var procDefId = "test";
+        var defaultValue = '5';
+        var stub, localStorage, id = 'a', subId = 'b', out;
 
         describe('not in localStorage', function() {
             var spy;
@@ -23,36 +93,35 @@ describe('Common options tests', function() {
                 stub.returns(null);
                 spy = sinon.spy();
                 localStorage = {getItem: stub, setItem: spy};
-                out = util.getVariableNum(localStorage, id);
+                out = util.getOption(localStorage, procDefId, defaultValue, id, subId);
             });
 
             it('should call getItem at least once', function() {
                 expect(stub.calledOnce).to.eql(true);
             });
-
-            it('should return default value 5', function() {
-                expect(out).to.eql(5);
+            it('should return default value', function() {
+                expect(out).to.eql(defaultValue);
             });
-
             it('should setItem in localStorage with value and default 5', function() {
-                expect(spy.calledWith(id, 5)).to.eql(true);
+                expect(spy.calledWith(procDefId)).to.eql(true);
+                var arg = JSON.parse(spy.args[0][1]);
+                expect(arg[id][subId]).to.eql(defaultValue);
             });
         });
 
         describe('in localStorage', function() {
-            var stored = 2;
+            var stored = '2';
 
             beforeEach(function() {
                 stub = sinon.stub();
-                stub.returns(stored);
+                stub.returns(JSON.stringify({a: {b: stored}}));
                 localStorage = {getItem: stub};
-                out = util.getVariableNum(localStorage, id);
+                out = util.getOption(localStorage, procDefId, defaultValue, id, subId);
             });
 
             it('should return stored', function() {
                 expect(out).to.eql(stored);
             });
-
             it('should call getItem at least once', function() {
                 expect(stub.calledOnce).to.eql(true);
             });
@@ -61,7 +130,7 @@ describe('Common options tests', function() {
 
     describe('setChecked tests', function() {
         var stub, spy;
-        var prefix = 'a_';
+        var procDefId = "test", prefix = 'a';
         var data = [{name: 'b'}, {name: 'c'}];
 
         describe('localStorage is empty', function() {
@@ -71,7 +140,7 @@ describe('Common options tests', function() {
                 stub.returns(null);
                 var localStorage = {setItem: spy, getItem: stub};
 
-                util.setChecked(localStorage, prefix, data);
+                util.setChecked(localStorage, procDefId, prefix, data);
             });
 
             it('should set checked true', function() {
@@ -79,107 +148,42 @@ describe('Common options tests', function() {
                 expect(data[1].checked).to.eql(true);
             });
 
-            it('should call setItem true for each data point', function() {
-                expect(spy.calledWith(prefix + data[0].name, 'true')).to.eql(true);
-                expect(spy.calledWith(prefix + data[1].name, 'true')).to.eql(true);
+            it('should call setItem with procDefId', function() {
+                expect(spy.calledWith(procDefId)).to.eql(true);
+            });
+            it('should call setItem with true for both variables', function() {
+                var arg = JSON.parse(spy.args[0][1]);
+                expect(arg['a'][data[0].name]).to.eql("true");
+                expect(arg['a'][data[1].name]).to.eql("true");
             });
         });
 
         describe('localStorage contains data', function() {
             beforeEach(function() {
                 stub = sinon.stub();
-                stub.onFirstCall().returns('true');
-                stub.onSecondCall().returns('false');
+                stub.returns('{"' + prefix + '":{"b":"true","c":"false"}}');
                 spy = sinon.spy();
                 var localStorage = {setItem: spy, getItem: stub};
-                util.setChecked(localStorage, prefix, data);
+                util.setChecked(localStorage, procDefId, prefix, data);
             });
 
             it('should set data checked', function() {
                 expect(data[0].checked).to.eql(true);
                 expect(data[1].checked).to.eql(false);
             });
-
             it('should not run setItem', function() {
                 expect(spy.called).to.eql(false);
             });
         });
     });
-
-    describe('changeVar tests', function() {
-        var spy1, spy2;
-        var id = 'a', check = 'true';
-
-        beforeEach(function() {
-            spy1 = sinon.spy();
-            spy2 = sinon.spy();
-            var localStorage = {setItem: spy1};
-            var rootScope = {$broadcast: spy2};
-
-            util.changeOption(localStorage, rootScope, id, check);
-        });
-
-        it('should call setItem with arguments a and true', function() {
-            expect(spy1.calledWith(id, check)).to.eql(true);
-        });
-
-        it('should call broadcast exactly once', function() {
-            expect(spy2.calledOnce).to.eql(true);
-        });
-    });
-
-    describe('changeKPI tests', function() {
-        var spy1, spy2;
-        var id = 'a', check = 'true';
-
-        beforeEach(function() {
-            spy1 = sinon.spy();
-            spy2 = sinon.spy();
-            var localStorage = {setItem: spy1};
-            var rootScope = {$broadcast: spy2};
-
-            util.changeKPI(localStorage, rootScope, id, check);
-        });
-
-        it('should call setItem with arguments a and true', function() {
-            expect(spy1.calledWith(id, check)).to.eql(true);
-        });
-
-        it('should call broadcast exactly once', function() {
-            expect(spy2.calledOnce).to.eql(true);
-        });
-    });
-
-    describe('changeVarNum tests', function() {
-        var spy1, spy2;
-        var id = 'a', check = 'true';
-
-        beforeEach(function () {
-            spy1 = sinon.spy();
-            spy2 = sinon.spy();
-            var localStorage = {setItem: spy1};
-            var rootScope = {$broadcast: spy2};
-
-            util.changeVarNum(localStorage, rootScope, id, check);
-        });
-
-        it('should call setItem with arguments a and true', function () {
-            expect(spy1.calledWith(id, check)).to.eql(true);
-        });
-
-        it('should call broadcast exactly once', function () {
-            expect(spy2.calledOnce).to.eql(true);
-        });
-    });
              
-    describe('is selected instance tests', function() {
+    describe('isSelectedInstance tests', function() {
         var instance;
         var elementID;
         var instanceID;
         var out;
 
         describe('is selected', function() {
-
             beforeEach(function() {
                 instance = [{activityId: 'An activity', instanceId: 123}, {activityId: 'An activity', instanceId: 124}];
                 elementID = 'An activity';
@@ -197,5 +201,29 @@ describe('Common options tests', function() {
                 expect(out).to.eql(false);
             });            
         });
-    });*/
+    });
+
+    describe("register tests", function() {
+        var subscriptions = ['a', 'b'];
+        var spy, stub;
+
+        beforeEach(function() {
+            spy = sinon.spy();
+            stub = sinon.stub().returns(function(){});
+            var scope = {$on: stub};
+            util.register(scope, subscriptions, spy);
+        });
+
+        it('should call callback when subscription fires', function() {
+            stub.args[0][1]();
+            expect(spy.called).to.eql(true);
+        });
+        it('should call callback for a and b', function() {
+            expect(stub.args[0][0]).to.eql(subscriptions[0]);
+            expect(stub.args[1][0]).to.eql(subscriptions[1]);
+        });
+        it('should subscribe for scope destroy', function() {
+            expect(stub.args[2][0]).to.eql("$destroy")
+        })
+    })
 });

@@ -48,12 +48,12 @@ describe('Common overlay tests', function() {
             html = document.createElement('DIV');
             parent.appendChild(html);
             var localStorage = {getItem: stub};
+
             util.getOffset(html, localStorage, procDefId, "a", "b");
         });
 
         it('should call localStorage getItem once', function() {
             expect(stub.callCount).to.eql(1);
-            expect(stub.calledWith(procDefId)).to.eql(true);
             expect(stub.calledWith(procDefId)).to.eql(true);
         });
         it('should set offset top of html  to 5', function() {
@@ -61,6 +61,34 @@ describe('Common overlay tests', function() {
         });
         it('should not set offset left', function() {
             expect(parent.style.left).to.eql('');
+        });
+    });
+
+    describe('setOffset tests', function() {
+        var procDefId = "test";
+        var stub, spy;
+
+        beforeEach(function() {
+            stub = sinon.stub();
+            spy = sinon.spy();
+            stub.withArgs(procDefId).returns('{"a": {}}');
+            var localStorage = {getItem: stub, setItem: spy};
+            util.setOffset(localStorage, procDefId, "a", "b", "100px", "-20px");
+        });
+
+        it('should call localStorage getItem once', function() {
+            expect(stub.callCount).to.eql(1);
+            expect(stub.calledWith(procDefId)).to.eql(true);
+        });
+        it('should call setItem once with procDefId', function() {
+            expect(spy.callCount).to.eql(1);
+            expect(spy.args[0][0]).to.eql(procDefId);
+        });
+        it('should set correct offset for activity a and overlay b', function() {
+            var out = JSON.parse(spy.args[0][1]);
+            expect(out['a']['b']).to.exist;
+            expect(out['a']['b']['top']).to.eql("100px");
+            expect(out['a']['b']['left']).to.eql("-20px");
         });
     });
 
