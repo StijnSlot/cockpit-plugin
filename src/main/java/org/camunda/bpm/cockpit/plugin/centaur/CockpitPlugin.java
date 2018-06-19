@@ -1,9 +1,6 @@
 package org.camunda.bpm.cockpit.plugin.centaur;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.camunda.bpm.cockpit.plugin.centaur.resources.CockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.spi.impl.AbstractCockpitPlugin;
@@ -18,7 +15,8 @@ public class CockpitPlugin extends AbstractCockpitPlugin {
 
 	@Override
 	public List<String> getMappingFiles() {
-	    return Arrays.asList("org/camunda/bpm/cockpit/plugin/centaur/queries/query.xml");
+	    return Arrays.asList("org/camunda/bpm/cockpit/plugin/centaur/queries/query.xml",
+			"org/camunda/bpm/cockpit/plugin/centaur/queries/resourceQuery.xml");
 	}
 
 	@Override

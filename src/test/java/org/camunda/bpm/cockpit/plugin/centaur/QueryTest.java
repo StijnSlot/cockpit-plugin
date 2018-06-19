@@ -11,22 +11,10 @@ import java.util.List;
 import java.io.*;
 
 public class QueryTest extends AbstractCockpitPluginTest {
-
-    @Test
-    public void testProcessStatisticsQueryWorks() {
-        List<ProcessStatisticsDto> result =
-            getQueryService()
-            .executeQuery(
-                "cockpit.query.selectProcessStatistics",
-                new QueryParameters<>());
-
-        Assert.assertEquals(0, result.size());
-    }
-
     @Test
     public void testProcessInstanceActivityQueryWorks() {
         QueryParameters<ProcessActivityDto> parameters = new QueryParameters<>();
-        parameters.setParameter("");
+        parameters.setParameter("test");
 
         List<ProcessActivityDto> result =
             getQueryService()
@@ -49,6 +37,19 @@ public class QueryTest extends AbstractCockpitPluginTest {
     }
 
     @Test
+    public void testOrderStatisticQueryWorks() {
+        QueryParameters<OrderStatisticsDto> param = new QueryParameters<>();
+        param.setParameter("test");
+        List<OrderStatisticsDto> result =
+                getQueryService()
+                        .executeQuery(
+                                "cockpit.query.selectOrderStatistics",
+                                param);
+
+        Assert.assertEquals(1, result.size());
+    }
+
+    @Test
     public void testProcessVariables() {
         List<ProcessVariablesDto> result =
             getQueryService()
@@ -62,10 +63,10 @@ public class QueryTest extends AbstractCockpitPluginTest {
     @Test
     public void testRefreshResource() {
         List<ProcessVariablesDto> result =
-                getQueryService()
-                        .executeQuery(
-                                "cockpit.query.selectActiveInstances",
-                                new QueryParameters<>());
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectActiveInstances",
+                    new QueryParameters<>());
 
         Assert.assertEquals(0, result.size());
     }

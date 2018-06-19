@@ -1,39 +1,44 @@
 'use strict';
 
-define(['require', 'angular', './util', '../../common/options', '../../common/variables', '../../common/overlays'], function(require, angular) {
-
-    /**
-     * retrieve the util file containing functions
-     */
-    var util = require('./util');
+define(['require', 'angular', '../../common/options', '../../common/variables', '../../common/overlays'], function(require, angular) {
 
     /**
      * get common util functionality
      */
-    util.commonVariable = require('../../common/variables');
-    util.commonOverlays = require('../../common/overlays');
-    util.commonOptions = require('../../common/options');
+    var commonVariable = require('../../common/variables');
+    var commonOptions = commonVariable.commonOptions = require('../../common/options');
+    commonVariable.commonOverlays = require('../../common/overlays');
 
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = ['$scope', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
-        function($scope, $http, $window, $rootScope, Uri, control, processDiagram) {
+    var overlay = ['$scope', '$q', '$http', '$window', '$rootScope', 'Uri', 'control', 'processDiagram',
+        function($scope, $q, $http, $window, $rootScope, Uri, control, processDiagram) {
 
             // process definition id is set (HARDCODED nr. of parents)
-            util.procDefId = $scope.$parent.processDefinition.id;
-            util.procInstanceId = $scope.$parent.processInstance.id;
+            commonVariable.procDefId = $scope.$parent.processDefinition.id;
+            var procInstanceId = commonVariable.procInstanceId = $scope.$parent.processInstance.id;
+
+            var request1 = function(element) {
+                return Uri.appUri("engine://engine/:engine/execution" +
+                    "?processInstanceId=" + procInstanceId +
+                    "&activityId=" + element.id)
+            };
+
+            var request2 = function(execution) {
+                return Uri.appUri("engine://engine/:engine/execution/" +
+                    execution.id + "/localVariables")
+            };
 
             var addInstanceVar = function() {
-                util.addInstanceVariables($window, $http, control, processDiagram, Uri, util)
+                commonVariable.addVariables($window.localStorage, $q, $http, control, processDiagram, request1, request2, commonVariable)
             };
             addInstanceVar();
 
-            var subscriptions =
-                ["cockpit.plugin.centaur:options:variable-change",
-                    "cockpit.plugin.centaur:options:var-num-change",
+            // add subscriptions to changes in the options
+            var subscriptions = ["cockpit.plugin.centaur:options:variable-change", "cockpit.plugin.centaur:options:var-num-change",
                     "cockpit.plugin.centaur:options:KPI-change"];
-            util.commonOptions.register($scope, $rootScope, subscriptions, addInstanceVar);
+            commonOptions.register($scope, $rootScope, subscriptions, addInstanceVar);
         }
     ];
 

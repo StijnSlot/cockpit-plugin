@@ -1,25 +1,18 @@
-'use strict';
+describe('duration process definition tests', function() {
+    var util;
 
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs  = require('requirejs');
-requirejs.config({
-    baseUrl: '.'
-});
+    before(function(done) {
+        requirejs(['main/resources/plugin-webapp/centaur/app/processDefinition/duration/util'], function(utl) {
+            util = utl;
+            done();
+        });
+    });
 
-var util;
-
-before(function(done) {
-    requirejs(['main/resources/plugin-webapp/centaur/app/processDefinition/duration/util'], function(utl) {
-        util = utl;
-        done();
+    it('should find duration util file', function() {
+        expect(util).to.exist;
     });
 });
 
-it('should find duration util file', function() {
-    expect(util).to.not.be.undefined;
-});
 
 
 

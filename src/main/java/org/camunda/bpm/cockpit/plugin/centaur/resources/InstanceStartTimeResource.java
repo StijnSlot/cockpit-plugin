@@ -11,8 +11,11 @@ import java.util.List;
 
 public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
 
-    public InstanceStartTimeResource(String engineName) {
+    private String procDefId;
+
+    public InstanceStartTimeResource(String engineName, String procDefId) {
         super(engineName);
+        this.procDefId = procDefId;
     }
 
     @GET
@@ -20,6 +23,7 @@ public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
     public List<InstanceStartTimeDto> InstanceStartTime() {
         QueryParameters<InstanceStartTimeDto> queryParameters = new QueryParameters<>();
 
+        queryParameters.setParameter(procDefId);
         configureTenantCheck(queryParameters);
 
         return getQueryService().executeQuery(
