@@ -40,7 +40,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Bullet graph")) {
+        if (!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Order bullet graph")) {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -83,7 +83,6 @@ define({
              * @param   Object  shape   shape of element
              */
             elementRegistry.forEach(function (shape) {
-                console.log(shape);
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 var startEvent = "";
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {

@@ -43,17 +43,18 @@ define({
      * @param   String  curDurationHTML string to display with the current duration
      * @param   String  avgDurationHTML string to display with the average duration
      * @param   String  maxDurationHTML string to display with the maximum duration
+     * @param   String  KPI             string which determine which KPI is used (for example activity and order)
      * @return  String                  string which represents an HTML line which will be added later to the document
      */
-    createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass) {
+    createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass, KPI) {
         var data = {};
-        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
+        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + KPI + " current duration")) {
             data['cur'] = {value: curDurationHTML};
         }
-        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
+        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + KPI + " average duration")) {
             data['avg'] = {value: avgDurationHTML};
         }
-        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
+        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + KPI + " maximum duration")) {
             data['max'] = {value: maxDurationHTML};
         }
 
