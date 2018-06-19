@@ -95,7 +95,7 @@ define({
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
-            localStorage.setItem(processOptions, "{}");
+            localStorage.setItem(procDefId, "{}");
             processOptions = {prefix: {}};
         } else {
             processOptions = JSON.parse(processOptions);
@@ -144,6 +144,7 @@ define({
      * @param {Object}  localStorage  contains user options
      * @param {Object}  $rootScope    used for broadcasting change
      * @param {String}  procDefId     process definition id
+     * @param {String}  prefix        prefix for the option in localStorage
      * @param {String}  id            used for retrieving correct item
      * @param {String}  value         new item value
      * @param broadcast     broadcast message to send
@@ -177,7 +178,7 @@ define({
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
-            localStorage.setItem(processOptions, "{}");
+            localStorage.setItem(procDefId, "{}");
             processOptions = {};
         } else {
             processOptions = JSON.parse(processOptions);

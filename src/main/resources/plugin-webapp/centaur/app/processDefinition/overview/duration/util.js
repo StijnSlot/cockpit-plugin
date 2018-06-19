@@ -144,9 +144,12 @@ define({
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -80);
 
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_overview_duration");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_overview_duration",
-                elementID, html, util.commonOverlays.canvas, false);
+            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "overview_duration");
+
+            var setOffset = function(top, left) {
+                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "overview_duration", top, left);
+            };
+            util.commonOverlays.addDraggableFunctionality(html, elementID, util.commonOverlays.canvas, false, setOffset);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
         }

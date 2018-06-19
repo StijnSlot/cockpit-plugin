@@ -27,7 +27,7 @@ describe('Common variables tests', function() {
             stub1.createVariableDiv.returns(document.createElement('DIV'));
             util.procDefId = "asdf1234";
             util.commonOptions = {getOption: sinon.stub().returns("true"), getOption: sinon.spy()};
-            util.commonOverlays = {clearOverlays: spy1, setOffset: sinon.spy()};
+            util.commonOverlays = {clearOverlays: spy1, getOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {
                     var instances = [{id: "test"}, {id: "hello"}];
@@ -89,7 +89,7 @@ describe('Common variables tests', function() {
             stub2 = sandbox.stub();
             stub2.returns(4);
             spy = sandbox.spy();
-            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy, setOffset: sinon.spy()};
+            util.commonOverlays = {addTextElement: stub2, addDraggableFunctionality: spy, getOffset: sinon.spy()};
             util.finishElement.restore();
             util.finishElement({}, {}, {}, '3', util);
         });
