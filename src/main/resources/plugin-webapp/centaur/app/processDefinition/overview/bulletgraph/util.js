@@ -83,6 +83,7 @@ define({
              * @param   Object  shape   shape of element
              */
             elementRegistry.forEach(function (shape) {
+                console.log(shape);
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 var startEvent = "";
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
@@ -152,10 +153,10 @@ define({
 
             var html = util.commonBulletgraph.createHTML(cssClass);
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 70);
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph");
-            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_bulletgraph",
+            util.commonOverlays.setOffset(html, $window.localStorage, util.procDefId + "_" + elementID + "_overview_bulletgraph");
+            util.commonOverlays.addDraggableFunctionality($window.localStorage, util.procDefId + "_" + elementID + "_overview_bulletgraph",
                 elementID, html, util.commonOverlays.canvas, false);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
