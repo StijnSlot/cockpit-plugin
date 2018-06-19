@@ -83,7 +83,6 @@ define({
              * @param   Object  shape   shape of element
              */
             elementRegistry.forEach(function (shape) {
-                console.log(shape);
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 var startEvent = "";
                 for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
@@ -99,10 +98,6 @@ define({
                         var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
                         var getCurDuration = util.commonConversion.calculateAvgCurDurationOfAllInstances(util.commonConversion, $scope.instanceStartTime.data);
                         var getMinDuration = 12;
-
-                        console.log(getMaxDuration);
-                        console.log(getCurDuration);
-                        console.log(getAvgDuration);
 
                         util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;

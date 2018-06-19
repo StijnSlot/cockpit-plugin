@@ -1,13 +1,3 @@
-'use strict';
-
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs  = require('requirejs');
-requirejs.config({
-    baseUrl: '.'
-});
-
 describe('instance history tests', function() {
     var util;
 
@@ -28,7 +18,6 @@ describe('instance history tests', function() {
             spy = sinon.spy(util, "setSortingArrows");
             util.flipSortOrder("endTime", util);
             util.flipSortOrder("duration", util);
-            console.log(util.order["duration"]);
             util.flipSortOrder("endTime", util);
         });
         after(function() {

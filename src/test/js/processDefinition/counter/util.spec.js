@@ -1,18 +1,6 @@
-'use strict';
-
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs = require('requirejs');
-requirejs.config({
-  baseUrl: '.'
-});
-
-var util;
-
-
-
 describe('check counter util', function () {
+    var util;
+
     before(function(done) {
         requirejs(['main/resources/plugin-webapp/centaur/app/processDefinition/counter/util'], function(utl) {
             util = utl;

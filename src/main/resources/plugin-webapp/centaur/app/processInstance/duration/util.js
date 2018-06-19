@@ -66,9 +66,6 @@ define({
             $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
             $scope.instanceStartTime = data[1];
 
-            console.log($scope.processActivityStatistics);
-            console.log($scope.instanceStartTime);
-
             /**
              * Extracts data from JSON objects and calls composeHTML()
              * function to add the extracted to the diagram.

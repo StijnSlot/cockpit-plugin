@@ -1,16 +1,3 @@
-'use strict';
-
-var sinon = require('sinon');
-var chai = require('chai');
-var expect = chai.expect;
-var requirejs = require('requirejs');
-requirejs.config({
-    baseUrl: '.'
-});
-
-global.window = window;
-global.$ = require('jquery');
-
 describe('Common duration tests', function () {
     var util;
 
@@ -19,6 +6,10 @@ describe('Common duration tests', function () {
             util = utl;
             done();
         });
+    });
+
+    it('should find common duration util', function() {
+        expect(util).to.exist;
     });
     
     describe('check Conditions', function () {
@@ -35,17 +26,14 @@ describe('Common duration tests', function () {
            it('test if condition is true when arguments are valid', function () {
                expect(returnValue).to.eql(true);
            });
-    
            it('test if condition is false when arguments are invalid', function(){
                maxDuration = null;
                expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
             });
-    
             it('test if condition is false when arguments are invalid', function(){
                 avgDuration = null;
                 expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
             });
-    
             it('test if condition is false when arguments are invalid', function(){
                 avgDuration = '0';
                 expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
@@ -56,6 +44,7 @@ describe('Common duration tests', function () {
     describe('check checkIfCurValid', function () {
         var curDuration;
         var returnValue;
+
         describe('check if curDuration has the right value', function () {
             before(function(done) {
                 requirejs(['main/resources/plugin-webapp/centaur/app/common/conversion'], function(utl) {
@@ -67,6 +56,7 @@ describe('Common duration tests', function () {
                 curDuration = 6000;
                 returnValue = util.checkIfCurValid(util, curDuration);
             });
+
             it('check if returns correct values', function () {
                 expect(returnValue).to.eql('6 seconds');
             });
