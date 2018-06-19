@@ -66,9 +66,6 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
                     $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
                         util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
                     });
-
-
-
                 }
             ]
         });

@@ -75,8 +75,9 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
   @Path("{engineName}/refresh")
   public RefreshResource getRefreshResource(
           @PathParam("engineName") String engineName,
-          @QueryParam("procDefId") String procDefId) {
-    return subResource(new RefreshResource(engineName, procDefId), engineName);
+          @QueryParam("procDefId") String procDefId,
+          @QueryParam("procInstId") String procInstId) {
+    return subResource(new RefreshResource(engineName, procDefId, procInstId), engineName);
   }
 
   @Path("{engineName}/users")

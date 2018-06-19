@@ -55,6 +55,7 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
         function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
+            util.commonOverlays.canvas = viewer.get('canvas');
             var elementRegistry = viewer.get('elementRegistry');
             util.commonOverlays.canvas = viewer.get('canvas');
 
