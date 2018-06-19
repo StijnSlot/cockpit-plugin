@@ -58,7 +58,7 @@ describe('Common duration tests', function () {
             });
 
             it('check if returns correct values', function () {
-                expect(returnValue).to.eql('6 seconds');
+                expect(returnValue).to.eql('6 s');
             });
             it('check if returns nothing when null', function(){
                 curDuration = null;

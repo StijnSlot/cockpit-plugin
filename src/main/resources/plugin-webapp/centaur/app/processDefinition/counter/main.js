@@ -21,8 +21,8 @@ define(['require', 'angular', './util', '../../common/overlays', '../../common/o
 
     util.commonOptions = require('../../common/options');
 
-    var overlay = ['$scope', '$rootScope', '$http', 'Uri', 'control', '$q', 'processDiagram', '$window',
-        function($scope, $rootScope, $http, Uri, control, $q, processDiagram, $window) {
+    var overlay = ['$scope', '$http', 'Uri', 'control', '$q', 'processDiagram', '$window',
+        function($scope, $http, Uri, control, $q, processDiagram, $window) {
             util.procDefId = $scope.$parent.processDefinition.id;
 
             var setCounter = function() {
@@ -30,7 +30,7 @@ define(['require', 'angular', './util', '../../common/overlays', '../../common/o
             };
             setCounter();
 
-            util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setCounter);
+            util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], setCounter);
         }
     ];
 

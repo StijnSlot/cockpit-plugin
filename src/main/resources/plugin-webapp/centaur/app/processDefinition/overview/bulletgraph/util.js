@@ -40,7 +40,7 @@ define({
      * @param   overlays          collection of overlays to add to
      */
     bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
-        if (!util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_Order bullet graph")) {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "order_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -143,7 +143,7 @@ define({
             // clear any current overlays displayed
             util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
             
-            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration);
+            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
             var minDuration = util.commonConversion.convertTimes(minDuration, timeChoice);
             var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
             var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
