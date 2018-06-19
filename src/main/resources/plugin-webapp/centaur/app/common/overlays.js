@@ -1,6 +1,6 @@
 define({
     /**
-     * diagram canvas, contains zoom level
+     * Diagram canvas, contains the zoom level.
      */
     canvas: {},
 
@@ -29,9 +29,9 @@ define({
     },
 
     /**
-     * Get the offset from localStorage and add to html DOM element.
+     * Get the offset from localStorage and add to HTML DOM element.
      *
-     * @param {Object}  html              Dom element.
+     * @param {Object}  html              DOM element.
      * @param {Object}  localStorage      LocalStorage containing offset.
      * @param {String}  prefix            Prefix for localStorage item.
      */
@@ -47,7 +47,7 @@ define({
     },
 
     /**
-     * Makes html draggable and sets it in localStorage.
+     * Makes HTML draggable and sets it in localStorage.
      *
      * @param {Object}  localStorage      Used for storing offset.
      * @param {String}  prefix            Used for setting offset in localStorage.
@@ -94,7 +94,7 @@ define({
     },
 
     /**
-     * Clears all overlays whose ID is stored in overlayIDs
+     * Clears all overlays whose ID is stored in overlayIDs.
      *
      * @param {Object}          overlays          Overlays object containing all processDefinition overlays.
      * @param {Array<String>}   overlayIDs        ID's of overlays which should be removed.
