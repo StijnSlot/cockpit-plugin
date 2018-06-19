@@ -82,8 +82,8 @@ define({
     },
 
     /**
-     * Sets checked attribute in variables in data according to localStorage
-     * If nothing is found localStorage, puts false there and sets checked to false
+     * Sets 'checked' attribute in variables in data according to localStorage.
+     * If nothing is found in localStorage, puts false there and sets 'checked' to false.
      *
      * @param {Object}  localStorage  contains user options
      * @param {String}  procDefId     process definition id
@@ -91,10 +91,11 @@ define({
      * @param {Array}   data          contains variables with checked attribute
      */
     setChecked: function (localStorage, procDefId, prefix, data) {
+
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
-            localStorage.setItem(procDefId, "{}");
+            localStorage.setItem(processOptions, "{}");
             processOptions = {prefix: {}};
         } else {
             processOptions = JSON.parse(processOptions);
@@ -118,14 +119,14 @@ define({
     },
 
     /**
-     * Changes variable options in localStorage and broadcasts this change
+     * Changes variable options in localStorage and broadcasts this change.
      *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param procDefId     process definition id
-     * @param id            used for retrieving correct item
-     * @param value         new item value
-     * @param broadcast     broadcast message to be send
+     * @param {Object}  localStorage  contains user options
+     * @param {Object}  $rootScope    used for broadcasting change
+     * @param {String}  procDefId     process definition id
+     * @param {String}  id            used for retrieving correct item
+     * @param {String}  value         new item value
+     * @param {String}  broadcast     broadcast message to be 
      */
     changeOption:  function (localStorage, $rootScope, procDefId, id, value, broadcast) {
         var processOptions = localStorage.getItem(procDefId);
@@ -138,17 +139,16 @@ define({
     },
 
     /**
-     * Changes KPI options in localStorage and broadcasts this change
+     * Changes KPI options in localStorage and broadcasts this change.
      *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param procDefId     process definition id
-     * @param prefix        object property where id is to be found
-     * @param id            used for retrieving correct item
-     * @param checked       new item value
+     * @param {Object}  localStorage  contains user options
+     * @param {Object}  $rootScope    used for broadcasting change
+     * @param {String}  procDefId     process definition id
+     * @param {String}  id            used for retrieving correct item
+     * @param {String}  value         new item value
      * @param broadcast     broadcast message to send
      */
-    changeCollection: function (localStorage, $rootScope, procDefId, prefix, id, checked, broadcast) {
+    changeCollection: function (localStorage, $rootScope, procDefId, prefix, id, value, broadcast) {
         var processOptions = localStorage.getItem(procDefId);
         processOptions = (processOptions == null ? {} : JSON.parse(processOptions));
 
@@ -156,14 +156,14 @@ define({
             processOptions[prefix] = {};
         }
 
-        processOptions[prefix][id] = String(checked);
+        processOptions[prefix][id] = String(value);
         localStorage.setItem(procDefId, JSON.stringify(processOptions));
 
         $rootScope.$broadcast("cockpit.plugin.centaur:options:" + broadcast);
     },
 
     /**
-     * Gets refresh rate value from localStorage, or sets its default value
+     * Gets refresh rate value from localStorage, or sets its default value.
      *
      * @param {Object}  localStorage  contains user optionsTab
      * @param {String}  procDefId     processDefinitionId, where options are stored
@@ -173,10 +173,11 @@ define({
      * @returns {String}
      */
     getOption: function(localStorage, procDefId, defaultValue, item, subItem) {
+
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
-            localStorage.setItem(procDefId, "{}");
+            localStorage.setItem(processOptions, "{}");
             processOptions = {};
         } else {
             processOptions = JSON.parse(processOptions);
@@ -210,10 +211,12 @@ define({
     /**
      * This function looks for each element if the instance is currently
      * on that element. When it is, it returns true, else false.
-     * 
-     * @param  {Object}  instance    Instance of a process
-     * @param  {String}  elementID   ID of diagram element that represents instance
-     * @param  {Number}  instanceID  ID of diagram instance element that represents instance
+     *
+     * @param   {Array<Object>} instance    Instance of a process.
+     * @param   {String}        elementID   ID of diagram element that represents instance.
+     * @param   {Number}        instanceID  ID of diagram instance element that represents instance.
+     * @returns {Boolean}                   True if the instance is selected,
+     *                                      else False.
      */
     isSelectedInstance: function (instance, elementID, instanceID) {
         for (var j = 0; j < instance.length; j++) {
@@ -227,11 +230,11 @@ define({
     },
 
     /**
-     * Register for broadcast changes to variable options and call
+     * Register for broadcast changes to variable options and call the callbacks.
      *
-     * @param $scope            scope that can be destroyed
-     * @param subscriptions     array of strings with broadcast messages
-     * @param callback          callback functions that needs to be called on change
+     * @param {Object}        $scope            scope that can be destroyed
+     * @param {Array<String>} subscriptions     array of strings with broadcast messages
+     * @param {Function}      callback          callback functions that needs to be called on change
      */
     register: function($scope, subscriptions, callback) {
         var unregisters = [];
