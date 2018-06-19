@@ -47,13 +47,13 @@ define({
      */
     createHTML: function (util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass) {
         var data = {};
-        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity current duration")) {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_cur_duration") !== "false") {
             data['cur'] = {value: curDurationHTML};
         }
-        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity average duration")) {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_avg_duration") !== "false") {
             data['avg'] = {value: avgDurationHTML};
         }
-        if (util.commonOptions.isSelectedOption($window.localStorage, util.procDefId + "_KPI_" + "Activity maximum duration")) {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_max_duration") !== "false") {
             data['max'] = {value: maxDurationHTML};
         }
 
