@@ -144,6 +144,7 @@ define({
      * @param {Object}  localStorage  contains user options
      * @param {Object}  $rootScope    used for broadcasting change
      * @param {String}  procDefId     process definition id
+     * @param {String}
      * @param {String}  id            used for retrieving correct item
      * @param {String}  value         new item value
      * @param broadcast     broadcast message to send

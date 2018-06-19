@@ -92,7 +92,7 @@ describe('check counter util', function () {
         beforeEach(function() {
             spy1 = sandbox.spy(util, "createHTML");
             spy2 = sandbox.spy();
-            util.commonOverlays = {setOffset: sandbox.spy(), addDraggableFunctionality: sandbox.spy(), addTextElement: spy2};
+            util.commonOverlays = {getOffset: sandbox.spy(), addDraggableFunctionality: sandbox.spy(), addTextElement: spy2};
             util.addOverlay({}, util, {}, {}, 1);
         });
         afterEach(function() {
