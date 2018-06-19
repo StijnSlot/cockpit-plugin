@@ -91,7 +91,6 @@ define({
                         startEvent = shape.businessObject.id;
                     }
 
-
                     if ($scope.processActivityStatistics.data[i].id === startEvent) {
                         var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;

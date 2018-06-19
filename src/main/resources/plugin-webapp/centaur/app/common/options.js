@@ -36,14 +36,14 @@ define({
          * sets num value of variables in scope to value in localStorage
          */
         $scope.setNumValue = function() {
-            $scope.numValue = util.getOption(localStorage, $scope.procDefId, util.defaultVariableNum, "variable-number");
+            $scope.numValue = parseInt(util.getOption(localStorage, $scope.procDefId, util.defaultVariableNum, "variable-number"));
         };
 
         /**
          * sets refresh rate in $scope and gets it from localStorage
          */
         $scope.setRefreshRate = function() {
-            $scope.refreshRate =  util.getOption(localStorage, $scope.procDefId, util.defaultRefreshRate, "refresh");
+            $scope.refreshRate = parseInt(util.getOption(localStorage, $scope.procDefId, util.defaultRefreshRate, "refresh"));
         };
 
         /**
@@ -76,7 +76,7 @@ define({
          * Reacts to changes in refresh rate and stores in lcoalStorage
          * @param value
          */
-        $scope.changeVarRefreshRate = function(value) {
+        $scope.changeRefreshRate = function(value) {
             util.changeOption(localStorage, $rootScope, "refresh-change", $scope.procDefId, value, "refresh", undefined);
         };
     },

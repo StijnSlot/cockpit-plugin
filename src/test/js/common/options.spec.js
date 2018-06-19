@@ -21,7 +21,7 @@ describe('Common options tests', function() {
 
         it('should set all scope functions', function() {
             var functions = ["setVariableChecked", "setKPIChecked", "setNumValue", "setRefreshRate", "setRefreshRate",
-                "changeVar", "changeKPI", "changeVarNum", "changeVarRefreshRate"];
+                "changeVar", "changeKPI", "changeVarNum", "changeRefreshRate"];
             functions.forEach(function(el) {
                 expect(scope[el]).to.exist;
             });
