@@ -26,7 +26,7 @@ describe('Common variables tests', function() {
             util.handleVariableData = function(data, localStorage, html) { html.appendChild(document.createElement('UL'))};
             stub1.createVariableDiv.returns(document.createElement('DIV'));
             util.procDefId = "asdf1234";
-            util.commonOptions = {isSelectedOption: sinon.stub().returns(true), getVariableNum: sinon.spy()};
+            util.commonOptions = {getOption: sinon.stub().returns("true"), getOption: sinon.spy()};
             util.commonOverlays = {clearOverlays: spy1, setOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {
@@ -142,15 +142,16 @@ describe('Common variables tests', function() {
 
     describe('filterVariables tests', function() {
         var data = {'a': 'tmp', 'b': 5}, out;
-        var optionUtil, prefix = "var_", stub;
+        var optionUtil, prefix = "var_", procDefId = "test";
+        var stub;
 
         beforeEach(function() {
             stub = sinon.stub();
             var localStorage = {};
-            stub.withArgs(localStorage, prefix + 'a').returns(true);
-            stub.withArgs(localStorage, prefix + 'b').returns(false);
-            optionUtil = {isSelectedOption: stub};
-            out = util.filterVariables(data, localStorage, prefix, optionUtil);
+            stub.withArgs(localStorage, procDefId, "true", prefix, 'a').returns("true");
+            stub.withArgs(localStorage, procDefId, "true", prefix, 'b').returns("false");
+            optionUtil = {getOption: stub};
+            out = util.filterVariables(data, localStorage, procDefId, prefix, optionUtil);
         });
 
         it('should return out with only a', function() {

@@ -51,8 +51,8 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
      * Overlay object that contains the elements put on the diagram
      */
     var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
-        function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
+        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+        function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
             util.commonOverlays.canvas = viewer.get('canvas');
@@ -66,7 +66,7 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
             };
             putBulletGraph();
 
-            util.commonOptions.register($scope, $rootScope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
+            util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
         }
     ];
 

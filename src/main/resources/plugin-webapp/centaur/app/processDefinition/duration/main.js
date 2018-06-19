@@ -49,12 +49,11 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
             priority: 20,
             label: 'Runtime',
             overlay: [
-                '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
-                function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
+                '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+                function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
                     var viewer = control.getViewer();
                     util.commonOverlays.canvas = viewer.get('canvas');
                     var overlays = viewer.get('overlays');
-
                     var elementRegistry = viewer.get('elementRegistry');
 
                     util.procDefId = $scope.$parent.processDefinition.id;
@@ -62,12 +61,8 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
                     util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
 
                     // subscribe to any broadcast KPI options change
-                    var listener = $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
+                    util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], function () {
                         util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-                    });
-
-                    $scope.$on("$destroy", function() {
-                        listener();
                     });
                 }
             ]

@@ -5,14 +5,9 @@ define({
     overlayActivityIds: {},
 
     /**
-     * contains user options for number of variables to show
+     * number of variables to show
      */
     variableNum: 5,
-
-    /**
-     * contains user options for seconds between refresh check
-     */
-    variableRefresh: 1,
 
     /**
      * contains process definition id
@@ -55,7 +50,7 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
 
         // if not selected variables
-        if(!util.commonOptions.isSelectedOption(localStorage, util.procDefId + "_KPI_" + "Variables")) {
+        if(util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "variables") === "false") {
 
             // loop over all elements in the diagram to clear them
             elementRegistry.forEach(function (shape) {
@@ -68,7 +63,8 @@ define({
         }
 
         // get number of instance variables to show
-        util.variableNum = util.commonOptions.getVariableNum(localStorage, util.procDefId + "_var_num");
+        util.variableNum = util.commonOptions.getOption(localStorage, util.procDefId,
+            util.commonOverlays.defaultVariableNum, "variable-number");
 
         // loop over all elements in the diagram
         elementRegistry.forEach(function (shape) {
@@ -83,11 +79,9 @@ define({
             }
 
             $http.get(request1(element)).success(function(instances) {
-
                 var promises = [];
 
                 instances.forEach(function(instance) {
-
                     var promise = $http.get(request2(instance)).success(function(data) {
                         util.handleVariableData(data, localStorage, html, overlays, element.id, util);
                     });
@@ -104,7 +98,6 @@ define({
                     }
                 });
             });
-
         });
     },
 
@@ -130,7 +123,7 @@ define({
      * @param util              util object containing the functions
      */
     handleVariableData: function(data, localStorage, html, overlays, elementId, util) {
-        data = util.filterVariables(data, localStorage, util.procDefId + "_var_", util.commonOptions);
+        data = util.filterVariables(data, localStorage, util.procDefId, "variables", util.commonOptions);
         html.appendChild(util.createVariableUl(data));
     },
 
@@ -145,7 +138,7 @@ define({
      */
     finishElement: function(localStorage, html, overlays, elementId, util) {
         util.addDots(html, util);
-        util.addHoverFunctionality(html, util.variableNum);
+        util.addHoverFunctionality(html);
         var id = util.commonOverlays.addTextElement(overlays, elementId, html, -5, -80);
         util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementId + "_variables");
 
@@ -207,7 +200,7 @@ define({
             var child = html.children[i];
             for(var j = 0; j < child.childElementCount; j++) {
                 // places list item which contains three dots
-                if(prev + j === util.variableNum) {
+                if(prev + j === parseInt(util.variableNum)) {
                     child.insertBefore(util.createDots(3), child.children[j]);
                     return;
                 }
@@ -282,13 +275,14 @@ define({
      *
      * @param data          variables to filter
      * @param localStorage  contains user options
+     * @param procDefId     process definition id
      * @param prefix        prefix before variable name, for localStorage
      * @param util          contains isSelectedOption
      */
-    filterVariables: function(data, localStorage, prefix, util) {
+    filterVariables: function(data, localStorage, procDefId, prefix, util) {
         var out = {};
         for(var variable in data) {
-            if(util.isSelectedOption(localStorage, prefix + variable)) {
+            if(util.getOption(localStorage, procDefId, "true", prefix, variable) !== "false") {
                 out[variable] = data[variable];
             }
         }

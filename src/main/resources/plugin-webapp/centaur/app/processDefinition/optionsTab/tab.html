@@ -117,14 +117,14 @@
     <table>
         <tbody>
             <tr data-ng-repeat="variable in KPI">
-                <form>
+                <form ng-init="setKPIChecked()">
                     <td>
                         <input type="checkbox" ng-checked="variable.checked" id="kpi-{{ variable.name }}"
                                ng-change="changeKPI(variable.name, checked)"  ng-model="checked" switch="bool">
                         <label for="kpi-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
                     </td>
                     <td>
-                        {{ variable.name }}
+                        {{ variable.label }}
                     </td>
                 </form>
             </tr>

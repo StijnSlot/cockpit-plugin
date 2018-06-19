@@ -1,32 +1,49 @@
 define({
     /**
+     * default rate of checking for updates
+     */
+    defaultRefreshRate: 1,
+
+    /**
+     * default number of variables to show in box
+     */
+    defaultVariableNum: 5,
+
+    /**
      * Binds scope functions to corresponding util
      *
      * @param $scope        scope which needs functions set
-     * @param $window       contains localStorage
+     * @param localStorage  contains options
      * @param $rootScope    for sending broadcasts
      * @param util          util file containing functions
      */
-    setScopeFunctions: function($scope, $window, $rootScope, util) {
+    setScopeFunctions: function($scope, localStorage, $rootScope, util) {
         /**
-         * sets variables in list to checked according to localStorage
-         */
+        * sets variables in list to checked according to localStorage
+        */
         $scope.setVariableChecked = function() {
-            util.setChecked($window.localStorage, $scope.procDefId + "_KPI_", $scope.KPI);
+            util.setChecked(localStorage, $scope.procDefId, "variables", $scope.processVariables);
+        };
+
+        /**
+        * sets variables in list to checked according to localStorage
+        */
+        $scope.setKPIChecked = function() {
+            util.setChecked(localStorage, $scope.procDefId, "KPI", $scope.KPI);
         };
 
         /**
          * sets num value of variables in scope to value in localStorage
          */
         $scope.setNumValue = function() {
-            $scope.numValue = util.getVariableNum($window.localStorage, $scope.procDefId + "_var_num");
+            $scope.numValue = util.getOption(localStorage, $scope.procDefId, util.defaultVariableNum, "variable-number");
         };
 
         /**
          * sets refresh rate in $scope and gets it from localStorage
          */
         $scope.setRefreshRate = function() {
-            $scope.refreshRate = util.getRefreshRate($window.localStorage, $scope.procDefId + "_var_refresh");
+            $scope.refreshRate =  util.getOption(localStorage, $scope.procDefId, util.defaultRefreshRate, "refresh");
         };
 
         /**
@@ -35,7 +52,7 @@ define({
          * @param checked       value of change, either true or false
          */
         $scope.changeVar = function(id, checked) {
-            util.changeVar($window.localStorage, $rootScope, $scope.procDefId + '_var_' + id, checked);
+            util.changeCollection(localStorage, $rootScope, $scope.procDefId, 'variables', id, checked, "variable-change");
         };
 
         /**
@@ -44,7 +61,7 @@ define({
          * @param checked       value of change, either true or false
          */
         $scope.changeKPI = function(id, checked) {
-            util.changeKPI($window.localStorage, $rootScope, $scope.procDefId + '_KPI_' + id, checked);
+            util.changeCollection(localStorage, $rootScope, $scope.procDefId, 'KPI', id, checked, "KPI-change");
         };
 
         /**
@@ -52,7 +69,7 @@ define({
          * @param value         value of new var number
          */
         $scope.changeVarNum = function(value) {
-            util.changeVarNum($window.localStorage, $rootScope, $scope.procDefId + "_var_num", value);
+            util.changeOption(localStorage, $rootScope, $scope.procDefId, "variable-number", value, "var-num-change");
         };
 
         /**
@@ -60,7 +77,7 @@ define({
          * @param value
          */
         $scope.changeVarRefreshRate = function(value) {
-            util.changeVarRefreshRate($window.localStorage, $rootScope, $scope.procDefId + "_var_refresh", value);
+            util.changeOption(localStorage, $rootScope, $scope.procDefId, "refresh", value, "refresh-change");
         };
     },
 
@@ -68,21 +85,36 @@ define({
      * Sets checked attribute in variables in data according to localStorage
      * If nothing is found localStorage, puts false there and sets checked to false
      *
-     * @param localStorage  contains user options
-     * @param prefix        used for naming the item in localStorage
-     * @param data          contains variables with checked attribute
+     * @param {Object}  localStorage  contains user options
+     * @param {String}  procDefId     process definition id
+     * @param {String}  prefix        used for naming the item in localStorage
+     * @param {Array}   data          contains variables with checked attribute
      */
-    setChecked: function (localStorage, prefix, data) {
-        data.forEach(function (variable) {
-            var get = localStorage.getItem(prefix + variable.name);
-            if (get === null) {
+    setChecked: function (localStorage, procDefId, prefix, data) {
+        var processOptions = localStorage.getItem(procDefId);
+
+        if(processOptions == null) {
+            localStorage.setItem(procDefId, "{}");
+            processOptions = {prefix: {}};
+        } else {
+            processOptions = JSON.parse(processOptions);
+            if(processOptions[prefix] === undefined) {
+                processOptions[prefix] = {};
+            }
+        }
+        
+        data.forEach(function (element) {
+            var get = processOptions[prefix][element.name];
+            if (get === undefined) {
                 // set default value
-                localStorage.setItem(prefix + variable.name, 'true');
-                variable.checked = true;
+                processOptions[prefix][element.name] = 'true';
+                element.checked = true;
             } else {
-                variable.checked = get === 'true';
+                element.checked = (get === 'true');
             }
         });
+
+        localStorage.setItem(procDefId, JSON.stringify(processOptions));
     },
 
     /**
@@ -90,12 +122,19 @@ define({
      *
      * @param localStorage  contains user options
      * @param $rootScope    used for broadcasting change
+     * @param procDefId     process definition id
      * @param id            used for retrieving correct item
-     * @param checked       new item value
+     * @param value         new item value
+     * @param broadcast     broadcast message to be send
      */
-    changeVar:  function (localStorage, $rootScope, id, checked) {
-        localStorage.setItem(id, checked);
-        $rootScope.$broadcast("cockpit.plugin.centaur:options:variable-change");
+    changeOption:  function (localStorage, $rootScope, procDefId, id, value, broadcast) {
+        var processOptions = localStorage.getItem(procDefId);
+        processOptions = (processOptions == null ? {} : JSON.parse(processOptions));
+
+        processOptions[id] = String(value);
+        localStorage.setItem(procDefId, JSON.stringify(processOptions));
+
+        $rootScope.$broadcast("cockpit.plugin.centaur:options:" + broadcast);
     },
 
     /**
@@ -103,92 +142,78 @@ define({
      *
      * @param localStorage  contains user options
      * @param $rootScope    used for broadcasting change
+     * @param procDefId     process definition id
+     * @param prefix        object property where id is to be found
      * @param id            used for retrieving correct item
      * @param checked       new item value
+     * @param broadcast     broadcast message to send
      */
-    changeKPI: function (localStorage, $rootScope, id, checked) {
-        localStorage.setItem(id, checked);
-        $rootScope.$broadcast("cockpit.plugin.centaur:options:KPI-change");
-    },
+    changeCollection: function (localStorage, $rootScope, procDefId, prefix, id, checked, broadcast) {
+        var processOptions = localStorage.getItem(procDefId);
+        processOptions = (processOptions == null ? {} : JSON.parse(processOptions));
 
-    /**
-     * Changes variable number in localStorage and broadcasts
-     *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param id            used for retrieving correct item
-     * @param value         new item value
-     */
-    changeVarNum: function(localStorage, $rootScope, id, value) {
-        localStorage.setItem(id, value);
-        $rootScope.$broadcast("cockpit.plugin.centaur:options:var-num-change");
-    },
-
-    /**
-     * Changes variable refresh rate in localStorage and broadcast
-     *
-     * @param localStorage  contains user options
-     * @param $rootScope    used for broadcasting change
-     * @param id            used for retrieving correct item
-     * @param value         new item value
-     */
-    changeVarRefreshRate: function(localStorage, $rootScope, id, value) {
-        localStorage.setItem(id, value);
-        $rootScope.$broadcast("cockpit.plugin.centaur:options:var-refresh-change");
-    },
-
-    /**
-     * Gets num value from localStorage, or sets it as default value
-     *
-     * @param localStorage  contains user optionsTab
-     * @param id            used for getting the optionsTab from localStorage
-     * @returns {number}
-     */
-    getVariableNum: function(localStorage, id) {
-        var get = localStorage.getItem(id);
-        if(get === null) {
-            localStorage.setItem(id, 5);
-            return 5;
-        } else {
-            return parseInt(get);
+        if(processOptions[prefix] === undefined) {
+            processOptions[prefix] = {};
         }
+
+        processOptions[prefix][id] = String(checked);
+        localStorage.setItem(procDefId, JSON.stringify(processOptions));
+
+        $rootScope.$broadcast("cockpit.plugin.centaur:options:" + broadcast);
     },
 
     /**
      * Gets refresh rate value from localStorage, or sets its default value
      *
-     * @param localStorage  contains user optionsTab
-     * @param id            used for getting the optionsTab from localStorage
-     * @returns {number}
+     * @param {Object}  localStorage  contains user optionsTab
+     * @param {String}  procDefId     processDefinitionId, where options are stored
+     * @param {String}  defaultValue  defaultValue in case nothing is set
+     * @param {String}  item          used for getting the optionsTab from localStorage
+     * @param {String}  subItem       optional. subitem of item
+     * @returns {String}
      */
-    getRefreshRate: function(localStorage, id) {
-        var get = localStorage.getItem(id);
-        if(get === null) {
-            localStorage.setItem(id, 1);
-            return 1;
-        } else {
-            return parseInt(get);
-        }
-    },
+    getOption: function(localStorage, procDefId, defaultValue, item, subItem) {
+        var processOptions = localStorage.getItem(procDefId);
 
-    /**
-     * Removes all variables which are deselected by the user
-     * If undefined, assumes it is selected
-     *
-     * @param localStorage  contains user optionsTab
-     * @param item          used for getting localStorage item option
-     */
-    isSelectedOption: function (localStorage, item) {
-        return localStorage.getItem(item) !== 'false';
+        if(processOptions == null) {
+            localStorage.setItem(procDefId, "{}");
+            processOptions = {};
+        } else {
+            processOptions = JSON.parse(processOptions);
+        }
+
+        var get = processOptions[item];
+
+        if(get === undefined) {
+            if(subItem !== undefined) {
+                processOptions = {};
+                processOptions[subItem] = String(defaultValue);
+            } else {
+                processOptions[item] = String(defaultValue);
+            }
+            localStorage.setItem(procDefId, JSON.stringify(processOptions));
+            return defaultValue;
+        }
+        if(subItem !== undefined) {
+            get = get[subItem];
+
+            if(get === undefined) {
+                processOptions[item][subItem] = String(defaultValue);
+                localStorage.setItem(procDefId, JSON.stringify(processOptions));
+                return defaultValue;
+            }
+        }
+
+        return get;
     },
 
     /**
      * This function looks for each element if the instance is currently
      * on that element. When it is, it returns true, else false.
      * 
-     * @param   Object  instance    Instance of a process
-     * @param   String  elementId   ID of diagram element that represents instance
-     * @param   Number  instanceID  ID of diagram instance element that represents instance
+     * @param  {Object}  instance    Instance of a process
+     * @param  {String}  elementID   ID of diagram element that represents instance
+     * @param  {Number}  instanceID  ID of diagram instance element that represents instance
      */
     isSelectedInstance: function (instance, elementID, instanceID) {
         for (var j = 0; j < instance.length; j++) {
@@ -205,16 +230,15 @@ define({
      * Register for broadcast changes to variable options and call
      *
      * @param $scope            scope that can be destroyed
-     * @param $rootScope        rootScope that gives broadcasts
      * @param subscriptions     array of strings with broadcast messages
      * @param callback          callback functions that needs to be called on change
      */
-    register: function($scope, $rootScope, subscriptions, callback) {
+    register: function($scope, subscriptions, callback) {
         var unregisters = [];
 
         subscriptions.forEach(function(el) {
             // subscribe to any broadcast variables options change
-            unregisters.push($rootScope.$on(el, function() {
+            unregisters.push($scope.$on(el, function() {
                 callback();
             }));
         });
