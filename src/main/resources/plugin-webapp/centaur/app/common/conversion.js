@@ -18,15 +18,15 @@ define({
      * @return  {Number}                duration as Integer
      */
     convertTimes: function (duration, choice) {
-        if (choice === 's') {
+        if (choice === 's' || choice === 'seconds') {
             return (Math.round(duration / 1000 * 10) / 10);
-        } else if (choice === 'm') {
+        } else if (choice === 'm' || choice === 'minutes') {
             return (Math.round(duration / 60000 * 10) / 10);
-        } else if (choice === 'h') {
+        } else if (choice === 'h' || choice === 'hours') {
             return (Math.round(duration / 3600000 * 10) / 10);
-        } else if (choice === 'd') {
+        } else if (choice === 'd' || choice === 'days') {
             return (Math.round(duration / 86400000 * 10) / 10);
-        } else if (choice === 'w') {
+        } else if (choice === 'w' || choice === 'weeks') {
             return (Math.round(duration / 604800000 * 10) / 10);
         } else {
             return duration;
@@ -44,17 +44,37 @@ define({
      * @param   {Number}  time      duration of process
      * @return  {String}            time unit choice
      */
-    checkTimeUnit: function (time) {
+    checkTimeUnit: function (time, longUnit) {
         if (time > 1000 && time < 60001) {
-            return 's';
+            if (longUnit) {
+                return 'seconds';
+            } else {
+                return 's';
+            }
         } else if (time > 60000 && time < 3600001) {
-            return 'm';
+            if (longUnit) {
+                return 'minutes';
+            } else {
+                return 'm';
+            }
         } else if (time > 3600000 && time < 86400001) {
-            return 'h';
+            if (longUnit) {
+                return 'hours';
+            } else {
+                return 'h';
+            }
         } else if (time > 86400000 && time < 604800001) {
-            return 'd';
+            if (longUnit) {
+                return 'days';
+            } else {
+                return 'd';
+            }
         } else if (time > 604800000) {
-            return 'w';
+            if (longUnit) {
+                return 'weeks';
+            } else {
+                return 'w';
+            }
         } else {
             return 'ms';
         }

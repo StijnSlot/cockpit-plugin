@@ -14,35 +14,61 @@ describe('Common conversion tests', function () {
 
     describe('check Time Unit', function () {
         var duration;
-        describe('check if time units are calculated correctly', function () {
-    
-    
+        describe('check if time units are calculated correctly (short time unit)', function () {
            it('test seconds', function () {
                duration = 5000;
-               expect(util.checkTimeUnit(duration)).to.eql('s');
+               expect(util.checkTimeUnit(duration, false)).to.eql('s');
            });
     
            it('test minutes', function(){
                duration = 100000;
-               expect(util.checkTimeUnit(duration)).to.eql('m');
+               expect(util.checkTimeUnit(duration, false)).to.eql('m');
             });
     
             it('test hours', function(){
                 duration = 3700001
-                expect(util.checkTimeUnit(duration)).to.eql('h');
+                expect(util.checkTimeUnit(duration, false)).to.eql('h');
             });
     
             it('test days', function(){
                 duration = 90400001;
-                expect(util.checkTimeUnit(duration)).to.eql('d');
+                expect(util.checkTimeUnit(duration, false)).to.eql('d');
             });
     
             it('test weeks', function(){
                 duration = 605800001;
-                    expect(util.checkTimeUnit(duration)).to.eql('w');
+                    expect(util.checkTimeUnit(duration, false)).to.eql('w');
             });
     
         });
+
+        describe('check if time units are calculated correctly (long time unit)', function () {
+            it('test seconds', function () {
+                duration = 5000;
+                expect(util.checkTimeUnit(duration, true)).to.eql('seconds');
+            });
+     
+            it('test minutes', function(){
+                duration = 100000;
+                expect(util.checkTimeUnit(duration, true)).to.eql('minutes');
+             });
+     
+             it('test hours', function(){
+                 duration = 3700001
+                 expect(util.checkTimeUnit(duration, true)).to.eql('hours');
+             });
+     
+             it('test days', function(){
+                 duration = 90400001;
+                 expect(util.checkTimeUnit(duration, true)).to.eql('days');
+             });
+     
+             it('test weeks', function(){
+                 duration = 605800001;
+                     expect(util.checkTimeUnit(duration, true)).to.eql('weeks');
+             });
+     
+         });
     
     
     });
@@ -64,6 +90,9 @@ describe('Common conversion tests', function () {
                 duration = 1000*145;
                 choice = 's';
                 expect(util.convertTimes(duration, choice)).to.eql(145);
+                duration = 1000*145;
+                choice = 'seconds';
+                expect(util.convertTimes(duration, choice)).to.eql(145);
             });
     
             it('test for duration to be in minutes', function(){
@@ -76,6 +105,9 @@ describe('Common conversion tests', function () {
                 duration = 60000*124;
                 choice = 'm';
                 expect(util.convertTimes(duration, choice)).to.eql(124);
+                duration = 60000*124;
+                choice = 'minutes';
+                expect(util.convertTimes(duration, choice)).to.eql(124);
             });
     
             it('test for duration to be in hours', function(){
@@ -85,6 +117,9 @@ describe('Common conversion tests', function () {
                 duration = 3600000*75;
                 choice = 'h';
                 expect(util.convertTimes(duration, choice)).to.eql(75);
+                duration = 3600000*75;
+                choice = 'hours';
+                expect(util.convertTimes(duration, choice)).to.eql(75);
             });
     
             it('test for duration to be in days', function(){
@@ -93,6 +128,9 @@ describe('Common conversion tests', function () {
                 expect(util.convertTimes(duration, choice)).to.eql(1);
                 duration = 86400001*10;
                 choice = 'd';
+                expect(util.convertTimes(duration, choice)).to.eql(10);
+                duration = 86400001*10;
+                choice = 'days';
                 expect(util.convertTimes(duration, choice)).to.eql(10);
             });
     
@@ -106,7 +144,9 @@ describe('Common conversion tests', function () {
                 duration = 604800000*5;
                 choice = 'w';
                 expect(util.convertTimes(duration, choice)).to.eql(5);
-    
+                duration = 604800000*5;
+                choice = 'weeks';
+                expect(util.convertTimes(duration, choice)).to.eql(5);
             });
     
         });
