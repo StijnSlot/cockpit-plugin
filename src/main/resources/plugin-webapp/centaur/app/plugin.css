@@ -35,8 +35,8 @@
 */
 
 .durationText {
-    font-size: 9px;
-    width: 70px;
+    font-size: 13px;
+    width: 100px;
 }
 
 .durationText ul {
@@ -74,6 +74,11 @@
     border-style: groove;
     border-radius: 1px;
     padding: 5px;
+    font-size: 13px !important;
+}
+
+.bullet-duration-overview .tick text {
+    font-size: 6px !important;
 }
 
 .bullet { font: 10px sans-serif; }
