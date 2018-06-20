@@ -1,13 +1,3 @@
-/**
- * Displays a bulletgraph which contains the current, average and maximal duration
- * of a process onto the process diagram of Camunda.
- *
- * @author Lukas Ant.
- * @since  30.05.2018 in Testing
- */
-
-'use strict';
-
 define(['require', 'angular', '../../../common/bulletlibraries', './util', '../../../common/conversion', '../../../common/options', '../../../common/overlays', '../../../common/variables', '../../../common/bulletgraph'], function (require, angular) {
 
     /**

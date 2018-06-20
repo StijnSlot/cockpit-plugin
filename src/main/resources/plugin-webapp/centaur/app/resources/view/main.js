@@ -1,5 +1,3 @@
-'use strict';
-
 define(['require', 'angular', '../../common/conversion'], function(require, angular) {
 
     var conversion = require('../../common/conversion');

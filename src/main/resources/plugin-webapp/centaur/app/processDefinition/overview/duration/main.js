@@ -1,16 +1,3 @@
-/**
- * Displays the current, average and maximal duration of a process onto the
- * process diagram of Camunda.
- *
- * TODO: Description.
- *
- * @author Lukas Ant, Tim Hübener.
- * @since  22.05.2018 in Testing
- */
-
-'use strict';
-
-
 define(['require', 'angular', './util', '../../../common/conversion', '../../../common/options', '../../../common/overlays', '../../../common/variables', '../../../common/duration'], function (require, angular) {
 
     /**

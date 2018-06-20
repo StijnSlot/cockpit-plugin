@@ -1,5 +1,4 @@
 define(['require', 'angular', './util', '../../common/deletion'], function(require, angular) {
-
     var util = require('./util');
 
     var deletion = require('../../common/deletion');
