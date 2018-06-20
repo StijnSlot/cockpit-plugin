@@ -33,29 +33,60 @@ define({
      *
      * @param {Object}  html              DOM element.
      * @param {Object}  localStorage      LocalStorage containing offset.
-     * @param {String}  prefix            Prefix for localStorage item.
+     * @param {Object}  html              Dom element
+     * @param {Object}  localStorage      LocalStorage containing offset
+     * @param {String}  procDefId         process definition id
+     * @param {String}  activityId        id of activity of overlay
+     * @param {String}  overlayName       name by which to store overlay offset settings
+    */
+    getOffset: function(html, localStorage, procDefId, activityId, overlayName) {
+        var processOptions = localStorage.getItem(procDefId);
+        if(processOptions == null) return;
+
+        processOptions = JSON.parse(processOptions);
+
+        if(processOptions[activityId] === undefined) return;
+
+        var offset = processOptions[activityId][overlayName];
+
+        if (offset !== undefined) {
+            $(html.parentNode).css("top", offset["top"]);
+            $(html.parentNode).css("left", offset["left"]);
+        }
+    },
+
+    /**
+     * sets the offset of an overlay in localStorage
+     *
+     * @param {Object}  localStorage    localStorage which options are set
+     * @param {String}  procDefId       processs definition id
+     * @param {String}  activityId      id of activity of overlay
+     * @param {String}  overlayName     name of overlay option
+     * @param {Number}  top             top offset
+     * @param {Number}  left            left offset
      */
-    setOffset: function(html, localStorage, prefix) {
-        var offsetTop = localStorage.getItem(prefix + "_offset_top");
-        if (offsetTop !== null) {
-            $(html.parentNode).css("top", offsetTop);
+    setOffset: function(localStorage, procDefId, activityId, overlayName, top, left) {
+        var processOptions = localStorage.getItem(procDefId);
+        processOptions = (processOptions == null ? {} : JSON.parse(processOptions));
+
+        if(processOptions[activityId] === undefined) {
+            processOptions[activityId] = {};
         }
-        var offsetLeft = localStorage.getItem(prefix + "_offset_left");
-        if (offsetLeft !== null) {
-            $(html.parentNode).css("left", offsetLeft);
-        }
+        processOptions[activityId][overlayName] = {"top": top, "left": left};
+
+        localStorage.setItem(procDefId, JSON.stringify(processOptions));
     },
 
     /**
      * Makes HTML draggable and sets it in localStorage.
      *
-     * @param {Object}  localStorage      Used for storing offset.
-     * @param {String}  prefix            Used for setting offset in localStorage.
      * @param {String}  elementID         Used for making element selected.
      * @param {Object}  html              DOM element which should drag.
      * @param {Object}  canvas            Contains zoom level.
+     * @param {boolean} highlight         whether or not to highlight the activity
+     * @param {Function}callback          function which is called with the new offset
      */
-    addDraggableFunctionality: function(localStorage, prefix, elementID, html, canvas, highlight) {
+    addDraggableFunctionality: function(elementID, html, canvas, highlight, callback) {
         html.parentNode.classList.add("djs-draggable");
         var click = {};
         var zoom = 1;
@@ -93,9 +124,7 @@ define({
                     $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
                 }
 
-                // store settings in localStorage
-                localStorage.setItem(prefix + "_offset_top", html.parentNode.style.top);
-                localStorage.setItem(prefix + "_offset_left", html.parentNode.style.left);
+                callback(html.parentNode.style.top, html.parentNode.style.left);
             }
         });
     },

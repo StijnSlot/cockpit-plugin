@@ -140,10 +140,12 @@ define({
         util.addDots(html, util);
         util.addHoverFunctionality(html);
         var id = util.commonOverlays.addTextElement(overlays, elementId, html, -5, -80);
-        util.commonOverlays.setOffset(html, localStorage, util.procDefId + "_" + elementId + "_variables");
+        util.commonOverlays.getOffset(html, localStorage, util.procDefId, elementId, "variables");
 
-        util.commonOverlays.addDraggableFunctionality(localStorage, util.procDefId + "_" + elementId + "_variables",
-            elementId, html, util.commonOverlays.canvas, true);
+        var setOffset = function(top, left) {
+            util.commonOverlays.setOffset(localStorage, util.procDefId, elementId, "variables", top, left);
+        };
+        util.commonOverlays.addDraggableFunctionality(elementId, html, util.commonOverlays.canvas, true, setOffset);
 
         return id;
     },

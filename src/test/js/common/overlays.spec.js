@@ -36,25 +36,25 @@ describe('Common overlay tests', function() {
         });
     });
 
-    describe('setOffset tests', function() {
-        var parent, html, prefix = "test";
+    describe('getOffset tests', function() {
+        var parent, html, procDefId = "test";
         var stub;
 
         beforeEach(function() {
             stub = sinon.stub();
-            stub.withArgs(prefix + "_offset_top").returns(5);
-            stub.onSecondCall(prefix + "_offset_left").returns(null);
+            stub.withArgs(procDefId).returns('{"a": {"b": {"top": "5px"}}}');
+            stub.onSecondCall(procDefId).returns(null);
             parent = document.createElement('DIV');
             html = document.createElement('DIV');
             parent.appendChild(html);
             var localStorage = {getItem: stub};
-            util.setOffset(html, localStorage, prefix);
+
+            util.getOffset(html, localStorage, procDefId, "a", "b");
         });
 
-        it('should call localStorage getItem twice with prefix test', function() {
-            expect(stub.callCount).to.eql(2);
-            expect(stub.calledWith(prefix + "_offset_top")).to.eql(true);
-            expect(stub.calledWith(prefix + "_offset_left")).to.eql(true);
+        it('should call localStorage getItem once', function() {
+            expect(stub.callCount).to.eql(1);
+            expect(stub.calledWith(procDefId)).to.eql(true);
         });
         it('should set offset top of html  to 5', function() {
             expect(parent.style.top).to.eql('5px');
@@ -64,24 +64,53 @@ describe('Common overlay tests', function() {
         });
     });
 
-    describe('addDraggableFunctionality tests', function() {
-        var parent, html;
-        var spy;
+    describe('setOffset tests', function() {
+        var procDefId = "test";
+        var stub, spy;
 
         beforeEach(function() {
+            stub = sinon.stub();
             spy = sinon.spy();
+            stub.withArgs(procDefId).returns('{"a": {}}');
+            var localStorage = {getItem: stub, setItem: spy};
+            util.setOffset(localStorage, procDefId, "a", "b", "100px", "-20px");
+        });
+
+        it('should call localStorage getItem once', function() {
+            expect(stub.callCount).to.eql(1);
+            expect(stub.calledWith(procDefId)).to.eql(true);
+        });
+        it('should call setItem once with procDefId', function() {
+            expect(spy.callCount).to.eql(1);
+            expect(spy.args[0][0]).to.eql(procDefId);
+        });
+        it('should set correct offset for activity a and overlay b', function() {
+            var out = JSON.parse(spy.args[0][1]);
+            expect(out['a']['b']).to.exist;
+            expect(out['a']['b']['top']).to.eql("100px");
+            expect(out['a']['b']['left']).to.eql("-20px");
+        });
+    });
+
+    describe('addDraggableFunctionality tests', function() {
+        var parent, html;
+        var spy1, spy2;
+
+        beforeEach(function() {
+            spy1 = sinon.spy();
+            spy2 = sinon.spy();
             parent = document.createElement('DIV');
             html = document.createElement('DIV');
             parent.appendChild(html);
-            jQuery.fn.extend({draggable: spy});
-            util.addDraggableFunctionality({}, "", 1, html, {});
+            jQuery.fn.extend({draggable: spy1});
+            util.addDraggableFunctionality(1, html, {}, true, spy2);
         });
 
         it('should set parent to djs-draggable', function() {
             expect(parent.classList.contains("djs-draggable"));
         });
         it('should make parent draggable', function() {
-            expect(spy.called).to.eql(true);
+            expect(spy1.called).to.eql(true);
         });
     });
 

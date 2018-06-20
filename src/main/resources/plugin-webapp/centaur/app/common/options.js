@@ -36,14 +36,14 @@ define({
          * sets num value of variables in scope to value in localStorage
          */
         $scope.setNumValue = function() {
-            $scope.numValue = util.getOption(localStorage, $scope.procDefId, util.defaultVariableNum, "variable-number");
+            $scope.numValue = parseInt(util.getOption(localStorage, $scope.procDefId, util.defaultVariableNum, "variable-number"));
         };
 
         /**
          * sets refresh rate in $scope and gets it from localStorage
          */
         $scope.setRefreshRate = function() {
-            $scope.refreshRate =  util.getOption(localStorage, $scope.procDefId, util.defaultRefreshRate, "refresh");
+            $scope.refreshRate = parseInt(util.getOption(localStorage, $scope.procDefId, util.defaultRefreshRate, "refresh"));
         };
 
         /**
@@ -52,7 +52,7 @@ define({
          * @param checked       value of change, either true or false
          */
         $scope.changeVar = function(id, checked) {
-            util.changeCollection(localStorage, $rootScope, $scope.procDefId, 'variables', id, checked, "variable-change");
+            util.changeOption(localStorage, $rootScope, "variable-change", $scope.procDefId, checked, 'variables', id);
         };
 
         /**
@@ -61,7 +61,7 @@ define({
          * @param checked       value of change, either true or false
          */
         $scope.changeKPI = function(id, checked) {
-            util.changeCollection(localStorage, $rootScope, $scope.procDefId, 'KPI', id, checked, "KPI-change");
+            util.changeOption(localStorage, $rootScope, "KPI-change", $scope.procDefId, checked, 'KPI', id);
         };
 
         /**
@@ -69,15 +69,15 @@ define({
          * @param value         value of new var number
          */
         $scope.changeVarNum = function(value) {
-            util.changeOption(localStorage, $rootScope, $scope.procDefId, "variable-number", value, "var-num-change");
+            util.changeOption(localStorage, $rootScope, "var-num-change", $scope.procDefId, value, "variable-number", undefined);
         };
 
         /**
          * Reacts to changes in refresh rate and stores in lcoalStorage
          * @param value
          */
-        $scope.changeVarRefreshRate = function(value) {
-            util.changeOption(localStorage, $rootScope, $scope.procDefId, "refresh", value, "refresh-change");
+        $scope.changeRefreshRate = function(value) {
+            util.changeOption(localStorage, $rootScope, "refresh-change", $scope.procDefId, value, "refresh", undefined);
         };
     },
 
@@ -94,26 +94,27 @@ define({
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
-            localStorage.setItem(processOptions, "{}");
-            processOptions = {prefix: {}};
+            processOptions = {};
+            processOptions[prefix] = {};
         } else {
             processOptions = JSON.parse(processOptions);
             if(processOptions[prefix] === undefined) {
                 processOptions[prefix] = {};
             }
         }
-        
+        var changed = false;
         data.forEach(function (element) {
             var get = processOptions[prefix][element.name];
             if (get === undefined) {
                 processOptions[prefix][element.name] = 'true';
+                changed = true;
                 element.checked = true;
             } else {
                 element.checked = (get === 'true');
             }
         });
 
-        localStorage.setItem(procDefId, JSON.stringify(processOptions));
+        if(changed) localStorage.setItem(procDefId, JSON.stringify(processOptions));
     },
 
     /**
@@ -121,9 +122,10 @@ define({
      *
      * @param {Object}  localStorage  contains user options
      * @param {Object}  $rootScope    used for broadcasting change
+     * @param {String}  broadcast     broadcast message to be send
      * @param {String}  procDefId     process definition id
-     * @param {String}  id            used for retrieving correct item
      * @param {String}  value         new item value
+<<<<<<< HEAD
      * @param {String}  broadcast     broadcast message to be 
      */
     changeOption:  function (localStorage, $rootScope, procDefId, id, value, broadcast) {
@@ -141,21 +143,23 @@ define({
      *
      * @param {Object}  localStorage  contains user options
      * @param {Object}  $rootScope    used for broadcasting change
-     * @param {String}  procDefId     process definition id
-     * @param {String}  prefix        string of prefix name inside localStorage
-     * @param {String}  id            used for retrieving correct item
-     * @param {String}  value         new item value
      * @param {String}  broadcast     broadcast message to send
+     * @param {String}  procDefId     process definition id
+     * @param {String}  value         new item value
+     * @param {String}  id            used for retrieving correct item
+     * @param {String}  subId         optional. used when id contains object
      */
-    changeCollection: function (localStorage, $rootScope, procDefId, prefix, id, value, broadcast) {
+    changeOption:  function (localStorage, $rootScope, broadcast, procDefId, value, id, subId) {
         var processOptions = localStorage.getItem(procDefId);
         processOptions = (processOptions == null ? {} : JSON.parse(processOptions));
 
-        if(processOptions[prefix] === undefined) {
-            processOptions[prefix] = {};
+        if(subId !== undefined) {
+            if(processOptions[id] === undefined) processOptions[id] = {};
+            processOptions[id][subId] = String(value);
+        } else {
+            processOptions[id] = String(value);
         }
 
-        processOptions[prefix][id] = String(value);
         localStorage.setItem(procDefId, JSON.stringify(processOptions));
 
         $rootScope.$broadcast("cockpit.plugin.centaur:options:" + broadcast);
@@ -176,7 +180,6 @@ define({
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
-            localStorage.setItem(processOptions, "{}");
             processOptions = {};
         } else {
             processOptions = JSON.parse(processOptions);
@@ -186,15 +189,14 @@ define({
 
         if(get === undefined) {
             if(subItem !== undefined) {
-                processOptions = {};
-                processOptions[subItem] = String(defaultValue);
+                processOptions[item] = {};
+                processOptions[item][subItem] = defaultValue;
             } else {
                 processOptions[item] = String(defaultValue);
             }
             localStorage.setItem(procDefId, JSON.stringify(processOptions));
             return defaultValue;
-        }
-        if(subItem !== undefined) {
+        } else if(subItem !== undefined) {
             get = get[subItem];
 
             if(get === undefined) {
