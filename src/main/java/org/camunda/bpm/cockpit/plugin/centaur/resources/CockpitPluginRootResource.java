@@ -54,20 +54,6 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
      *
      * @param engineName The engine currently being used by the platform.
      * @param procDefId  The id of a process definition.
-     * @return List of statistics about the process definition with id = procDefId.
-     */
-    @Path("{engineName}/process-activity")
-    public ProcessActivityResource getProcessInstanceActivityResource(
-            @PathParam("engineName") String engineName,
-            @QueryParam("procDefId") String procDefId) {
-        return subResource(new ProcessActivityResource(engineName, procDefId), engineName);
-    }
-
-    /**
-     * Returns resource for path {engineName}/process-activity.
-     *
-     * @param engineName The engine currently being used by the platform.
-     * @param procDefId  The id of a process definition.
      * @param procInstId The id of a process instance.
      * @return List of all available variables for the instance.
      */
