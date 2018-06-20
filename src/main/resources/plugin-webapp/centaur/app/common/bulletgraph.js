@@ -30,14 +30,6 @@ define({
      */
     procInstanceId: null,
 
-    setSpecificBulletGraphCssClass: function (elementId) {
-        return "bullet-duration-" + elementId;
-    },
-
-    setSpecificBulletGraphOverlayCssClass: function () {
-        return "bulletgraph";
-    },
-
     /**
      * Main function of the bulletgraph module. In here the data will be loaded
      * from the database by using promises. Also functions will be called
@@ -48,6 +40,7 @@ define({
      * @param   localStorage           browser window containing localStorage
      * @param   Uri               uniform resource identifier to create GET request
      * @param   $q                a promise
+     * @param
      * @param   processDiagram    diagram containing elements
      */
     bulletgraph: function (util, $http, localStorage, Uri, $q, control, processDiagram) {
@@ -75,26 +68,15 @@ define({
             catch: false
         });
 
-        /**
-         * Waits until data is received from http.get request and
-         * added to promises.
-         *
-         * Database quersies take a relative long time. So we have to
-         * wait until the data is retrieved before we can continue.
-         *
-         * @param   Object  data   minimum duration of process
-         */
         $q.all([promise1, promise2]).then(function (data) {
             var processActivityStatistics = data[0].data;
             var instanceStartTime = data[1].data;
-
 
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 var activity = processActivityStatistics.find(function(activity) {
                     return activity.id === element.id;
                 });
-
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
@@ -104,10 +86,8 @@ define({
                 var getMaxDuration = activity.maxDuration;
                 var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
-                var cssClass = util.setSpecificBulletGraphCssClass(element.id);
-                var cssOverlayClass = util.setSpecificBulletGraphOverlayCssClass;
-
-                util.combineBulletgraphElements(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, localStorage, cssClass, cssOverlayClass);
+                util.combineBulletgraphElements(util, overlays, getAvgDuration, getMaxDuration, getCurDuration,
+                    element.id, localStorage, "bullet-duration-" + element.id, "bulletgraph");
             });
         });
     },

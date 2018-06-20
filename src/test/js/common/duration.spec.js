@@ -20,7 +20,7 @@ describe('Common duration tests', function () {
            beforeEach(function () {
                avgDuration = '4';
                maxDuration = '12';
-               returnValue = util.checkConditions(maxDuration);
+               returnValue = util.checkConditions(avgDuration, maxDuration);
            });
     
            it('test if condition is true when arguments are valid', function () {

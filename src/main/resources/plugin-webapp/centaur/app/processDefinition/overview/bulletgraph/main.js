@@ -1,8 +1,9 @@
-define(['require', 'angular', '../../../common/bulletlibraries', './util', '../../../common/conversion', '../../../common/options', '../../../common/overlays', '../../../common/variables', '../../../common/bulletgraph'], function (require, angular) {
+define(['require', 'angular', '../../../common/bulletlibraries', './util', '../../../common/conversion',
+    '../../../common/options', '../../../common/overlays', '../../../common/bulletgraph'], function (require, angular) {
 
     /**
-     * retrieve the bullet file containe the D3 library and functions which are needed for the bullet graphs
-     * these functions from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
+     * retrieve the bullet file contains the D3 library and functions which are needed for the bullet graphs
+     * from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
      * and D3 library: https://d3js.org/ (accessed 30-5-2018).
      */
     require('../../../common/bulletlibraries');
@@ -13,29 +14,24 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
     var util = require('./util');
 
     /**
+     * retrieve the common file containing variables functions
+     */
+    var commonBulletgraph = require('../../../common/bulletgraph');
+
+    /**
      * retrieve the common file containing conversion functions
      */
-    util.commonConversion  = require('../../../common/conversion');
+    commonBulletgraph.commonConversion  = require('../../../common/conversion');
 
     /**
      * retrieve the common file containing option functions
      */
-    util.commonOptions  = require('../../../common/options');
+    commonBulletgraph.commonOptions  = require('../../../common/options');
 
     /**
      * retrieve the common file containing overlay functions
      */
-    util.commonOverlays = require('../../../common/overlays');
-
-    /**
-     * retrieve the common file containing variables functions
-     */
-    util.commonVariables = require('../../../common/variables');
-
-    /**
-     * retrieve the common file containing variables functions
-     */
-    util.commonBulletgraph = require('../../../common/bulletgraph');
+    commonBulletgraph.commonOverlays = require('../../../common/overlays');
 
     /**
      * Overlay object that contains the elements put on the diagram
@@ -45,18 +41,17 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
             var viewer = control.getViewer();
             var overlays = viewer.get('overlays');
-            util.commonOverlays.canvas = viewer.get('canvas');
             var elementRegistry = viewer.get('elementRegistry');
-            util.commonOverlays.canvas = viewer.get('canvas');
+            commonBulletgraph.commonOverlays.canvas = viewer.get('canvas');
 
-            util.procDefId  = $scope.$parent.processDefinition.id;
+            commonBulletgraph.procDefId  = $scope.$parent.processDefinition.id;
 
             var putBulletGraph = function() {
-                util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+                util.bulletgraph(commonBulletgraph, $http, $window.localStorage, Uri, $q, control, processDiagram)
             };
             putBulletGraph();
 
-            util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
+            commonBulletgraph.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
         }
     ];
 
