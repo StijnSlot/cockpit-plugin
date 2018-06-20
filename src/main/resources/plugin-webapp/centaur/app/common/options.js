@@ -91,7 +91,6 @@ define({
      * @param {Array}   data          contains variables with checked attribute
      */
     setChecked: function (localStorage, procDefId, prefix, data) {
-
         var processOptions = localStorage.getItem(procDefId);
 
         if(processOptions == null) {
@@ -107,7 +106,6 @@ define({
         data.forEach(function (element) {
             var get = processOptions[prefix][element.name];
             if (get === undefined) {
-                // set default value
                 processOptions[prefix][element.name] = 'true';
                 element.checked = true;
             } else {
@@ -144,9 +142,10 @@ define({
      * @param {Object}  localStorage  contains user options
      * @param {Object}  $rootScope    used for broadcasting change
      * @param {String}  procDefId     process definition id
+     * @param {String}  prefix        string of prefix name inside localStorage
      * @param {String}  id            used for retrieving correct item
      * @param {String}  value         new item value
-     * @param broadcast     broadcast message to send
+     * @param {String}  broadcast     broadcast message to send
      */
     changeCollection: function (localStorage, $rootScope, procDefId, prefix, id, value, broadcast) {
         var processOptions = localStorage.getItem(procDefId);
@@ -212,25 +211,24 @@ define({
      * This function looks for each element if the instance is currently
      * on that element. When it is, it returns true, else false.
      *
-     * @param   {Array<Object>} instance    Instance of a process.
-     * @param   {String}        elementID   ID of diagram element that represents instance.
-     * @param   {Number}        instanceID  ID of diagram instance element that represents instance.
+     * @param   {Array<Object>} instances    Instances of a process.
+     * @param   {String}        elementId   ID of diagram element that represents instance.
+     * @param   {Number}        instanceId  ID of diagram instance element that represents instance.
      * @returns {Boolean}                   True if the instance is selected,
      *                                      else False.
      */
-    isSelectedInstance: function (instance, elementID, instanceID) {
-        for (var j = 0; j < instance.length; j++) {
-            if (instance[j].activityId === elementID) {
-                if (instance[j].instanceId === instanceID) {
-                    return true;   
-                }
+    isSelectedInstance: function (instances, elementId, instanceId) {
+        instances.forEach(function(instance) {
+            if (instance.activityId === elementId && instance.instanceId === instanceId) {
+                return true;
             }
-        }
+        });
         return false;
     },
 
     /**
      * Register for broadcast changes to variable options and call the callbacks.
+     * Deregisters every subscription when destroyed
      *
      * @param {Object}        $scope            scope that can be destroyed
      * @param {Array<String>} subscriptions     array of strings with broadcast messages
@@ -240,13 +238,11 @@ define({
         var unregisters = [];
 
         subscriptions.forEach(function(el) {
-            // subscribe to any broadcast variables options change
             unregisters.push($scope.$on(el, function() {
                 callback();
             }));
         });
 
-        // deregister every subscription when destroyed
         $scope.$on("$destroy", function() {
             unregisters.forEach(function(sub) {
                 sub();

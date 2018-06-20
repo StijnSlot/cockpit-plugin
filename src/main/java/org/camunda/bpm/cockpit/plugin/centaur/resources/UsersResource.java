@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UsersResource extends AbstractCockpitPluginResource {
 
-    public UsersResource(String engineName) {
+    UsersResource(String engineName) {
         super(engineName);
     }
 

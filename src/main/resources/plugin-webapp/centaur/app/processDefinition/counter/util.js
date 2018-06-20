@@ -102,7 +102,7 @@ define({
     * Creates an HTML line with has a class that includes the elementID
     *
     * @param   {Object}  counters       object with keys: sequenceCounter and competedCounter
-    * @return  {Object}                 A string which represents an HTML line which will be added later
+    * @return  {Object}                 DOM element representing the overlay with the counters
     */
     createHTML: function (counters) {
         var html = document.createElement('DIV');

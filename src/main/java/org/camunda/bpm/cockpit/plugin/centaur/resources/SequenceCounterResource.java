@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SequenceCounterResource extends AbstractCockpitPluginResource {
 
-    public SequenceCounterResource(String engineName) {
+    SequenceCounterResource(String engineName) {
         super(engineName);
     }
 

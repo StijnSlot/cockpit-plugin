@@ -13,7 +13,7 @@ public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
 
     private String procDefId;
 
-    public InstanceStartTimeResource(String engineName, String procDefId) {
+    InstanceStartTimeResource(String engineName, String procDefId) {
         super(engineName);
         this.procDefId = procDefId;
     }

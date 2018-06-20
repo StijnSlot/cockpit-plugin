@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ProcessActivityResource extends AbstractCockpitPluginResource {
 
-    String procDefId;
+    private String procDefId;
 
-    public ProcessActivityResource(String engineName, String procDefId) {
+    ProcessActivityResource(String engineName, String procDefId) {
         super(engineName);
         this.procDefId = procDefId;
     }

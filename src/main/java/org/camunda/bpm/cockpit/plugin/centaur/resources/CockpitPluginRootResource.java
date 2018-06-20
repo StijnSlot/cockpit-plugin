@@ -1,9 +1,6 @@
 package org.camunda.bpm.cockpit.plugin.centaur.resources;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
-import org.camunda.bpm.cockpit.Cockpit;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginRootResource;
 import org.camunda.bpm.cockpit.plugin.centaur.CockpitPlugin;
 

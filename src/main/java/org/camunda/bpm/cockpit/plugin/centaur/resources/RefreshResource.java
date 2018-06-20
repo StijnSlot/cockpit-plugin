@@ -28,7 +28,7 @@ public class RefreshResource extends AbstractCockpitPluginResource {
      * @param procDefId is the process definition
      *                  we want the active instances of
      */
-    public RefreshResource(String engineName, String procDefId, String procInstId) {
+    RefreshResource(String engineName, String procDefId, String procInstId) {
         super(engineName);
         this.procDefId = procDefId;
         this.procInstId = procInstId;

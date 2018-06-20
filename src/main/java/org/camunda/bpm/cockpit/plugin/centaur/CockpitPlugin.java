@@ -19,6 +19,10 @@ public class CockpitPlugin extends AbstractCockpitPlugin {
 			"org/camunda/bpm/cockpit/plugin/centaur/queries/resourceQuery.xml");
 	}
 
+	/**
+	 *
+	 * @return {Set}
+	 */
 	@Override
 	public Set<Class<?>> getResourceClasses() {
 	    Set<Class<?>> classes = new HashSet<>();
