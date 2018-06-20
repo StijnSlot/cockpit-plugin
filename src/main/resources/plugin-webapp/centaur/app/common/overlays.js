@@ -48,8 +48,8 @@ define({
         var offset = processOptions[activityId][overlayName];
 
         if (offset !== undefined) {
-            $(html.parentNode).css("top", offset["top"]);
-            $(html.parentNode).css("left", offset["left"]);
+            $(html).css("top", offset["top"]);
+            $(html).css("left", offset["left"]);
         }
     },
 
@@ -85,11 +85,11 @@ define({
      * @param {Function}callback          function which is called with the new offset
      */
     addDraggableFunctionality: function(elementID, html, canvas, highlight, callback) {
-        html.parentNode.classList.add("djs-draggable");
+        html.classList.add("djs-draggable");
         var click = {};
         var zoom = 1;
 
-        $(html.parentNode).draggable({
+        $(html).draggable({
             stack: ".djs-overlay",
             start: function(event) {
                 // add highlight to activity
@@ -122,7 +122,7 @@ define({
                     $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
                 }
 
-                callback(html.parentNode.style.top, html.parentNode.style.left);
+                callback(html.style.top, html.style.left);
             }
         });
     },

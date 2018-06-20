@@ -147,12 +147,12 @@ define({
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "bulletGraph");
+            util.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID, "bulletGraph");
 
             var setOffset = function(top, left) {
                 util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "bulletGraph", top, left);
             };
-            util.commonOverlays.addDraggableFunctionality(elementID, html, util.commonOverlays.canvas, true, setOffset);
+            util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
             util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
