@@ -103,10 +103,10 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
      * of the given process definition id.
      */
     @Path("{engineName}/order-statistics")
-    public OrderStatisticsResource getOrderStatistics(
+    public ProcessStatisticsResource getOrderStatistics(
             @PathParam("engineName") String engineName,
             @QueryParam("procDefId") String procDefId) {
-        return subResource(new OrderStatisticsResource(engineName, procDefId), engineName);
+        return subResource(new ProcessStatisticsResource(engineName, procDefId), engineName);
     }
 
 

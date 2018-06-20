@@ -10,7 +10,7 @@ define({
      * variable containing all ids of overlays created here
      */
     overlayActivityIds: {},
-    
+
     /**
      * contains process definition id
      */
@@ -110,7 +110,8 @@ define({
      * @param   {String}  cssOverlayClass   class of overlay
      * @param   {Boolean} overview          if the sizes of the overview should be used
      */
-    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass, overview) {
+    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID,
+                                         localStorage, cssClass, cssOverlayClass, overview) {
         if (!util.checkConditions(avgDuration, maxDuration, curDuration)) {
             return;
         }

@@ -1,7 +1,7 @@
 package org.camunda.bpm.cockpit.plugin.centaur.resources;
 
 import org.camunda.bpm.cockpit.db.QueryParameters;
-import org.camunda.bpm.cockpit.plugin.centaur.db.OrderStatisticsDto;
+import org.camunda.bpm.cockpit.plugin.centaur.db.ProcessStatisticsDto;
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource;
 
 import javax.ws.rs.GET;
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @version 1.0
  */
-public class OrderStatisticsResource extends AbstractCockpitPluginResource {
+public class ProcessStatisticsResource extends AbstractCockpitPluginResource {
 
     private String procDefId;
 
@@ -24,7 +24,7 @@ public class OrderStatisticsResource extends AbstractCockpitPluginResource {
      * @param engineName The engine currently being used by the platform.
      * @param procDefId  A process definition id.
      */
-    OrderStatisticsResource(String engineName, String procDefId) {
+    ProcessStatisticsResource(String engineName, String procDefId) {
         super(engineName);
         this.procDefId = procDefId;
     }
@@ -37,13 +37,13 @@ public class OrderStatisticsResource extends AbstractCockpitPluginResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderStatisticsDto> getOrderStatistics() {
-        QueryParameters<OrderStatisticsDto> queryParameters = new QueryParameters<>();
+    public List<ProcessStatisticsDto> getOrderStatistics() {
+        QueryParameters<ProcessStatisticsDto> queryParameters = new QueryParameters<>();
 
         queryParameters.setParameter(procDefId);
         configureTenantCheck(queryParameters);
 
         return getQueryService().executeQuery(
-                "cockpit.query.selectOrderStatistics", queryParameters);
+                "cockpit.query.selectProcessStatistics", queryParameters);
     }
 }

@@ -66,7 +66,7 @@ define({
             if (!util.commonDuration.checkConditions(avgDuration, maxDuration)) return;
 
             var html = util.commonDuration.createHTML(util, localStorage, curDuration, avgDuration,
-                maxDuration, "overviewDurationText", "order");
+                maxDuration, "overviewDurationText", "process");
 
             util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id,
                 localStorage, "overview-duration", true);

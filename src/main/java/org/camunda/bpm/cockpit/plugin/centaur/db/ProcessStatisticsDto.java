@@ -1,6 +1,6 @@
 package org.camunda.bpm.cockpit.plugin.centaur.db;
 
-public class OrderStatisticsDto {
+public class ProcessStatisticsDto {
     private Long maxDuration;
 
     private Long avgDuration;

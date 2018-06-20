@@ -17,7 +17,7 @@
         <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="orderStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.OrderStatisticsDto">
+    <resultMap id="processStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessStatisticsDto">
         <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT"/>
         <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT"/>
     </resultMap>
@@ -88,7 +88,7 @@
     </select>
 
     <!-- Selects the max and average duration of the given process definition id -->
-    <select id="selectOrderStatistics" resultMap="orderStatistics" parameterType="String">
+    <select id="selectProcessStatistics" resultMap="processStatistics" parameterType="String">
         SELECT
             MAX(DURATION_),
             AVG(DURATION_)

@@ -12,9 +12,14 @@
 }
 
 .custom-overlay ul {
+    margin-bottom: 10px;
     list-style-type: none;
     padding: 0 0 0 0;
     width: 100%;
+}
+
+.custom-overlay > ul:last-child {
+    margin-bottom: 0;
 }
 
 .custom-overlay b {
@@ -59,14 +64,14 @@
 ###########################################################
 */
 
-.bullet-duration-overview {
+.bulletgraph-overview {
     border-style: groove;
     border-radius: 1px;
     padding: 5px;
     font-size: 13px !important;
 }
 
-.bullet-duration-overview .tick text {
+.bulletgraph-overview .tick text {
     font-size: 6px !important;
 }
 
@@ -96,14 +101,6 @@
     border: 1px solid transparent;
 }
 
-.variableTextSmall ul {
-    margin-bottom: 5px;
-}
-
-.variableTextSmall > ul:last-child {
-    margin-bottom: 0;
-}
-
 .variableTextSmall li {
     white-space: nowrap;
     overflow: hidden;
@@ -114,24 +111,14 @@
     font-size: 10px;
     width: 150px;
     max-height: 150px;
-}
-
-.variableTextFull ul {
-    margin-left: 5px;
-    margin-bottom: 5px;
-}
-
-.variableTextFull > ul:last-child {
-    margin-bottom: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: white;
+    border: 1px solid black;
 }
 
 .variableTextFull .dots {
     display: none;
-}
-
-.separator {
-    height: 1em;
-    border-left: 1px solid;
 }
 
 .dot {
