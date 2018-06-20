@@ -1,3 +1,10 @@
+/* 
+#########################################
+|----------- Overlay styling -----------|
+|      CSS of the overlay styling       |
+#########################################
+*/
+
 .custom-overlay {
     font-size: 8px;
     display: flex;
@@ -20,7 +27,12 @@
     vertical-align: top;
 }
 
-/* --Duration stuff-- */
+/* 
+##########################################
+|----------- Duration styling -----------|
+|      CSS of the duration styling       |
+##########################################
+*/
 
 .durationText {
     font-size: 9px;
@@ -47,13 +59,22 @@
 }
 
 
-/*  --Bulletgraph--  */
+/* 
+###########################################################
+|----------------- Bullet Graph styling ------------------|
+|             CSS of the bullet graph styling.            |
+|        CSS styling functions which are needed for       |
+|           the bullet graphs from github:                |
+| https://gist.github.com/mbostock/4061961#file-bullet-js |
+|                 (accessed 30-5-2018)                    |
+###########################################################
+*/
+
 .bullet-duration-overview {
     border-style: groove;
     border-radius: 1px;
     padding: 5px;
 }
-
 
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 1.5px; }
@@ -63,14 +84,18 @@
 .bullet .range.s1 { fill: #ddd; }
 .bullet .range.s2 { fill: #ccc; }
 .bullet .measure.s0 { fill: lightsteelblue; }
-.bullet .measure.s1 {}
 .bullet .measure-label tspan {
     fill: white;
     font-weight: bold;
     font-size: 10px;
 }
 
-/* -- Variables stuff -- */
+/* 
+###############################################
+|----------- Variables information -----------|
+|  CSS of the variables of the instance(s).   |
+###############################################
+*/
 
 .variableTextSmall {
     font-size: 7px;
@@ -131,7 +156,6 @@
     color: #fff;
     background-color: #b5152b;
     border-color: #9e1226;
-    /*float: right;*/
 }
 
 .datetime-box {
@@ -152,15 +176,25 @@
     width: 60px;
 }
 
-/* Lavata los manos */
+/* 
+#############################################
+|----------- Options tab styling -----------|
+|      CSS of the options tab styling       |
+|   The code from the options tab is used   |
+|               Codepen snippet:            |
+|           [TODO: INSERT A LINK HERE       |
+#############################################
+*/
 
 input[switch] {
     display: none;
 }
+
 label {
     margin-bottom: 0px;
     margin-right: 5px;
 }
+
 input[switch] + label {
     font-size: 1em;
     line-height: 1;
@@ -180,8 +214,8 @@ input[switch] + label {
     -moz-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
 }
+
 input[switch] + label:before {
-    /* Label */
     text-transform: uppercase;
     color: #b7b7b7;
     content: attr(data-off-label);
@@ -202,8 +236,8 @@ input[switch] + label:before {
     -moz-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
 }
+
 input[switch] + label:after {
-    /* Slider */
     content: '';
     position: absolute;
     left: 0.1666666667rem;
@@ -216,17 +250,20 @@ input[switch] + label:after {
     -moz-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
 }
+
 input[switch]:checked + label {
     background-color: lightblue;
     background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.2));
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3) inset;
 }
+
 input[switch]:checked + label:before {
     color: #fff;
     content: attr(data-on-label);
     right: auto;
     left: 0.2166666667rem;
 }
+
 input[switch]:checked + label:after {
     left: 2.1666666667rem;
     background-color: #f7f7f7;
@@ -236,12 +273,15 @@ input[switch]:checked + label:after {
 input[switch="bool"] + label {
     background-color: #ee6562;
 }
+
 input[switch="bool"] + label:before {
     color: #fff !important;
 }
+
 input[switch="bool"]:checked + label {
     background-color: #BCE954;
 }
+
 input[switch="bool"]:checked + label:before {
     color: #fff !important;
 }
@@ -249,6 +289,7 @@ input[switch="bool"]:checked + label:before {
 input[switch="default"]:checked + label {
     background-color: #a2a2a2;
 }
+
 input[switch="default"]:checked + label:before {
     color: #fff !important;
 }
@@ -256,6 +297,7 @@ input[switch="default"]:checked + label:before {
 input[switch="success"]:checked + label {
     background-color: #BCE954;
 }
+
 input[switch="success"]:checked + label:before {
     color: #fff !important;
 }
@@ -263,9 +305,11 @@ input[switch="success"]:checked + label:before {
 input[switch="warning"]:checked + label {
     background-color: gold;
 }
+
 input[switch="warning"]:checked + label:before {
     color: #fff !important;
 }
+
 #pollingRate {
     width: 10rem;
     padding: 0.3334rem;
