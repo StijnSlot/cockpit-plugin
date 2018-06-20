@@ -220,12 +220,9 @@ define({
      *                                      else False.
      */
     isSelectedInstance: function (instances, elementId, instanceId) {
-        instances.forEach(function(instance) {
-            if (instance.activityId === elementId && instance.instanceId === instanceId) {
-                return true;
-            }
+        return instances.some(function(instance) {
+            return (instance.activityId === elementId && instance.instanceId === instanceId);
         });
-        return false;
     },
 
     /**

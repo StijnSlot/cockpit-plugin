@@ -83,11 +83,12 @@ define({
             util.averageDuration[elementID] = [];
         }
 
+        instances = instances.filter(function(instance) {
+            return (instance.activityId === elementID);
+        });
         instances.forEach(function(instance) {
-            if (instance.activityId === elementID) {
-                var timeDifference = util.calculateTimeDifference(Date.parse(instance.startTime));
-                util.averageDuration[elementID].push(timeDifference);
-            }
+            var timeDifference = util.calculateTimeDifference(Date.parse(instance.startTime));
+            util.averageDuration[elementID].push(timeDifference);
         });
 
         if (util.averageDuration[elementID].length !== 0) {
@@ -139,15 +140,14 @@ define({
      *                                      else the current time.
      */
     calculateCurDurationOfSpecInstance: function (instances, elementID, instanceID) {
-        instances.forEach(function(instance) {
-            if (instance.activityId === elementID && instance.instanceId === instanceID) {
-                var startTime = Date.parse(instance[i].startTime);
-                var computerTime = new Date().getTime();
-                return computerTime - startTime;
-            }
+        var instance = instances.find(function(instance) {
+            return (instance.activityId === elementID && instance.instanceId === instanceID);
         });
+        if(instance === undefined) return null;
 
-        return null;
+        var startTime = Date.parse(instance[i].startTime);
+        var computerTime = new Date().getTime();
+        return computerTime - startTime;
     },
 
     /**

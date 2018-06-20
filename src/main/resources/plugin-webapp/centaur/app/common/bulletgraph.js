@@ -117,7 +117,7 @@ define({
      * @return  {Boolean}               If conditions are satisfied or not.
      */
     checkConditions: function (minDuration, avgDuration, maxDuration, curDuration) {
-        return avgDuration != null && curDuration != null && maxDuration != null  &&
+        return avgDuration != null && curDuration != null && maxDuration != null &&
                avgDuration !== 0 && curDuration !== 0;
     },
 
@@ -150,7 +150,7 @@ define({
      * @param   {Number}  colorBullet   Color of bulletgraph.
      * @param   {String}  cssClass      classname of the graph
      */
-    setGraphSettings: function (elementID, rangeBullet, currentBullet, markerBullet, colorBullet, cssClass) {
+    setGraphSettings: function (rangeBullet, currentBullet, markerBullet, colorBullet, cssClass) {
         var newCSSClass = '.' + cssClass;
         var data = [
             {
