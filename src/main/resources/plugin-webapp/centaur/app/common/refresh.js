@@ -1,12 +1,27 @@
 define({
+    /*
+    * Default value of 1 second gets set
+    */
     refreshRate: 1000,
 
+    /*
+    * Previously gotten data server which gets checked for updates
+    */
     prevData: null,
 
+    /*
+    * IntervalId used for clearing
+    */
     poll: null,
 
+    /*
+    * Process definition Id
+    */
     procDefId: null,
 
+    /*
+    * Process instance Id
+    */
     procInstId: null,
 
     setInterval: function($scope, $http, Uri, util, callback) {
