@@ -54,7 +54,7 @@ describe('Common conversion tests', function () {
              });
      
              it('test hours', function(){
-                 duration = 3700001
+                 duration = 3700001;
                  expect(util.checkTimeUnit(duration, true)).to.eql('hours');
              });
      
