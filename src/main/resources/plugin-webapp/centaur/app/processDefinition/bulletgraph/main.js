@@ -8,25 +8,13 @@ define(['require', 'angular', '../../common/bulletlibraries', '../../common/conv
     require('../../common/bulletlibraries');
 
     /**
-     * retrieve the common file containing variables functions
+     * retrieve the common util files
      */
     var util = require('../../common/bulletgraph');
-
-    /**
-     * retrieve the common file containing conversion functions
-     */
     util.commonConversion  = require('../../common/conversion');
-
-    /**
-     * retrieve the common file containing option functions
-     */
     util.commonOptions  = require('../../common/options');
-
-    /**
-     * retrieve the common file containing overlay functions
-     */
     util.commonOverlays = require('../../common/overlays');
-
+    
     /**
      * Overlay object that contains the elements put on the diagram
      */

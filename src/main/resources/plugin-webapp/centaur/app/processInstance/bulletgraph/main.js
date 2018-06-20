@@ -1,30 +1,18 @@
 define(['require', 'angular', '../../common/bulletlibraries', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/bulletgraph'], function (require, angular) {
 
     /**
-     * retrieve the bullet file containe the D3 library and functions which are needed for the bullet graphs
-     * these functions from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
+     * retrieve the bullet file contains the D3 library and functions which are needed for the bullet graphs
+     * from github: https://gist.github.com/mbostock/4061961#file-bullet-js (accessed 30-5-2018)
      * and D3 library: https://d3js.org/ (accessed 30-5-2018).
      */
     require('../../common/bulletlibraries');
 
     /**
-     * retrieve the common file containing variables functions
+     * retrieve the common util files
      */
     var util = require('../../common/bulletgraph');
-
-    /**
-     * retrieve the common file containing conversion functions
-     */
     util.commonConversion  = require('../../common/conversion');
-
-    /**
-     * retrieve the common file containing option functions
-     */
     util.commonOptions  = require('../../common/options');
-
-    /**
-     * retrieve the common file containing overlay functions
-     */
     util.commonOverlays = require('../../common/overlays');
 
     /**
@@ -33,6 +21,7 @@ define(['require', 'angular', '../../common/bulletlibraries', '../../common/conv
     var overlay = [
         '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
+
             util.procDefId  = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 

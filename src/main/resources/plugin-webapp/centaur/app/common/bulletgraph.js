@@ -80,8 +80,10 @@ define({
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
-                    return (instance.activityId === element.id && (util.procInstanceId == null || instance.instanceId === util.procInstanceId));
+                    return (instance.activityId === element.id &&
+                        (util.procInstanceId == null || instance.instanceId === util.procInstanceId));
                 });
+
                 var getAvgDuration = activity.avgDuration;
                 var getMaxDuration = activity.maxDuration;
                 var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
@@ -113,7 +115,7 @@ define({
      * @param   Number  curDuration   current duration of process
      * @param   String  elementID     ID of element
      * @param   Object  shape         Shape of the element
-     * @param   Object  localStorage       browser window containing localStorage
+     * @param   Object  localStorage  browser window containing localStorage
      */
     combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass) {
         if (!util.checkConditions(avgDuration, maxDuration, curDuration)) {

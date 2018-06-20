@@ -1,5 +1,10 @@
 define({
     /**
+     * process definition id
+     */
+    procDefId: "",
+
+    /**
      * Extracts data from JSON objects and calls composeHTML()
      * function to add the extracted to the diagram.
      *

@@ -1,25 +1,14 @@
-define(['require', 'angular', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/duration'], function (require, angular) {
+define(['require', 'angular', '../../common/conversion', '../../common/options',
+    '../../common/overlays', '../../common/duration'], function (require, angular) {
     /**
-     * retrieve the common file containing duration functions
+     * retrieve the common util files
      */
     var util = require('../../common/duration');
-    /**
-     * retrieve the common file containing conversion functions
-     */
     util.commonConversion  = require('../../common/conversion');
-
-    /**
-     * retrieve the common file containing option functions
-     */
     util.commonOptions  = require('../../common/options');
-
-    /**
-     * retrieve the common file containing overlay functions
-     */
     util.commonOverlays = require('../../common/overlays');
 
-    var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
 
             util.procDefId = $scope.$parent.processDefinition.id;
@@ -30,7 +19,6 @@ define(['require', 'angular', '../../common/conversion', '../../common/options',
             }
             setDuration();
 
-            // subscribe to any broadcast KPI options change
             util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
         }
     ];

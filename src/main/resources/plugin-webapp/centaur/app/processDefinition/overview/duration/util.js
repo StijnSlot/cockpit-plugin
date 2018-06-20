@@ -55,14 +55,16 @@ define({
 
             var avgDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.avgDuration, false);
             var maxDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.maxDuration, false);
-            var avgDurationString = util.commonConversion.convertTimes(orderStatistics.avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
-            var maxDurationString = util.commonConversion.convertTimes(orderStatistics.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-            var curDurationString = util.commonDuration.checkIfCurValid(util, curDuration);
+            var avgDuration = util.commonConversion.convertTimes(orderStatistics.avgDuration, avgDurationUnit).toString()
+                + ' ' + avgDurationUnit;
+            var maxDuration = util.commonConversion.convertTimes(orderStatistics.maxDuration, maxDurationUnit).toString()
+                + ' ' + maxDurationUnit;
+            curDuration = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            if (!util.commonDuration.checkConditions(maxDurationString)) return;
+            if (!util.commonDuration.checkConditions(avgDuration, maxDuration)) return;
 
-            var html = util.commonDuration.createHTML(util, localStorage, curDurationString, avgDurationString,
-                maxDurationString, "overviewDurationText", "overview");
+            var html = util.commonDuration.createHTML(util, localStorage, curDuration, avgDuration,
+                maxDuration, "overviewDurationText", "overview");
 
             util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id, localStorage);
         });

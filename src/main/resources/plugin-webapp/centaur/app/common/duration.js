@@ -48,19 +48,22 @@ define({
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
-                    return (instance.activityId === element.id && (util.procInstId == null || instance.instanceId === util.procInstId));
+                    return (instance.activityId === element.id &&
+                        (util.procInstId == null || instance.instanceId === util.procInstId));
                 });
                 var curDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
                 var avgDurationUnit = util.commonConversion.checkTimeUnit(activity.avgDuration, false);
                 var maxDurationUnit = util.commonConversion.checkTimeUnit(activity.maxDuration, false);
-                var avgDurationString = util.commonConversion.convertTimes(activity.avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
-                var maxDurationString = util.commonConversion.convertTimes(activity.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-                var curDurationString = util.checkIfCurValid(util, curDuration);
+                var avgDuration = util.commonConversion.convertTimes(activity.avgDuration, avgDurationUnit).toString() +
+                    ' ' + avgDurationUnit;
+                var maxDuration = util.commonConversion.convertTimes(activity.maxDuration, maxDurationUnit).toString() +
+                    ' ' + maxDurationUnit;
+                curDuration = util.checkIfCurValid(util, curDuration);
 
-                if (!util.checkConditions(maxDurationString)) return;
+                if (!util.checkConditions(avgDuration, maxDuration)) return;
 
-                var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, "durationText", "act");
+                var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration, "durationText", "act");
 
                 util.addOverlay(util, overlays, html, element.id, localStorage);
             });
