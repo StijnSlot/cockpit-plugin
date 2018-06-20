@@ -34,8 +34,8 @@ describe('Common duration tests', function () {
                 avgDuration = null;
                 expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
             });
-            it('test if condition is false when arguments are invalid', function(){
-                avgDuration = '0';
+            it('test if condition is false when average is invalid', function(){
+                avgDuration = 0;
                 expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
             });
         });
@@ -66,5 +66,4 @@ describe('Common duration tests', function () {
             });
         });
     });
-
 });
