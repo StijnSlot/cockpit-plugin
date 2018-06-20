@@ -31,6 +31,11 @@ define({
     procDefId: "",
 
     /**
+     * contains process instance id
+     */
+    procInstanceId: "",
+
+    /**
      * Main function of the bulletgraph module. In here the data will be loaded
      * from the database by using promises. Also functions will be called
      * to add information to the BPMN model.
@@ -45,7 +50,7 @@ define({
      * @param   processDiagram    diagram containing elements
      * @param   overlays          collection of overlays to add to
      */
-    bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, callback) {
+    bulletgraph: function (util, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, callback) {
         if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
@@ -77,6 +82,64 @@ define({
         $q.all([promise1, promise2]).then(function (data) {
             callback(data);
         });
+    },
+
+    /**
+     * Combines all information of given process into a HTML line
+     * which will be added to the HTML file. It will also set the graphsettings
+     * which will be written to the class which is created in the HTML line.
+     *
+     * This function receives all duration information about a given process.
+     * If any conditions which are defined in a seperate checkConditions() function
+     * isn't satisfied, the bulletgraph will not display.
+     * An HTML line will be passed to the addTextToId() function 
+     * so that an class which includes an elementID will be added to the HTML file.
+     * Information which has has been collected will be passed to the setGraphSettings()
+     * function. Here it will create a bullet graph on he HTML line which has been
+     * passed into the HTML file previously.
+     *
+     * @param   Object  util          object of this class, to call its functions and variables
+     * @param   Overlay overlays      collection of overlays to add to
+     * @param   Number  avgDuration   average duration of process
+     * @param   Number  maxDuration   maximum duration of process
+     * @param   Number  curDuration   current duration of process
+     * @param   String  elementID     ID of element
+     * @param   Object  shape         Shape of the element
+     * @param   Object  $window       browser window containing localStorage
+     */
+    combineBulletgraphElements: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, $window, cssClass, cssOverlayClass) {
+        console.log("combineBulletgraphElements called");
+        if (!util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
+            return;
+        }
+
+            // initialize the overlayActivityId array
+            if(util.overlayActivityIds[elementID] === undefined)
+                util.overlayActivityIds[elementID] = [];
+
+            // clear any current overlays displayed
+            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
+            
+            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
+            var minDuration = util.commonConversion.convertTimes(minDuration, timeChoice);
+            var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
+            var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
+            var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
+            var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
+
+            var html = util.createHTML(cssClass);
+
+            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+
+            util.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID, cssOverlayClass);
+
+            var setOffset = function(top, left) {
+                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, cssOverlayClass, top, left);
+            };
+            util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+
+            util.overlayActivityIds[elementID].push(newOverlayId);
+            util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
     },
 
     /**

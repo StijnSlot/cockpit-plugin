@@ -49,12 +49,12 @@ define(['require', 'angular', '../../common/bulletlibraries', './util', '../../c
             var putBulletGraph = function() {
                 var processActivityStatistics = {};
                 var instanceStartTime = {};
-                commonBulletgraph.bulletgraph(commonBulletgraph, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, function(data) {
+                commonBulletgraph.bulletgraph(commonBulletgraph, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, function(data) {
                     console.log("DATA:");
                     console.log(data);
                     processActivityStatistics = data[0].data;
                     instanceStartTime = data[1].data;
-                    util.extractDiagram(util, processActivityStatistics, instanceStartTime, $scope, $window, elementRegistry, processDiagram, overlays);
+                    util.extractDiagram(util, processActivityStatistics, instanceStartTime, $window, elementRegistry, processDiagram, overlays);
                 });
             };
             putBulletGraph();
