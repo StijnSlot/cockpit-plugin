@@ -21,7 +21,7 @@ define({
      * If the current duration is equal to null it should display a '-'.
      * 
      * @param   {Object}  util          Object of this class, to call its functions and variables.
-     * @param   {Number}  curDuration   Current duration of process.
+     * @param   {Number}  curDuration   Current duration of process in ms.
      * @return  {String}                Either the current duration or a '-'.
      */
     checkIfCurValid: function (util, curDuration) {

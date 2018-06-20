@@ -5,17 +5,16 @@ define({
     averageDuration: {},
     
     /**
-     * Convert the duration into the chosen time unit.
+     * Converts the duration based on the chosen time unit.
      *
      * The database keeps track of the duration in milliseconds.
-     * This is difficult to read in the process definition, so we convert the
-     * milliseconds into following intervals: seconds, minutes,
-     * hours, days, weeks to make it easier to read. The choice
-     * determines which time unit to use.
+     * This is difficult to read, therefore it has to be converted.
+     * This function converts an given time in ms to seconds, minutes,
+     * hours, days, based ont he given time unit choice.
      *
-     * @param   {Number}  duration      Duration of process.
+     * @param   {Number}  duration      Duration in ms.
      * @param   {String}  choice        Choice of time unit.
-     * @return  {Number}                Duration as Integer.
+     * @return  {Number}                Duration as number.
      */
     convertTimes: function (duration, choice) {
         if (choice === 's' || choice === 'seconds') {
