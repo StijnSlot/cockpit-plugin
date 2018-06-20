@@ -12,14 +12,17 @@ define({
      * @param   Object  shape   shape of element
      */
     extractDiagram: function(util, processActivityStatistics, instanceStartTime, $scope, $window, elementRegistry, processDiagram, overlays) {
+        console.log("extractDiagram called");
         elementRegistry.forEach(function (shape) {
             var element = processDiagram.bpmnElements[shape.businessObject.id];
+            console.log("ProcessActivityStatistics");
+            console.log(processActivityStatistics);
             for (var i = 0; i < processActivityStatistics.length; i++) {
                 if (processActivityStatistics[i].id === element.id) {
                     var getAvgDuration = processActivityStatistics[i].avgDuration;
                     var getMinDuration = processActivityStatistics[i].minDuration;
                     var getMaxDuration = processActivityStatistics[i].maxDuration;
-                    var getCurDuration = commonBulletgraph.commonConversion.calculateAvgCurDuration(commonBulletgraph.commonConversion, instanceStartTime, element.id);
+                    var getCurDuration = util.commonBulletgraph.commonConversion.calculateAvgCurDuration(util.commonBulletgraph.commonConversion, instanceStartTime, element.id);
     
                     util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                     break;
@@ -53,37 +56,39 @@ define({
      * @param   Object  $window       browser window containing localStorage
      */
     combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, $window) {
-        if (util.commonBulletgraph.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
+        console.log("combineBulletgraphElements called");
+        if (!util.commonBulletgraph.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
+            return;
+        }
 
             var cssClass = "bullet-duration-" + elementID;
 
             // initialize the overlayActivityId array
-            if(commonBulletgraph.overlayActivityIds[elementID] === undefined)
-                commonBulletgraph.overlayActivityIds[elementID] = [];
+            if(util.commonBulletgraph.overlayActivityIds[elementID] === undefined)
+                util.commonBulletgraph.overlayActivityIds[elementID] = [];
 
             // clear any current overlays displayed
-            commonBulletgraph.commonOverlays.clearOverlays(overlays, commonBulletgraph.overlayActivityIds[elementID]);
+            util.commonBulletgraph.commonOverlays.clearOverlays(overlays, util.commonBulletgraph.overlayActivityIds[elementID]);
             
-            var timeChoice = commonBulletgraph.commonConversion.checkTimeUnit(maxDuration, false);
-            var minDuration = commonBulletgraph.commonConversion.convertTimes(minDuration, timeChoice);
-            var avgDuration = commonBulletgraph.commonConversion.convertTimes(avgDuration, timeChoice);
-            var maxDuration = commonBulletgraph.commonConversion.convertTimes(maxDuration, timeChoice);
-            var curDuration = commonBulletgraph.commonConversion.convertTimes(curDuration, timeChoice);
-            var colorBullet = commonBulletgraph.commonBulletgraph.determineColor(avgDuration, maxDuration, curDuration);
+            var timeChoice = util.commonBulletgraph.commonConversion.checkTimeUnit(maxDuration, false);
+            var minDuration = util.commonBulletgraph.commonConversion.convertTimes(minDuration, timeChoice);
+            var avgDuration = util.commonBulletgraph.commonConversion.convertTimes(avgDuration, timeChoice);
+            var maxDuration = util.commonBulletgraph.commonConversion.convertTimes(maxDuration, timeChoice);
+            var curDuration = util.commonBulletgraph.commonConversion.convertTimes(curDuration, timeChoice);
+            var colorBullet = util.commonBulletgraph.determineColor(avgDuration, maxDuration, curDuration);
 
-            var html = commonBulletgraph.commonBulletgraph.createHTML(cssClass);
+            var html = util.commonBulletgraph.createHTML(cssClass);
 
-            var newOverlayId = commonBulletgraph.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+            var newOverlayId = util.commonBulletgraph.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            util.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID,"bulletGraph");
+            util.commonBulletgraph.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID,"bulletGraph");
 
             var setOffset = function(top, left) {
-                commonBulletgraph.commonOverlays.setOffset($window.localStorage, commonBulletgraph.procDefId, elementID, "bulletGraph", top, left);
+                util.commonBulletgraph.commonOverlays.setOffset($window.localStorage, util.commonBulletgraph.procDefId, elementID, "bulletGraph", top, left);
             };
-            util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+            util.commonBulletgraph.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonBulletgraph.commonOverlays.canvas, true, setOffset);
 
-            commonBulletgraph.overlayActivityIds[elementID].push(newOverlayId);
-            utcommonBulletgraphil.commonBulletgraph.setGraphSettings(elementID, maxDuration, commonBulletgraph.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
-        }
+            util.commonBulletgraph.overlayActivityIds[elementID].push(newOverlayId);
+            util.commonBulletgraph.setGraphSettings(maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
     }
 });
