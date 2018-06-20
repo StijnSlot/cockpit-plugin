@@ -59,7 +59,7 @@ define({
             var maxDurationString = util.commonConversion.convertTimes(orderStatistics.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationString = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            if (!util.commonDuration.checkConditions(avgDurationString, maxDurationString)) return;
+            if (!util.commonDuration.checkConditions(maxDurationString)) return;
 
             var html = util.commonDuration.createHTML(util, localStorage, curDurationString, avgDurationString,
                 maxDurationString, "overviewDurationText", "overview");

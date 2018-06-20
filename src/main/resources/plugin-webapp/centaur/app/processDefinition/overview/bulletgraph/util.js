@@ -30,16 +30,19 @@ define({
      * to add information to the BPMN model.
      *
      * @param   util              object of this class, to call its functions and variables
-     * @param   $scope            object with corresponding properties and methods
      * @param   $http             http client for GET request
      * @param   $window           browser window containing localStorage
      * @param   Uri               uniform resource identifier to create GET request
      * @param   $q                a promise
-     * @param   elementRegistry   registry containing bpmn elements
+     * @param   control           registry containing bpmn elements
      * @param   processDiagram    diagram containing elements
-     * @param   overlays          collection of overlays to add to
      */
-    bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
+    bulletgraph: function (util, $http, $window, Uri, $q, control, processDiagram) {
+        var viewer = control.getViewer();
+        var overlays = viewer.get('overlays');
+        util.commonOverlays.canvas = viewer.get('canvas');
+        var elementRegistry = viewer.get('elementRegistry');
+
         if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "order_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
@@ -48,55 +51,32 @@ define({
             return;
         }
 
-        /*
-         * Angular http.get promises that wait for a JSON object of
-         * the process activity and the instance start time.
-         */
-        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + util.procDefId), {
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?procDefId=" + util.procDefId), {
             catch: false
         });
-        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
-            catch: false
-        });
-        $scope.orderStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?" + "procDefId=" + util.procDefId), {
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/process-instance-start-time?procDefId=" + util.procDefId), {
             catch: false
         });
 
-        /**
-         * Waits until data is received from http.get request and
-         * added to promises.
-         *
-         * Database quersies take a relative long time. So we have to
-         * wait until the data is retrieved before we can continue.
-         *
-         * @param   Object  data   minimal duration of process
-         */
-        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp, $scope.orderStatistics_temp]).then(function (data) {
-            $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-            $scope.instanceStartTime = data[1];
-            $scope.orderStatistics = data[2];
+        $q.all([promise1, promise2]).then(function (data) {
+            var orderStatistics = data[0].data[0];
+            var instances = data[1].data;
 
-            /**
-             * Extracts data from JSON objects and calls composeHTML()
-             * function to add the extracted to the diagram.
-             *
-             * @param   Object  shape   shape of element
-             */
+
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 var startEvent = "";
-                for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
+                for (var i = 0; i < orderStatistics.length; i++) {
 
                     if (shape.type === "bpmn:StartEvent") {
                         startEvent = shape.businessObject.id;
                     }
 
-                    if ($scope.processActivityStatistics.data[i].id === startEvent) {
-                        var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
+                    if (orderStatistics.data[i].id === startEvent) {
+                        var getAvgDuration = orderStatistics.data[0].avgDuration;
                         //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                        var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
-                        var getCurDuration = util.commonConversion.calculateAvgCurDurationOfAllInstances(util.commonConversion, $scope.instanceStartTime.data);
-                        var getMinDuration = 12;
+                        var getMaxDuration = orderStatistics.data[0].maxDuration;
+                        var getCurDuration = util.commonConversion.calculateAvgCurDuration(util, instances);
 
                         util.combineBulletgraphElements(util, overlays, getMinDuration, getAvgDuration, getMaxDuration, getCurDuration, element.id, $window);
                         break;
@@ -131,7 +111,7 @@ define({
      * @param   Object  $window       browser window containing localStorage
      */
     combineBulletgraphElements: function (util, overlays, minDuration, avgDuration, maxDuration, curDuration, elementID, $window) {
-        if (util.commonBulletgraph.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
+        if (util.commonBulletgraph.checkConditions(avgDuration, maxDuration, curDuration)) {
 
             var cssClass = "bullet-duration-overview";
 

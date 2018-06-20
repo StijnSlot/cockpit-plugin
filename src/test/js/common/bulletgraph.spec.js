@@ -23,23 +23,23 @@ describe('Common bulletgraph tests', function () {
             });
 
             it('check if returns true when arguments are correct values', function () {
-                expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(true);
+                expect(util.checkConditions(curDuration, avgDuration, maxDuration)).to.eql(true);
             });
             it('check if returns false when arguments are incorrect',function () {
                 curDuration = null;
-                expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(false);
+                expect(util.checkConditions(curDuration, avgDuration, maxDuration)).to.eql(false);
             });
             it('check if returns false when arguments are incorrect',function () {
                 avgDuration = null;
-                expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(false);
+                expect(util.checkConditions(curDuration, avgDuration, maxDuration)).to.eql(false);
             });
             it('check if returns false when arguments are incorrect',function () {
                 maxDuration = null;
-                expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(false);
+                expect(util.checkConditions(curDuration, avgDuration, maxDuration)).to.eql(false);
             });
             it('check if returns false when avgDuration is 0',function () {
                 avgDuration = 0;
-                expect(util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)).to.eql(false);
+                expect(util.checkConditions(avgDuration, maxDuration, curDuration)).to.eql(false);
             });
         });
     });

@@ -6,11 +6,6 @@ define({
     overlayActivityIds: {},
 
     /**
-     * variable containing all current duration of the bulletgraph
-     */
-    averageDuration: {},
-
-    /**
      * common conversion util
      */
     commonConversion: {},
@@ -33,7 +28,15 @@ define({
     /**
      * contains process instance id
      */
-    procInstanceId: "",
+    procInstanceId: null,
+
+    setSpecificBulletGraphCssClass: function (elementId) {
+        return "bullet-duration-" + elementId;
+    },
+
+    setSpecificBulletGraphOverlayCssClass: function () {
+        return "bulletgraph";
+    },
 
     /**
      * Main function of the bulletgraph module. In here the data will be loaded
@@ -41,17 +44,19 @@ define({
      * to add information to the BPMN model.
      *
      * @param   util              object of this class, to call its functions and variables
-     * @param   $scope            object with corresponding properties and methods
      * @param   $http             http client for GET request
-     * @param   $window           browser window containing localStorage
+     * @param   localStorage           browser window containing localStorage
      * @param   Uri               uniform resource identifier to create GET request
      * @param   $q                a promise
-     * @param   elementRegistry   registry containing bpmn elements
      * @param   processDiagram    diagram containing elements
-     * @param   overlays          collection of overlays to add to
      */
-    bulletgraph: function (util, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, callback) {
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_bulletGraph") === "false") {
+    bulletgraph: function (util, $http, localStorage, Uri, $q, control, processDiagram) {
+        var viewer = control.getViewer();
+        var overlays = viewer.get('overlays');
+        var elementRegistry = viewer.get('elementRegistry');
+        util.commonOverlays.canvas = viewer.get('canvas');
+
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "act_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -80,7 +85,30 @@ define({
          * @param   Object  data   minimum duration of process
          */
         $q.all([promise1, promise2]).then(function (data) {
-            callback(data);
+            var processActivityStatistics = data[0].data;
+            var instanceStartTime = data[1].data;
+
+
+            elementRegistry.forEach(function (shape) {
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+                var activity = processActivityStatistics.find(function(activity) {
+                    return activity.id === element.id;
+                });
+
+                if(activity == null) return;
+
+                var instances = instanceStartTime.filter(function(instance) {
+                    return (instance.activityId === element.id && (util.procInstanceId == null || instance.instanceId === util.procInstanceId));
+                });
+                var getAvgDuration = activity.avgDuration;
+                var getMaxDuration = activity.maxDuration;
+                var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
+
+                var cssClass = util.setSpecificBulletGraphCssClass(element.id);
+                var cssOverlayClass = util.setSpecificBulletGraphOverlayCssClass;
+
+                util.combineBulletgraphElements(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, localStorage, cssClass, cssOverlayClass);
+            });
         });
     },
 
@@ -105,41 +133,39 @@ define({
      * @param   Number  curDuration   current duration of process
      * @param   String  elementID     ID of element
      * @param   Object  shape         Shape of the element
-     * @param   Object  $window       browser window containing localStorage
+     * @param   Object  localStorage       browser window containing localStorage
      */
-    combineBulletgraphElements: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, $window, cssClass, cssOverlayClass) {
-        console.log("combineBulletgraphElements called");
-        if (!util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)) {
+    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass) {
+        if (!util.checkConditions(avgDuration, maxDuration, curDuration)) {
             return;
         }
 
-            // initialize the overlayActivityId array
-            if(util.overlayActivityIds[elementID] === undefined)
-                util.overlayActivityIds[elementID] = [];
+        // initialize the overlayActivityId array
+        if(util.overlayActivityIds[elementID] === undefined)
+            util.overlayActivityIds[elementID] = [];
 
-            // clear any current overlays displayed
-            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
-            
-            var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
-            var minDuration = util.commonConversion.convertTimes(minDuration, timeChoice);
-            var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
-            var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
-            var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
-            var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
+        // clear any current overlays displayed
+        util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
-            var html = util.createHTML(cssClass);
+        var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
+        var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
+        var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
+        var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
+        var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
 
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+        var html = util.createHTML(cssClass);
 
-            util.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID, cssOverlayClass);
+        var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            var setOffset = function(top, left) {
-                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, cssOverlayClass, top, left);
-            };
-            util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, cssOverlayClass);
 
-            util.overlayActivityIds[elementID].push(newOverlayId);
-            util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
+        var setOffset = function(top, left) {
+            util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, cssOverlayClass, top, left);
+        };
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+
+        util.overlayActivityIds[elementID].push(newOverlayId);
+        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
     },
 
     /**
@@ -173,13 +199,12 @@ define({
      * - The average duration is not equal to '0'.
      * - The current duration is not equal to '0'.
      *
-     * @param   {Number}  minDuration   Minimum duration of process.
      * @param   {Number}  avgDuration   Average duration of process.
      * @param   {Number}  maxDuration   Maximum duration of process.
      * @param   {Number}  curDuration   Current duration of process.
      * @return  {Boolean}               If conditions are satisfied or not.
      */
-    checkConditions: function (minDuration, avgDuration, maxDuration, curDuration) {
+    checkConditions: function (avgDuration, maxDuration, curDuration) {
         return avgDuration != null && curDuration != null && maxDuration != null &&
                avgDuration !== 0 && curDuration !== 0;
     },

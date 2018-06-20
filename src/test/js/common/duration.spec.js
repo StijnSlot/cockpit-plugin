@@ -20,7 +20,7 @@ describe('Common duration tests', function () {
            beforeEach(function () {
                avgDuration = '4';
                maxDuration = '12';
-               returnValue = util.checkConditions(avgDuration, maxDuration);
+               returnValue = util.checkConditions(maxDuration);
            });
     
            it('test if condition is true when arguments are valid', function () {
@@ -28,15 +28,15 @@ describe('Common duration tests', function () {
            });
            it('test if condition is false when arguments are invalid', function(){
                maxDuration = null;
-               expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+               expect(util.checkConditions(maxDuration)).to.eql(false);
             });
             it('test if condition is false when arguments are invalid', function(){
                 avgDuration = null;
-                expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+                expect(util.checkConditions(maxDuration)).to.eql(false);
             });
             it('test if condition is false when average is invalid', function(){
                 avgDuration = 0;
-                expect(util.checkConditions(avgDuration, maxDuration)).to.eql(false);
+                expect(util.checkConditions(maxDuration)).to.eql(false);
             });
         });
     });
