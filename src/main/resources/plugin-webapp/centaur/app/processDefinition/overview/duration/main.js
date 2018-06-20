@@ -13,17 +13,17 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
     /**
      * retrieve the common file containing conversion functions
      */
-    util.commonConversion = require('../../../common/conversion');
-
-    /**
-     * retrieve the common file containing option functions
-     */
-    util.commonOptions = util.commonDuration.commonOptions = require('../../../common/options');
+    util.commonConversion = util.commonDuration.commonConversion = require('../../../common/conversion');
 
     /**
      * retrieve the common file containing overlay functions
      */
     util.commonOverlays = util.commonDuration.commonOverlays = require('../../../common/overlays');
+
+    /**
+     * retrieve the common file containing option functions
+     */
+    util.commonOptions = util.commonDuration.commonOptions = require('../../../common/options');
 
     var Configuration = ['ViewsProvider', function (ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
@@ -42,7 +42,7 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
                     setDuration();
 
                     // subscribe to any broadcast KPI options change
-                    util.commonOptions($rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
+                    util.commonOptions.register($rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
                 }
             ]
         });

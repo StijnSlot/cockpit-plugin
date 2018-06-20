@@ -58,6 +58,8 @@ define({
                 var maxDurationString = util.commonConversion.convertTimes(activity.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
                 var curDurationString = util.checkIfCurValid(util, curDuration);
 
+                if (!util.checkConditions(avgDurationString, maxDurationString)) return;
+
                 var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, "durationText", "act");
 
                 util.addOverlay(util, overlays, html, element.id, localStorage);
@@ -85,8 +87,6 @@ define({
      * @param   {Object}  localStorage  browser window containing localStorage
      */
     addOverlay: function (util, overlays, html, elementID, localStorage) {
-        if (!util.checkConditions(avgDuration, maxDuration)) return;
-
         // initialize the overlayActivityId array
         if(util.overlayActivityIds[elementID] === undefined)
             util.overlayActivityIds[elementID] = [];
