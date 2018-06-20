@@ -4,6 +4,8 @@ define({
 
     commonDuration: {},
 
+    commonOverlays: {},
+
     /**
      * contains process definition id
      */
@@ -19,10 +21,9 @@ define({
      * @param   $http             http client for GET request
      * @param   localStorage      contains user options
      * @param   Uri               uniform resource identifier to create GET request
-     * @param   $q                a promise
-     * @param   elementRegistry   registry containing bpmn elements
+     * @param   $q                to resolve promises
+     * @param   control           contains overlay, canvas, elementRegistry
      * @param   processDiagram    diagram containing elements
-     * @param   overlays          collection of overlays to add to
      */
     duration: function (util, $scope, $http, localStorage, Uri, $q, control, processDiagram) {
         var viewer = control.getViewer();
@@ -56,9 +57,12 @@ define({
             var maxDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.maxDuration, false);
             var avgDurationString = util.commonConversion.convertTimes(orderStatistics.avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
             var maxDurationString = util.commonConversion.convertTimes(orderStatistics.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-            var curDurationString = util.checkIfCurValid(util, curDuration);
+            var curDurationString = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, "overviewDurationText", "overview");
+            if (!util.commonDuration.checkConditions(avgDurationString, maxDurationString)) return;
+
+            var html = util.commonDuration.createHTML(util, localStorage, curDurationString, avgDurationString,
+                maxDurationString, "overviewDurationText", "overview");
 
             util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id, localStorage);
         });
