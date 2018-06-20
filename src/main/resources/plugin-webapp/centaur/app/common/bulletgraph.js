@@ -108,19 +108,22 @@ define({
      * function. Here it will create a bullet graph on he HTML line which has been
      * passed into the HTML file previously.
      *
-     * @param   Object  util          object of this class, to call its functions and variables
-     * @param   Overlay overlays      collection of overlays to add to
-     * @param   Number  avgDuration   average duration of process
-     * @param   Number  maxDuration   maximum duration of process
-     * @param   Number  curDuration   current duration of process
-     * @param   String  elementID     ID of element
-     * @param   Object  shape         Shape of the element
-     * @param   Object  localStorage  browser window containing localStorage
+     * @param   {Object}  util          object of this class, to call its functions and variables
+     * @param   {Overlay} overlays      collection of overlays to add to
+     * @param   {Number}  avgDuration   average duration of process
+     * @param   {Number}  maxDuration   maximum duration of process
+     * @param   {Number}  curDuration   current duration of process
+     * @param   {String}  elementID     ID of element
+     * @param   {Object}  shape         Shape of the element
+     * @param   {Object}  localStorage  browser window containing localStorage
+     * @param   {Boolean} overview    if the sizes of the overview should be used
      */
-    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass) {
+    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass, overview) {
         if (!util.checkConditions(avgDuration, maxDuration, curDuration)) {
             return;
         }
+
+        var overview = true;
 
         // initialize the overlayActivityId array
         if(util.overlayActivityIds[elementID] === undefined)
@@ -137,7 +140,7 @@ define({
 
         var html = util.createHTML(cssClass);
 
-        var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+        var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 70);
 
         util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, cssOverlayClass);
 
@@ -147,7 +150,7 @@ define({
         util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
 
         util.overlayActivityIds[elementID].push(newOverlayId);
-        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
+        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass, overview);
     },
 
     /**
@@ -219,8 +222,15 @@ define({
      * @param   {Number}  markerBullet  Marker value of bulletgraph.
      * @param   {Number}  colorBullet   Color of bulletgraph.
      * @param   {String}  cssClass      classname of the graph
+     * @param   {Boolean} overview      If the sizes of the overview should be used
      */
-    setGraphSettings: function (rangeBullet, currentBullet, markerBullet, colorBullet, cssClass) {
+    setGraphSettings: function (rangeBullet, currentBullet, markerBullet, colorBullet, cssClass, overview) {
+        var newWidth = 100;
+        var newHeight = 40;
+        if (overview) {
+            newWidth = 130;
+            newHeight = 50;
+        }
         var newCSSClass = '.' + cssClass;
         var data = [
             {
@@ -231,8 +241,8 @@ define({
         ];
         d3.select(newCSSClass).node().getBoundingClientRect();
         var margin = { top: 5, right: 5, bottom: 15, left: 5 },
-            width = 100 - margin.left - margin.right,
-            height = 40 - margin.top - margin.bottom;
+            width = newWidth - margin.left - margin.right,
+            height = newHeight - margin.top - margin.bottom;
 
         var chart = d3.bullet(width, height)
           .width(width)
@@ -242,8 +252,8 @@ define({
           .data(data)
           .enter().append("svg")
           .attr("class", "bullet")
-          .attr("width", 100)
-          .attr("height", 40)
+          .attr("width", newWidth)
+          .attr("height", newHeight)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
           .call(chart);

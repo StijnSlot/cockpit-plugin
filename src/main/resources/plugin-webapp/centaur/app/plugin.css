@@ -35,8 +35,8 @@
 */
 
 .durationText {
-    font-size: 13px;
-    width: 100px;
+    font-size: 9px;
+    width: 80px;
 }
 
 .durationText ul {
@@ -45,8 +45,8 @@
 }
 
 .overviewDurationText {
-    width: 80px;
-    font-size: 9px;
+    width: 100px;
+    font-size: 13px;
     border-style: groove;
     border-radius: 1px;
     padding: 5px;
