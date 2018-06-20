@@ -46,11 +46,11 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
 
                     util.procDefId = $scope.$parent.processDefinition.id;
 
-                    util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+                    util.duration(util, $scope, $http, $window.localStorage, Uri, $q, elementRegistry, processDiagram, overlays);
 
                     // subscribe to any broadcast KPI options change
                     var listener = $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
-                        util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+                        util.duration(util, $scope, $http, $window.localStorage, Uri, $q, elementRegistry, processDiagram, overlays);
                     });
 
                     $scope.$on("$destroy", function() {

@@ -22,9 +22,7 @@
     <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT" />
   </resultMap>
 
-  
   <resultMap id="SequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.SequenceCounterDto">
-
     <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
     <result property="name" column="NAME_" jdbcType="VARCHAR" />
     <result property="counter" column="LONG_" jdbcType="BIGINT" />
@@ -79,8 +77,15 @@
   <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectOrderStatistics" resultMap="orderStatistics" parameterType="String">
     SELECT MAX(DURATION_), AVG(DURATION_)
-    FROM ACT_HI_ACTINST
+    FROM ACT_HI_PROCINST
     WHERE (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
+  </select>
+
+  <select id="selectProcessInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
+    SELECT ID_, START_ACT_ID_, START_TIME_
+    FROM ACT_HI_PROCINST
+    WHERE STATE_ = 'ACTIVE'
+      AND(#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
   </select>
 
   <!-- Selects all active executions with optional parameters for process definition id and process instance id -->

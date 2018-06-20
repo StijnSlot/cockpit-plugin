@@ -34,25 +34,22 @@ define({
      * @param   util              object of this class, to call its functions and variables
      * @param   $scope            object with corresponding properties and methods
      * @param   $http             http client for GET request
-     * @param   $window           browser window containing localStorage
+     * @param   localStorage      contains user options
      * @param   Uri               uniform resource identifier to create GET request
      * @param   $q                a promise
      * @param   elementRegistry   registry containing bpmn elements
      * @param   processDiagram    diagram containing elements
      * @param   overlays          collection of overlays to add to
      */
-    duration: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays) {
+    duration: function (util, $scope, $http, localStorage, Uri, $q, elementRegistry, processDiagram, overlays) {
         /*
         * Angular http.get promises that wait for a JSON object of
         * the process activity and the instance start time.
         */
-        $scope.processActivityStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?" + "procDefId=" + util.procDefId), {
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?procDefId=" + util.procDefId), {
             catch: false
         });
-        $scope.instanceStartTime_temp = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time"), {
-            catch: false
-        });
-        $scope.orderStatistics_temp = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?" + "procDefId=" + util.procDefId), {
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/process-instance-start-time?procDefId=" + util.procDefId), {
             catch: false
         });
 
@@ -65,37 +62,26 @@ define({
          *
          * @param   {Object}  data   minimal duration of process
          */
-        $q.all([$scope.processActivityStatistics_temp, $scope.instanceStartTime_temp, $scope.orderStatistics_temp]).then(function (data) {
-            $scope.processActivityStatistics = data[0]; //$scope.processActivityStatistics.data to access array with data from JSON object
-            $scope.instanceStartTime = data[1];
-            $scope.orderStatistics = data[2];
+        $q.all([promise1, promise2]).then(function (data) {
+            var orderStatistics = data[0].data[0];
+            var instanceStartTime = data[1].data;
 
-            /**
-             * Extracts data from JSON objects and calls composeHTML()
-             * function to add the extracted to the diagram.
-             *
-             * @param   {Object}  shape   shape of element
-             */
+            var startEvent = null;
             elementRegistry.forEach(function (shape) {
-                var element = processDiagram.bpmnElements[shape.businessObject.id];
-                var startEvent = "";
-                for (var i = 0; i < $scope.processActivityStatistics.data.length; i++) {
-
-                    if (shape.type === "bpmn:StartEvent") {
-                        startEvent = shape.businessObject.id;
-                    }
-
-                    if ($scope.processActivityStatistics.data[i].id === startEvent) {
-                        var getAvgDuration = $scope.orderStatistics.data[0].avgDuration;
-                        //var getMinDuration = $scope.processActivityStatistics.data[i].minDuration;
-                        var getMaxDuration = $scope.orderStatistics.data[0].maxDuration;
-                        var getCurDuration = util.commonConversion.calculateAvgCurDurationOfAllInstances(util.commonConversion, $scope.instanceStartTime.data);
-
-                        util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, shape, $window);
-                        break;
-                    }
-                }
+                if(shape.type === "bpmn:StartEvent")
+                    startEvent = shape;
             });
+            if(startEvent == null) return;
+
+            var element = processDiagram.bpmnElements[startEvent.businessObject.id];
+
+            console.log(instanceStartTime);
+
+            var getAvgDuration = orderStatistics.avgDuration;
+            var getMaxDuration = orderStatistics.maxDuration;
+            var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instanceStartTime);
+
+            util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, localStorage);
         });
     },
 
@@ -119,10 +105,9 @@ define({
      * @param   Number  maxDuration   maximal duration of process
      * @param   Number  curDuration   current duration of process
      * @param   Number  elementID     ID of element
-     * @param   Object  shape         Shape of the element
-     * @param   Object  $window       browser window containing localStorage
+     * @param   Object  localStorage  contains user options
      */
-    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, shape, $window) {
+    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage) {
         if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
 
             var cssClass = "overviewDurationText";
@@ -140,14 +125,14 @@ define({
             var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
             var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
 
-            var html = util.commonDuration.createHTML(util, $window, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass, "order");
+            var html = util.commonDuration.createHTML(util, localStorage, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass, "order");
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -80);
 
-            util.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID, "overview_duration");
+            util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, "overview_duration");
 
             var setOffset = function(top, left) {
-                util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "overview_duration", top, left);
+                util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "overview_duration", top, left);
             };
             util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, false, setOffset);
 

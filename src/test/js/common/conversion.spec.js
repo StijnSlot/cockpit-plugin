@@ -78,8 +78,7 @@ describe('Common conversion tests', function () {
         var duration;
         var choice;
         describe('check duration format is correct', function () {
-    
-    
+
             it('test for duration to be in seconds', function () {
                 duration = 1000*2;
                 choice = 's';
@@ -156,6 +155,7 @@ describe('Common conversion tests', function () {
     describe('calculate average current duration tests', function() {
         var instance;
         var elementID;
+        var out;
 
         describe('average duration', function() {
 
@@ -166,12 +166,14 @@ describe('Common conversion tests', function () {
 
             it('check if it returns a number', function() {
                 var computerTime = new Date().getTime();
-                expect(computerTime - util.calculateAvgCurDuration(util, instance, elementID)).to.be.a('number');
+                out = computerTime - util.calculateAvgCurDuration(util, {}, instance, elementID);
+                expect(out).to.be.a('number');
             });
 
             it('check if it returns null', function() {
                 elementID = 'Another not existing activity';
-                expect(util.calculateAvgCurDuration(util, instance, elementID)).to.be.null;
+                out = util.calculateAvgCurDuration(util, {}, instance, elementID);
+                expect(out).to.not.exist;
             });
         });
     });

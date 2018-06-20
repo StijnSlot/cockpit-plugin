@@ -74,80 +74,18 @@ define({
      * 
      * @param   {Object}        util        Object of this class, to call its functions and variables.
      * @param   {Array<Object>} instances   Instance of a process.
-     * @param   {String}        elementID   ID of diagram element that represents instance.
      * @return  {Number}                    If no start time is present in the database: null,
      *                                      else the current time.
      */
-    calculateAvgCurDuration: function (util, instances, elementID) {
-        if (util.averageDuration[elementID] === undefined) {
-            util.averageDuration[elementID] = [];
-        }
+    calculateAvgCurDuration: function (util, instances) {
+        if(!instances.length) return null;
 
-        instances = instances.filter(function(instance) {
-            return (instance.activityId === elementID);
-        });
+        var total = 0;
         instances.forEach(function(instance) {
-            var timeDifference = util.calculateTimeDifference(Date.parse(instance.startTime));
-            util.averageDuration[elementID].push(timeDifference);
+            total += util.calculateTimeDifference(Date.parse(instance.startTime));
         });
 
-        if (util.averageDuration[elementID].length !== 0) {
-            var total = 0;
-            util.averageDuration[elementID].forEach(function(duration) {
-                total = total + duration;
-            });
-            return (total / util.averageDuration[elementID].length);
-        }
-
-        return null;
-    },
-
-    /**
-     * Calculates the average current duration of all instances of one process definition
-     *
-     * The database only keeps track of the starting time of each
-     * process. So we have to calculate the current duration of each process.
-     * @param   {Object}  util        object of this class, to call its functions and variables
-     * @param   {Object}  instances    Instance of a process
-     * @return  {Number}              If no starttime is present in the database: 0,
-     *                                else the current time
-     */
-    calculateAvgCurDurationOfAllInstances: function (util, instances) {
-        var counter = 0;
-        var totalTime = 0;
-
-        instances.forEach(function (instance) {
-            if (instance.startTime !== undefined) {
-                var timeDifference = util.calculateTimeDifference(Date.parse(instance.startTime));
-                totalTime = totalTime + timeDifference;
-                counter++;
-            }
-        });
-
-        return (counter > 0 ? totalTime / counter : null);
-    },
-
-    /**
-     * Calculates the current duration of a specific instance of a process.
-     *
-     * The database only keeps track of the starting time of each
-     * process. So we calculate the current duration of a specific instance
-     *
-     * @param   {Array<Object>} instances   Instances of a process.
-     * @param   {String}        elementID   ID of diagram element that represents instance.
-     * @param   {String}        instanceID  ID of diagram instance element that represents instance.
-     * @return  {Number}                    If no start time is present in the database: null,
-     *                                      else the current time.
-     */
-    calculateCurDurationOfSpecInstance: function (instances, elementID, instanceID) {
-        var instance = instances.find(function(instance) {
-            return (instance.activityId === elementID && instance.instanceId === instanceID);
-        });
-        if(instance === undefined) return null;
-
-        var startTime = Date.parse(instance[i].startTime);
-        var computerTime = new Date().getTime();
-        return computerTime - startTime;
+        return (total / instances.length);
     },
 
     /**
