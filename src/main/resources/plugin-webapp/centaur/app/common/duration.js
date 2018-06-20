@@ -47,15 +47,20 @@ define({
                 });
                 if(activity == null) return;
 
-                var getAvgDuration = activity.avgDuration;
-                var getMaxDuration = activity.maxDuration;
-
                 var instances = instanceStartTime.filter(function(instance) {
                     return (instance.activityId === element.id && (util.procInstId == null || instance.instanceId === util.procInstId));
                 });
-                var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
+                var curDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
-                util.addOverlay(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, localStorage);
+                var avgDurationUnit = util.commonConversion.checkTimeUnit(activity.avgDuration, false);
+                var maxDurationUnit = util.commonConversion.checkTimeUnit(activity.maxDuration, false);
+                var avgDurationString = util.commonConversion.convertTimes(activity.avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
+                var maxDurationString = util.commonConversion.convertTimes(activity.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
+                var curDurationString = util.checkIfCurValid(util, curDuration);
+
+                var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, "durationText", "act");
+
+                util.addOverlay(util, overlays, html, element.id, localStorage);
             });
         });
     },
@@ -67,7 +72,7 @@ define({
      * This function receives all duration information about a given process.
      * If any of duration variables are NULL it does not create
      * a hmtlText variable since there is nothing to display.
-     * Otherwise it checks which time intervall to use for each
+     * Otherwise it checks which time interval to use for each
      * duration variable and combines them into one String variable, htmlText.
      * The htmlText variable is passed to the addTextToId() function
      * so that the duration varables are displayed next to the
@@ -75,16 +80,12 @@ define({
      *
      * @param   {Object}  util          object of this class, to call its functions and variables
      * @param   {Object}  overlays      collection of overlays to add to
-     * @param   {Number}  avgDuration   average duration of process
-     * @param   {Number}  maxDuration   maximum duration of process
-     * @param   {Number}  curDuration   current duration of process
+     * @param   {Object}  html          DOM element
      * @param   {Number}  elementID     ID of element
-     * @param   {Object}  localStorage       browser window containing localStorage
+     * @param   {Object}  localStorage  browser window containing localStorage
      */
-    addOverlay: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage) {
+    addOverlay: function (util, overlays, html, elementID, localStorage) {
         if (!util.checkConditions(avgDuration, maxDuration)) return;
-
-        var cssClass = "durationText";
 
         // initialize the overlayActivityId array
         if(util.overlayActivityIds[elementID] === undefined)
@@ -92,14 +93,6 @@ define({
 
         // clear any current overlays displayed
         util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
-
-        var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration, false);
-        var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration, false);
-        var avgDurationString = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
-        var maxDurationString = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-        var curDurationString = util.checkIfCurValid(util, curDuration);
-
-        var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, cssClass, "act");
 
         var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 

@@ -2,24 +2,7 @@ define({
 
     commonConversion: {},
 
-    commonOptions: {},
-
-    commonOverlays: {},
-
-    commonVariables: {},
-
     commonDuration: {},
-
-
-    /**
-     * variable containing all ids of overlays created here
-     */
-    overlayActivityIds: {},
-
-    /**
-     * variable containing all current duration of the bulletgraph
-     */
-    averageDuration: {},
 
     /**
      * contains process definition id
@@ -41,11 +24,12 @@ define({
      * @param   processDiagram    diagram containing elements
      * @param   overlays          collection of overlays to add to
      */
-    duration: function (util, $scope, $http, localStorage, Uri, $q, elementRegistry, processDiagram, overlays) {
-        /*
-        * Angular http.get promises that wait for a JSON object of
-        * the process activity and the instance start time.
-        */
+    duration: function (util, $scope, $http, localStorage, Uri, $q, control, processDiagram) {
+        var viewer = control.getViewer();
+        var overlays = viewer.get('overlays');
+        util.commonOverlays.canvas = viewer.get('canvas');
+        var elementRegistry = viewer.get('elementRegistry');
+
         var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?procDefId=" + util.procDefId), {
             catch: false
         });
@@ -53,18 +37,9 @@ define({
             catch: false
         });
 
-        /**
-         * Waits until data is received from http.get request and
-         * added to promises.
-         *
-         * Database quersies take a relative long time. So we have to
-         * wait until the data is retrieved before we can continue.
-         *
-         * @param   {Object}  data   minimal duration of process
-         */
         $q.all([promise1, promise2]).then(function (data) {
             var orderStatistics = data[0].data[0];
-            var instanceStartTime = data[1].data;
+            var instances = data[1].data;
 
             var startEvent = null;
             elementRegistry.forEach(function (shape) {
@@ -75,68 +50,17 @@ define({
 
             var element = processDiagram.bpmnElements[startEvent.businessObject.id];
 
-            console.log(instanceStartTime);
+            var curDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
-            var getAvgDuration = orderStatistics.avgDuration;
-            var getMaxDuration = orderStatistics.maxDuration;
-            var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instanceStartTime);
+            var avgDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.avgDuration, false);
+            var maxDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.maxDuration, false);
+            var avgDurationString = util.commonConversion.convertTimes(orderStatistics.avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
+            var maxDurationString = util.commonConversion.convertTimes(orderStatistics.maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
+            var curDurationString = util.checkIfCurValid(util, curDuration);
 
-            util.composeHTML(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, localStorage);
+            var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, "overviewDurationText", "overview");
+
+            util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id, localStorage);
         });
-    },
-
-    /**
-     * Combines all information of given process into single
-     * String variable which is added to its diagram element.
-     *
-     * This function receives all duration information about a given process.
-     * If any of duration variables are NULL it does not create
-     * a hmtlText variable since there is nothing to display.
-     * Otherwise it checks which time intervall to use for each
-     * duration variable and combines them into one String variable, htmlText.
-     * The htmlText variable is passed to the addTextToId() function
-     * so that the duration varables are displayed next to the
-     * process diagram element.
-     *
-     * @param   Object  util          object of this class, to call its functions and variables
-     * @param   Overlay overlays      collection of overlays to add to
-     * @param   Number  minDuration   minimal duration of process
-     * @param   Number  avgDuration   average duration of process
-     * @param   Number  maxDuration   maximal duration of process
-     * @param   Number  curDuration   current duration of process
-     * @param   Number  elementID     ID of element
-     * @param   Object  localStorage  contains user options
-     */
-    composeHTML: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage) {
-        if (util.commonDuration.checkConditions(avgDuration, maxDuration)) {
-
-            var cssClass = "overviewDurationText";
-
-            // initialize the overlayActivityId array
-            if(util.overlayActivityIds[elementID] === undefined)
-                util.overlayActivityIds[elementID] = [];
-
-            // clear any current overlays displayed
-            util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
-
-            var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration, false);
-            var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration, false);
-            var avgDurationHTML = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
-            var maxDurationHTML = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
-            var curDurationHTML = util.commonDuration.checkIfCurValid(util, curDuration);
-
-            var html = util.commonDuration.createHTML(util, localStorage, curDurationHTML, avgDurationHTML, maxDurationHTML, cssClass, "order");
-
-            var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -80);
-
-            util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, "overview_duration");
-
-            var setOffset = function(top, left) {
-                util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "overview_duration", top, left);
-            };
-            util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, false, setOffset);
-
-            util.overlayActivityIds[elementID].push(newOverlayId);
-        }
     }
 });

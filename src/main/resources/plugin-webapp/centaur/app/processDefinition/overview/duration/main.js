@@ -6,29 +6,24 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
     var util = require('./util');
 
     /**
+     * retrieve the common file containing duration functions
+     */
+    util.commonDuration = require('../../../common/duration');
+
+    /**
      * retrieve the common file containing conversion functions
      */
-    util.commonConversion  = require('../../../common/conversion');
+    util.commonConversion = require('../../../common/conversion');
 
     /**
      * retrieve the common file containing option functions
      */
-    util.commonOptions  = require('../../../common/options');
+    util.commonOptions = util.commonDuration.commonOptions = require('../../../common/options');
 
     /**
      * retrieve the common file containing overlay functions
      */
-    util.commonOverlays = require('../../../common/overlays');
-
-    /**
-     * retrieve the common file containing variables functions
-     */
-    util.commonVariables = require('../../../common/variables');
-
-    /**
-     * retrieve the common file containing duration functions
-     */
-    util.commonDuration = require('../../../common/duration');
+    util.commonOverlays = util.commonDuration.commonOverlays = require('../../../common/overlays');
 
     var Configuration = ['ViewsProvider', function (ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
@@ -38,24 +33,16 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
             overlay: [
                 '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
                 function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
-                    var viewer = control.getViewer();
-                    var overlays = viewer.get('overlays');
-                    util.commonOverlays.canvas = viewer.get('canvas');
-
-                    var elementRegistry = viewer.get('elementRegistry');
 
                     util.procDefId = $scope.$parent.processDefinition.id;
 
-                    util.duration(util, $scope, $http, $window.localStorage, Uri, $q, elementRegistry, processDiagram, overlays);
+                    var setDuration = function() {
+                        util.duration(util, $scope, $http, $window.localStorage, Uri, $q, control, processDiagram);
+                    };
+                    setDuration();
 
                     // subscribe to any broadcast KPI options change
-                    var listener = $rootScope.$on("cockpit.plugin.centaur:options:KPI-change", function () {
-                        util.duration(util, $scope, $http, $window.localStorage, Uri, $q, elementRegistry, processDiagram, overlays);
-                    });
-
-                    $scope.$on("$destroy", function() {
-                        listener();
-                    });
+                    util.commonOptions($rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
                 }
             ]
         });
