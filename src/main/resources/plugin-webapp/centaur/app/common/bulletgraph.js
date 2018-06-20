@@ -69,6 +69,9 @@ define({
         var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time?procDefId=" + util.procDefId), {
             catch: false
         });
+        var promise3 = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?" + "procDefId=" + util.procDefId), {
+            catch: false
+        });
 
         /**
          * Waits until data is received from http.get request and
@@ -79,7 +82,7 @@ define({
          *
          * @param   Object  data   minimum duration of process
          */
-        $q.all([promise1, promise2]).then(function (data) {
+        $q.all([promise1, promise2, promise3]).then(function (data) {
             callback(data);
         });
     },
