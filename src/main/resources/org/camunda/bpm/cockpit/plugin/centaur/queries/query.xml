@@ -3,97 +3,115 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cockpit.query">
-  <resultMap id="processActivityStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessActivityDto">
-    <result property="id" column="ACT_ID_" jdbcType="VARCHAR" />
-    <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="BIGINT" />
-    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT" />
-    <result property="minDuration" column="MIN(DURATION_)" jdbcType="BIGINT" />
-    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT" />
-  </resultMap>
+    <resultMap id="processActivityStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessActivityDto">
+        <result property="id" column="ACT_ID_" jdbcType="VARCHAR"/>
+        <result property="absFrequency" column="COUNT(ACT_NAME_)" jdbcType="BIGINT"/>
+        <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT"/>
+        <result property="minDuration" column="MIN(DURATION_)" jdbcType="BIGINT"/>
+        <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT"/>
+    </resultMap>
 
-  <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceStartTimeDto">
-    <result property="instanceId" column="ID_" jdbcType="VARCHAR" />
-    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
-    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
-  </resultMap>
+    <resultMap id="instanceStartTime" type="org.camunda.bpm.cockpit.plugin.centaur.db.InstanceStartTimeDto">
+        <result property="instanceId" column="ID_" jdbcType="VARCHAR"/>
+        <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR"/>
+        <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP"/>
+    </resultMap>
 
-  <resultMap id="orderStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.OrderStatisticsDto">
-    <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT" />
-    <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT" />
-  </resultMap>
+    <resultMap id="orderStatistics" type="org.camunda.bpm.cockpit.plugin.centaur.db.OrderStatisticsDto">
+        <result property="maxDuration" column="MAX(DURATION_)" jdbcType="BIGINT"/>
+        <result property="avgDuration" column="AVG(DURATION_)" jdbcType="BIGINT"/>
+    </resultMap>
 
-  <resultMap id="SequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.SequenceCounterDto">
-    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
-    <result property="name" column="NAME_" jdbcType="VARCHAR" />
-    <result property="counter" column="LONG_" jdbcType="BIGINT" />
-  </resultMap>
 
-  <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessVariablesDto">
-    <result property="name" column="NAME_" jdbcType="VARCHAR" />
-  </resultMap>
+    <resultMap id="SequenceCounterMap" type="org.camunda.bpm.cockpit.plugin.centaur.db.SequenceCounterDto">
+        <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR"/>
+        <result property="name" column="NAME_" jdbcType="VARCHAR"/>
+        <result property="counter" column="LONG_" jdbcType="BIGINT"/>
+    </resultMap>
 
-  <resultMap id="activeInstances" type="org.camunda.bpm.cockpit.plugin.centaur.db.ActiveInstancesDto">
-    <result property="instanceId" column="ACT_INST_ID_" jdbcType="VARCHAR" />
-  </resultMap>
+    <resultMap id="processVariables" type="org.camunda.bpm.cockpit.plugin.centaur.db.ProcessVariablesDto">
+        <result property="name" column="NAME_" jdbcType="VARCHAR"/>
+    </resultMap>
 
-  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
-  <select id="selectSequenceCounter" resultMap="SequenceCounterMap">
-    SELECT DISTINCT a.ACT_ID_, b.NAME_, b.LONG_
-    FROM ACT_RU_VARIABLE b
-      JOIN ACT_RU_EXECUTION a
-    WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
-  </select>
+    <resultMap id="activeInstances" type="org.camunda.bpm.cockpit.plugin.centaur.db.ActiveInstancesDto">
+        <result property="instanceId" column="ACT_INST_ID_" jdbcType="VARCHAR"/>
+    </resultMap>
 
-  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
-  <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
-    SELECT ACT_ID_, COUNT(ACT_NAME_), AVG(DURATION_), MIN(DURATION_), MAX(DURATION_)
-    FROM ACT_HI_ACTINST
-    WHERE ACT_TYPE_ NOT LIKE '%Gateway%'
-      AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
-    GROUP BY ACT_NAME_
-  </select>
+    <!-- Selects the number of counters for all process definitions. -->
+    <select id="selectSequenceCounter" resultMap="SequenceCounterMap">
+        SELECT DISTINCT
+            a.ACT_ID_,
+            b.NAME_,
+            b.LONG_
+        FROM ACT_RU_VARIABLE b
+            JOIN ACT_RU_EXECUTION a
+        WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
+    </select>
 
-  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
-  <select id="selectProcessVariables" resultMap="processVariables" parameterType="Map">
-    SELECT DISTINCT a.NAME_
-    FROM ACT_RU_VARIABLE a
-      JOIN ACT_RU_EXECUTION b
-        ON a.EXECUTION_ID_ = b.ID_
-    WHERE (#{parameter.procDefId} IS NULL OR b.PROC_DEF_ID_ = #{parameter.procDefId})
-      AND (#{parameter.procInstId} IS NULL OR  b.PROC_INST_ID_ = #{parameter.procInstId})
-  </select>
+    <!-- Selects statistics about the given process definitions. -->
+    <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
+        SELECT
+            ACT_ID_,
+            COUNT(ACT_NAME_),
+            AVG(DURATION_),
+            MIN(DURATION_),
+            MAX(DURATION_)
+        FROM ACT_HI_ACTINST
+        WHERE ACT_TYPE_ NOT LIKE '%Gateway%'
+              AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
+        GROUP BY ACT_NAME_
+    </select>
 
-  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
-  <select id="selectInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
-    SELECT a.ID_, b.ACT_ID_, b.START_TIME_
-    FROM ACT_RU_EXECUTION a
-      JOIN ACT_HI_ACTINST b
-        ON a.ID_ = b.EXECUTION_ID_
-    WHERE b.END_TIME_ IS NULL
-      AND a.IS_ACTIVE_ = TRUE
-      AND (#{parameter} IS NULL OR a.PROC_DEF_ID_ = #{parameter})
-  </select>
+    <!-- Selects variables about the given process definitions and process instances. -->
+    <select id="selectProcessVariables" resultMap="processVariables" parameterType="Map">
+        SELECT DISTINCT a.NAME_
+        FROM ACT_RU_VARIABLE a
+            JOIN ACT_RU_EXECUTION b
+                ON a.EXECUTION_ID_ = b.ID_
+        WHERE (#{parameter.procDefId} IS NULL OR b.PROC_DEF_ID_ = #{parameter.procDefId})
+              AND (#{parameter.procInstId} IS NULL OR b.PROC_INST_ID_ = #{parameter.procInstId})
+    </select>
 
-  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
-  <select id="selectOrderStatistics" resultMap="orderStatistics" parameterType="String">
-    SELECT MAX(DURATION_), AVG(DURATION_)
-    FROM ACT_HI_PROCINST
-    WHERE (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
-  </select>
+    <!-- Selects all active executions and their start time for the given process definition id -->
+    <select id="selectInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
+        SELECT
+            a.ID_,
+            b.ACT_ID_,
+            b.START_TIME_
+        FROM ACT_RU_EXECUTION a
+            JOIN ACT_HI_ACTINST b
+                ON a.ID_ = b.EXECUTION_ID_
+        WHERE b.END_TIME_ IS NULL
+              AND a.IS_ACTIVE_ = TRUE
+              AND (#{parameter} IS NULL OR a.PROC_DEF_ID_ = #{parameter})
+    </select>
 
-  <select id="selectProcessInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
-    SELECT ID_, START_ACT_ID_, START_TIME_
-    FROM ACT_HI_PROCINST
-    WHERE STATE_ = 'ACTIVE'
-      AND(#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
-  </select>
+    <!-- Selects the max and average duration of the given process definition id -->
+    <select id="selectOrderStatistics" resultMap="orderStatistics" parameterType="String">
+        SELECT
+            MAX(DURATION_),
+            AVG(DURATION_)
+        FROM ACT_HI_ACTINST
+        WHERE (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
+    </select>
 
-  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
-  <select id="selectActiveInstances" resultMap="activeInstances" parameterType="Map">
-    SELECT ACT_INST_ID_
-    FROM ACT_RU_EXECUTION
-    WHERE IS_ACTIVE_ = TRUE
-      AND (#{parameter.procDefId} IS NULL OR PROC_DEF_ID_ = #{parameter.procDefId})
-      AND (#{parameter.procInstId} IS NULL OR PROC_INST_ID_ = #{parameter.procInstId})
-  </select>
+    <!-- Selects all active instances and all information for process definition id and process instance id -->
+    <select id="selectActiveInstances" resultMap="activeInstances" parameterType="Map">
+        SELECT ACT_INST_ID_
+        FROM ACT_RU_EXECUTION
+        WHERE IS_ACTIVE_ = TRUE
+              AND (#{parameter.procDefId} IS NULL OR PROC_DEF_ID_ = #{parameter.procDefId})
+              AND (#{parameter.procInstId} IS NULL OR PROC_INST_ID_ = #{parameter.procInstId})
+    </select>
+
+    <!-- Selects the process instance start time -->
+    <select id="selectProcessInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
+        SELECT
+            ID_,
+            START_ACT_ID_,
+            START_TIME_
+        FROM ACT_HI_PROCINST
+        WHERE STATE_ = 'ACTIVE'
+              AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
+    </select>
 </mapper>

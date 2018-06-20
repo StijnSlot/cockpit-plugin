@@ -10,23 +10,30 @@ import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Resource returning all active instances and active process definitions.
+ *
+ * @version 1.0
+ */
 public class RefreshResource extends AbstractCockpitPluginResource {
 
     /**
-     * Stores the process definition id passed in the url
+     * Stores the process definition id passed in the url.
      */
     private String procDefId;
 
     /**
-     * Stores the process instance id passed in the url
+     * Stores the process instance id passed in the url.
      */
     private String procInstId;
 
     /**
-     * Constructor for the resource
-     * @param engineName is passed from the creation
-     * @param procDefId is the process definition
-     *                  we want the active instances of
+     * Constructor for the resource.
+     *
+     * @param engineName The engine currently being used.
+     * @param procDefId  The process definition
+     *                   we want the active instances of.
+     * @param procInstId The process instance that we want information about.
      */
     RefreshResource(String engineName, String procDefId, String procInstId) {
         super(engineName);
@@ -36,7 +43,9 @@ public class RefreshResource extends AbstractCockpitPluginResource {
 
     /**
      * JXRS GET path on /refresh with parameter procDefId that returns
-     * active instance ids
+     * active instance ids and parameter procInstID that returns information
+     * about the
+     *
      * @return a list of all active instance ids of @param{procDefId}
      */
     @GET
