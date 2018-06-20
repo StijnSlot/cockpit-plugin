@@ -1,8 +1,10 @@
 define(['require', 'angular',  './util', '../../common/deletion'], function(require, angular) {
 
+    /**
+     * util files with common functions
+     */
     var util = require('./util');
-
-    var deletion = require('../../common/deletion');
+    util.deletion = require('../../common/deletion');
 
     var controller = ["$scope", "$http", "$q", "Uri", function($scope, $http, $q, Uri) {
 
@@ -11,20 +13,8 @@ define(['require', 'angular',  './util', '../../common/deletion'], function(requ
             if ($(".process-definitions-list").length) {
                 // stop the interval
                 clearInterval(checkExist);
-                
-                util.putCheckboxes();
-                var deleteButton = util.putDeleteButton();
 
-                $(deleteButton).click(function() {
-                    var rows = deletion.getSelectedRows(".process-definitions-list > tbody > tr");
-
-                    if(!rows.length) {
-                        alert("No process is selected.");
-                    } else if(confirm("Are you sure you want to delete the selected processes?")) {
-                        var ids = util.getSelectedIds(rows);
-                        util.deleteProcessDefinition($http, $q, Uri, ids);
-                    }
-                });
+                util.initDeletion(util, $http, $q, Uri);
             }
         }, 100);
     }];

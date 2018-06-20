@@ -1,5 +1,34 @@
 define({
     /**
+     * common deletion file
+     */
+    commonDeletion: {},
+
+    /**
+     * initiliazes deletion and sets click function
+     *
+     * @param util
+     * @param $http
+     * @param $q
+     * @param Uri
+     */
+    initDeletion: function(util, $http, $q, Uri) {
+        util.putCheckboxes();
+        var deleteButton = util.putDeleteButton();
+
+        $(deleteButton).click(function() {
+            var rows = util.deletion.getSelectedRows(".process-definitions-list > tbody > tr");
+
+            if(!rows.length) {
+                alert("No process is selected.");
+            } else if(confirm("Are you sure you want to delete the selected processes?")) {
+                var ids = util.getSelectedIds(rows);
+                util.deleteProcessDefinition($http, $q, Uri, ids);
+            }
+        });
+    },
+
+    /**
      * Puts checkboxes in the process definition list
      * Uses HARDCODED jquery
      */
