@@ -26,7 +26,7 @@ describe('Common variables tests', function() {
             util.handleVariableData = function(data, localStorage, html) { html.appendChild(document.createElement('UL'))};
             stub1.createVariableDiv.returns(document.createElement('DIV'));
             util.procDefId = "asdf1234";
-            util.commonOptions = {getOption: sinon.stub().returns("true"), getOption: sinon.spy()};
+            util.commonOptions = {getOption: sinon.stub().returns("true")};
             util.commonOverlays = {clearOverlays: spy1, getOffset: sinon.spy()};
 
             stub2 = sandbox.stub().returns({success: function(x) {

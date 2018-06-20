@@ -18,10 +18,8 @@ define(['require', 'angular', '../../common/bulletlibraries', '../../common/conv
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
-
             util.procDefId  = $scope.$parent.processDefinition.id;
             util.procInstanceId = null;
 

@@ -68,11 +68,11 @@
     border-style: groove;
     border-radius: 1px;
     padding: 5px;
-    font-size: 13px !important;
+    font-size: 13px;
 }
 
 .bulletgraph-overview .tick text {
-    font-size: 6px !important;
+    font-size: 6px;
 }
 
 .bullet { font: 10px sans-serif; }
@@ -169,7 +169,7 @@ input[switch] {
 }
 
 label {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     margin-right: 5px;
 }
 
@@ -253,7 +253,7 @@ input[switch="bool"] + label {
 }
 
 input[switch="bool"] + label:before {
-    color: #fff !important;
+    color: #fff;
 }
 
 input[switch="bool"]:checked + label {
@@ -261,7 +261,7 @@ input[switch="bool"]:checked + label {
 }
 
 input[switch="bool"]:checked + label:before {
-    color: #fff !important;
+    color: #fff;
 }
 
 input[switch="default"]:checked + label {
@@ -269,7 +269,7 @@ input[switch="default"]:checked + label {
 }
 
 input[switch="default"]:checked + label:before {
-    color: #fff !important;
+    color: #fff;
 }
 
 input[switch="success"]:checked + label {
@@ -277,7 +277,7 @@ input[switch="success"]:checked + label {
 }
 
 input[switch="success"]:checked + label:before {
-    color: #fff !important;
+    color: #fff;
 }
 
 input[switch="warning"]:checked + label {
@@ -285,7 +285,7 @@ input[switch="warning"]:checked + label {
 }
 
 input[switch="warning"]:checked + label:before {
-    color: #fff !important;
+    color: #fff;
 }
 
 .pollingRate {

@@ -11,17 +11,15 @@ define(['require', 'angular', '../../common/bulletlibraries', '../../common/conv
      * retrieve the common util files
      */
     var util = require('../../common/bulletgraph');
-    util.commonConversion  = require('../../common/conversion');
     util.commonOptions  = require('../../common/options');
+    util.commonConversion  = require('../../common/conversion');
     util.commonOverlays = require('../../common/overlays');
 
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
-
             util.procDefId  = $scope.$parent.processDefinition.id;
             util.procInstanceId = $scope.$parent.processInstance.id;
 

@@ -118,27 +118,6 @@ define({
     },
 
     /**
-     * Changes variable options in localStorage and broadcasts this change.
-     *
-     * @param {Object}  localStorage  contains user options
-     * @param {Object}  $rootScope    used for broadcasting change
-     * @param {String}  broadcast     broadcast message to be send
-     * @param {String}  procDefId     process definition id
-     * @param {String}  id            id of option
-     * @param {String}  value         new item value
-     * @param {String}  broadcast     broadcast message to be 
-     */
-    changeOption:  function (localStorage, $rootScope, procDefId, id, value, broadcast) {
-        var processOptions = localStorage.getItem(procDefId);
-        processOptions = (processOptions == null ? {} : JSON.parse(processOptions));
-
-        processOptions[id] = String(value);
-        localStorage.setItem(procDefId, JSON.stringify(processOptions));
-
-        $rootScope.$broadcast("cockpit.plugin.centaur:options:" + broadcast);
-    },
-
-    /**
      * Changes KPI options in localStorage and broadcasts this change.
      *
      * @param {Object}  localStorage  contains user options

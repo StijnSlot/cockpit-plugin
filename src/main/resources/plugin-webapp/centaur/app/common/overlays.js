@@ -94,7 +94,7 @@ define({
             start: function(event) {
                 // add highlight to activity
                 if (highlight) {
-                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                    $("g[data-element-id='" + elementID + "']")[0].classList.add("highlight");
                 }
 
                 // remember click position for dragging speed
@@ -119,7 +119,7 @@ define({
             stop: function() {
                 // remove highlight from the activity
                 if (highlight) {
-                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+                    $("g[data-element-id='" + elementID + "']")[0].classList.remove("highlight");
                 }
 
                 callback(html.style.top, html.style.left);

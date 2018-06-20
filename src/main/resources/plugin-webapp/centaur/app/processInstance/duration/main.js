@@ -1,22 +1,11 @@
 define(['require', 'angular', '../../common/conversion', '../../common/options',
         '../../common/overlays', '../../common/duration'], function (require, angular) {
     /**
-     * retrieve the common file containing duration functions
+     * retrieve the common files containing help functions
      */
     var util = require('../../common/duration');
-    /**
-     * retrieve the common file containing conversion functions
-     */
     util.commonConversion  = require('../../common/conversion');
-
-    /**
-     * retrieve the common file containing option functions
-     */
     util.commonOptions  = require('../../common/options');
-
-    /**
-     * retrieve the common file containing overlay functions
-     */
     util.commonOverlays = require('../../common/overlays');
 
     var overlay = [

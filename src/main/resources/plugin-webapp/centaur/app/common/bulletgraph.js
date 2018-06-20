@@ -47,11 +47,7 @@ define({
             });
             return;
         }
-
-        /*
-         * Angular http.get promises that wait for a JSON object of
-         * the process activity and the instance start time.
-         */
+        
         var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
             catch: false
         });
@@ -60,12 +56,12 @@ define({
         });
 
         $q.all([promise1, promise2]).then(function (data) {
-            var processActivityStatistics = data[0].data;
+            var activityStatistics = data[0].data;
             var instanceStartTime = data[1].data;
 
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
-                var activity = processActivityStatistics.find(function(activity) {
+                var activity = activityStatistics.find(function(activity) {
                     return activity.id === element.id;
                 });
                 if(activity == null) return;

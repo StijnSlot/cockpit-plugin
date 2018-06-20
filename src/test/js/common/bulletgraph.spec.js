@@ -13,7 +13,7 @@ describe('Common bulletgraph tests', function () {
     });
 
     describe('check checkConditions', function () {
-        var minDuration, curDuration, avgDuration, maxDuration;
+        var curDuration, avgDuration, maxDuration;
     
         describe('check if bgraph conditions are correct', function () {
             beforeEach(function () {
