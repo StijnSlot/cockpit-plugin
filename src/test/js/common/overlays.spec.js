@@ -37,16 +37,14 @@ describe('Common overlay tests', function() {
     });
 
     describe('getOffset tests', function() {
-        var parent, html, procDefId = "test";
+        var html, procDefId = "test";
         var stub;
 
         beforeEach(function() {
             stub = sinon.stub();
             stub.withArgs(procDefId).returns('{"a": {"b": {"top": "5px"}}}');
             stub.onSecondCall(procDefId).returns(null);
-            parent = document.createElement('DIV');
             html = document.createElement('DIV');
-            parent.appendChild(html);
             var localStorage = {getItem: stub};
 
             util.getOffset(html, localStorage, procDefId, "a", "b");
@@ -57,10 +55,10 @@ describe('Common overlay tests', function() {
             expect(stub.calledWith(procDefId)).to.eql(true);
         });
         it('should set offset top of html  to 5', function() {
-            expect(parent.style.top).to.eql('5px');
+            expect(html.style.top).to.eql('5px');
         });
         it('should not set offset left', function() {
-            expect(parent.style.left).to.eql('');
+            expect(html.style.left).to.eql('');
         });
     });
 
@@ -93,21 +91,19 @@ describe('Common overlay tests', function() {
     });
 
     describe('addDraggableFunctionality tests', function() {
-        var parent, html;
+        var html;
         var spy1, spy2;
 
         beforeEach(function() {
             spy1 = sinon.spy();
             spy2 = sinon.spy();
-            parent = document.createElement('DIV');
             html = document.createElement('DIV');
-            parent.appendChild(html);
             jQuery.fn.extend({draggable: spy1});
             util.addDraggableFunctionality(1, html, {}, true, spy2);
         });
 
         it('should set parent to djs-draggable', function() {
-            expect(parent.classList.contains("djs-draggable"));
+            expect(html.classList.contains("djs-draggable"));
         });
         it('should make parent draggable', function() {
             expect(spy1.called).to.eql(true);

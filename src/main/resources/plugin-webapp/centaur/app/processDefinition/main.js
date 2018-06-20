@@ -1,8 +1,3 @@
-/*
- * Loads all the modules for the processDefinition
- */
-'use strict';
-
 define(function(require) {
   var angular = require('angular');
   var refresh = require('./refresh/main');

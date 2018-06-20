@@ -153,15 +153,15 @@ define({
 
             var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
 
-            util.commonOverlays.getOffset(html, $window.localStorage, util.procDefId, elementID, "overview_bulletgraph");
+            util.commonOverlays.getOffset(html.parentNode, $window.localStorage, util.procDefId, elementID, "overview_bulletgraph");
 
             var setOffset = function(top, left) {
                 util.commonOverlays.setOffset($window.localStorage, util.procDefId, elementID, "overview_bulletgraph", top, left);
             };
-            util.commonOverlays.addDraggableFunctionality(elementID, html, util.commonOverlays.canvas, false, setOffset);
+            util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, false, setOffset);
 
             util.overlayActivityIds[elementID].push(newOverlayId);
-            util.commonBulletgraph.setGraphSettings(elementID, maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
+            util.commonBulletgraph.setGraphSettings(maxDuration, util.commonBulletgraph.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
         }
     }
 });

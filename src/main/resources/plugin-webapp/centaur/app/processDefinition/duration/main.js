@@ -1,23 +1,8 @@
-/**
- * Displays the current, average and maximum duration of a process onto the
- * process diagram of Camunda.
- *
- * TODO: Description.
- *
- * @author Lukas Ant, Tim Hübener.
- * @since  22.05.2018 in Testing
- */
-
-'use strict';
-
-
-define(['require', 'angular', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/duration'], function (require, angular) {
-
+define(['require', 'angular', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/duration'], function (require, angular) {
     /**
-     * retrieve the util file containing functions
+     * retrieve the common file containing duration functions
      */
-    var util = require('./util');
-
+    var util = require('../../common/duration');
     /**
      * retrieve the common file containing conversion functions
      */
@@ -33,39 +18,29 @@ define(['require', 'angular', './util', '../../common/conversion', '../../common
      */
     util.commonOverlays = require('../../common/overlays');
 
-    /**
-     * retrieve the common file containing variables functions
-     */
-    util.commonVariables = require('../../common/variables');
+    var overlay = [
+        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+        function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
 
-    /**
-     * retrieve the common file containing duration functions
-     */
-    util.commonDuration = require('../../common/duration');
+            util.procDefId = $scope.$parent.processDefinition.id;
+            util.procInstId = null;
+
+            function setDuration() {
+                util.duration(util, $scope, $http, $window.localStorage, Uri, $q, control, processDiagram);
+            }
+            setDuration();
+
+            // subscribe to any broadcast KPI options change
+            util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
+        }
+    ];
 
     var Configuration = ['ViewsProvider', function (ViewsProvider) {
         ViewsProvider.registerDefaultView('cockpit.processDefinition.diagram.plugin', {
             id: 'runtime',
             priority: 20,
             label: 'Runtime',
-            overlay: [
-                '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
-                function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
-                    var viewer = control.getViewer();
-                    util.commonOverlays.canvas = viewer.get('canvas');
-                    var overlays = viewer.get('overlays');
-                    var elementRegistry = viewer.get('elementRegistry');
-
-                    util.procDefId = $scope.$parent.processDefinition.id;
-
-                    util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-
-                    // subscribe to any broadcast KPI options change
-                    util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], function () {
-                        util.duration(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
-                    });
-                }
-            ]
+            overlay: overlay
         });
     }];
 

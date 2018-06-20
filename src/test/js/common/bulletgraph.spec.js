@@ -17,7 +17,6 @@ describe('Common bulletgraph tests', function () {
     
         describe('check if bgraph conditions are correct', function () {
             beforeEach(function () {
-                minDuration = 7000;
                 curDuration = 6000;
                 avgDuration = 4200;
                 maxDuration = 10000;
@@ -26,17 +25,10 @@ describe('Common bulletgraph tests', function () {
             it('check if returns true when arguments are correct values', function () {
                 expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(true);
             });
-    
-            it('check if returns false when arguments are incorrect',function () {
-                minDuration = null;
-                expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(false);
-            });
-    
             it('check if returns false when arguments are incorrect',function () {
                 curDuration = null;
                 expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(false);
             });
-    
             it('check if returns false when arguments are incorrect',function () {
                 avgDuration = null;
                 expect(util.checkConditions(minDuration, curDuration, avgDuration, maxDuration)).to.eql(false);
@@ -49,14 +41,8 @@ describe('Common bulletgraph tests', function () {
                 avgDuration = 0;
                 expect(util.checkConditions(minDuration, avgDuration, maxDuration, curDuration)).to.eql(false);
             });
-    
         });
-    
-    
     });
-    
-    
-    
     
     describe('check determineColor', function () {
         var avgDuration, maxDuration, curDuration;
@@ -71,7 +57,6 @@ describe('Common bulletgraph tests', function () {
     
                 curDuration = 60;
                 expect(util.determineColor(avgDuration, maxDuration, curDuration)).to.not.eql('green');
-    
             });
             it('check if orange is returned correctly', function(){
                 avgDuration = 10;
@@ -107,7 +92,6 @@ describe('Common bulletgraph tests', function () {
                 returnValue = util.checkIfCurBiggerMax(curDuration, maxDuration);
                 expect(returnValue).to.eql(1000);
             });
-    
             it('check if returns correct values', function () {
                 curDuration = 1200;
                 maxDuration = 1000;

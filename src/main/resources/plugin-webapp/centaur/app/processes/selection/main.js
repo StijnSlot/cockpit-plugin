@@ -1,5 +1,3 @@
-'use strict';
-
 define(['require', 'angular',  './util', '../../common/deletion'], function(require, angular) {
 
     var util = require('./util');

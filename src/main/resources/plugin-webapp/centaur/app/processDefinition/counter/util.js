@@ -92,12 +92,12 @@ define({
     addOverlay: function(localStorage, util, overlays, counters, elementID) {
         var html = util.createHTML(counters);
         util.overlayIds.push(util.commonOverlays.addTextElement(overlays, elementID, html, -20, 50));
-        util.commonOverlays.getOffset(html, localStorage, util.procDefId, elementID, "counter");
+        util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, "counter");
 
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "counter", top, left);
         };
-        util.commonOverlays.addDraggableFunctionality(elementID, html, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
     },
 
 

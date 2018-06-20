@@ -1,5 +1,4 @@
 define(['require', 'angular', './util', '../../common/conversion'], function(require, angular) {
-
     /**
      * util files
      */

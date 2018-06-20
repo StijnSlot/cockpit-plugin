@@ -1,5 +1,3 @@
-'use strict';
-
 define(['require', 'angular'], function(require, angular) {
     var controller = ["$scope", "Views", function($scope, Views) {
         $scope.viewProvider = Views.getProviders({

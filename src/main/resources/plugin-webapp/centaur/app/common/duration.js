@@ -1,4 +1,117 @@
 define({
+    commonConversion: {},
+    commonOverlays: {},
+    commonOptions: {},
+
+    procDefId: "",
+
+    procInstId: null,
+
+    overlayActivityIds: {},
+
+    /**
+     * Main function of the duration module. In here the data will be loaded
+     * from the database by using promises. Also functions will be called
+     * to add information to the BPMN model.
+     *
+     * @param   util              object of this class, to call its functions and variables
+     * @param   $scope            object with corresponding properties and methods
+     * @param   $http             http client for GET request
+     * @param   localStorage      contains user options
+     * @param   Uri               uniform resource identifier to create GET request
+     * @param   $q                a promise
+     * @param   control           registry containing bpmn elements
+     * @param   processDiagram    diagram containing elements
+     */
+    duration: function (util, $scope, $http, localStorage, Uri, $q, control, processDiagram) {
+        var viewer = control.getViewer();
+        util.commonOverlays.canvas = viewer.get('canvas');
+        var overlays = viewer.get('overlays');
+        var elementRegistry = viewer.get('elementRegistry');
+
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
+            catch: false
+        });
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time?procDefId=" + util.procDefId), {
+            catch: false
+        });
+
+        $q.all([promise1, promise2]).then(function (data) {
+            var processActivityStatistics = data[0].data;
+            var instanceStartTime = data[1].data;
+
+            elementRegistry.forEach(function (shape) {
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+                var activity = processActivityStatistics.find(function(activity) {
+                    return (activity.id === element.id);
+                });
+                if(activity == null) return;
+
+                var getAvgDuration = activity.avgDuration;
+                var getMaxDuration = activity.maxDuration;
+
+                var instances = instanceStartTime.filter(function(instance) {
+                    return (instance.activityId === element.id && (util.procInstId == null || instance.instanceId === util.procInstId));
+                });
+                var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
+
+                util.addOverlay(util, overlays, getAvgDuration, getMaxDuration, getCurDuration, element.id, localStorage);
+            });
+        });
+    },
+
+    /**
+     * Combines all information of given process into single
+     * String variable which is added to its diagram element.
+     *
+     * This function receives all duration information about a given process.
+     * If any of duration variables are NULL it does not create
+     * a hmtlText variable since there is nothing to display.
+     * Otherwise it checks which time intervall to use for each
+     * duration variable and combines them into one String variable, htmlText.
+     * The htmlText variable is passed to the addTextToId() function
+     * so that the duration varables are displayed next to the
+     * process diagram element.
+     *
+     * @param   {Object}  util          object of this class, to call its functions and variables
+     * @param   {Object}  overlays      collection of overlays to add to
+     * @param   {Number}  avgDuration   average duration of process
+     * @param   {Number}  maxDuration   maximum duration of process
+     * @param   {Number}  curDuration   current duration of process
+     * @param   {Number}  elementID     ID of element
+     * @param   {Object}  localStorage       browser window containing localStorage
+     */
+    addOverlay: function (util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage) {
+        if (!util.checkConditions(avgDuration, maxDuration)) return;
+
+        var cssClass = "durationText";
+
+        // initialize the overlayActivityId array
+        if(util.overlayActivityIds[elementID] === undefined)
+            util.overlayActivityIds[elementID] = [];
+
+        // clear any current overlays displayed
+        util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
+
+        var avgDurationUnit = util.commonConversion.checkTimeUnit(avgDuration, false);
+        var maxDurationUnit = util.commonConversion.checkTimeUnit(maxDuration, false);
+        var avgDurationString = util.commonConversion.convertTimes(avgDuration, avgDurationUnit).toString() + ' ' + avgDurationUnit;
+        var maxDurationString = util.commonConversion.convertTimes(maxDuration, maxDurationUnit).toString() + ' ' + maxDurationUnit;
+        var curDurationString = util.checkIfCurValid(util, curDuration);
+
+        var html = util.createHTML(util, localStorage, curDurationString, avgDurationString, maxDurationString, cssClass, "act");
+
+        var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
+
+        util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, "duration");
+        var setOffset = function(top, left) {
+            util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "duration", top, left);
+        };
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+
+        util.overlayActivityIds[elementID].push(newOverlayId);
+    },
+
     /**
      * This function will check if the conditions to show the durations are
      * satisfied.
@@ -36,7 +149,7 @@ define({
      * selected in the options tab.
      * 
      * @param   {Object}  util              Object of this class, to call its functions and variables.
-     * @param   {Object}  $window           Browser window containing localStorage.
+     * @param   {Object}  localStorage      contain user options
      * @param   {String}  curDurationString String to containing the current duration.
      * @param   {String}  avgDurationString String to containing the average duration.
      * @param   {String}  maxDurationString String to containing the maximum duration.
@@ -44,24 +157,31 @@ define({
      * @param   {String}  category          String which determine which KPI is meant (for example activity and order)
      * @return  {String}                    String which represents an HTML line which will later on be added to the document.
      */
-    createHTML: function (util, $window, curDurationString, avgDurationString, maxDurationString, cssClass, category) {
-        var data = {};
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", category + "_cur_duration") !== "false") {
-            data['cur'] = {value: curDurationString};
-        }
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", category + "_avg_duration") !== "false") {
-            data['avg'] = {value: avgDurationString};
-        }
-        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", category + "_max_duration") !== "false") {
-            data['max'] = {value: maxDurationString};
-        }
-
-        var html = document.createElement('div');
+    createHTML: function (util, localStorage, curDurationString, avgDurationString, maxDurationString, cssClass, category) {
+        var html = document.createElement('DIV');
       
         html.classList.add("custom-overlay", cssClass);
 
-        html.appendChild(util.commonVariables.createVariableUl(data));
+        var ul = document.createElement('UL');
 
+        var li;
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_cur_duration") !== "false") {
+            li = document.createElement('LI');
+            li.innerHTML = "<b>cur: </b>" + curDurationString;
+            ul.appendChild(li);
+        }
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_avg_duration") !== "false") {
+            li = document.createElement('LI');
+            li.innerHTML = "<b>avg: </b>" + avgDurationString;
+            ul.appendChild(li);
+        }
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_max_duration") !== "false") {
+            li = document.createElement('LI');
+            li.innerHTML = "<b>max: </b>" + maxDurationString;
+            ul.appendChild(li);
+        }
+
+        html.appendChild(ul);
         return html;
     }
 });

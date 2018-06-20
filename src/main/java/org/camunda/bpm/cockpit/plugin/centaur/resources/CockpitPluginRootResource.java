@@ -109,6 +109,7 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
         return subResource(new OrderStatisticsResource(engineName, procDefId), engineName);
     }
 
+
     /**
      * Returns a resource for path {engineName}/execution-sequence-counter.
      *
@@ -120,6 +121,20 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
     public SequenceCounterResource getExecutionSequenceCounter(
             @PathParam("engineName") String engineName) {
         return subResource(new SequenceCounterResource(engineName), engineName);
+    }
+
+    /**
+     * Returns a resource for path {engineName}/process-instance-start-time.
+     *
+     * @param engineName The engine currently being used by the platform.
+     * @param procDefId  The id of a process definition.
+     * @return A list of the process instance start times of the given process definition.
+     */
+    @Path("{engineName}/process-instance-start-time")
+    public ProcessInstanceStartTimeResource getProcessInstanceStartTimes(
+            @PathParam("engineName") String engineName,
+            @QueryParam("procDefId") String procDefId) {
+        return subResource(new ProcessInstanceStartTimeResource(engineName, procDefId), engineName);
     }
 
     /**
