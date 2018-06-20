@@ -29,10 +29,8 @@ define({
     },
 
     /**
-     * Get the offset from localStorage and add to HTML DOM element.
+     * Get the offset from localStorage and add offset to HTML DOM parent element.
      *
-     * @param {Object}  html              DOM element.
-     * @param {Object}  localStorage      LocalStorage containing offset.
      * @param {Object}  html              Dom element
      * @param {Object}  localStorage      LocalStorage containing offset
      * @param {String}  procDefId         process definition id
@@ -59,7 +57,7 @@ define({
      * sets the offset of an overlay in localStorage
      *
      * @param {Object}  localStorage    localStorage which options are set
-     * @param {String}  procDefId       processs definition id
+     * @param {String}  procDefId       process definition id
      * @param {String}  activityId      id of activity of overlay
      * @param {String}  overlayName     name of overlay option
      * @param {Number}  top             top offset
@@ -130,17 +128,17 @@ define({
     },
 
     /**
-     * Clears all overlays whose ID is stored in overlayIDs.
+     * Clears all overlays whose ID is stored in overlayIds.
      *
      * @param {Object}          overlays          Overlays object containing all processDefinition overlays.
-     * @param {Array<String>}   overlayIDs        ID's of overlays which should be removed.
+     * @param {Array<String>}   overlayIds        ID's of overlays which should be removed.
      */
-    clearOverlays: function (overlays, overlayIDs) {
-        if(overlays === undefined || overlayIDs === undefined) return;
+    clearOverlays: function (overlays, overlayIds) {
+        if(overlays === undefined || overlayIds === undefined) return;
 
-        overlayIDs.forEach(function (element) {
+        overlayIds.forEach(function (element) {
             overlays.remove(element);
         });
-        overlayIDs.length = 0;
+        overlayIds.length = 0;
     }
 });

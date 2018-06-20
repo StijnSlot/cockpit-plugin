@@ -124,8 +124,8 @@ define({
      * @param {Object}  $rootScope    used for broadcasting change
      * @param {String}  broadcast     broadcast message to be send
      * @param {String}  procDefId     process definition id
+     * @param {String}  id            id of option
      * @param {String}  value         new item value
-<<<<<<< HEAD
      * @param {String}  broadcast     broadcast message to be 
      */
     changeOption:  function (localStorage, $rootScope, procDefId, id, value, broadcast) {
