@@ -224,10 +224,11 @@ define({
         // hide children with index higher than numValue
         $(html).children().each(function() {
             $(this).children().each(function () {
-                if (dots)
+                if (dots) {
                     $(this).css("display", "none");
-                if (this.classList.contains('dots'))
+                } else if (this.classList.contains('dots')) {
                     dots = true;
+                }
             });
         });
 

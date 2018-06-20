@@ -47,7 +47,7 @@ define({
             });
             return;
         }
-        
+
         var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
             catch: false
         });
@@ -220,13 +220,11 @@ define({
             newHeight = 60;
         }
         var newCSSClass = '.' + cssClass;
-        var data = [
-            {
-                "ranges": [rangeBullet],
-                "measures": [currentBullet, currentBullet],
-                "markers": [markerBullet]
-            }
-        ];
+        var data = [{
+            "ranges": [rangeBullet],
+            "measures": [currentBullet, currentBullet],
+            "markers": [markerBullet]
+        }];
         d3.select(newCSSClass).node().getBoundingClientRect();
         var margin = { top: 5, right: 5, bottom: 15, left: 5 },
             width = newWidth - margin.left - margin.right,

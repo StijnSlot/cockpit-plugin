@@ -206,4 +206,48 @@ describe('Common variables tests', function() {
             expect(out.children[0].className).to.eql('dot');
         });
     });
+
+    describe('addHoverFunctionality tests', function() {
+        var html, ul, li1, li2, li3
+        var spy;
+
+        beforeEach(function() {
+            spy = sinon.spy();
+            jQuery.fn.extend({hover: spy});
+
+            html = document.createElement('DIV');
+            ul = document.createElement('UL');
+            li1 = document.createElement('LI');
+            li2 = document.createElement('LI');
+            li3 = document.createElement('LI');
+            li2.className = "dots";
+            ul.appendChild(li1);
+            ul.appendChild(li2);
+            ul.appendChild(li3);
+            html.appendChild(ul);
+
+            util.addHoverFunctionality(html);
+        });
+
+        it('should call hover', function() {
+            expect(spy.callCount).to.eql(1);
+        });
+        it('should set className variableTextFull upon hover and unhide below dots', function() {
+            spy.args[0][0]();
+            expect(html.className).to.contain("variableTextFull");
+            expect(html.className).to.not.contain("variableTextSmall");
+            expect(li3.style.display).to.not.eql("none");
+        });
+        it('should set className variableTextSmall upon hover', function() {
+            spy.args[0][1]();
+            expect(html.className).to.not.contain("variableTextFull");
+            expect(html.className).to.contain("variableTextSmall");
+            expect(li3.style.display).to.eql("none");
+        });
+        it('should only display li1 and li2', function() {
+            expect(li1.style.display).to.not.eql("none");
+            expect(li2.style.display).to.not.eql("none");
+            expect(li3.style.display).to.eql("none");
+        });
+    });
 });
