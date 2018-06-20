@@ -15,8 +15,7 @@ define(['require', 'angular', '../../common/bulletlibraries', './util', '../../c
     /**
      * retrieve the common file containing variables functions
      */
-    var commonBulletgraph = require('../../common/bulletgraph');
-    util.commonBulletgraph = commonBulletgraph;
+    var commonBulletgraph = util.commonBulletgraph = require('../../common/bulletgraph');
 
     /**
      * retrieve the common file containing conversion functions
@@ -50,8 +49,6 @@ define(['require', 'angular', '../../common/bulletlibraries', './util', '../../c
                 var processActivityStatistics = {};
                 var instanceStartTime = {};
                 commonBulletgraph.bulletgraph(commonBulletgraph, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, function(data) {
-                    console.log("DATA:");
-                    console.log(data);
                     processActivityStatistics = data[0].data;
                     instanceStartTime = data[1].data;
                     util.extractDiagram(util, processActivityStatistics, instanceStartTime, $window, elementRegistry, processDiagram, overlays);

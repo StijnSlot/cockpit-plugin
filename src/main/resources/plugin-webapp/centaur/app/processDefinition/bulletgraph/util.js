@@ -12,11 +12,8 @@ define({
      * @param   Object  shape   shape of element
      */
     extractDiagram: function(util, processActivityStatistics, instanceStartTime, $window, elementRegistry, processDiagram, overlays) {
-        console.log("extractDiagram called");
         elementRegistry.forEach(function (shape) {
             var element = processDiagram.bpmnElements[shape.businessObject.id];
-            console.log("ProcessActivityStatistics");
-            console.log(processActivityStatistics);
             for (var i = 0; i < processActivityStatistics.length; i++) {
                 if (processActivityStatistics[i].id === element.id) {
                     var getAvgDuration = processActivityStatistics[i].avgDuration;

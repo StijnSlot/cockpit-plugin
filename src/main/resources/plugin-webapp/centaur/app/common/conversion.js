@@ -145,7 +145,7 @@ define({
         });
         if(instance === undefined) return null;
 
-        var startTime = Date.parse(instance[i].startTime);
+        var startTime = Date.parse(instance.startTime);
         var computerTime = new Date().getTime();
         return computerTime - startTime;
     },
