@@ -37,7 +37,8 @@
   <resultMap id="activeInstances" type="org.camunda.bpm.cockpit.plugin.centaur.db.ActiveInstancesDto">
     <result property="instanceId" column="ACT_INST_ID_" jdbcType="VARCHAR" />
   </resultMap>
-  
+
+  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectSequenceCounter" resultMap="SequenceCounterMap">
     SELECT DISTINCT a.ACT_ID_, b.NAME_, b.LONG_
     FROM ACT_RU_VARIABLE b
@@ -45,6 +46,7 @@
     WHERE b.NAME_ = 'nrOfInstances' OR b.NAME_ = 'nrOfCompletedInstances'
   </select>
 
+  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectProcessActivityStatistics" resultMap="processActivityStatistics" parameterType="String">
     SELECT ACT_ID_, COUNT(ACT_NAME_), AVG(DURATION_), MIN(DURATION_), MAX(DURATION_)
     FROM ACT_HI_ACTINST
@@ -53,6 +55,7 @@
     GROUP BY ACT_NAME_
   </select>
 
+  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectProcessVariables" resultMap="processVariables" parameterType="Map">
     SELECT DISTINCT a.NAME_
     FROM ACT_RU_VARIABLE a
@@ -62,6 +65,7 @@
       AND (#{parameter.procInstId} IS NULL OR  b.PROC_INST_ID_ = #{parameter.procInstId})
   </select>
 
+  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectInstanceStartTime" resultMap="instanceStartTime" parameterType="String">
     SELECT a.ID_, b.ACT_ID_, b.START_TIME_
     FROM ACT_RU_EXECUTION a
@@ -72,12 +76,14 @@
       AND (#{parameter} IS NULL OR a.PROC_DEF_ID_ = #{parameter})
   </select>
 
+  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectOrderStatistics" resultMap="orderStatistics" parameterType="String">
     SELECT MAX(DURATION_), AVG(DURATION_)
     FROM ACT_HI_ACTINST
     WHERE (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
   </select>
 
+  <!-- Selects all active executions with optional parameters for process definition id and process instance id -->
   <select id="selectActiveInstances" resultMap="activeInstances" parameterType="Map">
     SELECT ACT_INST_ID_
     FROM ACT_RU_EXECUTION

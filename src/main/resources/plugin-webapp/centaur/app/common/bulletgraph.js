@@ -1,5 +1,4 @@
 define({
-
     /**
      * This function decides which color the bullet graph should have on the following
      * conditions which are specified in the URD:
@@ -15,11 +14,11 @@ define({
      */
     determineColor: function (avgDuration, maxDuration, curDuration) {
         if (curDuration <= maxDuration && curDuration <= avgDuration) {
-            return 'green';
+            return "green";
         } else if (curDuration <= maxDuration && curDuration > avgDuration) {
-            return 'orange';
+            return "orange";
         } else {
-            return 'red';
+            return "red";
         }
     },
 
@@ -38,15 +37,15 @@ define({
      * @return  {Boolean}               If conditions are satisfied or not.
      */
     checkConditions: function (minDuration, avgDuration, maxDuration, curDuration) {
-        return avgDuration != null && minDuration != null && maxDuration != null && curDuration != null && avgDuration !== 0 && curDuration != 0;
+        return avgDuration != null && curDuration != null && maxDuration != null  &&
+               avgDuration !== 0 && curDuration !== 0;
     },
 
     /**
-     * Creates an HTML line with has a class that includes the elementID. If the bulletgraph
-     * is not selected to show it will hide the bulletgraph
+     * Creates a DOM element with has a class equal to cssClass.
      *
-     * @param   {String}  elementID     Variable to be converted.
-     * @return  {Object}                A string which represents an HTML line which will be added later.
+     * @param   {String}  cssClass      Classname of the html DOM element
+     * @return  {Object}                DOM element of the overlay
      */
     createHTML: function (cssClass) {
         var graph = document.createElement('DIV');
@@ -61,15 +60,15 @@ define({
      * The functions which we included are coming also from this github repository.
      * Additionally we are also using the D3 library (https://d3js.org/).
      *
-     * This function adds the bulletgraph to the html class which is defined in a seperate function. 
-     * The same function will be selected by using the elementID. In the data variable, the data for
-     * the bulletgraph will be set. This data includes the range, the current value and the marker value.
+     * This function adds the bulletgraph to the DOM element which is defined in a separate function.
+     * In the data variable, the data for the bulletgraph will be set.
+     * This data includes the range, the current value and the marker value.
      *
-     * @param   {String}  elementID     ID of element.
      * @param   {Number}  rangeBullet   Range of bulletgraph.
      * @param   {Number}  currentBullet Current value of bulletgraph.
      * @param   {Number}  markerBullet  Marker value of bulletgraph.
      * @param   {Number}  colorBullet   Color of bulletgraph.
+     * @param   {String}  cssClass      classname of the graph
      */
     setGraphSettings: function (elementID, rangeBullet, currentBullet, markerBullet, colorBullet, cssClass) {
         var newCSSClass = '.' + cssClass;
@@ -112,6 +111,6 @@ define({
      * @return  {Number}                Either current duration or maximum duration.
      */
     checkIfCurBiggerMax: function (curDuration, maxDuration) {
-        return (curDuration >= maxDuration ? maxDuration : curDuration);
+        return Math.min(curDuration, maxDuration);
     }
 });

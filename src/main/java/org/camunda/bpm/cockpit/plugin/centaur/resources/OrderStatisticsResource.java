@@ -13,7 +13,7 @@ public class OrderStatisticsResource extends AbstractCockpitPluginResource {
 
     private String procDefId;
 
-    public OrderStatisticsResource(String engineName, String procDefId) {
+    OrderStatisticsResource(String engineName, String procDefId) {
         super(engineName);
         this.procDefId = procDefId;
     }

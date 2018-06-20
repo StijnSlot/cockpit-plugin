@@ -16,7 +16,7 @@ public class ProcessVariablesResource extends AbstractCockpitPluginResource {
 
     private String procInstId;
 
-    public ProcessVariablesResource(String engineName, String procDefId, String procInstId) {
+    ProcessVariablesResource(String engineName, String procDefId, String procInstId) {
         super(engineName);
         this.procDefId = procDefId;
         this.procInstId = procInstId;
