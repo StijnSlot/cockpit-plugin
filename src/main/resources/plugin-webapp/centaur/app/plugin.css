@@ -114,8 +114,6 @@
     font-size: 10px;
     width: 150px;
     max-height: 150px;
-    border: 1px solid black;
-    background-color: white;
 }
 
 .variableTextFull ul {
@@ -179,24 +177,14 @@
 #############################################
 */
 
-.form-control {
-    font-size: 1em;
-    line-height: 1;
-    width: 4rem;
-    height: 2rem;
-    padding: 0.1666666667rem;
-    cursor: pointer;
-    display: inline-block;
-    text-align: center;
-    position: relative;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2) inset;
-    font-family: inherit;
-}
-
 input[switch] {
     display: none;
 }
 
+label {
+    margin-bottom: 0px;
+    margin-right: 5px;
+}
 
 input[switch] + label {
     font-size: 1em;
@@ -313,7 +301,7 @@ input[switch="warning"]:checked + label:before {
     color: #fff !important;
 }
 
-#pollingRate {
-    width: 10rem;
+.pollingRate {
+    width: 8rem;
     padding: 0.3334rem;
 }

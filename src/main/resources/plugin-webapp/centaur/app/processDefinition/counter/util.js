@@ -35,14 +35,15 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
         util.commonOverlays.canvas = viewer.get('canvas');
 
-        util.commonOverlays.clearOverlays(overlays, util.overlayIds);
-
         if(util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "counter") === "false") {
-          return;
+            util.commonOverlays.clearOverlays(overlays, util.overlayIds);
+            return;
         }
 
         $http.get(Uri.appUri("plugin://centaur/:engine/execution-sequence-counter"))
             .success(function(data) {
+                util.commonOverlays.clearOverlays(overlays, util.overlayIds);
+
                 elementRegistry.forEach(function(shape) {
                     var element = processDiagram.bpmnElements[shape.businessObject.id];
                     if(element.$type !== 'bpmn:CallActivity') return;
