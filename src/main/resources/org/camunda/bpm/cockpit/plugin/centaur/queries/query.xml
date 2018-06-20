@@ -58,6 +58,7 @@
             MAX(DURATION_)
         FROM ACT_HI_ACTINST
         WHERE ACT_TYPE_ NOT LIKE '%Gateway%'
+              AND ACT_TYPE_ NOT LIKE '%Event%'
               AND (#{parameter} IS NULL OR PROC_DEF_ID_ = #{parameter})
         GROUP BY ACT_NAME_
     </select>

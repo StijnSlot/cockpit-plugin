@@ -65,7 +65,7 @@ define({
 
                 var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration, "durationText", "act");
 
-                util.addOverlay(util, overlays, html, element.id, localStorage);
+                util.addOverlay(util, overlays, html, element.id, localStorage, "duration");
             });
         });
     },
@@ -88,8 +88,9 @@ define({
      * @param   {Object}  html          DOM element
      * @param   {Number}  elementID     ID of element
      * @param   {Object}  localStorage  browser window containing localStorage
+     * @param   {String}  id            id of item in localStorage
      */
-    addOverlay: function (util, overlays, html, elementID, localStorage) {
+    addOverlay: function (util, overlays, html, elementID, localStorage, id) {
         // initialize the overlayActivityId array
         if(util.overlayActivityIds[elementID] === undefined)
             util.overlayActivityIds[elementID] = [];
@@ -99,13 +100,13 @@ define({
 
         var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, -40);
 
-        util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, "duration");
+        util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, id);
         var setOffset = function(top, left) {
-            util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "duration", top, left);
+            util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, id, top, left);
         };
         util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
 
-        util.overlayActivityIds[elementID].push(newOverlayId);
+        return util.overlayActivityIds[elementID].push(newOverlayId);
     },
 
     /**

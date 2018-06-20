@@ -6,6 +6,8 @@ define({
 
     commonOverlays: {},
 
+
+
     /**
      * contains process definition id
      */
@@ -64,9 +66,9 @@ define({
             if (!util.commonDuration.checkConditions(avgDuration, maxDuration)) return;
 
             var html = util.commonDuration.createHTML(util, localStorage, curDuration, avgDuration,
-                maxDuration, "overviewDurationText", "overview");
+                maxDuration, "overviewDurationText", "order");
 
-            util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id, localStorage);
+            util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id, localStorage, "overview-duration");
         });
     }
 });

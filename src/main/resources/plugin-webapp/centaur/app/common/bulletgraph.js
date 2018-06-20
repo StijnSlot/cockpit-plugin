@@ -40,7 +40,7 @@ define({
      * @param   localStorage           browser window containing localStorage
      * @param   Uri               uniform resource identifier to create GET request
      * @param   $q                a promise
-     * @param
+     * @param   control           contains viewer
      * @param   processDiagram    diagram containing elements
      */
     bulletgraph: function (util, $http, localStorage, Uri, $q, control, processDiagram) {
@@ -108,14 +108,15 @@ define({
      * function. Here it will create a bullet graph on he HTML line which has been
      * passed into the HTML file previously.
      *
-     * @param   Object  util          object of this class, to call its functions and variables
-     * @param   Overlay overlays      collection of overlays to add to
-     * @param   Number  avgDuration   average duration of process
-     * @param   Number  maxDuration   maximum duration of process
-     * @param   Number  curDuration   current duration of process
-     * @param   String  elementID     ID of element
-     * @param   Object  shape         Shape of the element
-     * @param   Object  localStorage  browser window containing localStorage
+     * @param   {Object}  util              object of this class, to call its functions and variables
+     * @param   {Object}  overlays          collection of overlays to add to
+     * @param   {Number}  avgDuration       average duration of process
+     * @param   {Number}  maxDuration       maximum duration of process
+     * @param   {Number}  curDuration       current duration of process
+     * @param   {String}  elementID         ID of element
+     * @param   {Object}  localStorage      browser window containing localStorage
+     * @param   {String}  cssClass          classname of object
+     * @param   {String}  cssOverlayClass   class of overlay
      */
     combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass) {
         if (!util.checkConditions(avgDuration, maxDuration, curDuration)) {
@@ -130,9 +131,9 @@ define({
         util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[elementID]);
 
         var timeChoice = util.commonConversion.checkTimeUnit(maxDuration, false);
-        var avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
-        var maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
-        var curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
+        avgDuration = util.commonConversion.convertTimes(avgDuration, timeChoice);
+        maxDuration = util.commonConversion.convertTimes(maxDuration, timeChoice);
+        curDuration = util.commonConversion.convertTimes(curDuration, timeChoice);
         var colorBullet = util.determineColor(avgDuration, maxDuration, curDuration);
 
         var html = util.createHTML(cssClass);
@@ -144,6 +145,7 @@ define({
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, cssOverlayClass, top, left);
         };
+
         util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
 
         util.overlayActivityIds[elementID].push(newOverlayId);
