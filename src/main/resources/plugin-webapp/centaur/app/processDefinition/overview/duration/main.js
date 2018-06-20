@@ -5,10 +5,10 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
      * retrieve the common util functions
      */
     var util = require('./util');
-    util.commonDuration = require('../../../common/duration');
-    util.commonConversion = util.commonDuration.commonConversion = require('../../../common/conversion');
-    util.commonOverlays = util.commonDuration.commonOverlays = require('../../../common/overlays');
-    util.commonOptions = util.commonDuration.commonOptions = require('../../../common/options');
+    var commonDuration = require('../../../common/duration');
+    var options = commonDuration.commonOptions = require('../../../common/options');
+    commonDuration.commonConversion = require('../../../common/conversion');
+    commonDuration.commonOverlays = require('../../../common/overlays');
 
     var overlay = ['$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
@@ -16,12 +16,12 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
             util.procDefId = $scope.$parent.processDefinition.id;
 
             var setDuration = function() {
-                util.duration(util, $scope, $http, $window.localStorage, Uri, $q, control, processDiagram);
+                util.duration(commonDuration, $http, $window.localStorage, Uri, $q, control, processDiagram);
             };
             setDuration();
 
             // subscribe to any broadcast KPI options change
-            util.commonOptions.register($rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
+            options.register($rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
         }
     ];
 

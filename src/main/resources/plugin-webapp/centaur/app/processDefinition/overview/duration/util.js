@@ -6,8 +6,6 @@ define({
 
     commonOverlays: {},
 
-
-
     /**
      * contains process definition id
      */
@@ -19,7 +17,6 @@ define({
      * to add information to the BPMN model.
      *
      * @param   util              object of this class, to call its functions and variables
-     * @param   $scope            object with corresponding properties and methods
      * @param   $http             http client for GET request
      * @param   localStorage      contains user options
      * @param   Uri               uniform resource identifier to create GET request
@@ -27,18 +24,14 @@ define({
      * @param   control           contains overlay, canvas, elementRegistry
      * @param   processDiagram    diagram containing elements
      */
-    duration: function (util, $scope, $http, localStorage, Uri, $q, control, processDiagram) {
+    duration: function (util, $http, localStorage, Uri, $q, control, processDiagram) {
         var viewer = control.getViewer();
         var overlays = viewer.get('overlays');
         util.commonOverlays.canvas = viewer.get('canvas');
         var elementRegistry = viewer.get('elementRegistry');
 
-        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?procDefId=" + util.procDefId), {
-            catch: false
-        });
-        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/process-instance-start-time?procDefId=" + util.procDefId), {
-            catch: false
-        });
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/order-statistics?procDefId=" + util.procDefId));
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/process-instance-start-time?procDefId=" + util.procDefId));
 
         $q.all([promise1, promise2]).then(function (data) {
             var statistics = data[0].data[0];
@@ -61,14 +54,14 @@ define({
                 + ' ' + avgDurationUnit;
             var maxDuration = util.commonConversion.convertTimes(statistics.maxDuration, maxDurationUnit).toString()
                 + ' ' + maxDurationUnit;
-            curDuration = util.commonDuration.checkIfCurValid(util, curDuration);
+            curDuration = util.checkIfCurValid(util, curDuration);
 
-            if (!util.commonDuration.checkConditions(avgDuration, maxDuration)) return;
+            if (!util.checkConditions(avgDuration, maxDuration)) return;
 
-            var html = util.commonDuration.createHTML(util, localStorage, curDuration, avgDuration,
+            var html = util.createHTML(util, localStorage, curDuration, avgDuration,
                 maxDuration, "overviewDurationText", "process");
 
-            util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id,
+            util.addOverlay(util, overlays, html, element.id,
                 localStorage, "overview-duration", true);
         });
     }
