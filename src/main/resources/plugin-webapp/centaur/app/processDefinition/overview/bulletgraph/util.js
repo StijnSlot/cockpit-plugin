@@ -55,7 +55,7 @@ define({
             var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
             util.combineBulletgraphElements(util, overlays, getAvgDuration, getMaxDuration,
-                getCurDuration, element.id, localStorage, "bullet-duration-overview", "overview_bulletgraph");
+                getCurDuration, element.id, localStorage, "bullet-duration-overview", "overview_bulletgraph", true);
 
         });
     }

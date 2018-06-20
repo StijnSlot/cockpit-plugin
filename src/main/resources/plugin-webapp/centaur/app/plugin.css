@@ -6,7 +6,7 @@
 */
 
 .custom-overlay {
-    font-size: 8px;
+    font-size: 9px;
     display: flex;
     flex-direction: column;
 }
@@ -35,29 +35,18 @@
 */
 
 .durationText {
-    font-size: 13px;
-    width: 100px;
-}
-
-.durationText ul {
-    list-style-type: none;
-    padding: 0 0 0 0;
+    font-size: 10px;
+    width: 80px;
 }
 
 .overviewDurationText {
-    width: 80px;
-    font-size: 9px;
+    width: 120px;
+    font-size: 14px;
     border-style: groove;
     border-radius: 1px;
     padding: 5px;
     text-align: center;
 }
-
-.overviewDurationText ul {
-    list-style-type: none;
-    padding: 0 0 0 0;
-}
-
 
 /* 
 ###########################################################
@@ -103,7 +92,6 @@
 */
 
 .variableTextSmall {
-    font-size: 7px;
     width: 130px;
     border: 1px solid transparent;
 }
@@ -123,10 +111,10 @@
 }
 
 .variableTextFull {
+    font-size: 10px;
     width: 150px;
     max-height: 150px;
     border: 1px solid black;
-    overflow-y: scroll;
     background-color: white;
 }
 
@@ -191,14 +179,24 @@
 #############################################
 */
 
+.form-control {
+    font-size: 1em;
+    line-height: 1;
+    width: 4rem;
+    height: 2rem;
+    padding: 0.1666666667rem;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2) inset;
+    font-family: inherit;
+}
+
 input[switch] {
     display: none;
 }
 
-label {
-    margin-bottom: 0px;
-    margin-right: 5px;
-}
 
 input[switch] + label {
     font-size: 1em;

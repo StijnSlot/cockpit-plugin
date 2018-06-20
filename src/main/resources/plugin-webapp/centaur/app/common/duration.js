@@ -1,12 +1,24 @@
 define({
+    /**
+     * common util files
+     */
     commonConversion: {},
     commonOverlays: {},
     commonOptions: {},
 
+    /**
+     * process definition id
+     */
     procDefId: "",
 
+    /**
+     * process instance id
+     */
     procInstId: null,
 
+    /**
+     * object with array per activity of overlay ids
+     */
     overlayActivityIds: {},
 
     /**
@@ -65,7 +77,7 @@ define({
 
                 var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration, "durationText", "act");
 
-                util.addOverlay(util, overlays, html, element.id, localStorage, "duration");
+                util.addOverlay(util, overlays, html, element.id, localStorage, "duration", false);
             });
         });
     },
@@ -89,8 +101,9 @@ define({
      * @param   {Number}  elementID     ID of element
      * @param   {Object}  localStorage  browser window containing localStorage
      * @param   {String}  id            id of item in localStorage
+     * @param   {Boolean} overview      whether or not this overlay is an overview one
      */
-    addOverlay: function (util, overlays, html, elementID, localStorage, id) {
+    addOverlay: function (util, overlays, html, elementID, localStorage, id, overview) {
         // initialize the overlayActivityId array
         if(util.overlayActivityIds[elementID] === undefined)
             util.overlayActivityIds[elementID] = [];
@@ -104,7 +117,7 @@ define({
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, id, top, left);
         };
-        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, !overview, setOffset);
 
         return util.overlayActivityIds[elementID].push(newOverlayId);
     },

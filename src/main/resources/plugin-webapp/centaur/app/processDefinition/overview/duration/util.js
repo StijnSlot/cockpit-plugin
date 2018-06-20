@@ -41,7 +41,7 @@ define({
         });
 
         $q.all([promise1, promise2]).then(function (data) {
-            var orderStatistics = data[0].data[0];
+            var statistics = data[0].data[0];
             var instances = data[1].data;
 
             var startEvent = null;
@@ -55,11 +55,11 @@ define({
 
             var curDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
-            var avgDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.avgDuration, false);
-            var maxDurationUnit = util.commonConversion.checkTimeUnit(orderStatistics.maxDuration, false);
-            var avgDuration = util.commonConversion.convertTimes(orderStatistics.avgDuration, avgDurationUnit).toString()
+            var avgDurationUnit = util.commonConversion.checkTimeUnit(statistics.avgDuration, false);
+            var maxDurationUnit = util.commonConversion.checkTimeUnit(statistics.maxDuration, false);
+            var avgDuration = util.commonConversion.convertTimes(statistics.avgDuration, avgDurationUnit).toString()
                 + ' ' + avgDurationUnit;
-            var maxDuration = util.commonConversion.convertTimes(orderStatistics.maxDuration, maxDurationUnit).toString()
+            var maxDuration = util.commonConversion.convertTimes(statistics.maxDuration, maxDurationUnit).toString()
                 + ' ' + maxDurationUnit;
             curDuration = util.commonDuration.checkIfCurValid(util, curDuration);
 
@@ -68,7 +68,8 @@ define({
             var html = util.commonDuration.createHTML(util, localStorage, curDuration, avgDuration,
                 maxDuration, "overviewDurationText", "order");
 
-            util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id, localStorage, "overview-duration");
+            util.commonDuration.addOverlay(util.commonDuration, overlays, html, element.id,
+                localStorage, "overview-duration", true);
         });
     }
 });

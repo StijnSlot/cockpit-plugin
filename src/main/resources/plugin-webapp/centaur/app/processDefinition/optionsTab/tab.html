@@ -39,13 +39,14 @@
 <div class="option-box">
     <div class="form-group">
         <h4>Number of variables to show</h4>
-        <select class="form-control" id="selectVariablesToShow" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()">
+        <select class="form-control" ng-change="changeVarNum(numValue)" ng-model="numValue" ng-init="setNumValue()">
             <option>0</option>
             <option data-ng-repeat="variable in processVariables">{{$index+1}}</option>
         </select>
     </div>
     <div class="form-group">
         <h4>Polling refresh rate</h4>
-        Every <input type="number" id="pollingRate" ng-change="changeRefreshRate(refreshRate)" ng-model="refreshRate" ng-init="setRefreshRate()" min="0"/> seconds.
+        Every <input class="pollingRate" type="number" ng-change="changeRefreshRate(refreshRate)"
+                     ng-model="refreshRate" ng-init="setRefreshRate()" min="0"/> seconds.
     </div>
 </div>

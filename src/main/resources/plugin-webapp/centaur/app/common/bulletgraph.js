@@ -1,25 +1,16 @@
 define({
+    /**
+     * common util files
+     */
+    commonConversion: {},
+    commonOptions: {},
+    commonOverlays: {},
 
     /**
      * variable containing all ids of overlays created here
      */
     overlayActivityIds: {},
-
-    /**
-     * common conversion util
-     */
-    commonConversion: {},
-
-    /**
-     * common options util
-     */
-    commonOptions: {},
-
-    /**
-     * common overlay util
-     */
-    commonOverlays: {},
-
+    
     /**
      * contains process definition id
      */
@@ -89,7 +80,7 @@ define({
                 var getCurDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
                 util.combineBulletgraphElements(util, overlays, getAvgDuration, getMaxDuration, getCurDuration,
-                    element.id, localStorage, "bullet-duration-" + element.id, "bulletgraph");
+                    element.id, localStorage, "bullet-duration-" + element.id, "bulletgraph", false);
             });
         });
     },
@@ -117,8 +108,9 @@ define({
      * @param   {Object}  localStorage      browser window containing localStorage
      * @param   {String}  cssClass          classname of object
      * @param   {String}  cssOverlayClass   class of overlay
+     * @param   {Boolean} overview          if the sizes of the overview should be used
      */
-    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass) {
+    combineBulletgraphElements: function(util, overlays, avgDuration, maxDuration, curDuration, elementID, localStorage, cssClass, cssOverlayClass, overview) {
         if (!util.checkConditions(avgDuration, maxDuration, curDuration)) {
             return;
         }
@@ -138,7 +130,7 @@ define({
 
         var html = util.createHTML(cssClass);
 
-        var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 120, 30);
+        var newOverlayId = util.commonOverlays.addTextElement(overlays, elementID, html, 150, 70);
 
         util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, cssOverlayClass);
 
@@ -146,10 +138,10 @@ define({
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, cssOverlayClass, top, left);
         };
 
-        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, !overview, setOffset);
 
         util.overlayActivityIds[elementID].push(newOverlayId);
-        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass);
+        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass, overview);
     },
 
     /**
@@ -221,8 +213,15 @@ define({
      * @param   {Number}  markerBullet  Marker value of bulletgraph.
      * @param   {Number}  colorBullet   Color of bulletgraph.
      * @param   {String}  cssClass      classname of the graph
+     * @param   {Boolean} overview      If the sizes of the overview should be used
      */
-    setGraphSettings: function (rangeBullet, currentBullet, markerBullet, colorBullet, cssClass) {
+    setGraphSettings: function (rangeBullet, currentBullet, markerBullet, colorBullet, cssClass, overview) {
+        var newWidth = 100;
+        var newHeight = 40;
+        if (overview) {
+            newWidth = 160;
+            newHeight = 60;
+        }
         var newCSSClass = '.' + cssClass;
         var data = [
             {
@@ -233,8 +232,8 @@ define({
         ];
         d3.select(newCSSClass).node().getBoundingClientRect();
         var margin = { top: 5, right: 5, bottom: 15, left: 5 },
-            width = 100 - margin.left - margin.right,
-            height = 40 - margin.top - margin.bottom;
+            width = newWidth - margin.left - margin.right,
+            height = newHeight - margin.top - margin.bottom;
 
         var chart = d3.bullet(width, height)
           .width(width)
@@ -244,8 +243,8 @@ define({
           .data(data)
           .enter().append("svg")
           .attr("class", "bullet")
-          .attr("width", 100)
-          .attr("height", 40)
+          .attr("width", newWidth)
+          .attr("height", newHeight)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
           .call(chart);
