@@ -1,4 +1,84 @@
 define({
+
+    /**
+     * variable containing all ids of overlays created here
+     */
+    overlayActivityIds: {},
+
+    /**
+     * variable containing all current duration of the bulletgraph
+     */
+    averageDuration: {},
+
+    /**
+     * common conversion util
+     */
+    commonConversion: {},
+
+    /**
+     * common options util
+     */
+    commonOptions: {},
+
+    /**
+     * common overlay util
+     */
+    commonOverlays: {},
+
+    /**
+     * contains process definition id
+     */
+    procDefId: "",
+
+    /**
+     * Main function of the bulletgraph module. In here the data will be loaded
+     * from the database by using promises. Also functions will be called
+     * to add information to the BPMN model.
+     *
+     * @param   util              object of this class, to call its functions and variables
+     * @param   $scope            object with corresponding properties and methods
+     * @param   $http             http client for GET request
+     * @param   $window           browser window containing localStorage
+     * @param   Uri               uniform resource identifier to create GET request
+     * @param   $q                a promise
+     * @param   elementRegistry   registry containing bpmn elements
+     * @param   processDiagram    diagram containing elements
+     * @param   overlays          collection of overlays to add to
+     */
+    bulletgraph: function (util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays, callback) {
+        if (util.commonOptions.getOption($window.localStorage, util.procDefId, "true", "KPI", "act_bulletGraph") === "false") {
+            elementRegistry.forEach(function (shape) {
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
+            });
+            return;
+        }
+
+        /*
+         * Angular http.get promises that wait for a JSON object of
+         * the process activity and the instance start time.
+         */
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
+            catch: false
+        });
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time?procDefId=" + util.procDefId), {
+            catch: false
+        });
+
+        /**
+         * Waits until data is received from http.get request and
+         * added to promises.
+         *
+         * Database quersies take a relative long time. So we have to
+         * wait until the data is retrieved before we can continue.
+         *
+         * @param   Object  data   minimum duration of process
+         */
+        $q.all([promise1, promise2]).then(function (data) {
+            callback(data);
+        });
+    },
+
     /**
      * This function decides which color the bullet graph should have on the following
      * conditions which are specified in the URD:
