@@ -10,7 +10,8 @@ define(['require', 'angular', '../../common/options', "../../common/KPI"], funct
     /**
      * Controller object containing all behavior
      */
-    var DashboardController = ["$scope", "$window", "$http", "$rootScope", "Uri", function($scope, $window, $http, $rootScope, Uri) {
+    var DashboardController = ["$scope", "$window", "$http", "$rootScope", "Uri",
+        function($scope, $window, $http, $rootScope, Uri) {
 
         /**
          * process instance id

@@ -8,7 +8,8 @@ define({
      * @param procDefKey
      */
     getData: function($scope, $http, Uri, procDefKey) {
-        $http.get(Uri.appUri("engine://engine/:engine/process-instance?processDefinitionKey=" + procDefKey))
+        $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
+            "?processDefinitionKey=" + procDefKey))
             .success(function (data) {
                 $scope.instances = data;
             });

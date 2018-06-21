@@ -141,7 +141,8 @@ define({
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementId, "variables", top, left);
         };
-        util.commonOverlays.addDraggableFunctionality(elementId, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementId, html.parentNode, util.commonOverlays.canvas,
+            true, setOffset);
 
         return id;
     },

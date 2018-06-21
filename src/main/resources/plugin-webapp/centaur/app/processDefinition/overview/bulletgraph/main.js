@@ -11,25 +11,24 @@ define(['require', 'angular', '../../../common/bulletlibraries', './util', '../.
      * retrieve the common util files
      */
     var util = require('./util');
-    var commonBulletgraph = require('../../../common/bulletgraph');
-    commonBulletgraph.commonConversion  = require('../../../common/conversion');
-    commonBulletgraph.commonOptions  = require('../../../common/options');
-    commonBulletgraph.commonOverlays = require('../../../common/overlays');
+    var common = require('../../../common/bulletgraph');
+    common.commonConversion  = require('../../../common/conversion');
+    common.commonOptions  = require('../../../common/options');
+    common.commonOverlays = require('../../../common/overlays');
 
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
             util.procDefId = $scope.$parent.processDefinition.id;
 
             var putBulletGraph = function() {
-                util.bulletgraph(commonBulletgraph, $http, $window.localStorage, Uri, $q, control, processDiagram)
+                util.bulletgraph(common, $http, $window.localStorage, Uri, $q, control, processDiagram)
             };
             putBulletGraph();
 
-            commonBulletgraph.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
+            common.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
         }
     ];
 

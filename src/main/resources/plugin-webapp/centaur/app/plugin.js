@@ -9,7 +9,8 @@ define(function (require) {
     var processDefinition = require('./processDefinition/main');
     var processInstance = require('./processInstance/main');
     var resources = require('./dashboard/main');
-    return angular.module('cockpit.plugin.centaur', [processModule.name, processDefinition.name, processInstance.name, resources.name]);
+    return angular.module('cockpit.plugin.centaur', [processModule.name, processDefinition.name, processInstance.name,
+        resources.name]);
 });
 
 //git hook test

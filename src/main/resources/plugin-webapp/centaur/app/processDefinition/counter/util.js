@@ -98,7 +98,8 @@ define({
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "counter", top, left);
         };
-        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas,
+            true, setOffset);
     },
 
 

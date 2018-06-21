@@ -70,7 +70,8 @@ define({
 
                 if (!util.checkConditions(avgDuration, maxDuration)) return;
 
-                var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration, "durationText", "act");
+                var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration,
+                    "durationText", "act");
 
                 util.addOverlay(util, overlays, html, element.id, localStorage, "duration", false);
             });
@@ -112,7 +113,8 @@ define({
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, id, top, left);
         };
-        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, !overview, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas,
+            !overview, setOffset);
 
         util.overlayActivityIds[elementID].push(newOverlayId);
     },
@@ -155,14 +157,14 @@ define({
      * 
      * @param   {Object}  util              Object of this class, to call its functions and variables.
      * @param   {Object}  localStorage      contain user options
-     * @param   {String}  curDurationString String to containing the current duration.
-     * @param   {String}  avgDurationString String to containing the average duration.
-     * @param   {String}  maxDurationString String to containing the maximum duration.
+     * @param   {String}  curDuration String to containing the current duration.
+     * @param   {String}  avgDuration String to containing the average duration.
+     * @param   {String}  maxDuration String to containing the maximum duration.
      * @param   {String}  cssClass          Classname of object
      * @param   {String}  category          String which determine which KPI is meant (for example activity and order)
      * @return  {String}                    String which represents an HTML line which will later on be added to the document.
      */
-    createHTML: function (util, localStorage, curDurationString, avgDurationString, maxDurationString, cssClass, category) {
+    createHTML: function (util, localStorage, curDuration, avgDuration, maxDuration, cssClass, category) {
         var html = document.createElement('DIV');
       
         html.classList.add("custom-overlay", cssClass);
@@ -170,19 +172,22 @@ define({
         var ul = document.createElement('UL');
 
         var li;
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_cur_duration") !== "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI",
+            category + "_cur_duration") !== "false") {
             li = document.createElement('LI');
-            li.innerHTML = "<b>cur: </b>" + curDurationString;
+            li.innerHTML = "<b>cur: </b>" + curDuration;
             ul.appendChild(li);
         }
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_avg_duration") !== "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI",
+            category + "_avg_duration") !== "false") {
             li = document.createElement('LI');
-            li.innerHTML = "<b>avg: </b>" + avgDurationString;
+            li.innerHTML = "<b>avg: </b>" + avgDuration;
             ul.appendChild(li);
         }
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_max_duration") !== "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI",
+            category + "_max_duration") !== "false") {
             li = document.createElement('LI');
-            li.innerHTML = "<b>max: </b>" + maxDurationString;
+            li.innerHTML = "<b>max: </b>" + maxDuration;
             ul.appendChild(li);
         }
 
