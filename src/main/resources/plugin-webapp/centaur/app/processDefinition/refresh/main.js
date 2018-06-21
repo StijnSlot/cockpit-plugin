@@ -1,12 +1,8 @@
-'use strict';
-
 define(['require', 'angular', '../../common/refresh', '../../common/options'], function(require, angular) {
-
-    var commonRefresh = require('../../common/refresh');
-
     /**
-     * commonUtil containing variable data
+     * common util files
      */
+    var commonRefresh = require('../../common/refresh');
     var commonOptions = require('../../common/options');
 
     /**

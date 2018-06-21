@@ -1,18 +1,3 @@
-/**
-* Adds a counter to CallActivity tasks.
-*
-* Camunda has the ability to have a task call multiple tasks in sequence or
-* parallel. However, the amount of tasks called it not displayed in the diagram
-* by default. This module adds a counter to display this number at the bottom
-* right of a call activity task.
-*
-* @author Tim Hübener
-* @since  23.05.2018 in progress
-* @since  31.05.2018 in testing
-*/
-
-'use strict';
-
 define(['require', 'angular', './util', '../../common/overlays', '../../common/options'], function(require, angular) {
 
     var util = require('./util');

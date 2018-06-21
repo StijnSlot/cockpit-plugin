@@ -1,14 +1,4 @@
-/**
- * Displays a bulletgraph which contains the current, average and maximum duration
- * of a process onto the process diagram of Camunda.
- *
- * @author Lukas Ant.
- * @since  30.05.2018 in Testing
- */
-
-'use strict';
-
-define(['require', 'angular', '../../common/bulletlibraries', './util', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/bulletgraph'], function (require, angular) {
+define(['require', 'angular', '../../common/bulletlibraries', '../../common/conversion', '../../common/options', '../../common/overlays', '../../common/variables', '../../common/bulletgraph'], function (require, angular) {
 
     /**
      * retrieve the bullet file contains the D3 library and functions which are needed for the bullet graphs
@@ -18,50 +8,23 @@ define(['require', 'angular', '../../common/bulletlibraries', './util', '../../c
     require('../../common/bulletlibraries');
 
     /**
-     * retrieve the util file containing functions
+     * retrieve the common util files
      */
-    var util = require('./util');
-
-    /**
-     * retrieve the common file containing conversion functions
-     */
+    var util = require('../../common/bulletgraph');
     util.commonConversion  = require('../../common/conversion');
-
-    /**
-     * retrieve the common file containing option functions
-     */
     util.commonOptions  = require('../../common/options');
-
-    /**
-     * retrieve the common file containing overlay functions
-     */
     util.commonOverlays = require('../../common/overlays');
-
-    /**
-     * retrieve the common file containing variables functions
-     */
-    util.commonVariables = require('../../common/variables');
-
-    /**
-     * retrieve the common file containing variables functions
-     */
-    util.commonBulletgraph = require('../../common/bulletgraph');
-
+    
     /**
      * Overlay object that contains the elements put on the diagram
      */
-    var overlay = [
-        '$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
+    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
-            var viewer = control.getViewer();
-            var overlays = viewer.get('overlays');
-            var elementRegistry = viewer.get('elementRegistry');
-            util.commonOverlays.canvas = viewer.get('canvas');
-
             util.procDefId  = $scope.$parent.processDefinition.id;
+            util.procInstanceId = null;
 
             var putBulletGraph = function() {
-                util.bulletgraph(util, $scope, $http, $window, Uri, $q, elementRegistry, processDiagram, overlays);
+                util.bulletgraph(util, $http, $window.localStorage, Uri, $q, control, processDiagram);
             };
             putBulletGraph();
 

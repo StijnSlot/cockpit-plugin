@@ -4,7 +4,6 @@ define(['require', 'angular', '../../common/options', "../../common/KPI"], funct
      * commonUtil containing variable data
      */
     var util = require('../../common/options');
-
     var KPI = require("../../common/KPI");
 
     /**

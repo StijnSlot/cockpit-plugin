@@ -35,14 +35,15 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
         util.commonOverlays.canvas = viewer.get('canvas');
 
-        util.commonOverlays.clearOverlays(overlays, util.overlayIds);
-
         if(util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "counter") === "false") {
-          return;
+            util.commonOverlays.clearOverlays(overlays, util.overlayIds);
+            return;
         }
 
         $http.get(Uri.appUri("plugin://centaur/:engine/execution-sequence-counter"))
             .success(function(data) {
+                util.commonOverlays.clearOverlays(overlays, util.overlayIds);
+
                 elementRegistry.forEach(function(shape) {
                     var element = processDiagram.bpmnElements[shape.businessObject.id];
                     if(element.$type !== 'bpmn:CallActivity') return;
@@ -92,12 +93,12 @@ define({
     addOverlay: function(localStorage, util, overlays, counters, elementID) {
         var html = util.createHTML(counters);
         util.overlayIds.push(util.commonOverlays.addTextElement(overlays, elementID, html, -20, 50));
-        util.commonOverlays.getOffset(html, localStorage, util.procDefId, elementID, "counter");
+        util.commonOverlays.getOffset(html.parentNode, localStorage, util.procDefId, elementID, "counter");
 
         var setOffset = function(top, left) {
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, "counter", top, left);
         };
-        util.commonOverlays.addDraggableFunctionality(elementID, html, util.commonOverlays.canvas, true, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, true, setOffset);
     },
 
 
@@ -105,7 +106,7 @@ define({
     * Creates an HTML line with has a class that includes the elementID
     *
     * @param   {Object}  counters       object with keys: sequenceCounter and competedCounter
-    * @return  {Object}                 A string which represents an HTML line which will be added later
+    * @return  {Object}                 DOM element representing the overlay with the counters
     */
     createHTML: function (counters) {
         var html = document.createElement('DIV');

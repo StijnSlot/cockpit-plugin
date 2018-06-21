@@ -8,7 +8,7 @@ define(function (require) {
     var processModule = require('./processes/main');
     var processDefinition = require('./processDefinition/main');
     var processInstance = require('./processInstance/main');
-    var resources = require('./resources/main');
+    var resources = require('./dashboard/main');
     return angular.module('cockpit.plugin.centaur', [processModule.name, processDefinition.name, processInstance.name, resources.name]);
 });
 

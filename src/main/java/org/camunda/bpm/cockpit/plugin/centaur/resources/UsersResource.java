@@ -10,12 +10,27 @@ import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * JAX-RS Resource that handles statistics for users.
+ *
+ * @version 1.4
+ */
 public class UsersResource extends AbstractCockpitPluginResource {
 
-    public UsersResource(String engineName) {
+    /**
+     * Constructor for the resource.
+     *
+     * @param engineName The engine currently being used by the platform.
+     */
+    UsersResource(String engineName) {
         super(engineName);
     }
 
+    /**
+     * Handles the GET request to this url by returning a JAX-RS resource.
+     *
+     * @return A list of users and the statistics about their idle time , etc.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserDto> getUsers() {
@@ -26,36 +41,51 @@ public class UsersResource extends AbstractCockpitPluginResource {
         return getQueryService().executeQuery("cockpit.query.resource.selectUsers", queryParameters);
     }
 
+    /**
+     * Creates the table required to store the statistics
+     * and init table.
+     */
     void createTable() {
         getQueryService().executeQuery("cockpit.query.resource.createTable", new QueryParameters<>());
-        setResources();
-        setAssigned();
+        update();
     }
 
+    /**
+     * Updates the table with new entries if required.
+     */
     void update() {
         setResources();
-        setAssigned();
+        updateAssignedTasks();
     }
 
+    /**
+     * Set the users in the resources table by deleting inactive users and adding new users.
+     */
     private void setResources() {
         getQueryService().executeQuery("cockpit.query.resource.deleteResourceIds", new QueryParameters<>());
         getQueryService().executeQuery("cockpit.query.resource.addResourceIds", new QueryParameters<>());
     }
 
-    private void setAssigned() {
+    /**
+     * Updates the assigned tasks for each user in the ACT_RU_RESOURCE table.
+     */
+    private void updateAssignedTasks() {
+        // Retrieve the already existing users in the table
         List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.resource.selectAssigned", new QueryParameters<>());
-        for(AssigneeDto element : result) {
-            boolean assigned = element.getCount() > 0;
-            boolean prevAssigned = element.getPrevAssigned();
+        // For each user
+        for (AssigneeDto user : result) {
+            boolean assigned = user.getCount() > 0;
+            boolean prevAssigned = user.getPrevAssigned();
 
-            // if prev assigned is same as current assigned, do nothing
-            if(assigned == prevAssigned) continue;
+            // If prev assigned is same as current assigned, do nothing
+            if (assigned == prevAssigned) continue;
 
+            // Else update the table
             QueryParameters<Object> queryParameters = new QueryParameters<>();
 
             HashMap<String, String> param = new HashMap<>();
-            param.put("id", element.getId());
-            param.put("active", String.valueOf(element.getActive()));
+            param.put("id", user.getId());
+            param.put("active", String.valueOf(user.getActive()));
             param.put("assigned", String.valueOf(assigned));
             param.put("prevAssigned", String.valueOf(prevAssigned));
             queryParameters.setParameter(param);
@@ -66,6 +96,14 @@ public class UsersResource extends AbstractCockpitPluginResource {
         }
     }
 
+    /**
+     * A POST request to the path plugin/{engineName}/users/set-active/
+     * with fields active and id triggers this function to set the field
+     * active of the user with specified id to the specified active status.
+     *
+     * @param active Specifies if the user is active or not.
+     * @param id     User id to set active field of.
+     */
     @Path("set-active")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

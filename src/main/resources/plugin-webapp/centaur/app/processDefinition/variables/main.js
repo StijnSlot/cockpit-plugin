@@ -1,5 +1,3 @@
-'use strict';
-
 define(['require', 'angular', '../../common/overlays', '../../common/variables', '../../common/options'], function(require, angular) {
 
     var commonVariable = require('../../common/variables');

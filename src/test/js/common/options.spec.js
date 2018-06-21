@@ -178,28 +178,29 @@ describe('Common options tests', function() {
     });
              
     describe('isSelectedInstance tests', function() {
-        var instance;
-        var elementID;
-        var instanceID;
+        var instances = [{activityId: 'An activity', instanceId: 123}, {activityId: 'An activity', instanceId: 124}];
+        var elementID = 'An activity', instanceID;
         var out;
 
         describe('is selected', function() {
-            beforeEach(function() {
-                instance = [{activityId: 'An activity', instanceId: 123}, {activityId: 'An activity', instanceId: 124}];
-                elementID = 'An activity';
+            beforeEach(function () {
                 instanceID = 123;
-                out = util.isSelectedInstance(instance, elementID, instanceID);
+                out = util.isSelectedInstance(instances, elementID, instanceID);
             });
 
-            it('check if it returns true', function() {
+            it('should return return true', function () {
                 expect(out).to.eql(true);
+            });
+        });
+        describe('is not selected', function() {
+            beforeEach(function () {
+                instanceID = 125;
+                out = util.isSelectedInstance(instances, elementID, instanceID);
             });
 
             it('check if it returns false', function() {
-                instanceID = 125;
-                out = util.isSelectedInstance(instance, elementID, instanceID);
                 expect(out).to.eql(false);
-            });            
+            });
         });
     });
 

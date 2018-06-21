@@ -1,5 +1,4 @@
 define({
-
     /**
      * Gets the selected ids from the process definitions list.
      *

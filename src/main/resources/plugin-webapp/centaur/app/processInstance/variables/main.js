@@ -1,5 +1,3 @@
-'use strict';
-
 define(['require', 'angular', '../../common/options', '../../common/variables', '../../common/overlays'], function(require, angular) {
 
     /**

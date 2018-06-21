@@ -6,9 +6,7 @@ import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.io.*;
 
 public class QueryTest extends AbstractCockpitPluginTest {
     @Test
@@ -38,13 +36,13 @@ public class QueryTest extends AbstractCockpitPluginTest {
 
     @Test
     public void testOrderStatisticQueryWorks() {
-        QueryParameters<OrderStatisticsDto> param = new QueryParameters<>();
+        QueryParameters<ProcessStatisticsDto> param = new QueryParameters<>();
         param.setParameter("test");
-        List<OrderStatisticsDto> result =
-                getQueryService()
-                        .executeQuery(
-                                "cockpit.query.selectOrderStatistics",
-                                param);
+        List<ProcessStatisticsDto> result =
+            getQueryService()
+                .executeQuery(
+                    "cockpit.query.selectProcessStatistics",
+                    param);
 
         Assert.assertEquals(1, result.size());
     }

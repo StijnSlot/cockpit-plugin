@@ -10,32 +10,32 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Resource returning process instances and
- * their start time of a process definition.
+ * Resource returning all start times of
+ * process instances of a given process definition.
  *
  * @version 1.0
  */
-public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
+public class ProcessInstanceStartTimeResource extends AbstractCockpitPluginResource {
 
     private String procDefId;
 
     /**
-     * Constructor of the resource.
+     * Constructor for the resource.
      *
      * @param engineName The engine currently being used by the platform.
-     * @param procDefId  The id of the process definition.
+     * @param procDefId  The id of a process definition.
      */
-    InstanceStartTimeResource(String engineName, String procDefId) {
+    ProcessInstanceStartTimeResource(String engineName, String procDefId) {
         super(engineName);
         this.procDefId = procDefId;
     }
 
     /**
-     * A JAX-RS GET request to this function
-     * returns a list of instances and their start time.
+     * A JAX-RS GET function that returns the process instance start time
+     * of the given process definition id.
      *
-     * @return A list of the instances and the start time associated
-     * with the process definition.
+     * @return A list of all process instances start times relating
+     * to the process definition id.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +46,6 @@ public class InstanceStartTimeResource extends AbstractCockpitPluginResource {
         configureTenantCheck(queryParameters);
 
         return getQueryService().executeQuery(
-                "cockpit.query.selectInstanceStartTime", queryParameters);
+                "cockpit.query.selectProcessInstanceStartTime", queryParameters);
     }
 }

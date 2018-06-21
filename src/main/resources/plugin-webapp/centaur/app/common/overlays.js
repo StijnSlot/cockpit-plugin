@@ -29,10 +29,8 @@ define({
     },
 
     /**
-     * Get the offset from localStorage and add to HTML DOM element.
+     * Get the offset from localStorage and add offset to HTML DOM parent element.
      *
-     * @param {Object}  html              DOM element.
-     * @param {Object}  localStorage      LocalStorage containing offset.
      * @param {Object}  html              Dom element
      * @param {Object}  localStorage      LocalStorage containing offset
      * @param {String}  procDefId         process definition id
@@ -50,8 +48,8 @@ define({
         var offset = processOptions[activityId][overlayName];
 
         if (offset !== undefined) {
-            $(html.parentNode).css("top", offset["top"]);
-            $(html.parentNode).css("left", offset["left"]);
+            $(html).css("top", offset["top"]);
+            $(html).css("left", offset["left"]);
         }
     },
 
@@ -59,7 +57,7 @@ define({
      * sets the offset of an overlay in localStorage
      *
      * @param {Object}  localStorage    localStorage which options are set
-     * @param {String}  procDefId       processs definition id
+     * @param {String}  procDefId       process definition id
      * @param {String}  activityId      id of activity of overlay
      * @param {String}  overlayName     name of overlay option
      * @param {Number}  top             top offset
@@ -87,16 +85,16 @@ define({
      * @param {Function}callback          function which is called with the new offset
      */
     addDraggableFunctionality: function(elementID, html, canvas, highlight, callback) {
-        html.parentNode.classList.add("djs-draggable");
+        html.classList.add("djs-draggable");
         var click = {};
         var zoom = 1;
 
-        $(html.parentNode).draggable({
+        $(html).draggable({
             stack: ".djs-overlay",
             start: function(event) {
                 // add highlight to activity
                 if (highlight) {
-                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.add("highlight");
+                    $("g[data-element-id='" + elementID + "']")[0].classList.add("highlight");
                 }
 
                 // remember click position for dragging speed
@@ -121,26 +119,26 @@ define({
             stop: function() {
                 // remove highlight from the activity
                 if (highlight) {
-                    $("g[data-element-id=\'" + elementID + "\']")[0].classList.remove("highlight");
+                    $("g[data-element-id='" + elementID + "']")[0].classList.remove("highlight");
                 }
 
-                callback(html.parentNode.style.top, html.parentNode.style.left);
+                callback(html.style.top, html.style.left);
             }
         });
     },
 
     /**
-     * Clears all overlays whose ID is stored in overlayIDs.
+     * Clears all overlays whose ID is stored in overlayIds.
      *
      * @param {Object}          overlays          Overlays object containing all processDefinition overlays.
-     * @param {Array<String>}   overlayIDs        ID's of overlays which should be removed.
+     * @param {Array<String>}   overlayIds        ID's of overlays which should be removed.
      */
-    clearOverlays: function (overlays, overlayIDs) {
-        if(overlays === undefined || overlayIDs === undefined) return;
+    clearOverlays: function (overlays, overlayIds) {
+        if(overlays === undefined || overlayIds === undefined) return;
 
-        overlayIDs.forEach(function (element) {
+        overlayIds.forEach(function (element) {
             overlays.remove(element);
         });
-        overlayIDs.length = 0;
+        overlayIds.length = 0;
     }
 });

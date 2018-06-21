@@ -12,6 +12,27 @@ describe('processes selection tests', function() {
         expect(util).to.exist;
     });
 
+    describe('initDeletion tests', function() {
+        var sandbox = sinon.createSandbox();
+        var stub;
+
+        beforeEach(function() {
+            stub = sandbox.stub(util);
+            stub.initDeletion.restore();
+            util.initDeletion(stub, {}, {}, {});
+        });
+        afterEach(function() {
+            sandbox.restore();
+        });
+
+        it('should call putCheckboxes once', function() {
+            expect(stub.putCheckboxes.callCount).to.eql(1);
+        });
+        it('should call putDeleteButton once', function() {
+            expect(stub.putDeleteButton.callCount).to.eql(1);
+        });
+    });
+
     describe('putCheckboxes tests', function() {
         var tr1, tr2;
 
@@ -50,10 +71,10 @@ describe('processes selection tests', function() {
         beforeEach(function() {
             out = util.putDeleteButton();
         });
+
         it('should return a button', function() {
             expect(out.nodeName).to.eql('BUTTON');
         })
-
     });
 
     describe('getSelectedIds tests', function() {
