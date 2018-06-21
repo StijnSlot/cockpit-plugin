@@ -8,6 +8,8 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
         }
     };
 
+    var refreshRate = 5000;
+
     var controller = ["$rootScope", "$scope", "$http", "Uri", function($rootScope, $scope, $http, Uri) {
         $scope.userId = $rootScope.authentication.name;
 
@@ -22,7 +24,7 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
 
         setInterval(function() {
             getRequests();
-        }, 10000);
+        }, refreshRate);
 
         $scope.setActive = function(active, id) {
             $scope.users.find(function(user) {return user.id === id}).active = active;
@@ -60,13 +62,13 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
         ViewsProvider.registerDefaultView('cockpit.dashboard', {
             id: 'resources',
             label: 'Resources',
-            url: 'plugin://centaur/static/app/resources/view/tab.html',
+            url: 'plugin://centaur/static/app/dashboard/resources/tab.html',
             controller: controller,
             priority: 10
         });
     }];
 
-    var ngModule = angular.module('cockpit.plugin.centaur.resources.view', []);
+    var ngModule = angular.module('cockpit.plugin.centaur.dashboard.resources', []);
 
     ngModule.config(Configuration);
 
