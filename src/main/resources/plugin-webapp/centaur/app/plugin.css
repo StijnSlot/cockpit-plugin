@@ -160,7 +160,8 @@
 |      CSS of the options tab styling       |
 |   The code from the options tab is used   |
 |               Codepen snippet:            |
-|           [TODO: INSERT A LINK HERE       |
+| https://codepen.io/anon/pen/GGORKa?page=2 |
+|            (accessed 21-6-2018)           |
 #############################################
 */
 
@@ -264,29 +265,7 @@ input[switch="bool"]:checked + label:before {
     color: #fff;
 }
 
-input[switch="default"]:checked + label {
-    background-color: #a2a2a2;
-}
-
-input[switch="default"]:checked + label:before {
-    color: #fff;
-}
-
-input[switch="success"]:checked + label {
-    background-color: #BCE954;
-}
-
-input[switch="success"]:checked + label:before {
-    color: #fff;
-}
-
-input[switch="warning"]:checked + label {
-    background-color: gold;
-}
-
-input[switch="warning"]:checked + label:before {
-    color: #fff;
-}
+/* Styling for the polling rate value */
 
 .pollingRate {
     width: 8rem;
