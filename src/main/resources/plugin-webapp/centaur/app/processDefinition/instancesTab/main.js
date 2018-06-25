@@ -5,6 +5,8 @@ define(['require', 'angular', './util', '../../common/deletion'], function(requi
     var util = require('./util');
     var deletion = require('../../common/deletion');
 
+    var refreshRate = 5000;
+
     /**
      * Controller object containing all behavior
      */
@@ -16,6 +18,10 @@ define(['require', 'angular', './util', '../../common/deletion'], function(requi
         var procDefKey = $scope.$parent.processDefinition.key;
 
         util.getData($scope, $http, Uri, procDefKey);
+
+        var interval = setInterval(function() {
+            util.getData($scope, $http, Uri, procDefKey);
+        }, refreshRate);
 
         $scope.handleDelete = function() {
             var rows = deletion.getSelectedRows(".process-instances > tbody > tr");
@@ -29,6 +35,10 @@ define(['require', 'angular', './util', '../../common/deletion'], function(requi
                 alert("No process instance was selected.");
             }
         };
+
+        $scope.$on("$destroy", function() {
+            clearInterval(interval)
+        });
     }];
 
     /**
