@@ -48,12 +48,10 @@ define({
             return;
         }
 
-        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity?procDefId=" + util.procDefId), {
-            catch: false
-        });
-        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time?procDefId=" + util.procDefId), {
-            catch: false
-        });
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity" +
+            "?procDefId=" + util.procDefId));
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time" +
+            "?procDefId=" + util.procDefId));
 
         $q.all([promise1, promise2]).then(function (data) {
             var activityStatistics = data[0].data;
@@ -139,10 +137,12 @@ define({
             util.commonOverlays.setOffset(localStorage, util.procDefId, elementID, cssOverlayClass, top, left);
         };
 
-        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas, !overview, setOffset);
+        util.commonOverlays.addDraggableFunctionality(elementID, html.parentNode, util.commonOverlays.canvas,
+            !overview, setOffset);
 
         util.overlayActivityIds[elementID].push(newOverlayId);
-        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration, colorBullet, cssClass, overview);
+        util.setGraphSettings(maxDuration, util.checkIfCurBiggerMax(curDuration, maxDuration), avgDuration,
+            colorBullet, cssClass, overview);
     },
 
     /**

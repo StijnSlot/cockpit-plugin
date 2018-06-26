@@ -1,4 +1,5 @@
-define(['require', 'angular', '../../common/overlays', '../../common/variables', '../../common/options'], function(require, angular) {
+define(['require', 'angular', '../../common/overlays', '../../common/variables', '../../common/options'],
+    function(require, angular) {
 
     var commonVariable = require('../../common/variables');
     var commonOptions = commonVariable.commonOptions = require('../../common/options');
@@ -25,13 +26,15 @@ define(['require', 'angular', '../../common/overlays', '../../common/variables',
             };
 
             var addProcessVariables = function() {
-                commonVariable.addVariables($window.localStorage, $q, $http, control, processDiagram, request1, request2, commonVariable)
+                commonVariable.addVariables($window.localStorage, $q, $http, control, processDiagram,
+                    request1, request2, commonVariable)
             };
             addProcessVariables();
 
             // add subscriptions to changes in the options
-            var subscriptions = ["cockpit.plugin.centaur:options:variable-change", "cockpit.plugin.centaur:options:var-num-change",
-                    "cockpit.plugin.centaur:options:KPI-change"];
+            var subscriptions = ["cockpit.plugin.centaur:options:variable-change",
+                "cockpit.plugin.centaur:options:var-num-change",
+                "cockpit.plugin.centaur:options:KPI-change"];
             commonOptions.register($scope, subscriptions, addProcessVariables);
         }
     ];

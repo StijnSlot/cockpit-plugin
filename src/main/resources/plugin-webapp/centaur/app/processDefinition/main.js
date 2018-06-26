@@ -11,6 +11,7 @@ define(function(require) {
   var overviewDuration = require('./overview/duration/main');
   var instancesTab = require('./instancesTab/main');
   
-  return angular.module('cockpit.plugin.centaur.processDefinition', [refresh.name, counter.name, duration.name, variables.name,
-      bulletgraph.name, optionsTab.name, historyTab.name, overviewBulletgraph.name, overviewDuration.name, instancesTab.name]);
+  return angular.module('cockpit.plugin.centaur.processDefinition', [refresh.name, counter.name, duration.name,
+      variables.name, bulletgraph.name, optionsTab.name, historyTab.name, overviewBulletgraph.name,
+      overviewDuration.name, instancesTab.name]);
 });

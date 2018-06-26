@@ -77,7 +77,8 @@ define({
     deleteProcessDefinition: function($http, $q, Uri, ids) {
         var requestArr = [];
         ids.forEach(function(id) {
-            requestArr.push($http.delete(Uri.appUri("engine://engine/:engine/process-definition/" + id + "?cascade=true")));
+            requestArr.push($http.delete(Uri.appUri("engine://engine/:engine/process-definition/" +
+                id + "?cascade=true")));
         });
 
         $q.all(requestArr).then(function() {

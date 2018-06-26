@@ -1,5 +1,6 @@
 define(['require', 'angular', './util', '../../../common/conversion', '../../../common/options',
-    '../../../common/overlays', '../../../common/variables', '../../../common/duration'], function (require, angular) {
+    '../../../common/overlays', '../../../common/variables', '../../../common/duration'],
+    function (require, angular) {
 
     /**
      * retrieve the common util functions
@@ -10,7 +11,8 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
     commonDuration.commonConversion = require('../../../common/conversion');
     commonDuration.commonOverlays = require('../../../common/overlays');
 
-    var overlay = ['$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
+    var overlay = [
+        '$scope', '$http', '$window', 'Uri', 'control', '$rootScope', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, $rootScope, processData, pageData, $q, processDiagram) {
 
             util.procDefId = $scope.$parent.processDefinition.id;

@@ -29,13 +29,15 @@ define(['require', 'angular', '../../common/options', '../../common/variables', 
             };
 
             var addInstanceVar = function() {
-                commonVariable.addVariables($window.localStorage, $q, $http, control, processDiagram, request1, request2, commonVariable)
+                commonVariable.addVariables($window.localStorage, $q, $http, control, processDiagram,
+                    request1, request2, commonVariable)
             };
             addInstanceVar();
 
             // add subscriptions to changes in the options
-            var subscriptions = ["cockpit.plugin.centaur:options:variable-change", "cockpit.plugin.centaur:options:var-num-change",
-                    "cockpit.plugin.centaur:options:KPI-change"];
+            var subscriptions = ["cockpit.plugin.centaur:options:variable-change",
+                "cockpit.plugin.centaur:options:var-num-change",
+                "cockpit.plugin.centaur:options:KPI-change"];
             commonOptions.register($scope, subscriptions, addInstanceVar);
         }
     ];
