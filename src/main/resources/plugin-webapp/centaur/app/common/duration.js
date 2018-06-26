@@ -171,17 +171,17 @@ define({
         var ul = document.createElement('UL');
 
         var li;
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_cur_duration") !== "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", category + "_cur_duration") !== "false") {
             li = document.createElement('LI');
             li.innerHTML = "<b>cur: </b>" + curDurationString;
             ul.appendChild(li);
         }
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_avg_duration") !== "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", category + "_avg_duration") !== "false") {
             li = document.createElement('LI');
             li.innerHTML = "<b>avg: </b>" + avgDurationString;
             ul.appendChild(li);
         }
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", category + "_max_duration") !== "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", category + "_max_duration") !== "false") {
             li = document.createElement('LI');
             li.innerHTML = "<b>max: </b>" + maxDurationString;
             ul.appendChild(li);

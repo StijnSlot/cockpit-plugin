@@ -22,7 +22,7 @@ define({
         util.commonOverlays.canvas = viewer.get('canvas');
         var elementRegistry = viewer.get('elementRegistry');
 
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "process_bulletGraph") === "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", "process_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);

@@ -50,7 +50,7 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
 
         // if not selected variables
-        if(util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "variables") === "false") {
+        if(util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", "variables") === "false") {
 
             // loop over all elements in the diagram to clear them
             elementRegistry.forEach(function (shape) {
