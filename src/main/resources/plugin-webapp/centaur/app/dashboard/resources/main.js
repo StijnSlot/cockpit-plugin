@@ -13,19 +13,6 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
     var controller = ["$rootScope", "$scope", "$http", "Uri", function($rootScope, $scope, $http, Uri) {
         $scope.userId = $rootScope.authentication.name;
 
-        var getRequests = function() {
-            $http.get(Uri.appUri("plugin://centaur/:engine/users"))
-                .success(function(data) {
-                    $scope.users = data;
-                });
-
-        };
-        getRequests();
-
-        setInterval(function() {
-            getRequests();
-        }, refreshRate);
-
         $scope.setActive = function(active, id) {
             $scope.users.find(function(user) {return user.id === id}).active = active;
 
@@ -53,6 +40,23 @@ define(['require', 'angular', '../../common/conversion'], function(require, angu
 
             return time + " " + unit;
         };
+
+        var getRequests = function() {
+            $http.get(Uri.appUri("plugin://centaur/:engine/users"))
+                .success(function(data) {
+                    $scope.users = data;
+                });
+
+        };
+        getRequests();
+
+        var interval = setInterval(function() {
+            getRequests();
+        }, refreshRate);
+
+        $scope.$on("$destroy", function() {
+            clearInterval(interval)
+        });
     }];
 
     /**

@@ -25,6 +25,11 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
     private static Timer t = new Timer();
 
     /**
+     * rate of refresh for the resource table in milliseconds
+     */
+    private final static int refreshRate = 10000;
+
+    /**
      * Constructor for root resource. Calls the constructor of AbstractCockpitPluginRootResource.
      * Updates the user table every 10 seconds.
      */
@@ -44,7 +49,7 @@ public class CockpitPluginRootResource extends AbstractCockpitPluginRootResource
                     public void run() {
                         res.update();
                     }
-                }, 0, 10000);
+                }, 0, refreshRate);
             }
         }
     }
