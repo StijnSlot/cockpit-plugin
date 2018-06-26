@@ -58,6 +58,9 @@ define({
                     return (instance.activityId === element.id &&
                         (util.procInstId == null || instance.instanceId === util.procInstId));
                 });
+
+                if (!util.checkConditions(activity.avgDuration, activity.maxDuration)) return;
+
                 var curDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
                 var avgDurationUnit = util.commonConversion.checkTimeUnit(activity.avgDuration, false);
@@ -67,8 +70,6 @@ define({
                 var maxDuration = util.commonConversion.convertTimes(activity.maxDuration, maxDurationUnit).toString() +
                     ' ' + maxDurationUnit;
                 curDuration = util.checkIfCurValid(util, curDuration);
-
-                if (!util.checkConditions(avgDuration, maxDuration)) return;
 
                 var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration, "durationText", "act");
 
