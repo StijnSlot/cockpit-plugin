@@ -40,7 +40,7 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
         util.commonOverlays.canvas = viewer.get('canvas');
 
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "act_bulletGraph") === "false") {
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", "act_bulletGraph") === "false") {
             elementRegistry.forEach(function (shape) {
                 var element = processDiagram.bpmnElements[shape.businessObject.id];
                 util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
@@ -51,7 +51,7 @@ define({
         var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity" +
             "?procDefId=" + util.procDefId));
         var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time" +
-            "?procDefId=" + util.procDefId));
+            "?procDefId=" + util.procDefId));    
 
         $q.all([promise1, promise2]).then(function (data) {
             var activityStatistics = data[0].data;
@@ -65,6 +65,10 @@ define({
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
+                    if (instance.instanceId === util.procInstanceId) {
+                        console.log("It's the same");
+                        console.log(instance.instanceId);
+                    }
                     return (instance.activityId === element.id &&
                         (util.procInstanceId == null || instance.instanceId === util.procInstanceId));
                 });

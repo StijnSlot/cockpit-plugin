@@ -58,6 +58,9 @@ define({
                     return (instance.activityId === element.id &&
                         (util.procInstId == null || instance.instanceId === util.procInstId));
                 });
+
+                if (!util.checkConditions(activity.avgDuration, activity.maxDuration)) return;
+
                 var curDuration = util.commonConversion.calculateAvgCurDuration(util.commonConversion, instances);
 
                 var avgDurationUnit = util.commonConversion.checkTimeUnit(activity.avgDuration, false);
@@ -68,11 +71,9 @@ define({
                     ' ' + maxDurationUnit;
                 curDuration = util.checkIfCurValid(util, curDuration);
 
-                if (!util.checkConditions(avgDuration, maxDuration)) return;
-
                 var html = util.createHTML(util, localStorage, curDuration, avgDuration, maxDuration,
                     "durationText", "act");
-
+              
                 util.addOverlay(util, overlays, html, element.id, localStorage, "duration", false);
             });
         });
@@ -172,20 +173,25 @@ define({
         var ul = document.createElement('UL');
 
         var li;
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI",
+
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI",
             category + "_cur_duration") !== "false") {
+
             li = document.createElement('LI');
             li.innerHTML = "<b>cur: </b>" + curDuration;
             ul.appendChild(li);
         }
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI",
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI",
             category + "_avg_duration") !== "false") {
+
             li = document.createElement('LI');
             li.innerHTML = "<b>avg: </b>" + avgDuration;
             ul.appendChild(li);
         }
-        if (util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI",
+
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI",
             category + "_max_duration") !== "false") {
+
             li = document.createElement('LI');
             li.innerHTML = "<b>max: </b>" + maxDuration;
             ul.appendChild(li);

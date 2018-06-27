@@ -151,10 +151,10 @@ describe('Common options tests', function() {
             it('should call setItem with procDefId', function() {
                 expect(spy.calledWith(procDefId)).to.eql(true);
             });
-            it('should call setItem with true for both variables', function() {
+            it('should call setItem with false for both variables', function() {
                 var arg = JSON.parse(spy.args[0][1]);
-                expect(arg['a'][data[0].name]).to.eql("true");
-                expect(arg['a'][data[1].name]).to.eql("true");
+                expect(arg['a'][data[0].name]).to.eql("false");
+                expect(arg['a'][data[1].name]).to.eql("false");
             });
         });
 

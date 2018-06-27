@@ -7,7 +7,7 @@ define({
     /**
      * default number of variables to show in box
      */
-    defaultVariableNum: 5,
+    defaultVariableNum: 0,
 
     /**
      * Binds scope functions to corresponding util
@@ -106,7 +106,7 @@ define({
         data.forEach(function (element) {
             var get = processOptions[prefix][element.name];
             if (get === undefined) {
-                processOptions[prefix][element.name] = 'true';
+                processOptions[prefix][element.name] = 'false';
                 changed = true;
                 element.checked = true;
             } else {
