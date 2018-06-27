@@ -165,16 +165,16 @@
 #############################################
 */
 
-input[switch] {
+.toggle-switch[switch] {
     display: none;
 }
 
-label {
+.toggle-switch-label {
     margin-bottom: 0;
     margin-right: 5px;
 }
 
-input[switch] + label {
+.toggle-switch[switch] + .toggle-switch-label {
     font-size: 1em;
     line-height: 1;
     width: 4rem;
@@ -194,7 +194,7 @@ input[switch] + label {
     transition: all 0.1s ease-in-out;
 }
 
-input[switch] + label:before {
+.toggle-switch[switch] + .toggle-switch-label:before {
     text-transform: uppercase;
     color: #b7b7b7;
     content: attr(data-off-label);
@@ -216,7 +216,7 @@ input[switch] + label:before {
     transition: all 0.1s ease-in-out;
 }
 
-input[switch] + label:after {
+.toggle-switch[switch] + .toggle-switch-label:after {
     content: '';
     position: absolute;
     left: 0.1666666667rem;
@@ -230,38 +230,38 @@ input[switch] + label:after {
     transition: all 0.1s ease-in-out;
 }
 
-input[switch]:checked + label {
+.toggle-switch[switch]:checked + .toggle-switch-label {
     background-color: lightblue;
     background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0.2));
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3) inset;
 }
 
-input[switch]:checked + label:before {
+.toggle-switch[switch]:checked + .toggle-switch-label:before {
     color: #fff;
     content: attr(data-on-label);
     right: auto;
     left: 0.2166666667rem;
 }
 
-input[switch]:checked + label:after {
+.toggle-switch[switch]:checked + .toggle-switch-label:after {
     left: 2.1666666667rem;
     background-color: #f7f7f7;
     box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
-input[switch="bool"] + label {
+.toggle-switch[switch="bool"] + .toggle-switch-label {
     background-color: #ee6562;
 }
 
-input[switch="bool"] + label:before {
+.toggle-switch[switch="bool"] + .toggle-switch-label:before {
     color: #fff;
 }
 
-input[switch="bool"]:checked + label {
+.toggle-switch[switch="bool"]:checked + .toggle-switch-label {
     background-color: #BCE954;
 }
 
-input[switch="bool"]:checked + label:before {
+.toggle-switch[switch="bool"]:checked + .toggle-switch-label:before {
     color: #fff;
 }
 
