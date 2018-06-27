@@ -12,6 +12,7 @@ define({
             "?processDefinitionKey=" + procDefKey))
             .success(function (data) {
                 $scope.instances = data;
+                console.log(data);
             });
     },
 
