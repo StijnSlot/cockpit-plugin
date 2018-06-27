@@ -22,7 +22,7 @@ define(['require', 'angular', '../../common/overlays', '../../common/variables',
 
             var request2 = function(instance) {
                 return Uri.appUri("engine://engine/:engine/process-instance/" +
-                    instance.id + "/variables")
+                    instance.id + "/variables?deserializeValues=false")
             };
 
             var addProcessVariables = function() {

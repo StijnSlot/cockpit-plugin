@@ -57,7 +57,7 @@ define({
      */
     putDeleteButton: function() {
         var button = document.createElement("BUTTON");
-        button.classList.add("delete-process-button", "btn");
+        button.classList.add("delete-process-button", "btn", "btn-danger");
         button.innerText = "Delete";
 
         // manual jquery insertion
