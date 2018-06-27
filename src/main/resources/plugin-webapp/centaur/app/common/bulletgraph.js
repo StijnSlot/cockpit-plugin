@@ -51,7 +51,7 @@ define({
         var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity" +
             "?procDefId=" + util.procDefId));
         var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time" +
-            "?procDefId=" + util.procDefId));
+            "?procDefId=" + util.procDefId));    
 
         $q.all([promise1, promise2]).then(function (data) {
             var activityStatistics = data[0].data;
