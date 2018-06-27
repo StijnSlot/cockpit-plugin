@@ -35,7 +35,7 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
         util.commonOverlays.canvas = viewer.get('canvas');
 
-        if(util.commonOptions.getOption(localStorage, util.procDefId, "true", "KPI", "counter") === "false") {
+        if(util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", "counter") === "false") {
             util.commonOverlays.clearOverlays(overlays, util.overlayIds);
             return;
         }
