@@ -62,7 +62,6 @@ define({
                 var activity = activityStatistics.find(function(activity) {
                     return activity.id === element.id;
                 });
-                console.log(activity);
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
