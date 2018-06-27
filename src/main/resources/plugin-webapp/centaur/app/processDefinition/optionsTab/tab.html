@@ -5,9 +5,9 @@
             <tr data-ng-repeat="variable in KPI">
                 <form ng-init="setKPIChecked()">
                     <td>
-                        <input type="checkbox" ng-checked="variable.checked" id="kpi-{{ variable.name }}"
+                        <input class="toggle-switch" type="checkbox" ng-checked="variable.checked" id="kpi-{{ variable.name }}"
                                ng-change="changeKPI(variable.name, checked)"  ng-model="checked" switch="bool">
-                        <label for="kpi-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
+                        <label class="toggle-switch-label" for="kpi-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
                     </td>
                     <td>
                         {{ variable.label }}
@@ -24,9 +24,9 @@
         <tr data-ng-repeat="variable in processVariables">
             <form ng-init="setVariableChecked()">
                 <td>
-                    <input type="checkbox" ng-checked="variable.checked" id="variable-{{ variable.name }}"
+                    <input class="toggle-switch" type="checkbox" ng-checked="variable.checked" id="variable-{{ variable.name }}"
                            ng-change="changeVar(variable.name, checked)"  ng-model="checked" switch="bool">
-                    <label for="variable-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
+                    <label class="toggle-switch-label" for="variable-{{ variable.name }}" data-on-label="On" data-off-label="Off"></label>
                 </td>
                 <td>
                     {{ variable.name }}
