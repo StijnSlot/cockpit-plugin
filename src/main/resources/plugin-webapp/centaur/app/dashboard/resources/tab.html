@@ -29,8 +29,8 @@
             <td>{{ calcUtilPerc(user) | number : 2}}%</td>
             <td>{{ calcIdlePerc(user) | number : 2}}%</td>
             <td>
-                <button class="btn active-btn" ng-show="user.id == userId && !user.active" ng-click="setActive(true, user.id)">Activate</button>
-                <button class="btn active-btn" ng-show="user.id == userId && user.active" ng-click="setActive(false, user.id)">Deactivate</button>
+                <button class="btn active-btn" ng-show="!user.active" ng-click="setActive(true, user.id)">Activate</button>
+                <button class="btn active-btn" ng-show="user.active" ng-click="setActive(false, user.id)">Deactivate</button>
             </td>
         </tr>
         </tbody>
