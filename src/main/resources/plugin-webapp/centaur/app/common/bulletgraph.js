@@ -17,11 +17,6 @@ define({
     procDefId: "",
 
     /**
-     * contains process instance id
-     */
-    procInstanceId: null,
-
-    /**
      * Main function of the bulletgraph module. In here the data will be loaded
      * from the database by using promises. Also functions will be called
      * to add information to the BPMN model.
@@ -69,8 +64,7 @@ define({
                         console.log("It's the same");
                         console.log(instance.instanceId);
                     }
-                    return (instance.activityId === element.id &&
-                        (util.procInstanceId == null || instance.instanceId === util.procInstanceId));
+                    return (instance.activityId === element.id);
                 });
 
                 var getAvgDuration = activity.avgDuration;

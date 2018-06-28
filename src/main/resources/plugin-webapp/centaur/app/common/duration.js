@@ -12,11 +12,6 @@ define({
     procDefId: "",
 
     /**
-     * process instance id
-     */
-    procInstId: null,
-
-    /**
      * object with array per activity of overlay ids
      */
     overlayActivityIds: {},
@@ -55,8 +50,7 @@ define({
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
-                    return (instance.activityId === element.id &&
-                        (util.procInstId == null || instance.instanceId === util.procInstId));
+                    return (instance.activityId === element.id );
                 });
 
                 if (!util.checkConditions(activity.avgDuration, activity.maxDuration)) return;
