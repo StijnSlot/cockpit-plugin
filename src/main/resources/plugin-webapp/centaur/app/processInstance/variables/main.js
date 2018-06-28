@@ -25,7 +25,7 @@ define(['require', 'angular', '../../common/options', '../../common/variables', 
 
             var request2 = function(execution) {
                 return Uri.appUri("engine://engine/:engine/execution/" +
-                    execution.id + "/localVariables")
+                    execution.id + "/localVariables?deserializeValues=false")
             };
 
             var addInstanceVar = function() {
