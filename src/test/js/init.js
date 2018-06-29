@@ -1,10 +1,8 @@
 'use strict';
 
-import angular0 from "angular";
-
 global.sinon = require('sinon');
 global.chai = require('chai');
-global.angular = angular0;
+global.angular = require('angular');
 global.expect = chai.expect;
 global.requirejs  = require('requirejs');
 requirejs.config({
