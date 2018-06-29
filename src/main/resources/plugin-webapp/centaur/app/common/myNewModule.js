@@ -35,7 +35,34 @@ define({
         var elementRegistry = viewer.get('elementRegistry');
         util.commonOverlays.canvas = viewer.get('canvas');
 
-        // Put your code in here....
+        // The following code is to make the KPI selectable
+
+        if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI", /* "KPI_name", needs to be added in common/KPI.js */) === "false") {
+            elementRegistry.forEach(function (shape) {
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+                util.commonOverlays.clearOverlays(overlays, util.overlayActivityIds[element.id]);
+            });
+            return;
+        }
+
+        // Queries which can get data from the database. 
+
+        var promise1 = $http.get(Uri.appUri("plugin://centaur/:engine/process-activity" +
+            "?procDefId=" + util.procDefId));
+        var promise2 = $http.get(Uri.appUri("plugin://centaur/:engine/instance-start-time" +
+            "?procDefId=" + util.procDefId));    
+
+        $q.all([promise1, promise2]).then(function (data) {
+            var activityStatistics = data[0].data;
+            var instanceStartTime = data[1].data;
+
+            elementRegistry.forEach(function (shape) {
+                var element = processDiagram.bpmnElements[shape.businessObject.id];
+                
+                // Put here your code....
+
+            });
+        });
     },
 
 });
