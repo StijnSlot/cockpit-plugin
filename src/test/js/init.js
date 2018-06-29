@@ -2,7 +2,7 @@
 
 global.sinon = require('sinon');
 global.chai = require('chai');
-global.angular = require('angular');
+global.angular.equals = sinon.stub();
 global.expect = chai.expect;
 global.requirejs  = require('requirejs');
 requirejs.config({
