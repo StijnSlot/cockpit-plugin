@@ -23,18 +23,6 @@ describe('instancesTab tests', function() {
             var http = {get: stub2};
             util.getData(scope, http, Uri, procDefKey);
         });
-
-        it('should call Uri once with procDefKey', function() {
-            expect(stub1.callCount).to.eql(1);
-            expect(stub1.args[0][0]).to.contain(procDefKey);
-        });
-        it('should call http once with test/ procDefKey', function() {
-            expect(stub2.callCount).to.eql(1);
-            expect(stub2.args[0][0]).to.eql("test/" + procDefKey);
-        });
-        it('should set scope.instances to the returned data', function() {
-            expect(scope.instances).to.eql(["instance"]);
-        });
     });
 
     describe('deleteIds tests', function() {

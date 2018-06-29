@@ -11,7 +11,9 @@ define({
         $http.get(Uri.appUri("engine://engine/:engine/process-instance" +
             "?processDefinitionKey=" + procDefKey))
             .success(function (data) {
-                $scope.instances = data;
+                if (!angular.equals(data, $scope.instances)) {
+                    $scope.instances = data;
+                }
             });
     },
 
