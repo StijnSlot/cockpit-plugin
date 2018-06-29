@@ -29,7 +29,6 @@
     "jsdom-global": "3.0.2",
     "mocha": "^5.2.0",
     "requirejs": "^2.3.5",
-    "sinon": "^5.0.10",
-    "angular": "^1.7.2"
+    "sinon": "^5.0.10"
   }
 }
