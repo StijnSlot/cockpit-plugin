@@ -13,7 +13,6 @@ define(['require', 'angular', '../../common/conversion', '../../common/options',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
 
             util.procDefId = $scope.$parent.processDefinition.id;
-            util.procInstId = $scope.$parent.processInstance.id;
 
             function setDuration() {
                 util.duration(util, $http, $window.localStorage, Uri, $q, control, processDiagram);

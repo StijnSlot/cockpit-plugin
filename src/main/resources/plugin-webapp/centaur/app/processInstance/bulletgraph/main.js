@@ -21,7 +21,6 @@ define(['require', 'angular', '../../common/bulletlibraries', '../../common/conv
     var overlay = ['$scope', '$http', '$window', 'Uri', 'control', 'processData', 'pageData', '$q', 'processDiagram',
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
             util.procDefId  = $scope.$parent.processDefinition.id;
-            util.procInstanceId = $scope.$parent.processInstance.id;
 
             var putBulletGraph = function() {
                 util.bulletgraph(util, $http, $window.localStorage, Uri, $q, control, processDiagram);
