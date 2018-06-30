@@ -1,0 +1,3 @@
+--recursive 
+-r jsdom-global/register
+-r ./test/js/init.js
