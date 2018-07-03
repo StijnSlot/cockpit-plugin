@@ -14,8 +14,8 @@ describe('Common bulletgraph tests', function () {
 
     describe('bulletgraph tests', function() {
         var sandbox = sinon.createSandbox();
-        var spy1, spy2;
-        var stub1, stub2;
+        var http, uri, $q, viewer, control;
+        var spy1, spy2, stub1, stub2;
 
         describe('selected in options', function() {
             beforeEach(function() {
@@ -28,20 +28,20 @@ describe('Common bulletgraph tests', function () {
                 util.commonOptions = {getOption: sinon.stub().returns("true")};
                 util.commonConversion = {calculateAvgCurDuration: stub2};
 
-                var http = {get: sinon.spy()};
-                var uri = {appUri: spy2};
-                var $q = {all: function() { return {then: function(x) {
+                http = {get: sinon.spy()};
+                uri = {appUri: spy2};
+                $q = {all: function() { return {then: function(x) {
                     x([
                         {data: [{id: 1, avgDuration: 10, maxDuration: 50}]},
                         {data: [{activityId: 1}]}
                         ]);
                 }}}};
 
-                var viewer = {get: function(x) {
+                viewer = {get: function(x) {
                         if(x === 'elementRegistry') return [{businessObject: {id: 1}}];
                         else return {};
                     }};
-                var control = {getViewer: function() {return viewer}};
+                control = {getViewer: function() {return viewer}};
 
                 util.bulletgraph.restore();
                 util.bulletgraph(stub1, http, {}, uri, $q, control,
@@ -56,7 +56,13 @@ describe('Common bulletgraph tests', function () {
             });
             it('should call combineBulletgraphElements once', function() {
                 expect(stub1.combineBulletgraphElements.callCount).to.eql(1);
-            })
+            });
+            it('should not call combineBulletGraph if no activity', function() {
+                stub1.combineBulletgraphElements.reset();
+                util.bulletgraph(stub1, http, {}, uri, $q, control,
+                    {bpmnElements: [{}, {id: -1}]});
+                expect(stub1.combineBulletgraphElements.callCount).to.eql(0);
+            });
         });
 
         describe('bulletgraph not selected', function() {
@@ -116,13 +122,9 @@ describe('Common bulletgraph tests', function () {
             sandbox.restore();
         });
 
-        it('should call calculateAvgCurDuration once', function() {
+        it('should call initialize functions once', function() {
             expect(spy1.callCount).to.eql(1);
-        });
-        it('should call clearOverlays once', function() {
             expect(spy2.callCount).to.eql(1);
-        });
-        it('should call createHTML with className', function() {
             expect(stub1.createHTML.args[0][0]).to.eql(cssName);
         });
         it('should call convertTimes three times with all durations', function() {
@@ -130,13 +132,24 @@ describe('Common bulletgraph tests', function () {
             expect(spy3.calledWith(max)).to.eql(true);
             expect(spy3.calledWith(cur)).to.eql(true);
         });
+        it('should not call createHTML if !checkConditions', function() {
+            stub1.createHTML.reset();
+            stub1.checkConditions.returns(false);
+            util.combineBulletgraphElements(stub1, {}, avg, max, cur, 'a', {}, cssName, "overlay", true);
+            expect(stub1.createHTML.callCount).to.eql(0);
+        });
+        it('should pass setOffset as callback function', function() {
+            expect(util.commonOverlays.setOffset.callCount).to.eql(0);
+            util.commonOverlays.addDraggableFunctionality.args[0][4]();
+            expect(util.commonOverlays.setOffset.callCount).to.eql(1);
+        });
     });
 
     /*describe('setGraphSettings tests', function() {
-        var className = "test";
+        var className = "test", div;
         var spy;
         before(function(done) {
-            var div = document.createElement('DIV');
+            div = document.createElement('DIV');
             div.className = className;
             document.body.appendChild(div);
             spy = sinon.spy();
