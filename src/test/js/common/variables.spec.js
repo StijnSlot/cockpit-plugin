@@ -69,7 +69,7 @@ describe('Common variables tests', function() {
         it('should not call finishElement if no variables in html', function() {
             stub1.finishElement.reset();
             stub1.createVariableDiv.returns(document.createElement('DIV'));
-            util.handleVariableData = function(data, localStorage, html) {};
+            util.handleVariableData = sandbox.spy();
             util.addVariables({}, $q, http, control,
                 {bpmnElements: [{}, {}, {id: 2}]}, req1, req2, util);
             expect(stub1.finishElement.callCount).to.eql(0);

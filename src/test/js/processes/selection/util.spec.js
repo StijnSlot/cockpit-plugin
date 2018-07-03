@@ -23,8 +23,8 @@ describe('processes selection tests', function() {
             spy = sandbox.spy();
             util.deletion = {getSelectedRows: stub2};
             jQuery.fn.click = function(x) {x();};
-            confirm = sandbox.stub().returns(true);
-            alert = spy;
+            global.confirm = sandbox.stub().returns(true);
+            global.alert = spy;
             stub1.initDeletion.restore();
         });
         afterEach(function() {

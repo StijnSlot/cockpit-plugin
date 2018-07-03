@@ -175,9 +175,9 @@ describe('Common conversion tests', function () {
 
     describe('toTruncatedUTC tests', function() {
         it('should give correct date back', function() {
-            var out = util.toTruncatedUTC(new Date(2014, 1, 1).toString());
+            var out = util.toTruncatedUTC("2018-01-01");
             expect(out).to.have.lengthOf(19);
-            expect(out).to.eql("2014-01-31T23:00:00");
+            expect(out).to.eql("2018-01-01T00:00:00");
         });
     });
 });
