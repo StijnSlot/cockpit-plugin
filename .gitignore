@@ -26,3 +26,5 @@ buildNumber.properties
 *.bat
 
 node_modules/
+
+.nyc_output

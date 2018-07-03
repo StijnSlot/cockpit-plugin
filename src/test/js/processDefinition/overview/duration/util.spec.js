@@ -17,7 +17,7 @@ describe('duration process definition tests', function() {
 
     describe('duration tests', function() {
         var sandbox = sinon.createSandbox();
-        var spy;
+        var elementRegistry, viewer, control, http, uri, $q;
         var stub1, stub2;
 
         beforeEach(function() {
@@ -25,21 +25,22 @@ describe('duration process definition tests', function() {
             stub1 = sandbox.stub(common);
             stub2 = sandbox.stub().returns(5);
 
-            var http = {get: sinon.spy()};
-            var uri = {appUri: spy};
+            http = {get: sinon.spy()};
+            uri = {appUri: sinon.spy()};
 
             common.procDefId = "dasfkl";
             common.checkConditions.returns(true);
             common.commonConversion = {checkTimeUnit: sinon.spy(), calculateAvgCurDuration: stub2,
                 convertTimes: sinon.stub().returns(1)};
 
-            var viewer = {get: function(x) {
-                if(x === 'elementRegistry') return [{businessObject: {id: 1}, type: "bpmn:StartEvent"}];
+            elementRegistry = [{businessObject: {id: 1}, type: "bpmn:StartEvent"}];
+            viewer = {get: function(x) {
+                if(x === 'elementRegistry') return elementRegistry;
                 else return {};
             }};
-            var control = {getViewer: function() {return viewer}};
+            control = {getViewer: function() {return viewer}};
 
-            var $q = {all: function() { return {then: function(x) {
+            $q = {all: function() { return {then: function(x) {
                 x([
                     {data: [{id: 1, avgDuration: 10, maxDuration: 50}]},
                     {data: [{activityId: 1}]}
@@ -56,11 +57,22 @@ describe('duration process definition tests', function() {
         it('should call addOverlay once', function() {
             expect(stub1.addOverlay.callCount).to.eql(1);
         });
-        it('should call appUri twice', function() {
-            expect(spy.callCount).to.eql(2);
-        });
         it('should call calculateAvgCurDuration once', function() {
             expect(stub2.callCount).to.eql(1);
+        });
+        it('should not call addOverlay if shape type is not startevent', function() {
+            stub1.addOverlay.reset();
+            elementRegistry = [{businessObject: {id: 1}, type: "bpmn:EndEvent"}];
+            util.duration(stub1, http, {}, uri, $q, control,
+                {bpmnElements: [{}, {id: 1}]});
+            expect(stub1.addOverlay.callCount).to.eql(0);
+        });
+        it('should not call addOverlay if checkConditions is false', function() {
+            stub1.addOverlay.reset();
+            common.checkConditions.returns(false);
+            util.duration(stub1, http, {}, uri, $q, control,
+                {bpmnElements: [{}, {id: 1}]});
+            expect(stub1.addOverlay.callCount).to.eql(0);
         });
     });
 });

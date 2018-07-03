@@ -45,9 +45,9 @@ define({
                 util.commonOverlays.clearOverlays(overlays, util.overlayIds);
 
                 elementRegistry.forEach(function(shape) {
-                    var element = processDiagram.bpmnElements[shape.businessObject.id];
-                    if(element.$type !== 'bpmn:CallActivity') return;
+                    if(shape.type !== 'bpmn:CallActivity') return;
 
+                    var element = processDiagram.bpmnElements[shape.businessObject.id];
                     util.setCounter(data, element, function(obj) {
                         util.addOverlay(localStorage, util, overlays, obj, element.id);
                     });
@@ -106,7 +106,7 @@ define({
     /**
     * Creates an HTML line with has a class that includes the elementID
     *
-    * @param   {Object}  counters       object with keys: sequenceCounter and competedCounter
+    * @param   {Object}  counters       object with keys: sequenceCounter and completedCounter
     * @return  {Object}                 DOM element representing the overlay with the counters
     */
     createHTML: function (counters) {

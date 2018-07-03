@@ -13,16 +13,29 @@ describe('instancesTab tests', function() {
     });
 
     describe('getData tests', function() {
-        var stub2, stub1;
-        var scope = {}, procDefKey = "key";
+        var stub1, stub2, stub3;
+        var scope = {}, procDefKey = "key", Uri, http;
 
         beforeEach(function() {
             stub1 = sinon.stub().returns("test/" + procDefKey);
             stub2 = sinon.stub().returns({success: function(x) {x(["instance"]);}});
-            var Uri = {appUri: stub1};
-            var http = {get: stub2};
-            util.getData(scope, http, Uri, procDefKey);
+            stub3 = sinon.stub();
+            Uri = {appUri: stub1};
+            http = {get: stub2};
+            global.angular = {equals: stub3};
         });
+
+        it('should set processInstances', function() {
+            stub3.returns(true);
+            util.getData(scope, http, Uri, procDefKey);
+            expect(scope.instances).to.not.exist;
+        })
+
+        it('should set processInstances', function() {
+            stub3.returns(false);
+            util.getData(scope, http, Uri, procDefKey);
+            expect(scope.instances).to.exist;
+        })
     });
 
     describe('deleteIds tests', function() {

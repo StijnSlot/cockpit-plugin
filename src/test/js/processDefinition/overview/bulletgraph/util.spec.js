@@ -14,8 +14,8 @@ describe('bulletGraph process definition tests', function() {
 
     describe('bulletgraph tests', function() {
         var sandbox = sinon.createSandbox();
-        var spy;
-        var stub1, stub2;
+        var spy, stub1, stub2;
+        var $q, viewer, control, elementRegistry, http, uri;
 
         before(function(done) {
             requirejs(['main/resources/plugin-webapp/centaur/app/common/bulletgraph'], function(utl) {
@@ -33,21 +33,22 @@ describe('bulletGraph process definition tests', function() {
                 spy = sandbox.spy();
                 stub1 = sandbox.stub(common);
                 stub2 = sandbox.stub().returns(2);
-                var $q = {all: function () {return {then: function (x) {
+                $q = {all: function () {return {then: function (x) {
                     x([
                         {data: [{id: 1, avgDuration: 10, maxDuration: 50}]},
                         {data: [{activityId: 1}]}
                     ]);
                 }}}};
-                var http = {get: sinon.spy()};
-                var uri = {appUri: spy};
-                var viewer = {
+                http = {get: sinon.spy()};
+                uri = {appUri: spy};
+                elementRegistry = [{businessObject: {id: 1}, type: "bpmn:StartEvent"}];
+                viewer = {
                     get: function (x) {
-                        if (x === 'elementRegistry') return [{businessObject: {id: 1}, type: "bpmn:StartEvent"}];
+                        if (x === 'elementRegistry') return elementRegistry;
                         else return {};
                     }
                 };
-                var control = {
+                control = {
                     getViewer: function () {
                         return viewer
                     }
@@ -72,7 +73,21 @@ describe('bulletGraph process definition tests', function() {
             });
             it('should call combineBulletgraphElements once', function () {
                 expect(stub1.combineBulletgraphElements.callCount).to.eql(1);
-            })
+            });
+            it('should not call combineBulletgraphElements if getOption is false', function() {
+                stub1.combineBulletgraphElements.reset();
+                common.commonOptions.getOption.returns("false");
+                util.bulletgraph(stub1, http, {}, uri, $q, control,
+                    {bpmnElements: [{}, {id: 1}]});
+                expect(stub1.combineBulletgraphElements.callCount).to.eql(0);
+            });
+            it('should not call combineBulletgraphElements if shape is not startEvent', function() {
+                stub1.combineBulletgraphElements.reset();
+                elementRegistry = [{businessObject: {id: 1}, type: "bpmn:EndEvent"}];
+                util.bulletgraph(stub1, http, {}, uri, $q, control,
+                    {bpmnElements: [{}, {id: 1}]});
+                expect(stub1.combineBulletgraphElements.callCount).to.eql(0);
+            });
         });
     });
 });

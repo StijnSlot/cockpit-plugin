@@ -14,22 +14,45 @@ describe('processes selection tests', function() {
 
     describe('initDeletion tests', function() {
         var sandbox = sinon.createSandbox();
-        var stub;
+        var spy;
+        var stub1, stub2;
 
         beforeEach(function() {
-            stub = sandbox.stub(util);
-            stub.initDeletion.restore();
-            util.initDeletion(stub, {}, {}, {});
+            stub1 = sandbox.stub(util);
+            stub2 = sandbox.stub().returns([1]);
+            spy = sandbox.spy();
+            util.deletion = {getSelectedRows: stub2};
+            jQuery.fn.click = function(x) {x();};
+            confirm = sandbox.stub().returns(true);
+            alert = spy;
+            stub1.initDeletion.restore();
         });
         afterEach(function() {
             sandbox.restore();
         });
 
         it('should call putCheckboxes once', function() {
-            expect(stub.putCheckboxes.callCount).to.eql(1);
+            util.initDeletion(stub1, {}, {}, {});
+            expect(stub1.putCheckboxes.callCount).to.eql(1);
         });
         it('should call putDeleteButton once', function() {
-            expect(stub.putDeleteButton.callCount).to.eql(1);
+            util.initDeletion(stub1, {}, {}, {});
+            expect(stub1.putDeleteButton.callCount).to.eql(1);
+        });
+        it('should call deleteProcessDefinition once', function() {
+            util.initDeletion(stub1, {}, {}, {});
+            expect(stub1.deleteProcessDefinition.callCount).to.eql(1);
+        });
+        it('should give an alert if nothing is selected', function() {
+            stub2.returns([]);
+            util.initDeletion(stub1, {}, {}, {});
+            expect(spy.callCount).to.eql(1);
+        });
+        it('should not give an alert or call deleteProcessDefinition if not confirmed', function() {
+            confirm.returns(false);
+            util.initDeletion(stub1, {}, {}, {});
+            expect(spy.callCount).to.eql(0);
+            expect(stub1.deleteProcessDefinition.callCount).to.eql(0);
         });
     });
 
@@ -78,14 +101,15 @@ describe('processes selection tests', function() {
     });
 
     describe('getSelectedIds tests', function() {
+        var tr1, td, a;
         var out;
 
         beforeEach(function() {
             // create html
-            var tr1 = document.createElement('TR');
-            var td = document.createElement('TD');
+            tr1 = document.createElement('TR');
+            td = document.createElement('TD');
             td.className = "name";
-            var a = document.createElement('A');
+            a = document.createElement('A');
             a.href = "#/test/process:123";
 
             td.appendChild(a);
@@ -99,18 +123,25 @@ describe('processes selection tests', function() {
         it('should return test_process:1', function() {
             expect(out[0]).to.eql("process:123");
         });
+        it('should not return test_process if link isnt set', function() {
+            td.removeChild(a);
+            out = util.getSelectedIds($(tr1));
+            expect(out).to.have.lengthOf(0);
+        });
     });
 
     describe('deleteProcessDefinition tests', function() {
         var http, Uri, q, ids = ["asad", "hello"];
-        var spy, stub1, stub2;
+        var spy, spy2, stub1, stub2;
         beforeEach(function() {
             spy = sinon.spy();
+            spy2 = sinon.spy();
             Uri = {appUri: spy};
             stub1 = sinon.stub().returns(new Promise(function() {}));
             http = {delete: stub1};
-            stub2 = sinon.stub().returns(new Promise(function() {}));
+            stub2 = sinon.stub().returns({then: function(x) {x();}});
             q = {all: stub2};
+            window.location.reload = spy2;
             util.deleteProcessDefinition(http, q, Uri, ids);
         });
         it('should call uri twice', function() {
@@ -119,13 +150,14 @@ describe('processes selection tests', function() {
         it('should call http delete twice', function() {
             expect(stub1.callCount).to.eql(2);
         });
-        it('should call q.all once with one argument', function() {
+        it('should call q.all once with one argument with two promises', function() {
             expect(stub2.callCount).to.eql(1);
             expect(stub2.args).to.have.lengthOf(1);
-        });
-        it('should call q.all with two promises', function() {
             expect(stub2.firstCall.args[0]).to.have.lengthOf(2);
             expect(stub2.firstCall.args[0][0]).to.be.instanceOf(Promise);
+        });
+        it('should call window reload', function() {
+            expect(spy2.callCount).to.eql(1);
         });
     });
 });
