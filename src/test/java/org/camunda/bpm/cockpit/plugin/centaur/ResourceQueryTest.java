@@ -27,7 +27,7 @@ public class ResourceQueryTest extends AbstractCockpitPluginTest {
                 new QueryParameters<>());
     }
     @Test
-    public void testdeleteResourceIds() {
+    public void testDeleteResourceIds() {
         getQueryService()
             .executeQuery(
                 "cockpit.query.resource.deleteResourceIds",

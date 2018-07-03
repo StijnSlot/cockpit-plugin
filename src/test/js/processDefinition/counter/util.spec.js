@@ -78,7 +78,7 @@ describe('check counter util', function () {
             var element3 = {activityId: 1, name: "somethingElse", counter: 100};
             var element4 = {activityId: 2, name: "nrOfInstances", counter: 6};
             var element5 = {activityId: 1, name: "nrOfInstances", counter: -6};
-            var data = [element1, element2, element3, element4];
+            var data = [element1, element2, element3, element4, element5];
             util.setCounter(data, {id: 1}, spy);
             obj = spy.args[0][0];
         });

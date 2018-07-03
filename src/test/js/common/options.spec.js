@@ -210,7 +210,7 @@ describe('Common options tests', function() {
 
         beforeEach(function() {
             spy = sinon.spy();
-            stub = sinon.stub().returns(function(){});
+            stub = sinon.stub().returns(function() {});
             var scope = {$on: stub};
             util.register(scope, subscriptions, spy);
         });
@@ -224,7 +224,8 @@ describe('Common options tests', function() {
             expect(stub.args[1][0]).to.eql(subscriptions[1]);
         });
         it('should subscribe for scope destroy', function() {
-            expect(stub.args[2][0]).to.eql("$destroy")
-        })
-    })
+            expect(stub.args[2][0]).to.eql("$destroy");
+            stub.args[2][1]();
+        });
+    });
 });

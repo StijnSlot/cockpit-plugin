@@ -13,9 +13,8 @@ describe('Common refresh tests', function() {
     });
 
     describe('setInterval tests', function() {
-        var spy1, spy2;
-        var stub1;
-        var clock;
+        var spy1, spy2, stub1;
+        var clock, scope, http, uri;
         var unregister;
 
         beforeEach(function() {
@@ -28,9 +27,9 @@ describe('Common refresh tests', function() {
             stub1 = sinon.stub().returns({success: function(x) {
                     x([{}]);}
             });
-            var scope = {$on: function(x, y) {unregister = y;}};
-            var http = {get: stub1};
-            var uri = {appUri: spy2};
+            scope = {$on: function(x, y) {unregister = y;}};
+            http = {get: stub1};
+            uri = {appUri: spy2};
             util.setInterval(scope, http, uri, util, spy1);
 
             clock.tick(1000);
@@ -44,9 +43,18 @@ describe('Common refresh tests', function() {
             expect(spy1.callCount).to.be.eql(1);
         });
         it('should correctly unregister', function() {
+            // just for coverage sake (you can ignore)
+            util.procDefId = 'a';
+            util.procInstId = 'b';
+
             unregister();
             clock.tick(1000);
             expect(spy1.callCount).to.not.be.above(1);
-        })
+        });
+        it('should clearInterval if poll is not null', function() {
+            util.setInterval(scope, http, uri, util, spy1);
+            clock.tick(1000);
+            expect(spy1.callCount).to.eql(2);
+        });
     });
 });
