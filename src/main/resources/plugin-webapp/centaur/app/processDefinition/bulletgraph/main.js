@@ -22,12 +22,12 @@ define(['require', 'angular', '../../common/bulletlibraries', '../../common/conv
         function ($scope, $http, $window, Uri, control, processData, pageData, $q, processDiagram) {
             util.procDefId  = $scope.$parent.processDefinition.id;
 
-            var putBulletGraph = function() {
-                util.bulletgraph(util, $http, $window.localStorage, Uri, $q, control, processDiagram);
-            };
             putBulletGraph();
-
             util.commonOptions.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], putBulletGraph);
+
+            function putBulletGraph() {
+                util.bulletgraph(util, $http, $window.localStorage, Uri, $q, control, processDiagram);
+            }
         }
     ];
 
