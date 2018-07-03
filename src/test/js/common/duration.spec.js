@@ -1,5 +1,6 @@
 describe('Common duration tests', function () {
     var util;
+    var http, uri, control, viewer, $q
 
     before(function (done) {
         requirejs(['main/resources/plugin-webapp/centaur/app/common/duration'], function (utl) {
@@ -27,20 +28,20 @@ describe('Common duration tests', function () {
             util.commonConversion = {checkTimeUnit: sinon.spy(), calculateAvgCurDuration: stub2,
                                 convertTimes: sinon.stub().returns(1)};
 
-            var http = {get: sinon.spy()};
-            var uri = {appUri: spy};
-            var $q = {all: function() { return {then: function(x) {
+            http = {get: sinon.spy()};
+            uri = {appUri: spy};
+            $q = {all: function() { return {then: function(x) {
                 x([
                     {data: [{id: 1, avgDuration: 10, maxDuration: 50}]},
                     {data: [{activityId: 1}]}
                 ]);
             }}}};
 
-            var viewer = {get: function(x) {
+            viewer = {get: function(x) {
                 if(x === 'elementRegistry') return [{businessObject: {id: 1}}];
                 else return {};
             }};
-            var control = {getViewer: function() {return viewer}};
+            control = {getViewer: function() {return viewer}};
 
             util.duration.restore();
             util.duration(stub1, http, {}, uri, $q, control,
@@ -55,7 +56,16 @@ describe('Common duration tests', function () {
         });
         it('should call addOverlay once', function() {
             expect(stub1.addOverlay.callCount).to.eql(1);
-        })
+        });
+        it('should not call addOverlay if activity is null or !checkConditions', function() {
+            stub1.addOverlay.reset();
+            util.duration(stub1, http, {}, uri, $q, control,
+                {bpmnElements: [{}, {id: -1}]});
+            stub1.checkConditions.returns(false);
+            util.duration(stub1, http, {}, uri, $q, control,
+                {bpmnElements: [{}, {id: 1}]});
+            expect(stub1.addOverlay.callCount).to.eql(0);
+        });
     });
 
     describe('addOverlay tests', function() {
@@ -66,6 +76,7 @@ describe('Common duration tests', function () {
             requirejs(['main/resources/plugin-webapp/centaur/app/common/overlays'], function (utl) {
                 stub = util.commonOverlays = sandbox.stub(utl);
                 util.addOverlay(util, {}, {}, "a", {}, "b", "c");
+                util.addOverlay(util, {}, {}, "a", {}, "b", "c");   // for coverage purposes
                 done();
             });
         });
@@ -73,18 +84,16 @@ describe('Common duration tests', function () {
             sandbox.restore();
         });
 
-        it('should call clearOverlays', function() {
-            expect(stub.clearOverlays.callCount).to.eql(1);
+        it('should call initialise functions', function() {
+            expect(stub.clearOverlays.callCount).to.eql(2);
+            expect(stub.addTextElement.callCount).to.eql(2);
+            expect(stub.addDraggableFunctionality.callCount).to.eql(2);
+            expect(stub.getOffset.callCount).to.eql(2);
         });
-        it('should call addTextElement', function() {
-            expect(stub.addTextElement.callCount).to.eql(1);
-        });
-        it('should call addDraggableFunctionality', function() {
-            expect(stub.addDraggableFunctionality.callCount).to.eql(1);
-        });
-        it('should call getOffset', function() {
-            expect(stub.getOffset.callCount).to.eql(1);
-        });
+        it('should give correct setOffset function', function() {
+            stub.addDraggableFunctionality.args[0][4]();
+            expect(stub.setOffset.callCount).to.eql(1);
+        })
     });
 
     describe('checkConditions tests', function () {
@@ -148,22 +157,35 @@ describe('Common duration tests', function () {
         var className = "test", category = "test";
         var out;
 
-        beforeEach(function() {
-            stub = sinon.stub().returns("true");
-            stub.onSecondCall().returns("false");
-            util.commonOptions.getOption = stub;
-            out = util.createHTML(util, {}, cur, avg, max, className, category);
+        describe('do set properties', function() {
+            beforeEach(function() {
+                stub = sinon.stub().returns("true");
+                util.commonOptions.getOption = stub;
+                out = util.createHTML(util, {}, cur, avg, max, className, category);
+            });
+
+            it('should return a div with class test', function() {
+                expect(out.nodeName).to.eql('DIV');
+                expect(out.className).to.contain(className);
+            });
+            it('should set all properties', function() {
+                expect(out.firstChild.children).to.have.lengthOf(3);
+                expect(out.firstChild.children[0].innerHTML).to.contain(cur);
+                expect(out.firstChild.children[1].innerHTML).to.contain(avg);
+                expect(out.firstChild.children[2].innerHTML).to.contain(max);
+            })
         });
 
-        it('should return a div', function() {
-            expect(out.nodeName).to.eql('DIV');
+        describe('do not set properties', function() {
+            beforeEach(function() {
+                stub = sinon.stub().returns("false");
+                util.commonOptions.getOption = stub;
+                out = util.createHTML(util, {}, cur, avg, max, className, category);
+            });
+
+            it('should set all properties', function() {
+                expect(out.firstChild.children).to.have.lengthOf(0);
+            });
         });
-        it('should return className test', function() {
-            expect(out.className).to.contain(className);
-        });
-        it('should not set avg', function() {
-            expect(out.firstChild.children).to.have.lengthOf(2);
-            expect(out.firstChild.children[1].innerHTML).to.not.contain(avg);
-        })
     });
 });

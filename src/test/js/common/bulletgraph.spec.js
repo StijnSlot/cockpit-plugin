@@ -146,7 +146,7 @@ describe('Common bulletgraph tests', function () {
             });
         });
         it('should find libraries', function() {
-            expect(spy.callCount).to.eql(1);
+            expect(div).to.exist;
         });
     });*/
 

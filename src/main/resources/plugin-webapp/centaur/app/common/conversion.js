@@ -95,8 +95,8 @@ define({
      * @return  {Number}                Time difference between given time and computer time.
      */
     calculateTimeDifference: function (startTime) {
-        var computerTime = new Date().getTime();
-        return computerTime - startTime;
+        var time = new Date().getTime();
+        return time - startTime;
     },
 
     /**

@@ -15,30 +15,30 @@ describe('Common conversion tests', function () {
     describe('check Time Unit', function () {
         var duration;
         describe('check if time units are calculated correctly (short time unit)', function () {
-           it('test seconds', function () {
+            it('test seconds', function () {
                duration = 5000;
                expect(util.checkTimeUnit(duration, false)).to.eql('s');
-           });
-    
-           it('test minutes', function(){
+            });
+            it('test minutes', function(){
                duration = 100000;
                expect(util.checkTimeUnit(duration, false)).to.eql('m');
             });
-    
             it('test hours', function(){
-                duration = 3700001
+                duration = 3700001;
                 expect(util.checkTimeUnit(duration, false)).to.eql('h');
             });
-    
             it('test days', function(){
                 duration = 90400001;
                 expect(util.checkTimeUnit(duration, false)).to.eql('d');
             });
-    
             it('test weeks', function(){
                 duration = 605800001;
-                    expect(util.checkTimeUnit(duration, false)).to.eql('w');
+                expect(util.checkTimeUnit(duration, false)).to.eql('w');
             });
+            it('test ms', function() {
+                duration = 1;
+                expect(util.checkTimeUnit(duration, false)).to.eql('ms');
+            })
     
         });
 
@@ -47,34 +47,26 @@ describe('Common conversion tests', function () {
                 duration = 5000;
                 expect(util.checkTimeUnit(duration, true)).to.eql('seconds');
             });
-     
             it('test minutes', function(){
                 duration = 100000;
                 expect(util.checkTimeUnit(duration, true)).to.eql('minutes');
-             });
-     
-             it('test hours', function(){
-                 duration = 3700001;
-                 expect(util.checkTimeUnit(duration, true)).to.eql('hours');
-             });
-     
-             it('test days', function(){
-                 duration = 90400001;
-                 expect(util.checkTimeUnit(duration, true)).to.eql('days');
-             });
-     
-             it('test weeks', function(){
-                 duration = 605800001;
-                     expect(util.checkTimeUnit(duration, true)).to.eql('weeks');
-             });
-     
+            });
+            it('test hours', function(){
+                duration = 3700001;
+                expect(util.checkTimeUnit(duration, true)).to.eql('hours');
+            });
+            it('test days', function(){
+                duration = 90400001;
+                expect(util.checkTimeUnit(duration, true)).to.eql('days');
+            });
+            it('test weeks', function(){
+                duration = 605800001;
+                expect(util.checkTimeUnit(duration, true)).to.eql('weeks');
+            });
          });
-    
-    
     });
 
     describe('check times conversion test', function () {
-
         var duration;
         var choice;
         describe('check duration format is correct', function () {
@@ -84,27 +76,18 @@ describe('Common conversion tests', function () {
                 choice = 's';
                 expect(util.convertTimes(duration, choice)).to.eql(2);
                 duration = 1000*60;
-                choice = 's';
                 expect(util.convertTimes(duration, choice)).to.eql(60);
-                duration = 1000*145;
-                choice = 's';
-                expect(util.convertTimes(duration, choice)).to.eql(145);
                 duration = 1000*145;
                 choice = 'seconds';
                 expect(util.convertTimes(duration, choice)).to.eql(145);
             });
-    
             it('test for duration to be in minutes', function(){
                 duration = 60001;
                 choice = 'm';
                 expect(util.convertTimes(duration, choice)).to.eql(1);
-                duration = 60000*24;
-                choice = 'm';
-                expect(util.convertTimes(duration, choice)).to.eql(24);
                 duration = 60000*124;
                 choice = 'm';
                 expect(util.convertTimes(duration, choice)).to.eql(124);
-                duration = 60000*124;
                 choice = 'minutes';
                 expect(util.convertTimes(duration, choice)).to.eql(124);
             });
@@ -147,14 +130,16 @@ describe('Common conversion tests', function () {
                 choice = 'weeks';
                 expect(util.convertTimes(duration, choice)).to.eql(5);
             });
-    
+            it('should work for ms', function() {
+                duration = 1;
+                choice = 'ms';
+                expect(util.convertTimes(duration, choice)).to.eql(1);
+            })
         });
-    
     });
           
     describe('calculate average current duration tests', function() {
-        var instance;
-        var elementID;
+        var instance, elementID, time;
         var out;
 
         describe('average duration', function() {
@@ -162,37 +147,38 @@ describe('Common conversion tests', function () {
             beforeEach(function() {
                 instance = [{activityId: 'An activity', startTime: 0}, {activityId: 'An activity2', startTime: 0}];
                 elementID = 'An activity';
+                time = new Date().getTime();
+                out = time - util.calculateAvgCurDuration(util, ["2018-01-01"], instance, elementID);
             });
 
             it('check if it returns a number', function() {
-                var computerTime = new Date().getTime();
-                out = computerTime - util.calculateAvgCurDuration(util, {}, instance, elementID);
                 expect(out).to.be.a('number');
             });
-
-            it('check if it returns null', function() {
-                elementID = 'Another not existing activity';
-                out = util.calculateAvgCurDuration(util, {}, instance, elementID);
-                expect(out).to.not.exist;
+            it('should handle empty input', function() {
+                out = time - util.calculateAvgCurDuration(util, {}, instance, elementID);
+                expect(out).to.be.a('number');
             });
         });
     });
           
     describe('check calculate time difference test', function () {
-
         var startTime;
     
         describe('test if the current time is returned correctly', function(){
             it('test for startTime to be within a  100ms range', function () {
                 startTime = 0;
-                var computerTime = new Date().getTime();
-                expect(computerTime - util.calculateTimeDifference(startTime)).to.be.lessThan(10);
-    
+                var time = new Date().getTime();
+                expect(time - util.calculateTimeDifference(startTime)).to.be.lessThan(10);
             });
-    
         })
-    
-    
+    });
+
+    describe('toTruncatedUTC tests', function() {
+        it('should give correct date back', function() {
+            var out = util.toTruncatedUTC(new Date(2014, 1, 1).toString());
+            expect(out).to.have.lengthOf(19);
+            expect(out).to.eql("2014-01-31T23:00:00");
+        });
     });
 });
 

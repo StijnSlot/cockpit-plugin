@@ -108,7 +108,7 @@ define({
             if (get === undefined) {
                 processOptions[prefix][element.name] = 'false';
                 changed = true;
-                element.checked = true;
+                element.checked = false;
             } else {
                 element.checked = (get === 'true');
             }

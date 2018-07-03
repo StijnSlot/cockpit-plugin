@@ -182,7 +182,6 @@ define({
             li.innerHTML = "<b>avg: </b>" + avgDuration;
             ul.appendChild(li);
         }
-
         if (util.commonOptions.getOption(localStorage, util.procDefId, "false", "KPI",
             category + "_max_duration") !== "false") {
 

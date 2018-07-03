@@ -60,10 +60,6 @@ define({
                 if(activity == null) return;
 
                 var instances = instanceStartTime.filter(function(instance) {
-                    if (instance.instanceId === util.procInstanceId) {
-                        console.log("It's the same");
-                        console.log(instance.instanceId);
-                    }
                     return (instance.activityId === element.id);
                 });
 
