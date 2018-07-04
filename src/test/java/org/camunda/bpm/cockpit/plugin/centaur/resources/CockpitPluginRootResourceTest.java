@@ -25,7 +25,12 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
     private HttpServer server;
     private WebTarget target;
 
-
+    private void test(String path) {
+        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
+            getProcessEngine().getName() + "/" + path).request().get();
+        assertEquals(200, output.getStatus());
+        assertNotNull(output.readEntity(List.class));
+    }
 
     @Before
     public void setUp() {
@@ -46,40 +51,40 @@ public class CockpitPluginRootResourceTest extends AbstractCockpitPluginTest {
 
     @Test
     public void processActivityTest() {
-        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
-                getProcessEngine().getName() + "/process-activity").request().get();
-        assertEquals(200, output.getStatus());
-        assertNotNull(output.readEntity(List.class));
+        test("process-activity");
     }
 
     @Test
     public void processVariablesTest() {
-        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
-                getProcessEngine().getName() + "/process-variables").request().get();
-        assertEquals(200, output.getStatus());
-        assertNotNull(output.readEntity(List.class));
+        test("process-variables");
     }
     @Test
     public void instanceStartTimeTest() {
-        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
-                getProcessEngine().getName() + "/instance-start-time").request().get();
-        assertEquals(200, output.getStatus());
-        assertNotNull(output.readEntity(List.class));
+        test("instance-start-time");
     }
 
     @Test
     public void orderStatisticsTest() {
-        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
-                getProcessEngine().getName() + "/order-statistics").request().get();
-        assertEquals(200, output.getStatus());
-              assertNotNull(output.readEntity(List.class));
-          }
+        test("order-statistics");
+    }
+
+    @Test
+    public void getExecutionSequenceCounterTest() {
+        test("execution-sequence-counter");
+    }
+
+    @Test
+    public void getProcessInstanceStartTimesTest() {
+        test("process-instance-start-time");
+    }
+
+    @Test
+    public void getRefreshResourceTest() {
+        test("refresh");
+    }
 
     @Test
     public void getUsersTest() {
-        Response output = target.path("/plugin/" + CockpitPlugin.ID + "/" +
-                getProcessEngine().getName() + "/users").request().get();
-        assertEquals(200, output.getStatus());
-        assertNotNull(output.readEntity(List.class));
+        test("users");
     }
 }

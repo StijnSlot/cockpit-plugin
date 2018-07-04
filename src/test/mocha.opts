@@ -1,3 +1,4 @@
---recursive 
+--recursive
+--reporter mocha-simple-html-reporter --reporter-options output=../target/mocha-report/report.html 
 -r jsdom-global/register
 -r ./test/js/init.js

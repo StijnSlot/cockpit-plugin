@@ -4,7 +4,7 @@
   "description": "A custom plugin for the Camunda cockpit",
   "main": "index.js",
   "scripts": {
-    "test": "cd ./src && nyc mocha"
+    "test": "cd ./src && nyc --reporter=html mocha "
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
+    "mocha-simple-html-reporter": "^1.1.0",
     "nyc": "^12.0.2",
     "requirejs": "^2.3.5",
     "sinon": "^6.0.1"

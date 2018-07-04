@@ -74,26 +74,34 @@ public class UsersResource extends AbstractCockpitPluginResource {
         List<AssigneeDto> result = getQueryService().executeQuery("cockpit.query.resource.selectAssigned", new QueryParameters<>());
         // For each user
         for (AssigneeDto user : result) {
-            boolean assigned = user.getCount() > 0;
-            boolean prevAssigned = user.getPrevAssigned();
-
-            // If prev assigned is same as current assigned, do nothing
-            if (assigned == prevAssigned) continue;
-
-            // Else update the table
-            QueryParameters<Object> queryParameters = new QueryParameters<>();
-
-            HashMap<String, String> param = new HashMap<>();
-            param.put("id", user.getId());
-            param.put("active", String.valueOf(user.getActive()));
-            param.put("assigned", String.valueOf(assigned));
-            param.put("prevAssigned", String.valueOf(prevAssigned));
-            queryParameters.setParameter(param);
-
-            configureTenantCheck(queryParameters);
-
-            getQueryService().executeQuery("cockpit.query.resource.updateAssigned", queryParameters);
+            updateAssignedUser(user);
         }
+    }
+
+    /**
+     * Updates the assigned tasks for the specified user
+     * @param user      the user which needs to be updated
+     */
+    void updateAssignedUser(AssigneeDto user) {
+        boolean assigned = user.getCount() > 0;
+        boolean prevAssigned = user.getPrevAssigned();
+
+        // If prev assigned is same as current assigned, do nothing
+        if (assigned == prevAssigned) return;
+
+        // Else update the table
+        QueryParameters<Object> queryParameters = new QueryParameters<>();
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("id", user.getId());
+        param.put("active", String.valueOf(user.getActive()));
+        param.put("assigned", String.valueOf(assigned));
+        param.put("prevAssigned", String.valueOf(prevAssigned));
+        queryParameters.setParameter(param);
+
+        configureTenantCheck(queryParameters);
+
+        getQueryService().executeQuery("cockpit.query.resource.updateAssigned", queryParameters);
     }
 
     /**

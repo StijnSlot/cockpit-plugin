@@ -1,6 +1,7 @@
 package org.camunda.bpm.cockpit.plugin.centaur.resources;
 
 import org.camunda.bpm.cockpit.plugin.centaur.CockpitPlugin;
+import org.camunda.bpm.cockpit.plugin.centaur.db.AssigneeDto;
 import org.camunda.bpm.cockpit.plugin.test.AbstractCockpitPluginTest;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -62,5 +63,17 @@ public class UsersResourceTest extends AbstractCockpitPluginTest {
     @Test
     public void updateTest() {
         (new UsersResource("test")).update();
+    }
+
+    @Test
+    public void updateAssignedUserTest() {
+        AssigneeDto user = new AssigneeDto();
+        user.setActive(true);
+        user.setCount(5);
+        user.setPrevAssigned(true);
+        user.setId("abc");
+        (new UsersResource("test")).updateAssignedUser(user);
+        user.setCount(0);
+        (new UsersResource("test")).updateAssignedUser(user);
     }
 }
