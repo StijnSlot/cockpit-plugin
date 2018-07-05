@@ -24,8 +24,8 @@ define(['require', 'angular', '../../common/options', '../../common/variables', 
             };
 
             var request2 = function(instance) {
-                return Uri.appUri("engine://engine/:engine/variable-instance/?processInstanceIdIn" +
-                    instance.id + "&deserializeValues=false")
+                return Uri.appUri("engine://engine/:engine/process-instance/" +
+                    instance.id + "/variables?deserializeValues=false")
             };
 
             var addInstanceVar = function() {

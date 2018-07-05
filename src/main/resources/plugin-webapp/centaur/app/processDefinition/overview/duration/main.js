@@ -18,12 +18,13 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
             util.procDefId = $scope.$parent.processDefinition.id;
 
             var setDuration = function() {
+                console.log("hello");
                 util.duration(commonDuration, $http, $window.localStorage, Uri, $q, control, processDiagram);
             };
             setDuration();
 
             // subscribe to any broadcast KPI options change
-            options.register($rootScope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
+            options.register($scope, ["cockpit.plugin.centaur:options:KPI-change"], setDuration);
         }
     ];
 
