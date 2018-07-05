@@ -18,14 +18,14 @@ define(['require', 'angular', '../../common/options', '../../common/variables', 
             var procInstanceId = commonVariable.procInstanceId = $scope.$parent.processInstance.id;
 
             var request1 = function(element) {
-                return Uri.appUri("engine://engine/:engine/execution" +
-                    "?processInstanceId=" + procInstanceId +
-                    "&activityId=" + element.id)
+                return Uri.appUri("engine://engine/:engine/process-instance" +
+                    "?processInstanceIds=" + procInstanceId +
+                    "&activityIdIn=" + element.id)
             };
 
-            var request2 = function(execution) {
-                return Uri.appUri("engine://engine/:engine/execution/" +
-                    execution.id + "/localVariables?deserializeValues=false")
+            var request2 = function(instance) {
+                return Uri.appUri("engine://engine/:engine/process-instance/" +
+                    instance.id + "/variables?deserializeValues=false")
             };
 
             var addInstanceVar = function() {
