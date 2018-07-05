@@ -18,7 +18,6 @@ define(['require', 'angular', './util', '../../../common/conversion', '../../../
             util.procDefId = $scope.$parent.processDefinition.id;
 
             var setDuration = function() {
-                console.log("hello");
                 util.duration(commonDuration, $http, $window.localStorage, Uri, $q, control, processDiagram);
             };
             setDuration();
