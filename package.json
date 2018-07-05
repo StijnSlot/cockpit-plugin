@@ -4,7 +4,7 @@
   "description": "A custom plugin for the Camunda cockpit",
   "main": "index.js",
   "scripts": {
-    "test": "cd ./src && nyc --reporter=html mocha "
+    "test": "cd ./src && mocha --reporter=spec && nyc --reporter=text --reporter=html mocha"
   },
   "repository": {
     "type": "git",
